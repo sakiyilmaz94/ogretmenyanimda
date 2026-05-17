@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function EducatorDashboard() {
