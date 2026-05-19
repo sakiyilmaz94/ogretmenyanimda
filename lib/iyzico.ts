@@ -2,6 +2,7 @@
 // API key geldiğinde .env.local'a IYZICO_API_KEY ve IYZICO_SECRET_KEY ekleyin.
 // Key olmadığında mock mod otomatik devreye girer.
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const Iyzipay = require("iyzipay");
 
 export const IYZICO_ENABLED =

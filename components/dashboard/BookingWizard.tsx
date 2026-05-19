@@ -84,8 +84,7 @@ export default function BookingWizard({
       return;
     }
 
-    router.push(`/parent/bookings?success=1`);
-    router.refresh();
+    router.push(`/parent/payments/${data.id}`);
   }
 
   const steps = ["Öğrenci", "Eğitmen", "Saat", "Onay"];

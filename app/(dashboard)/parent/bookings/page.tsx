@@ -4,7 +4,7 @@ import { formatCurrency, formatDate, SUBJECT_LABELS } from "@/lib/utils";
 import Link from "next/link";
 
 const statusLabel: Record<string, string> = {
-  PENDING: "Beklemede",
+  PENDING: "Ödeme Bekliyor",
   CONFIRMED: "Onaylandı",
   CANCELLED: "İptal Edildi",
   COMPLETED: "Tamamlandı",
@@ -16,8 +16,13 @@ const statusColor: Record<string, string> = {
   COMPLETED: "bg-blue-100 text-blue-700",
 };
 
-export default async function ParentBookingsPage() {
+export default async function ParentBookingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ payment?: string; bookingId?: string }>;
+}) {
   const session = await auth();
+  const { payment } = await searchParams;
 
   const parent = await db.parent.findUnique({
     where: { userId: session!.user.id },
@@ -45,6 +50,32 @@ export default async function ParentBookingsPage() {
 
   return (
     <div className="space-y-6">
+      {/* Ödeme bildirimi */}
+      {payment === "success" && (
+        <div className="bg-green-50 border border-green-200 text-green-800 rounded-xl px-5 py-4 flex items-center gap-3">
+          <span className="text-xl">✅</span>
+          <div>
+            <p className="font-semibold">Ödeme başarıyla tamamlandı!</p>
+            <p className="text-sm text-green-700">Rezervasyonunuz onaylandı. Eğitmenin onayı bekleniyor.</p>
+          </div>
+        </div>
+      )}
+      {payment === "failed" && (
+        <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl px-5 py-4 flex items-center gap-3">
+          <span className="text-xl">❌</span>
+          <div>
+            <p className="font-semibold">Ödeme başarısız oldu.</p>
+            <p className="text-sm text-red-700">Lütfen tekrar deneyin veya farklı bir kart kullanın.</p>
+          </div>
+        </div>
+      )}
+      {payment === "already_paid" && (
+        <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-xl px-5 py-4 flex items-center gap-3">
+          <span className="text-xl">ℹ️</span>
+          <p className="font-semibold">Bu rezervasyon zaten ödendi.</p>
+        </div>
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Rezervasyonlarım</h1>
@@ -81,6 +112,7 @@ export default async function ParentBookingsPage() {
                 <th className="text-left px-4 py-3 font-medium">Tarih / Saat</th>
                 <th className="text-left px-4 py-3 font-medium">Tutar</th>
                 <th className="text-left px-4 py-3 font-medium">Durum</th>
+                <th className="text-left px-4 py-3 font-medium"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -97,6 +129,16 @@ export default async function ParentBookingsPage() {
                     <span className={`text-xs px-2 py-1 rounded-full ${statusColor[b.status] ?? "bg-gray-100 text-gray-700"}`}>
                       {statusLabel[b.status] ?? b.status}
                     </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    {b.status === "PENDING" && b.payment?.status !== "PAID" && (
+                      <Link
+                        href={`/parent/payments/${b.id}`}
+                        className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 font-medium"
+                      >
+                        Ödeme Yap
+                      </Link>
+                    )}
                   </td>
                 </tr>
               ))}

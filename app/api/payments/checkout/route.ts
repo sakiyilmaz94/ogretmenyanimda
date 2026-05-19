@@ -48,7 +48,7 @@ export async function POST(req: Request) {
 
   const result = await initCheckoutForm({
     bookingId: booking.id,
-    amount: booking.totalPrice,
+    amount: Number(booking.totalPrice),
     buyerName,
     buyerSurname,
     buyerEmail: parentUser.email ?? "no-email@example.com",
