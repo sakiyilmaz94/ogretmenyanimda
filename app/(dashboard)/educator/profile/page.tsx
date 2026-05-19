@@ -13,8 +13,8 @@ export default async function EducatorProfilePage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Profilim</h1>
-        <p className="text-gray-500">Bilgilerinizi güncelleyin</p>
+        <h1 className="text-2xl font-bold text-navy-900">Profilim</h1>
+        <p className="text-slate-500 text-sm">Bilgilerinizi güncelleyin ve profilinizi yayına alın</p>
       </div>
       <EducatorProfileForm
         educator={{
@@ -24,10 +24,14 @@ export default async function EducatorProfilePage() {
           gradeLevels: educator.gradeLevels,
           hourlyRate: educator.hourlyRate.toNumber(),
           phone: educator.phone,
-          user: {
-            name: educator.user.name,
-            email: educator.user.email,
-          },
+          photoUrl: educator.photoUrl,
+          titleName: educator.titleName,
+          experience: educator.experience,
+          skills: educator.skills,
+          certificates: educator.certificates,
+          linkedinUrl: educator.linkedinUrl,
+          isProfilePublic: educator.isProfilePublic,
+          user: { name: educator.user.name, email: educator.user.email },
         }}
       />
     </div>

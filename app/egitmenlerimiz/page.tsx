@@ -1,7 +1,7 @@
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import { db } from "@/lib/db";
-import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
+import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
 export const metadata = { title: "Eğitmenlerimiz — Öğretmen Yanımda" };
@@ -9,9 +9,15 @@ export const metadata = { title: "Eğitmenlerimiz — Öğretmen Yanımda" };
 export default async function EgitmenlerimizPage() {
   const educators = await db.educator.findMany({
     where: { status: "APPROVED" },
-    include: { user: true },
+    include: {
+      user: true,
+      educatorLessons: { where: { status: "APPROVED" }, include: { lessonProgram: true } },
+    },
     orderBy: { createdAt: "asc" },
   });
+
+  const publicEducators = educators.filter((e) => e.isProfilePublic);
+  const allEducators = educators;
 
   return (
     <>
@@ -34,7 +40,7 @@ export default async function EgitmenlerimizPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap justify-center gap-8 text-center">
               {[
-                { label: "Onaylı Eğitmen", count: `${educators.length}+` },
+                { label: "Onaylı Eğitmen", count: `${allEducators.length}+` },
                 { label: "Ortalama Deneyim", count: "5+ yıl" },
                 { label: "Öğrenci Memnuniyeti", count: "%98" },
               ].map((s) => (
@@ -50,7 +56,7 @@ export default async function EgitmenlerimizPage() {
         {/* Grid */}
         <section className="bg-slate-50 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {educators.length === 0 ? (
+            {allEducators.length === 0 ? (
               <div className="text-center py-20">
                 <div className="w-16 h-16 bg-navy-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8 text-navy-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,18 +68,24 @@ export default async function EgitmenlerimizPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {educators.map((e) => (
-                  <div key={e.id} className="bg-white rounded-2xl border border-slate-100 p-6 hover:border-gold-300 hover:shadow-lg transition-all duration-300 cursor-default">
+                {allEducators.map((e) => (
+                  <div key={e.id} className="bg-white rounded-2xl border border-slate-100 p-6 hover:border-gold-300 hover:shadow-lg transition-all duration-300 flex flex-col">
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="w-14 h-14 bg-navy-900 rounded-full flex items-center justify-center shrink-0">
-                        <span className="font-serif text-2xl text-gold-400">
-                          {(e.user.name ?? "E")[0].toUpperCase()}
-                        </span>
+                      <div className="w-14 h-14 rounded-full flex items-center justify-center shrink-0 overflow-hidden bg-navy-900">
+                        {e.photoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={e.photoUrl} alt={e.user.name ?? ""} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="font-serif text-2xl text-gold-400">
+                            {(e.user.name ?? "E")[0].toUpperCase()}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <h3 className="font-semibold text-navy-900">{e.user.name}</h3>
+                        {e.titleName && <p className="text-xs text-slate-500">{e.titleName}</p>}
                         {e.hourlyRate && (
-                          <p className="text-gold-600 font-bold text-sm">₺{Number(e.hourlyRate).toFixed(0)}/saat</p>
+                          <p className="text-gold-600 font-bold text-sm">{formatCurrency(e.hourlyRate.toNumber())}/saat</p>
                         )}
                       </div>
                     </div>
@@ -83,7 +95,7 @@ export default async function EgitmenlerimizPage() {
                     )}
 
                     {e.subjects.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-4">
+                      <div className="flex flex-wrap gap-1.5 mb-3">
                         {e.subjects.slice(0, 3).map((s) => (
                           <span key={s} className="text-xs bg-navy-50 text-navy-700 px-2 py-0.5 rounded-full border border-navy-100">
                             {SUBJECT_LABELS[s] ?? s}
@@ -96,18 +108,39 @@ export default async function EgitmenlerimizPage() {
                     )}
 
                     {e.gradeLevels.length > 0 && (
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-slate-500 mb-3">
                         {e.gradeLevels.map((g) => GRADE_LABELS[g] ?? g).slice(0, 2).join(", ")}
                         {e.gradeLevels.length > 2 && " ..."}
                       </p>
                     )}
 
-                    <Link
-                      href="/register"
-                      className="mt-4 block w-full text-center bg-navy-900 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer"
-                    >
-                      Ders Al
-                    </Link>
+                    {e.experience && (
+                      <p className="text-xs text-slate-400 mb-3">{e.experience} yıl deneyim</p>
+                    )}
+
+                    <div className="mt-auto flex gap-2">
+                      {e.isProfilePublic ? (
+                        <Link
+                          href={`/egitmenlerimiz/${e.id}`}
+                          className="flex-1 text-center bg-navy-900 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer"
+                        >
+                          Profili Gör
+                        </Link>
+                      ) : (
+                        <Link
+                          href="/register"
+                          className="flex-1 text-center bg-navy-900 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer"
+                        >
+                          Ders Al
+                        </Link>
+                      )}
+                      <Link
+                        href="/register"
+                        className="flex-1 text-center border border-gold-400 text-gold-600 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-50 transition-colors cursor-pointer"
+                      >
+                        Randevu Al
+                      </Link>
+                    </div>
                   </div>
                 ))}
               </div>

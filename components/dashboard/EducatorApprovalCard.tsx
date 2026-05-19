@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 
 interface EducatorWithUser {
@@ -87,6 +88,9 @@ export default function EducatorApprovalCard({ educator }: { educator: EducatorW
           {educator.rejectionNote && (
             <p className="text-sm text-red-600 mt-1">Red notu: {educator.rejectionNote}</p>
           )}
+          <Link href={`/admin/educators/${educator.id}`} className="inline-block mt-2 text-xs text-gold-600 hover:underline font-medium">
+            Detayları Görüntüle →
+          </Link>
         </div>
 
         {educator.status === "PENDING" && (

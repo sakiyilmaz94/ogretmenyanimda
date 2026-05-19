@@ -5,9 +5,12 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 const adminNav = [
   { href: "/admin", label: "Genel Bakış", icon: "📊" },
   { href: "/admin/educators", label: "Eğitmenler", icon: "👨‍🏫" },
+  { href: "/admin/ders-programlari", label: "Ders Programları", icon: "📚" },
+  { href: "/admin/ders-onaylari", label: "Ders Onayları", icon: "✅" },
+  { href: "/admin/bookings", label: "Rezervasyonlar", icon: "📅" },
   { href: "/admin/payments", label: "Ödemeler", icon: "💰" },
   { href: "/admin/students", label: "Öğrenciler", icon: "🎒" },
-  { href: "/admin/bookings", label: "Rezervasyonlar", icon: "📅" },
+  { href: "/admin/raporlar", label: "Raporlar", icon: "📈" },
   { href: "/admin/settings", label: "Ayarlar", icon: "⚙️" },
 ];
 
