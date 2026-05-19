@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const dmSerif = DM_Serif_Display({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-serif",
+});
 
 export const metadata: Metadata = {
   title: "Öğretmen Yanımda",
@@ -20,7 +25,7 @@ export default async function RootLayout({
 
   return (
     <html lang="tr">
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${dmSerif.variable} font-sans`}>
         <SessionProvider session={session}>{children}</SessionProvider>
       </body>
     </html>
