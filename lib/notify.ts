@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { supabaseAdmin } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 interface NotifyPayload {
   userId: string;

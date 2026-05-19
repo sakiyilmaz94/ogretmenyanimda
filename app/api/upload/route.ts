@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { supabaseAdmin } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { NextResponse } from "next/server";
 
 const BUCKET = "uploads";
