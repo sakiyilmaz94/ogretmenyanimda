@@ -10,12 +10,16 @@ interface EmailPayload {
 }
 
 export async function sendEmail({ to, subject, html }: EmailPayload) {
-  if (!process.env.RESEND_API_KEY) return; // geliştirme ortamında sessizce atla
-  try {
-    await resend.emails.send({ from: FROM, to, subject, html });
-  } catch (err) {
-    console.error("Email gönderilemedi:", err);
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY eksik, email atlandı.");
+    return;
   }
+  const result = await resend.emails.send({ from: FROM, to, subject, html });
+  if (result.error) {
+    console.error("Resend hatası:", JSON.stringify(result.error));
+    throw new Error(result.error.message);
+  }
+  console.log("Email gönderildi:", result.data?.id, "→", to);
 }
 
 // --- Şablonlar ---
