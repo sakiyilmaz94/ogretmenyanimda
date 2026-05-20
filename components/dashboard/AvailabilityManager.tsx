@@ -165,10 +165,13 @@ export default function AvailabilityManager({
                 </select>
               </div>
             </div>
+            <p className="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
+              Seçilen aralık otomatik olarak <strong>1'er saatlik</strong> ders dilimlerine bölünür. Veliler dilediği saati seçer.
+            </p>
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button onClick={addSingle} disabled={loading || !date}
               className="w-full bg-navy-900 text-white py-3 rounded-xl text-sm font-semibold hover:bg-navy-800 disabled:opacity-50 transition-colors">
-              {loading ? "Ekleniyor..." : "Slot Ekle"}
+              {loading ? "Ekleniyor..." : "Uygunluk Ekle"}
             </button>
           </div>
         ) : (
@@ -211,14 +214,17 @@ export default function AvailabilityManager({
                 ))}
               </div>
             </div>
+            <p className="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
+              Seçilen aralık otomatik olarak <strong>1'er saatlik</strong> ders dilimlerine bölünür. Veliler dilediği saati seçer.
+            </p>
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button onClick={addWeekly} disabled={loading || selectedDays.length === 0}
               className="w-full bg-navy-900 text-white py-3 rounded-xl text-sm font-semibold hover:bg-navy-800 disabled:opacity-50 transition-colors">
-              {loading ? "Ekleniyor..." : `${selectedDays.length > 0 ? selectedDays.length + " gün × " + weeks + " hafta = " + selectedDays.length * weeks + " slot" : "Gün seçin"}`}
+              {loading ? "Ekleniyor..." : selectedDays.length > 0 ? "Uygunluk Ekle" : "Gün seçin"}
             </button>
             {selectedDays.length > 0 && !loading && (
               <p className="text-xs text-slate-500 text-center">
-                {selectedDays.map((i) => DAYS[i]).join(", ")} — {wStart}–{wEnd} arası {weeks} hafta boyunca eklenir
+                {selectedDays.map((i) => DAYS[i]).join(", ")} — {wStart}–{wEnd} arası, {weeks} hafta boyunca
               </p>
             )}
           </div>

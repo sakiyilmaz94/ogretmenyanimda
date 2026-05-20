@@ -25,6 +25,17 @@ export async function GET(req: Request) {
   );
 }
 
+function timeToMinutes(t: string): number {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function minutesToTime(mins: number): string {
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
 export async function POST(req: Request) {
   const session = await auth();
   if (!session || session.user.role !== "EDUCATOR") {
@@ -33,18 +44,30 @@ export async function POST(req: Request) {
 
   const { educatorId, date, startTime, endTime } = await req.json();
 
-  // Aynı güne ait rezerve edilmemiş slotları sil (yenisiyle değiştir)
+  const startMins = timeToMinutes(startTime);
+  const endMins = timeToMinutes(endTime);
+
+  if (endMins - startMins < 60) {
+    return NextResponse.json({ error: "En az 1 saatlik pencere gerekli." }, { status: 400 });
+  }
+
+  // Aynı güne ait rezerve edilmemiş slotları sil
   await db.availabilitySlot.deleteMany({
-    where: {
+    where: { educatorId, date: new Date(date), isBooked: false },
+  });
+
+  // Zaman penceresini 1'er saatlik slotlara böl
+  const slotsToCreate = [];
+  for (let t = startMins; t + 60 <= endMins; t += 60) {
+    slotsToCreate.push({
       educatorId,
       date: new Date(date),
-      isBooked: false,
-    },
-  });
+      startTime: minutesToTime(t),
+      endTime: minutesToTime(t + 60),
+    });
+  }
 
-  const slot = await db.availabilitySlot.create({
-    data: { educatorId, date: new Date(date), startTime, endTime },
-  });
+  await db.availabilitySlot.createMany({ data: slotsToCreate });
 
-  return NextResponse.json(slot);
+  return NextResponse.json({ created: slotsToCreate.length });
 }
