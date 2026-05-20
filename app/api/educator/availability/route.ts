@@ -71,3 +71,19 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ created: slotsToCreate.length });
 }
+
+// Tüm rezerve edilmemiş slotları sil
+export async function DELETE(req: Request) {
+  const session = await auth();
+  if (!session || session.user.role !== "EDUCATOR") {
+    return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
+  }
+
+  const { educatorId } = await req.json();
+
+  const { count } = await db.availabilitySlot.deleteMany({
+    where: { educatorId, isBooked: false },
+  });
+
+  return NextResponse.json({ deleted: count });
+}

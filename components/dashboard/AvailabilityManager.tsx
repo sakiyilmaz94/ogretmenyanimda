@@ -118,6 +118,18 @@ export default function AvailabilityManager({
     router.refresh();
   }
 
+  async function deleteAll() {
+    if (!confirm("Rezerve edilmemiş tüm slotlar silinecek. Devam edilsin mi?")) return;
+    setLoading(true);
+    await fetch("/api/educator/availability", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ educatorId }),
+    });
+    setLoading(false);
+    router.refresh();
+  }
+
   const grouped = existingSlots.reduce<Record<string, Slot[]>>((acc, slot) => {
     const key = slot.date.split("T")[0];
     if (!acc[key]) acc[key] = [];
@@ -233,12 +245,23 @@ export default function AvailabilityManager({
 
       {/* Sağ: Mevcut slotlar */}
       <div className="bg-white rounded-2xl border border-slate-100 p-6">
-        <h2 className="font-semibold text-navy-900 mb-4">
-          Mevcut Slotlar
-          {existingSlots.length > 0 && (
-            <span className="ml-2 text-xs font-normal text-slate-400">({existingSlots.length} slot)</span>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold text-navy-900">
+            Mevcut Slotlar
+            {existingSlots.length > 0 && (
+              <span className="ml-2 text-xs font-normal text-slate-400">({existingSlots.length} slot)</span>
+            )}
+          </h2>
+          {existingSlots.some((s) => !s.isBooked) && (
+            <button
+              onClick={deleteAll}
+              disabled={loading}
+              className="text-xs text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+            >
+              Tümünü Temizle
+            </button>
           )}
-        </h2>
+        </div>
         {sortedDays.length === 0 ? (
           <p className="text-slate-400 text-sm">Henüz uygunluk eklenmemiş.</p>
         ) : (
