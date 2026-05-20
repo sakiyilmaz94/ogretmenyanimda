@@ -65,48 +65,73 @@ export default async function ParentDashboard() {
         ))}
       </div>
 
+      {/* Ana akış: Öğretmen bul */}
+      <div className="bg-navy-900 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        <div className="w-12 h-12 bg-gold-500 rounded-xl flex items-center justify-center shrink-0">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <div className="flex-1">
+          <p className="text-white font-semibold text-lg">Öğretmen Ara & Randevu Al</p>
+          <p className="text-navy-300 text-sm mt-0.5">Onaylı öğretmenleri inceleyin, profillerini görün ve doğrudan randevu alın.</p>
+        </div>
+        <Link
+          href="/egitmenlerimiz"
+          className="bg-gold-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-600 transition-colors shrink-0"
+        >
+          Öğretmenleri Gör →
+        </Link>
+      </div>
+
       {parent.students.length === 0 ? (
-        <div className="bg-blue-50 rounded-xl p-8 text-center">
-          <p className="text-2xl mb-3">🎒</p>
-          <h3 className="font-semibold text-gray-900 mb-2">Henüz öğrenci eklemediniz</h3>
-          <p className="text-gray-500 text-sm mb-4">
-            Çocuğunuz için ders rezervasyonu yapabilmek için önce öğrenci ekleyin.
-          </p>
-          <Link
-            href="/parent/students"
-            className="bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700"
-          >
+        <div className="bg-amber-50 border border-amber-100 rounded-2xl p-8 text-center">
+          <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+          <h3 className="font-semibold text-slate-800 mb-2">Henüz öğrenci eklemediniz</h3>
+          <p className="text-slate-500 text-sm mb-4">Randevu alabilmek için önce çocuğunuzu sisteme ekleyin.</p>
+          <Link href="/parent/students"
+            className="inline-block bg-navy-900 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors">
             Öğrenci Ekle
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {parent.students.map((student) => (
-            <div key={student.id} className="bg-white rounded-xl shadow-sm p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="font-semibold text-gray-900">{student.name}</h3>
-                  <p className="text-sm text-gray-500">
-                    {student.gradeLevel.replace("_", " ").replace("ILKOKUL", "İlkokul").replace("ORTAOKUL", "Ortaokul")}
-                  </p>
+            <div key={student.id} className="bg-white rounded-2xl border border-slate-100 p-5">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-navy-50 rounded-xl flex items-center justify-center">
+                    <span className="text-navy-700 font-bold text-sm">{student.name[0].toUpperCase()}</span>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-navy-900">{student.name}</p>
+                    <p className="text-xs text-slate-400">
+                      {student.gradeLevel.replace("_", ". ").replace("ILKOKUL", "İlkokul").replace("ORTAOKUL", "Ortaokul")}
+                    </p>
+                  </div>
                 </div>
-                <Link
-                  href={`/parent/book?studentId=${student.id}`}
-                  className="text-sm bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700"
-                >
+                <Link href={`/egitmenlerimiz`}
+                  className="text-xs bg-gold-500 text-white px-3 py-1.5 rounded-lg hover:bg-gold-600 transition-colors font-medium">
                   Ders Al
                 </Link>
               </div>
 
-              {student.bookings.length > 0 && (
-                <div className="space-y-2">
+              {student.bookings.length > 0 ? (
+                <div className="space-y-2 border-t border-slate-50 pt-3">
+                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wide mb-2">Son Dersler</p>
                   {student.bookings.map((b) => (
-                    <div key={b.id} className="flex items-center justify-between text-sm py-1.5 border-b last:border-0">
-                      <span className="text-gray-600">{b.educator.user.name}</span>
-                      <span className="text-gray-500">{new Date(b.slot.date).toLocaleDateString("tr-TR")}</span>
+                    <div key={b.id} className="flex items-center justify-between text-sm py-1">
+                      <span className="font-medium text-navy-900">{b.educator.user.name}</span>
+                      <span className="text-slate-400 text-xs">{new Date(b.slot.date).toLocaleDateString("tr-TR")}</span>
                     </div>
                   ))}
                 </div>
+              ) : (
+                <p className="text-xs text-slate-400 border-t border-slate-50 pt-3">Henüz ders alınmadı.</p>
               )}
             </div>
           ))}

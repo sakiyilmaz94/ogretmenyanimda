@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { auth } from "@/auth";
 import { notFound } from "next/navigation";
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
@@ -14,6 +15,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function EducatorPublicProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const session = await auth();
+  const role = session?.user?.role ?? null;
 
   const educator = await db.educator.findUnique({
     where: { id, status: "APPROVED", isProfilePublic: true },
@@ -32,7 +35,7 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
 
   return (
     <>
-      <PublicNavbar />
+      <PublicNavbar role={role} />
       <main className="pt-16">
 
         {/* Hero */}
@@ -69,12 +72,21 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
                   )}
                 </div>
               </div>
-              <Link
-                href="/register"
-                className="bg-gold-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-gold-600 transition shrink-0"
-              >
-                Randevu Al
-              </Link>
+              {role === "PARENT" ? (
+                <Link
+                  href={`/parent/book?educatorId=${educator.id}`}
+                  className="bg-gold-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-gold-600 transition shrink-0"
+                >
+                  Randevu Al
+                </Link>
+              ) : role ? null : (
+                <Link
+                  href={`/register`}
+                  className="bg-gold-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-gold-600 transition shrink-0"
+                >
+                  Randevu Al
+                </Link>
+              )}
             </div>
           </div>
         </section>
@@ -205,11 +217,25 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
 
                 <div className="bg-gold-500 rounded-2xl p-6 text-center">
                   <p className="font-serif text-white text-xl mb-2">Ders Al</p>
-                  <p className="text-white/80 text-sm mb-4">Hemen kayıt olun ve rezervasyon yapın.</p>
-                  <Link href="/register"
-                    className="block w-full bg-white text-gold-600 py-3 rounded-xl font-bold text-sm hover:bg-gold-50 transition">
-                    Ücretsiz Kayıt Ol
-                  </Link>
+                  {role === "PARENT" ? (
+                    <>
+                      <p className="text-white/80 text-sm mb-4">Bu öğretmenle hemen randevu alın.</p>
+                      <Link href={`/parent/book?educatorId=${educator.id}`}
+                        className="block w-full bg-white text-gold-600 py-3 rounded-xl font-bold text-sm hover:bg-gold-50 transition">
+                        Randevu Al
+                      </Link>
+                    </>
+                  ) : role ? (
+                    <p className="text-white/80 text-sm">Ders almak için veli hesabı gereklidir.</p>
+                  ) : (
+                    <>
+                      <p className="text-white/80 text-sm mb-4">Hemen kayıt olun ve rezervasyon yapın.</p>
+                      <Link href="/register"
+                        className="block w-full bg-white text-gold-600 py-3 rounded-xl font-bold text-sm hover:bg-gold-50 transition">
+                        Ücretsiz Kayıt Ol
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
 

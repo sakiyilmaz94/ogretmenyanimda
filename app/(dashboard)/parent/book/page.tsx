@@ -6,7 +6,7 @@ import BookingWizard from "@/components/dashboard/BookingWizard";
 export default async function ParentBookPage({
   searchParams,
 }: {
-  searchParams: Promise<{ studentId?: string }>;
+  searchParams: Promise<{ studentId?: string; educatorId?: string }>;
 }) {
   const session = await auth();
   const params = await searchParams;
@@ -17,7 +17,7 @@ export default async function ParentBookPage({
   });
 
   if (!parent) redirect("/parent");
-  if (parent.students.length === 0) redirect("/parent/students");
+  if (parent.students.length === 0) redirect("/parent/students?next=" + encodeURIComponent(`/parent/book${params.educatorId ? `?educatorId=${params.educatorId}` : ""}`));
 
   const educators = await db.educator.findMany({
     where: { status: "APPROVED" },
@@ -47,6 +47,7 @@ export default async function ParentBookPage({
           hourlyRate: e.hourlyRate.toNumber(),
         }))}
         defaultStudentId={params.studentId}
+        defaultEducatorId={params.educatorId}
       />
     </div>
   );

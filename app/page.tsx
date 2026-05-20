@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
@@ -17,12 +16,7 @@ const faqItems = [
 
 export default async function HomePage() {
   const session = await auth();
-  if (session) {
-    const role = session.user.role;
-    if (role === "ADMIN")    redirect("/admin");
-    if (role === "EDUCATOR") redirect("/educator");
-    if (role === "PARENT")   redirect("/parent");
-  }
+  const role = session?.user?.role ?? null;
 
   const educators = await db.educator.findMany({
     where: { status: "APPROVED" },
@@ -33,7 +27,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <PublicNavbar />
+      <PublicNavbar role={role} />
 
       <main className="pt-16">
 
@@ -57,15 +51,37 @@ export default async function HomePage() {
                   İlkokul ve ortaokul öğrencileri için alanında uzman öğretmenlerle bireysel ve grup dersleri. Randevu al, öde, öğren.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/register"
-                    className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-7 py-3.5 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 cursor-pointer shadow-lg shadow-gold-200"
-                  >
-                    Ücretsiz Başla
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                  </Link>
+                  {role === "PARENT" ? (
+                    <Link
+                      href="/egitmenlerimiz"
+                      className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-7 py-3.5 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 cursor-pointer shadow-lg shadow-gold-200"
+                    >
+                      Öğretmen Bul
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                      </svg>
+                    </Link>
+                  ) : role ? (
+                    <Link
+                      href={role === "EDUCATOR" ? "/educator" : role === "ADMIN" ? "/admin" : "/parent"}
+                      className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-7 py-3.5 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 cursor-pointer shadow-lg shadow-gold-200"
+                    >
+                      Panelime Git
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                      </svg>
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/register"
+                      className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-7 py-3.5 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 cursor-pointer shadow-lg shadow-gold-200"
+                    >
+                      Ücretsiz Başla
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                      </svg>
+                    </Link>
+                  )}
                   <Link
                     href="/egitmenlerimiz"
                     className="inline-flex items-center justify-center gap-2 bg-white text-navy-900 border-2 border-navy-200 px-7 py-3.5 rounded-xl text-base font-semibold hover:border-navy-400 transition-colors duration-200 cursor-pointer"

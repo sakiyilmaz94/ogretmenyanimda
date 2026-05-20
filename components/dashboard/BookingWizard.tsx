@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { GradeLevel, Subject } from "@prisma/client";
 import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
@@ -31,23 +31,31 @@ export default function BookingWizard({
   students,
   educators,
   defaultStudentId,
+  defaultEducatorId,
 }: {
   students: Student[];
   educators: Educator[];
   defaultStudentId?: string;
+  defaultEducatorId?: string;
 }) {
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const defaultEducator = educators.find((e) => e.id === defaultEducatorId) ?? null;
+  const [step, setStep] = useState(defaultStudentId ? (defaultEducatorId ? 3 : 2) : 1);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(
     students.find((s) => s.id === defaultStudentId) ?? null
   );
-  const [selectedEducator, setSelectedEducator] = useState<Educator | null>(null);
+  const [selectedEducator, setSelectedEducator] = useState<Educator | null>(defaultEducator);
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [availableSlots, setAvailableSlots] = useState<Slot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (defaultEducator) loadSlots(defaultEducator);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function loadSlots(educator: Educator) {
     setLoadingSlots(true);

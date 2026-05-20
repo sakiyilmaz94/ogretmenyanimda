@@ -12,7 +12,14 @@ const navLinks = [
   { href: "/iletisim",       label: "İletişim" },
 ];
 
-export default function PublicNavbar() {
+function dashboardUrl(role: string | null) {
+  if (role === "ADMIN") return "/admin";
+  if (role === "EDUCATOR") return "/educator";
+  if (role === "PARENT") return "/parent";
+  return "/";
+}
+
+export default function PublicNavbar({ role }: { role?: string | null }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -51,18 +58,23 @@ export default function PublicNavbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/login"
-              className="text-sm font-medium text-slate-700 hover:text-navy-900 transition-colors duration-200"
-            >
-              Giriş Yap
-            </Link>
-            <Link
-              href="/register"
-              className="text-sm font-semibold bg-gold-500 text-white px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors duration-200 cursor-pointer"
-            >
-              Ücretsiz Başla
-            </Link>
+            {role ? (
+              <Link
+                href={dashboardUrl(role)}
+                className="text-sm font-semibold bg-gold-500 text-white px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors duration-200 cursor-pointer"
+              >
+                Panelim →
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="text-sm font-medium text-slate-700 hover:text-navy-900 transition-colors duration-200">
+                  Giriş Yap
+                </Link>
+                <Link href="/register" className="text-sm font-semibold bg-gold-500 text-white px-4 py-2 rounded-lg hover:bg-gold-600 transition-colors duration-200 cursor-pointer">
+                  Ücretsiz Başla
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -102,20 +114,23 @@ export default function PublicNavbar() {
             </Link>
           ))}
           <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="block text-center px-4 py-2.5 rounded-lg text-sm font-medium text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors"
-            >
-              Giriş Yap
-            </Link>
-            <Link
-              href="/register"
-              onClick={() => setOpen(false)}
-              className="block text-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-gold-500 text-white hover:bg-gold-600 transition-colors"
-            >
-              Ücretsiz Başla
-            </Link>
+            {role ? (
+              <Link href={dashboardUrl(role)} onClick={() => setOpen(false)}
+                className="block text-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-gold-500 text-white hover:bg-gold-600 transition-colors">
+                Panelim →
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" onClick={() => setOpen(false)}
+                  className="block text-center px-4 py-2.5 rounded-lg text-sm font-medium text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors">
+                  Giriş Yap
+                </Link>
+                <Link href="/register" onClick={() => setOpen(false)}
+                  className="block text-center px-4 py-2.5 rounded-lg text-sm font-semibold bg-gold-500 text-white hover:bg-gold-600 transition-colors">
+                  Ücretsiz Başla
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
