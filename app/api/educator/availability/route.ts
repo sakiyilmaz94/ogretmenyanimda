@@ -33,13 +33,14 @@ export async function POST(req: Request) {
 
   const { educatorId, date, startTime, endTime } = await req.json();
 
-  const existing = await db.availabilitySlot.findUnique({
-    where: { educatorId_date_startTime: { educatorId, date: new Date(date), startTime } },
+  // Aynı güne ait rezerve edilmemiş slotları sil (yenisiyle değiştir)
+  await db.availabilitySlot.deleteMany({
+    where: {
+      educatorId,
+      date: new Date(date),
+      isBooked: false,
+    },
   });
-
-  if (existing) {
-    return NextResponse.json({ error: "Bu slot zaten mevcut." }, { status: 400 });
-  }
 
   const slot = await db.availabilitySlot.create({
     data: { educatorId, date: new Date(date), startTime, endTime },

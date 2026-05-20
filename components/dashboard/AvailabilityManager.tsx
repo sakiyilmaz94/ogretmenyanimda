@@ -108,6 +108,16 @@ export default function AvailabilityManager({
     router.refresh();
   }
 
+  async function deleteDay(date: string) {
+    const slotsForDay = grouped[date] ?? [];
+    await Promise.all(
+      slotsForDay
+        .filter((s) => !s.isBooked)
+        .map((s) => fetch(`/api/educator/availability/${s.id}`, { method: "DELETE" }))
+    );
+    router.refresh();
+  }
+
   const grouped = existingSlots.reduce<Record<string, Slot[]>>((acc, slot) => {
     const key = slot.date.split("T")[0];
     if (!acc[key]) acc[key] = [];
@@ -229,9 +239,16 @@ export default function AvailabilityManager({
           <div className="space-y-4 max-h-[500px] overflow-y-auto pr-1">
             {sortedDays.map((day) => (
               <div key={day}>
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
-                  {new Date(day + "T12:00:00").toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long" })}
-                </p>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    {new Date(day + "T12:00:00").toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long" })}
+                  </p>
+                  {grouped[day].some((s) => !s.isBooked) && (
+                    <button onClick={() => deleteDay(day)} className="text-xs text-red-400 hover:text-red-600 transition-colors">
+                      Günü temizle
+                    </button>
+                  )}
+                </div>
                 <div className="space-y-1">
                   {grouped[day].map((slot) => (
                     <div key={slot.id}
