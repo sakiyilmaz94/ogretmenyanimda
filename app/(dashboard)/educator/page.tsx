@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { formatCurrency, SUBJECT_LABELS } from "@/lib/utils";
+import ReapplyForm from "@/components/dashboard/ReapplyForm";
 
 export default async function EducatorDashboard() {
   const session = await auth();
@@ -63,10 +64,7 @@ export default async function EducatorDashboard() {
       )}
 
       {isRejected && (
-        <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
-          <p className="text-red-800 font-semibold text-sm">Başvurunuz reddedildi</p>
-          {educator.rejectionNote && <p className="text-red-700 text-sm mt-0.5">Sebep: {educator.rejectionNote}</p>}
-        </div>
+        <ReapplyForm rejectionNote={educator.rejectionNote} />
       )}
 
       {pendingBookings > 0 && (
