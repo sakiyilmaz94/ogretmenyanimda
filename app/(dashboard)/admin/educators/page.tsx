@@ -2,10 +2,16 @@ import { db } from "@/lib/db";
 import EducatorApprovalCard from "@/components/dashboard/EducatorApprovalCard";
 
 export default async function AdminEducatorsPage() {
-  const educators = await db.educator.findMany({
+  const raw = await db.educator.findMany({
     include: { user: true },
     orderBy: { createdAt: "desc" },
   });
+
+  // Decimal → number (client component'e JSON olarak geçebilsin)
+  const educators = raw.map((e) => ({
+    ...e,
+    hourlyRate: e.hourlyRate.toNumber(),
+  }));
 
   const pending = educators.filter((e) => e.status === "PENDING");
   const approved = educators.filter((e) => e.status === "APPROVED");

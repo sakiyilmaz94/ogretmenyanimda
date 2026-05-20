@@ -11,7 +11,9 @@ interface EducatorWithUser {
   bio: string | null;
   subjects: string[];
   gradeLevels: string[];
-  hourlyRate: { toNumber: () => number };
+  hourlyRate: number;
+  diplomaUrl: string | null;
+  idCardUrl: string | null;
   rejectionNote: string | null;
   user: {
     name: string | null;
@@ -82,9 +84,27 @@ export default function EducatorApprovalCard({ educator }: { educator: EducatorW
               </span>
             ))}
           </div>
-          <p className="text-sm font-medium text-gray-700">
-            Saatlik Ücret: {educator.hourlyRate.toNumber()} ₺
-          </p>
+          {educator.hourlyRate > 0 && (
+            <p className="text-sm font-medium text-gray-700">
+              Saatlik Ücret: {educator.hourlyRate} ₺
+            </p>
+          )}
+          {(educator.diplomaUrl || educator.idCardUrl) && (
+            <div className="flex gap-3 mt-2">
+              {educator.diplomaUrl && (
+                <a href={educator.diplomaUrl} target="_blank" rel="noopener noreferrer"
+                  className="text-xs text-blue-600 hover:underline flex items-center gap-1">
+                  📄 Diploma
+                </a>
+              )}
+              {educator.idCardUrl && (
+                <a href={educator.idCardUrl} target="_blank" rel="noopener noreferrer"
+                  className="text-xs text-blue-600 hover:underline flex items-center gap-1">
+                  🪪 Kimlik
+                </a>
+              )}
+            </div>
+          )}
           {educator.rejectionNote && (
             <p className="text-sm text-red-600 mt-1">Red notu: {educator.rejectionNote}</p>
           )}

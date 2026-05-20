@@ -1,197 +1,174 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Subject, GradeLevel, LessonProgramStatus } from "@prisma/client";
-import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
+import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 
-interface LessonProgram {
-  id: string;
-  name: string;
-  subject: Subject;
-  gradeLevel: GradeLevel;
-  durationMin: number;
-  maxStudents: number;
-  status: LessonProgramStatus;
-}
+const ALL_SUBJECTS = Object.entries(SUBJECT_LABELS);
+const ALL_GRADES = Object.entries(GRADE_LABELS);
 
-interface EducatorLesson {
-  id: string;
-  price: { toNumber?: () => number } | number;
-  status: string;
-  rejectionNote: string | null;
-  lessonProgram: LessonProgram;
+interface Profile {
+  subjects: string[];
+  gradeLevels: string[];
+  hourlyRate: number;
+  bio: string | null;
 }
 
 export default function EducatorDerslerimPage() {
-  const [myLessons, setMyLessons] = useState<EducatorLesson[]>([]);
-  const [allPrograms, setAllPrograms] = useState<LessonProgram[]>([]);
-  const [showAdd, setShowAdd] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState("");
-  const [price, setPrice] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [form, setForm] = useState({ subjects: [] as string[], gradeLevels: [] as string[], hourlyRate: "", bio: "" });
 
-  async function loadLessons() {
-    const res = await fetch("/api/educator/lessons");
-    if (res.ok) setMyLessons(await res.json());
+  useEffect(() => {
+    fetch("/api/educator/profile")
+      .then((r) => r.json())
+      .then((d) => {
+        setProfile(d);
+        setForm({
+          subjects: d.subjects || [],
+          gradeLevels: d.gradeLevels || [],
+          hourlyRate: d.hourlyRate?.toString() || "",
+          bio: d.bio || "",
+        });
+        setLoading(false);
+      });
+  }, []);
+
+  function toggleSubject(s: string) {
+    setForm((f) => ({
+      ...f,
+      subjects: f.subjects.includes(s) ? f.subjects.filter((x) => x !== s) : [...f.subjects, s],
+    }));
   }
 
-  async function loadPrograms() {
-    const res = await fetch("/api/admin/lesson-programs");
-    if (res.ok) setAllPrograms(await res.json());
+  function toggleGrade(g: string) {
+    setForm((f) => ({
+      ...f,
+      gradeLevels: f.gradeLevels.includes(g) ? f.gradeLevels.filter((x) => x !== g) : [...f.gradeLevels, g],
+    }));
   }
 
-  useEffect(() => { loadLessons(); loadPrograms(); }, []);
-
-  const myProgramIds = new Set(myLessons.map((l) => l.lessonProgram.id));
-  const available = allPrograms.filter((p) => p.status === "ACTIVE" && !myProgramIds.has(p.id));
-
-  async function handleAdd(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    const res = await fetch("/api/educator/lessons", {
-      method: "POST",
+  async function save() {
+    setSaving(true);
+    await fetch("/api/educator/profile", {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ lessonProgramId: selectedProgram, price: parseFloat(price) }),
+      body: JSON.stringify({
+        subjects: form.subjects,
+        gradeLevels: form.gradeLevels,
+        hourlyRate: parseFloat(form.hourlyRate) || 0,
+        bio: form.bio,
+      }),
     });
-    setLoading(false);
-    if (!res.ok) { setError((await res.json()).error || "Hata"); return; }
-    setShowAdd(false);
-    setSelectedProgram("");
-    setPrice("");
-    loadLessons();
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 3000);
   }
 
-  async function handleRemove(id: string) {
-    if (!confirm("Bu dersi kaldırmak istediğinize emin misiniz?")) return;
-    await fetch("/api/educator/lessons", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    loadLessons();
-  }
-
-  const getPrice = (p: EducatorLesson["price"]) => typeof p === "number" ? p : p.toNumber?.() ?? 0;
-
-  const statusInfo: Record<string, { label: string; color: string }> = {
-    PENDING_APPROVAL: { label: "Onay Bekliyor", color: "bg-amber-100 text-amber-700" },
-    APPROVED: { label: "Yayında", color: "bg-green-100 text-green-700" },
-    REJECTED: { label: "Reddedildi", color: "bg-red-100 text-red-700" },
-  };
+  if (loading) return <div className="text-center py-12 text-gray-400">Yükleniyor...</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-navy-900">Derslerim</h1>
-          <p className="text-slate-500 text-sm mt-0.5">Admin tarafından oluşturulmuş programlardan seçin, fiyat belirleyin</p>
+    <div className="space-y-8 max-w-2xl">
+      <div>
+        <h1 className="text-2xl font-bold text-navy-900">Derslerim</h1>
+        <p className="text-slate-500 text-sm mt-1">Hangi dersleri verdiğinizi ve ücretinizi buradan belirleyin.</p>
+      </div>
+
+      {/* Subjects */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-6">
+        <h2 className="font-semibold text-navy-900 mb-4">Verdiğim Dersler</h2>
+        <div className="flex flex-wrap gap-2">
+          {ALL_SUBJECTS.map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => toggleSubject(key)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                form.subjects.includes(key)
+                  ? "bg-navy-900 text-white border-navy-900"
+                  : "bg-white text-slate-600 border-slate-200 hover:border-navy-400"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
-        {available.length > 0 && (
-          <button
-            onClick={() => setShowAdd(true)}
-            className="bg-gold-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-600 transition"
-          >
-            + Ders Ekle
-          </button>
+        {form.subjects.length === 0 && (
+          <p className="text-xs text-amber-600 mt-3">En az bir ders seçin.</p>
         )}
       </div>
 
-      {showAdd && (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-          <h2 className="font-semibold text-navy-900 mb-4">Ders Programı Seç</h2>
-          <form onSubmit={handleAdd} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Program</label>
-              <select
-                value={selectedProgram}
-                onChange={(e) => setSelectedProgram(e.target.value)}
-                required
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
-              >
-                <option value="">Seçin...</option>
-                {available.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name} — {SUBJECT_LABELS[p.subject]} · {GRADE_LABELS[p.gradeLevel]} · {p.durationMin} dk
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Fiyat (₺ / ders)</label>
-              <input
-                type="number"
-                min="0"
-                step="10"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                required
-                placeholder="ör. 250"
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
-              />
-            </div>
-            <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 text-xs text-amber-700">
-              Belirlediğiniz fiyat admin onayına gönderilecektir. Onaylandıktan sonra yayına çıkar.
-            </div>
-            {error && <p className="text-red-600 text-sm bg-red-50 rounded-xl px-4 py-2">{error}</p>}
-            <div className="flex gap-3 justify-end">
-              <button type="button" onClick={() => setShowAdd(false)}
-                className="px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition">
-                İptal
-              </button>
-              <button type="submit" disabled={loading}
-                className="px-5 py-2.5 bg-gold-500 text-white rounded-xl text-sm font-semibold hover:bg-gold-600 disabled:opacity-50 transition">
-                {loading ? "Gönderiliyor..." : "Onaya Gönder"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {myLessons.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center">
-          <p className="text-4xl mb-4">📚</p>
-          <h3 className="font-semibold text-navy-900 mb-2">Henüz ders eklemediniz</h3>
-          <p className="text-slate-500 text-sm mb-4">Ders programlarından seçim yaparak fiyat belirleyin.</p>
-          {available.length > 0 && (
-            <button onClick={() => setShowAdd(true)}
-              className="bg-gold-500 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-600 transition">
-              Ders Ekle
+      {/* Grade levels */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-6">
+        <h2 className="font-semibold text-navy-900 mb-4">Sınıf Seviyeleri</h2>
+        <div className="flex flex-wrap gap-2">
+          {ALL_GRADES.map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => toggleGrade(key)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                form.gradeLevels.includes(key)
+                  ? "bg-gold-500 text-white border-gold-500"
+                  : "bg-white text-slate-600 border-slate-200 hover:border-gold-400"
+              }`}
+            >
+              {label}
             </button>
-          )}
-          {allPrograms.length === 0 && (
-            <p className="text-slate-400 text-xs mt-2">Admin henüz ders programı oluşturmadı.</p>
-          )}
+          ))}
         </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {myLessons.map((lesson) => {
-            const si = statusInfo[lesson.status] ?? { label: lesson.status, color: "bg-slate-100 text-slate-600" };
-            return (
-              <div key={lesson.id} className="bg-white rounded-2xl border border-slate-100 p-5 space-y-3">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-semibold text-navy-900 text-sm leading-snug">{lesson.lessonProgram.name}</h3>
-                  <span className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${si.color}`}>{si.label}</span>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  <span className="text-xs bg-navy-50 text-navy-700 px-2 py-0.5 rounded-full">{SUBJECT_LABELS[lesson.lessonProgram.subject]}</span>
-                  <span className="text-xs bg-gold-50 text-gold-700 px-2 py-0.5 rounded-full">{GRADE_LABELS[lesson.lessonProgram.gradeLevel]}</span>
-                  <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">{lesson.lessonProgram.durationMin} dk</span>
-                </div>
-                <p className="text-xl font-bold text-navy-900">{formatCurrency(getPrice(lesson.price))}</p>
-                {lesson.rejectionNote && (
-                  <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">Red: {lesson.rejectionNote}</p>
-                )}
-                <button onClick={() => handleRemove(lesson.id)}
-                  className="w-full text-xs py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition font-medium">
-                  Kaldır
-                </button>
-              </div>
-            );
-          })}
+        {form.gradeLevels.length === 0 && (
+          <p className="text-xs text-amber-600 mt-3">En az bir sınıf seviyesi seçin.</p>
+        )}
+      </div>
+
+      {/* Hourly rate */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-6">
+        <h2 className="font-semibold text-navy-900 mb-1">Saatlik Ücret</h2>
+        <p className="text-slate-500 text-sm mb-4">Velilerin profilinizde göreceği ders ücreti. Platformun %20 komisyon kesintisi sonrasında kalan tutar size ödenir.</p>
+        <div className="flex items-center gap-2 max-w-xs">
+          <span className="text-slate-500 font-medium">₺</span>
+          <input
+            type="number"
+            value={form.hourlyRate}
+            onChange={(e) => setForm((f) => ({ ...f, hourlyRate: e.target.value }))}
+            placeholder="örn: 400"
+            min={0}
+            className="flex-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
+          />
+          <span className="text-slate-400 text-sm">/ ders</span>
         </div>
-      )}
+        {form.hourlyRate && parseFloat(form.hourlyRate) > 0 && (
+          <p className="text-xs text-green-600 mt-2">
+            Net kazancınız: ₺{(parseFloat(form.hourlyRate) * 0.8).toFixed(0)} / ders (%80)
+          </p>
+        )}
+      </div>
+
+      {/* Bio */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-6">
+        <h2 className="font-semibold text-navy-900 mb-1">Kısa Biyografi</h2>
+        <p className="text-slate-500 text-sm mb-4">Velilerin profilinizde okuyacağı tanıtım metni.</p>
+        <textarea
+          value={form.bio}
+          onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))}
+          rows={4}
+          placeholder="Kendinizi kısaca tanıtın..."
+          className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 resize-none"
+        />
+      </div>
+
+      <div className="flex items-center gap-4">
+        <button
+          onClick={save}
+          disabled={saving}
+          className="bg-gold-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gold-600 disabled:opacity-50 transition-colors"
+        >
+          {saving ? "Kaydediliyor..." : "Kaydet"}
+        </button>
+        {saved && <span className="text-green-600 text-sm font-medium">✓ Kaydedildi</span>}
+      </div>
     </div>
   );
 }
