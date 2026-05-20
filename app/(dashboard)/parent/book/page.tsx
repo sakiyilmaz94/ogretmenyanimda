@@ -29,7 +29,7 @@ export default async function ParentBookPage({
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Ders Rezervasyonu</h1>
-        <p className="text-gray-500">Çocuğunuz için uygun eğitmen ve saati seçin</p>
+        <p className="text-gray-500">Çocuğunuz için uygun öğretmen ve saati seçin</p>
       </div>
       <BookingWizard
         students={parent.students.map((s) => ({

@@ -15,7 +15,7 @@ export default async function EducatorLayout({ children }: { children: React.Rea
   if (!session || session.user.role !== "EDUCATOR") redirect("/login");
 
   return (
-    <DashboardLayout navItems={educatorNav} title="Eğitmen Paneli">
+    <DashboardLayout navItems={educatorNav} title="Öğretmen Paneli">
       {children}
     </DashboardLayout>
   );

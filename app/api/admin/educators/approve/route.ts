@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   const { educatorId, action, rejectionNote } = await req.json();
 
   const educator = await db.educator.findUnique({ where: { id: educatorId } });
-  if (!educator) return NextResponse.json({ error: "Eğitmen bulunamadı" }, { status: 404 });
+  if (!educator) return NextResponse.json({ error: "Öğretmen bulunamadı" }, { status: 404 });
 
   if (action === "approve") {
     await db.educator.update({
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     await notify({
       userId: educator.userId,
       title: "Başvurunuz Onaylandı",
-      message: "Tebrikler! Eğitmen başvurunuz onaylandı. Artık profilinizi oluşturabilir ve ders verebilirsiniz.",
+      message: "Tebrikler! Öğretmen başvurunuz onaylandı. Artık profilinizi oluşturabilir ve ders verebilirsiniz.",
       link: "/educator/profile",
     });
   } else if (action === "reject") {

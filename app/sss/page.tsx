@@ -9,7 +9,7 @@ const faqCategories = [
   {
     title: "Platform & Dersler",
     items: [
-      { q: "Özel dersler nasıl işliyor?", a: "Her öğrencinin ihtiyacına göre birebir veya grup ders seçeneklerimiz bulunmaktadır. Veli platformdan eğitmeni seçer, uygun saati rezerve eder, ödeme yapar ve ders başlar." },
+      { q: "Özel dersler nasıl işliyor?", a: "Her öğrencinin ihtiyacına göre birebir veya grup ders seçeneklerimiz bulunmaktadır. Veli platformdan öğretmeni seçer, uygun saati rezerve eder, ödeme yapar ve ders başlar." },
       { q: "Dersler hangi seviyeleri kapsıyor?", a: "İlkokul (1–4. sınıf) ve ortaokul (5–8. sınıf) öğrencilerine yönelik kapsamlı dersler sunmaktayız." },
       { q: "Dersler online mı yapılmaktadır?", a: "Evet, tüm dersler interaktif online platformumuz üzerinden gerçekleşmektedir. İnternet bağlantısı ve kamera yeterlidir." },
       { q: "Bireysel ders süresi ne kadar?", a: "Bireysel dersler 45 dakika, grup dersleri ise 60 dakikadır." },
@@ -17,11 +17,11 @@ const faqCategories = [
     ],
   },
   {
-    title: "Eğitmenler",
+    title: "Öğretmenler",
     items: [
-      { q: "Öğretmenler kimlerdir?", a: "Uzman eğitimcilerimiz alanlarında deneyimli ve sertifikalı öğretmenlerden oluşmaktadır. Her eğitmen özgeçmiş, diploma ve referans incelemesinden geçer." },
-      { q: "Eğitmen nasıl seçebilirim?", a: "Platform üzerinden eğitmenlerin profillerini, uzmanlık alanlarını ve ücretlerini inceleyebilir, size en uygun olanı seçebilirsiniz." },
-      { q: "Eğitmenim uygun değilse değiştirebilir miyim?", a: "Evet, herhangi bir sebep göstermeksizin eğitmen değişikliği talep edebilirsiniz. Destek ekibimiz en kısa sürede yardımcı olur." },
+      { q: "Öğretmenler kimlerdir?", a: "Uzman eğitimcilerimiz alanlarında deneyimli ve sertifikalı öğretmenlerden oluşmaktadır. Her öğretmen özgeçmiş, diploma ve referans incelemesinden geçer." },
+      { q: "Öğretmen nasıl seçebilirim?", a: "Platform üzerinden öğretmenlerin profillerini, uzmanlık alanlarını ve ücretlerini inceleyebilir, size en uygun olanı seçebilirsiniz." },
+      { q: "Öğretmenim uygun değilse değiştirebilir miyim?", a: "Evet, herhangi bir sebep göstermeksizin öğretmen değişikliği talep edebilirsiniz. Destek ekibimiz en kısa sürede yardımcı olur." },
     ],
   },
   {

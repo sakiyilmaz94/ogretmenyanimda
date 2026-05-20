@@ -43,8 +43,8 @@ export default function IletisimPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                           </svg>
                         ),
-                        label: "Çalışma Saatleri",
-                        value: "Pazartesi–Cumartesi 09:00–18:00",
+                        label: "Platform Saatleri",
+                        value: "7/24 — Dersler her gün planlanabilir",
                       },
                       {
                         icon: (
@@ -72,7 +72,7 @@ export default function IletisimPage() {
                 <div className="bg-navy-900 rounded-2xl p-6">
                   <h3 className="text-white font-semibold mb-2">Hızlı Yanıt</h3>
                   <p className="text-navy-300 text-sm leading-relaxed">
-                    Eğitmen başvuruları ve teknik destek talepleri 1 iş günü, diğer tüm sorular 24 saat içinde yanıtlanmaktadır.
+                    Öğretmen başvuruları ve teknik destek talepleri en geç 1 iş günü içinde yanıtlanmaktadır. Platform ve dersler 7/24 erişilebilirdir.
                   </p>
                 </div>
               </div>
@@ -113,7 +113,7 @@ export default function IletisimPage() {
                       >
                         <option value="">Konu seçin</option>
                         <option value="genel">Genel Bilgi</option>
-                        <option value="egitmen">Eğitmen Başvurusu</option>
+                        <option value="egitmen">Öğretmen Başvurusu</option>
                         <option value="teknik">Teknik Destek</option>
                         <option value="odeme">Ödeme & İade</option>
                         <option value="diger">Diğer</option>

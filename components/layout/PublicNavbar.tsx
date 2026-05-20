@@ -5,11 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { href: "/hizmetler",     label: "Hizmetler" },
-  { href: "/egitmenlerimiz",label: "Eğitmenlerimiz" },
-  { href: "/fiyatlandirma", label: "Fiyatlandırma" },
-  { href: "/hakkimizda",    label: "Hakkımızda" },
-  { href: "/iletisim",      label: "İletişim" },
+  { href: "/dersler",        label: "Dersler" },
+  { href: "/egitmenlerimiz", label: "Öğretmenlerimiz" },
+  { href: "/fiyatlandirma",  label: "Fiyatlandırma" },
+  { href: "/hakkimizda",     label: "Hakkımızda" },
+  { href: "/iletisim",       label: "İletişim" },
 ];
 
 export default function PublicNavbar() {

@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     link: "/parent/bookings",
   });
 
-  // Eğitmene bildirim — educatorId Educator.id, userId farklı
+  // Öğretmene bildirim — educatorId Educator.id, userId farklı
   const educator = await db.educator.findUnique({ where: { id: educatorId } });
   if (educator) {
     await notify({

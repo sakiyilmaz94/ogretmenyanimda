@@ -25,7 +25,7 @@ export default async function DersOnaylariPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-navy-900">Ders Onayları</h1>
-        <p className="text-slate-500 text-sm mt-0.5">Eğitmenlerin fiyatlandırdığı ders programı başvuruları</p>
+        <p className="text-slate-500 text-sm mt-0.5">Öğretmenlerin fiyatlandırdığı ders programı başvuruları</p>
       </div>
 
       {sections.map((sec) => sec.list.length > 0 && (
@@ -74,7 +74,7 @@ export default async function DersOnaylariPage() {
         <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center">
           <p className="text-4xl mb-4">✅</p>
           <h3 className="font-semibold text-navy-900 mb-2">Onay bekleyen başvuru yok</h3>
-          <p className="text-slate-500 text-sm">Eğitmenler ders programı fiyatlandırdığında burada görünür.</p>
+          <p className="text-slate-500 text-sm">Öğretmenler ders programı fiyatlandırdığında burada görünür.</p>
         </div>
       )}
     </div>

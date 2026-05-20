@@ -7,11 +7,11 @@ import PublicFooter from "@/components/layout/PublicFooter";
 import FaqAccordion from "@/components/ui/FaqAccordion";
 
 const faqItems = [
-  { q: "Özel dersler nasıl işliyor?", a: "Veliler platformdan onaylı eğitmeni seçer, uygun saat dilimini rezerve eder ve ödeme yapar. Dersler tamamen online, interaktif ortamda gerçekleşir." },
+  { q: "Özel dersler nasıl işliyor?", a: "Veliler platformdan onaylı öğretmeni seçer, uygun saat dilimini rezerve eder ve ödeme yapar. Dersler tamamen online, interaktif ortamda gerçekleşir." },
   { q: "Dersler hangi seviyeleri kapsıyor?", a: "İlkokul (1–4. sınıf) ve ortaokul (5–8. sınıf) öğrencilerine yönelik kapsamlı dersler sunmaktayız." },
   { q: "Ders süresi ne kadardır?", a: "Bireysel dersler 45 dakika, grup dersleri (maks. 6 öğrenci) 60 dakika sürmektedir." },
   { q: "Ders iptali durumunda ne olur?", a: "En az 24 saat öncesinden bildirilen iptallerде tam ücret iadesi veya ders erteleme yapılmaktadır." },
-  { q: "Öğretmenler nasıl seçiliyor?", a: "Tüm eğitmenlerimiz özgeçmiş, belge ve referans incelemesinden geçer; yönetici onayıyla platforma kabul edilir." },
+  { q: "Öğretmenler nasıl seçiliyor?", a: "Tüm öğretmenlerimiz özgeçmiş, belge ve referans incelemesinden geçer; yönetici onayıyla platforma kabul edilir." },
   { q: "Ödeme güvenli mi?", a: "Ödemeler iyzico altyapısıyla 256-bit SSL şifrelemeli olarak işlenmektedir. Kart bilgileriniz sistemimizde saklanmaz." },
 ];
 
@@ -54,7 +54,7 @@ export default async function HomePage() {
                   Etkili Öğrenim
                 </h1>
                 <p className="text-lg text-slate-600 leading-relaxed mb-8 max-w-lg">
-                  İlkokul ve ortaokul öğrencileri için alanında uzman eğitmenlerle bireysel ve grup dersleri. Randevu al, öde, öğren.
+                  İlkokul ve ortaokul öğrencileri için alanında uzman öğretmenlerle bireysel ve grup dersleri. Randevu al, öde, öğren.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
@@ -70,7 +70,7 @@ export default async function HomePage() {
                     href="/egitmenlerimiz"
                     className="inline-flex items-center justify-center gap-2 bg-white text-navy-900 border-2 border-navy-200 px-7 py-3.5 rounded-xl text-base font-semibold hover:border-navy-400 transition-colors duration-200 cursor-pointer"
                   >
-                    Eğitmenleri Keşfet
+                    Öğretmenleri Keşfet
                   </Link>
                 </div>
 
@@ -78,7 +78,7 @@ export default async function HomePage() {
                 <div className="mt-10 flex flex-wrap gap-8">
                   {[
                     { n: "500+", label: "Aktif Öğrenci" },
-                    { n: "50+",  label: "Uzman Eğitmen" },
+                    { n: "50+",  label: "Uzman Öğretmen" },
                     { n: "4.9",  label: "Ortalama Puan" },
                   ].map((s) => (
                     <div key={s.label}>
@@ -146,8 +146,8 @@ export default async function HomePage() {
               {[
                 {
                   step: "01",
-                  title: "Eğitmen Seç",
-                  desc: "Branşına ve bütçene uygun uzman eğitmeni incele, değerlendirmeleri oku.",
+                  title: "Öğretmen Seç",
+                  desc: "Branşına ve bütçene uygun uzman öğretmeni incele, değerlendirmeleri oku.",
                   icon: (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -270,9 +270,9 @@ export default async function HomePage() {
           <section className="bg-white py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-14">
-                <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Eğitmenlerimiz</p>
+                <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Öğretmenlerimiz</p>
                 <h2 className="font-serif text-4xl text-navy-900">Uzman Kadromuzla Tanışın</h2>
-                <p className="mt-4 text-slate-600 max-w-xl mx-auto">Onaylı eğitmenlerimizin tamamı özgeçmiş ve belge incelemesinden geçmiştir.</p>
+                <p className="mt-4 text-slate-600 max-w-xl mx-auto">Onaylı öğretmenlerimizin tamamı özgeçmiş ve belge incelemesinden geçmiştir.</p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {educators.map((e) => (
@@ -294,7 +294,7 @@ export default async function HomePage() {
               </div>
               <div className="text-center mt-10">
                 <Link href="/egitmenlerimiz" className="inline-flex items-center gap-2 bg-navy-900 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer">
-                  Tüm Eğitmenleri Gör
+                  Tüm Öğretmenleri Gör
                 </Link>
               </div>
             </div>
@@ -392,7 +392,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {[
                 { icon: "🛡️", title: "Güvenli Ödeme", desc: "iyzico 256-bit SSL" },
-                { icon: "✅", title: "Onaylı Eğitmenler", desc: "Belge incelemeli kabul" },
+                { icon: "✅", title: "Onaylı Öğretmenler", desc: "Belge incelemeli kabul" },
                 { icon: "⭐", title: "4.9/5 Memnuniyet", desc: "500+ veli değerlendirmesi" },
                 { icon: "🔄", title: "Ücretsiz İptal", desc: "24 saat öncesinde" },
               ].map((b) => (
@@ -432,7 +432,7 @@ export default async function HomePage() {
               Çocuğunuzun Başarısı<br/>Bir Tık Uzağınızda
             </h2>
             <p className="text-white/85 text-lg mb-8 max-w-xl mx-auto">
-              Hemen üye olun, uzman eğitmenlerle ilk dersi planlayın. İlk ders memnuniyeti garantilidir.
+              Hemen üye olun, uzman öğretmenlerle ilk dersi planlayın. İlk ders memnuniyeti garantilidir.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -448,7 +448,7 @@ export default async function HomePage() {
                 href="/egitmen-basvurusu"
                 className="inline-flex items-center justify-center gap-2 bg-gold-600 text-white border-2 border-white/30 px-8 py-4 rounded-xl text-base font-semibold hover:bg-gold-700 transition-colors cursor-pointer"
               >
-                Eğitmen Başvurusu
+                Öğretmen Başvurusu
               </Link>
             </div>
           </div>

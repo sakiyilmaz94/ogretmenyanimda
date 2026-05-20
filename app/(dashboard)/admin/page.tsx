@@ -35,7 +35,7 @@ export default async function AdminDashboard() {
   });
 
   const stats = [
-    { label: "Toplam Eğitmen", value: totalEducators, icon: "👨‍🏫", color: "bg-blue-50 text-blue-700" },
+    { label: "Toplam Öğretmen", value: totalEducators, icon: "👨‍🏫", color: "bg-blue-50 text-blue-700" },
     { label: "Onay Bekleyen", value: pendingEducators, icon: "⏳", color: "bg-yellow-50 text-yellow-700" },
     { label: "Toplam Veli", value: totalParents, icon: "👨‍👩‍👧", color: "bg-green-50 text-green-700" },
     { label: "Toplam Öğrenci", value: totalStudents, icon: "🎒", color: "bg-purple-50 text-purple-700" },

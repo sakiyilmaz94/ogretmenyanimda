@@ -35,8 +35,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
       userId: booking.student.parent.userId,
       title: action === "approve" ? "Rezervasyon Onaylandı" : "Rezervasyon Reddedildi",
       message: action === "approve"
-        ? "Ders rezervasyonunuz eğitmen tarafından onaylandı."
-        : "Ders rezervasyonunuz eğitmen tarafından reddedildi.",
+        ? "Ders rezervasyonunuz öğretmen tarafından onaylandı."
+        : "Ders rezervasyonunuz öğretmen tarafından reddedildi.",
       link: "/parent/bookings",
     });
 

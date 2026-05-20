@@ -34,7 +34,7 @@ export default async function BookingPaymentPage({
   const data = {
     bookingId: booking.id,
     studentName: booking.student.name,
-    educatorName: booking.educator.user.name ?? "Eğitmen",
+    educatorName: booking.educator.user.name ?? "Öğretmen",
     subject: booking.subject,
     slotDate: booking.slot.date.toISOString().split("T")[0],
     slotStartTime: booking.slot.startTime,

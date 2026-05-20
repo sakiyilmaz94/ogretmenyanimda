@@ -96,7 +96,7 @@ export default function EducatorProfileForm({ educator }: Props) {
       <div className="bg-white rounded-2xl border border-slate-100 p-5 flex items-center justify-between gap-4">
         <div>
           <p className="font-semibold text-navy-900">Profili Yayınla</p>
-          <p className="text-slate-500 text-sm">Profiliniz &quot;Eğitmenlerimiz&quot; sayfasında görünsün</p>
+          <p className="text-slate-500 text-sm">Profiliniz &quot;Öğretmenlerimiz&quot; sayfasında görünsün</p>
         </div>
         <button
           type="button"

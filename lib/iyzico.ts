@@ -164,7 +164,7 @@ function buildMockForm(req: CheckoutRequest): string {
           <strong>${req.studentName}</strong>
         </div>
         <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e5e7eb">
-          <span style="color:#6b7280">Eğitmen</span>
+          <span style="color:#6b7280">Öğretmen</span>
           <strong>${req.educatorName}</strong>
         </div>
         <div style="display:flex;justify-content:space-between;padding:8px 0">

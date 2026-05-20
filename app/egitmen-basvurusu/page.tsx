@@ -2,13 +2,13 @@ import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import Link from "next/link";
 
-export const metadata = { title: "Eğitmen Başvurusu — Öğretmen Yanımda" };
+export const metadata = { title: "Öğretmen Başvurusu — Öğretmen Yanımda" };
 
 const steps = [
   { n: "01", title: "Formu Doldurun", desc: "Aşağıdaki formu eksiksiz doldurun ve belgelerinizi hazırlayın." },
   { n: "02", title: "İnceleme", desc: "Başvurunuz 1–3 iş günü içinde yöneticilerimiz tarafından incelenir." },
   { n: "03", title: "Bildirim", desc: "Onay veya red durumunda e-posta ile bilgilendirilirsiniz." },
-  { n: "04", title: "Platforma Katılın", desc: "Onaylanan eğitmenler giriş yaparak profilini oluşturur ve ders verir." },
+  { n: "04", title: "Platforma Katılın", desc: "Onaylanan öğretmenler giriş yaparak profilini oluşturur ve ders verir." },
 ];
 
 export default function EgitmenBasvurusuPage() {
@@ -22,7 +22,7 @@ export default function EgitmenBasvurusuPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <p className="text-gold-400 font-semibold text-sm uppercase tracking-widest mb-4">Eğitmen Başvurusu</p>
+                <p className="text-gold-400 font-semibold text-sm uppercase tracking-widest mb-4">Öğretmen Başvurusu</p>
                 <h1 className="font-serif text-5xl text-white mb-4 leading-tight">
                   Öğretmen Yanımda Ailesine Katılın!
                 </h1>
@@ -74,9 +74,9 @@ export default function EgitmenBasvurusuPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
               </div>
-              <h2 className="font-serif text-3xl text-navy-900 mb-3">Eğitmen Hesabı Oluşturun</h2>
+              <h2 className="font-serif text-3xl text-navy-900 mb-3">Öğretmen Hesabı Oluşturun</h2>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                Kayıt formunda &ldquo;Eğitmen&rdquo; rolünü seçin. Başvurunuz yöneticilerimiz tarafından incelendikten sonra platforma erişim sağlarsınız.
+                Kayıt formunda &ldquo;Öğretmen&rdquo; rolünü seçin. Başvurunuz yöneticilerimiz tarafından incelendikten sonra platforma erişim sağlarsınız.
               </p>
               <Link
                 href="/register"

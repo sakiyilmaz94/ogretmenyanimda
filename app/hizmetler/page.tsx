@@ -8,7 +8,7 @@ const services = [
   {
     title: "Bireysel Dersler",
     subtitle: "45 dk · Birebir Eğitim",
-    desc: "Öğrencinin güçlü ve zayıf yönleri analiz edilerek kişiselleştirilmiş müfredat hazırlanır. Eğitmen dikkatinin tamamı tek öğrenciye yönelir.",
+    desc: "Öğrencinin güçlü ve zayıf yönleri analiz edilerek kişiselleştirilmiş müfredat hazırlanır. Öğretmen dikkatinin tamamı tek öğrenciye yönelir.",
     features: ["Kişiselleştirilmiş müfredat", "Esnek saat seçimi", "Haftalık ilerleme raporu", "Ödev takibi", "Ebeveyn bilgilendirme"],
     color: "bg-navy-900",
     accent: "text-gold-400",
@@ -94,7 +94,7 @@ export default function HizmetlerPage() {
         <section className="bg-ivory py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="font-serif text-3xl text-navy-900 mb-3">Verilen Dersler</h2>
-            <p className="text-slate-600 mb-10">İlkokul ve ortaokul müfredatındaki tüm dersler için uzman eğitmenlerimiz hazır.</p>
+            <p className="text-slate-600 mb-10">İlkokul ve ortaokul müfredatındaki tüm dersler için uzman öğretmenlerimiz hazır.</p>
             <div className="flex flex-wrap justify-center gap-3">
               {subjects.map((s) => (
                 <span key={s} className="bg-white text-navy-900 border border-slate-200 px-4 py-2 rounded-full text-sm font-medium hover:border-gold-400 hover:text-gold-700 transition-colors cursor-default">

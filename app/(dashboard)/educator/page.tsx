@@ -36,8 +36,24 @@ export default async function EducatorDashboard() {
         <h1 className="font-serif text-2xl text-navy-900">
           Hoş geldiniz, {session?.user?.name?.split(" ")[0]}!
         </h1>
-        <p className="text-slate-500 text-sm">Eğitmen panelinize genel bakış</p>
+        <p className="text-slate-500 text-sm">Öğretmen panelinize genel bakış</p>
       </div>
+
+      {/* Komisyon bilgi kartı — tüm onaylı öğretmenlere göster */}
+      {!isPending && !isRejected && (
+        <div className="bg-navy-50 border border-navy-200 rounded-2xl p-5 flex items-start gap-4">
+          <div className="w-10 h-10 bg-navy-900 rounded-xl flex items-center justify-center shrink-0">
+            <span className="text-gold-400 font-bold text-sm">%</span>
+          </div>
+          <div>
+            <p className="text-navy-900 font-semibold text-sm">Platform Komisyonu: %20</p>
+            <p className="text-navy-600 text-sm mt-0.5">
+              Her ders ücretinin %20&apos;si platform komisyonu olarak kesilir; kalan %80&apos;i size ödenir.
+              Örnek: 500 ₺ ders → 400 ₺ net kazanç.
+            </p>
+          </div>
+        </div>
+      )}
 
       {isPending && (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">

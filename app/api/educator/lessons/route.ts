@@ -7,7 +7,7 @@ export async function GET() {
   if (!session || session.user.role !== "EDUCATOR") return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
 
   const educator = await db.educator.findUnique({ where: { userId: session.user.id } });
-  if (!educator) return NextResponse.json({ error: "Eğitmen bulunamadı" }, { status: 404 });
+  if (!educator) return NextResponse.json({ error: "Öğretmen bulunamadı" }, { status: 404 });
 
   const lessons = await db.educatorLesson.findMany({
     where: { educatorId: educator.id },
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   if (!session || session.user.role !== "EDUCATOR") return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
 
   const educator = await db.educator.findUnique({ where: { userId: session.user.id } });
-  if (!educator) return NextResponse.json({ error: "Eğitmen bulunamadı" }, { status: 404 });
+  if (!educator) return NextResponse.json({ error: "Öğretmen bulunamadı" }, { status: 404 });
 
   const { lessonProgramId, price } = await req.json();
 
@@ -46,7 +46,7 @@ export async function DELETE(req: Request) {
   if (!session || session.user.role !== "EDUCATOR") return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
 
   const educator = await db.educator.findUnique({ where: { userId: session.user.id } });
-  if (!educator) return NextResponse.json({ error: "Eğitmen bulunamadı" }, { status: 404 });
+  if (!educator) return NextResponse.json({ error: "Öğretmen bulunamadı" }, { status: 404 });
 
   const { id } = await req.json();
   await db.educatorLesson.delete({ where: { id, educatorId: educator.id } });

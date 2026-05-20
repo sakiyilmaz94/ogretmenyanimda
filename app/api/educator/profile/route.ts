@@ -14,7 +14,7 @@ export async function PATCH(req: Request) {
   } = await req.json();
 
   const educator = await db.educator.findUnique({ where: { userId: session.user.id } });
-  if (!educator) return NextResponse.json({ error: "Eğitmen bulunamadı." }, { status: 404 });
+  if (!educator) return NextResponse.json({ error: "Öğretmen bulunamadı." }, { status: 404 });
 
   const updated = await db.educator.update({
     where: { id: educator.id },

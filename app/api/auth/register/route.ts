@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { Role } from "@prisma/client";
 
 export async function POST(req: Request) {
-  const { name, email, password, role } = await req.json();
+  const { name, email, password, role, diplomaUrl, idCardUrl } = await req.json();
 
   if (!name || !email || !password) {
     return NextResponse.json({ error: "Tüm alanları doldurun." }, { status: 400 });
@@ -39,6 +39,8 @@ export async function POST(req: Request) {
         userId: user.id,
         hourlyRate: 0,
         status: "PENDING",
+        diplomaUrl: diplomaUrl || null,
+        idCardUrl: idCardUrl || null,
       },
     });
   }

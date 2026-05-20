@@ -8,18 +8,55 @@ export default function RegisterPage() {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [form, setForm] = useState({ name: "", email: "", password: "", role: "" });
+  const [diploma, setDiploma] = useState<File | null>(null);
+  const [idCard, setIdCard] = useState<File | null>(null);
+  const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  async function uploadFile(file: File, type: string): Promise<string> {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("type", type);
+    const res = await fetch("/api/upload", { method: "POST", body: fd });
+    const data = await res.json();
+    return data.url;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (form.role === "EDUCATOR" && !kvkkAccepted) {
+      setError("Devam edebilmek için gizlilik metnini onaylamanız gerekir.");
+      return;
+    }
     setLoading(true);
     setError("");
+
+    let diplomaUrl: string | undefined;
+    let idCardUrl: string | undefined;
+
+    if (form.role === "EDUCATOR") {
+      if (!diploma || !idCard) {
+        setError("Diploma ve kimlik kartı fotoğrafı yüklemek zorunludur.");
+        setLoading(false);
+        return;
+      }
+      try {
+        [diplomaUrl, idCardUrl] = await Promise.all([
+          uploadFile(diploma, "diploma"),
+          uploadFile(idCard, "idcard"),
+        ]);
+      } catch {
+        setError("Dosya yükleme sırasında hata oluştu. Tekrar deneyin.");
+        setLoading(false);
+        return;
+      }
+    }
 
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, diplomaUrl, idCardUrl }),
     });
 
     const data = await res.json();
@@ -38,8 +75,8 @@ export default function RegisterPage() {
       value: "PARENT",
       title: "Veli Başvurusu",
       subtitle: "Çocuğunuz için özel ders arayın",
-      desc: "Onaylı eğitmenlerimiz arasından çocuğunuza en uygun olanı seçin, randevu alın ve ilerlemesini takip edin.",
-      features: ["Eğitmen seçimi", "Randevu takibi", "Ödeme & fatura", "İlerleme raporu"],
+      desc: "Onaylı öğretmenlerimiz arasından çocuğunuza en uygun olanı seçin, randevu alın ve ilerlemesini takip edin.",
+      features: ["Öğretmen seçimi", "Randevu takibi", "Ödeme & fatura", "İlerleme raporu"],
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -48,7 +85,7 @@ export default function RegisterPage() {
     },
     {
       value: "EDUCATOR",
-      title: "Eğitmen Başvurusu",
+      title: "Öğretmen Başvurusu",
       subtitle: "Platformda ders verin, gelir elde edin",
       desc: "Başvurunuz yöneticilerimiz tarafından incelenir. Onaylandıktan sonra profilinizi oluşturup ders verebilirsiniz.",
       features: ["Esnek çalışma saati", "Düzenli gelir", "Profil sayfası", "Randevu yönetimi"],
@@ -138,7 +175,7 @@ export default function RegisterPage() {
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8">
               <div className="mb-6">
                 <div className="inline-flex items-center gap-2 bg-gold-50 text-gold-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                  {form.role === "PARENT" ? "Veli Başvurusu" : "Eğitmen Başvurusu"}
+                  {form.role === "PARENT" ? "Veli Başvurusu" : "Öğretmen Başvurusu"}
                 </div>
                 <h1 className="font-serif text-2xl text-navy-900">Bilgilerinizi girin</h1>
               </div>
@@ -182,9 +219,68 @@ export default function RegisterPage() {
                 </div>
 
                 {form.role === "EDUCATOR" && (
-                  <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 text-sm text-amber-700">
-                    Başvurunuz yöneticilerimiz tarafından 1–3 iş günü içinde incelenir. Onay sonrası platforma erişim sağlarsınız.
-                  </div>
+                  <>
+                    <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 text-sm text-amber-700">
+                      Başvurunuz 1–3 iş günü içinde incelenir. Onay sonrası platforma erişim sağlarsınız.
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                        Diploma / Mezuniyet Belgesi <span className="text-red-500">*</span>
+                      </label>
+                      <label className="flex items-center gap-3 w-full border-2 border-dashed border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-gold-400 transition-colors">
+                        <svg className="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <span className="text-sm text-slate-500 truncate">
+                          {diploma ? diploma.name : "PDF dosyası seçin (maks. 5MB)"}
+                        </span>
+                        <input
+                          type="file"
+                          accept=".pdf"
+                          className="hidden"
+                          onChange={e => setDiploma(e.target.files?.[0] || null)}
+                        />
+                      </label>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                        Kimlik Kartı Fotoğrafı <span className="text-red-500">*</span>
+                      </label>
+                      <label className="flex items-center gap-3 w-full border-2 border-dashed border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-gold-400 transition-colors">
+                        <svg className="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2" />
+                        </svg>
+                        <span className="text-sm text-slate-500 truncate">
+                          {idCard ? idCard.name : "JPG veya PNG seçin (maks. 5MB)"}
+                        </span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={e => setIdCard(e.target.files?.[0] || null)}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                      <p className="text-xs text-slate-500 leading-relaxed mb-3">
+                        Yüklediğiniz diploma ve kimlik kartı bilgileri yalnızca kimlik doğrulama amacıyla kullanılır. Bu bilgiler hiçbir üçüncü tarafla paylaşılmaz, öğrencilere veya velilere gösterilmez. Onay sürecinin ardından belgeler güvenli şekilde saklanır. 6698 sayılı KVKK kapsamında haklarınız saklıdır.
+                      </p>
+                      <label className="flex items-start gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={kvkkAccepted}
+                          onChange={e => setKvkkAccepted(e.target.checked)}
+                          className="mt-0.5 rounded"
+                        />
+                        <span className="text-xs text-slate-600 font-medium">
+                          Belge bilgilerimin yalnızca kimlik doğrulama amacıyla kullanılacağını, üçüncü taraflarla paylaşılmayacağını okudum ve onaylıyorum.
+                        </span>
+                      </label>
+                    </div>
+                  </>
                 )}
 
                 {error && (

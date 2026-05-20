@@ -43,7 +43,7 @@ export default async function RaporlarPage() {
   const stats = [
     { label: "Toplam Rezervasyon", value: totalBookings.toString(), sub: `${confirmedBookings} onaylı`, color: "bg-navy-50 text-navy-700" },
     { label: "Toplam Gelir", value: formatCurrency(totalPayments._sum.amount?.toNumber() ?? 0), sub: `${totalPayments._count} ödeme`, color: "bg-gold-50 text-gold-700" },
-    { label: "Aktif Eğitmen", value: totalEducators.toString(), sub: "onaylı eğitmen", color: "bg-green-50 text-green-700" },
+    { label: "Aktif Öğretmen", value: totalEducators.toString(), sub: "onaylı öğretmen", color: "bg-green-50 text-green-700" },
     { label: "Toplam Öğrenci", value: totalStudents.toString(), sub: "kayıtlı öğrenci", color: "bg-blue-50 text-blue-700" },
   ];
 
@@ -68,7 +68,7 @@ export default async function RaporlarPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Educators */}
         <div className="bg-white rounded-2xl border border-slate-100 p-6">
-          <h2 className="font-semibold text-navy-900 mb-4">En Çok Ders Veren Eğitmenler</h2>
+          <h2 className="font-semibold text-navy-900 mb-4">En Çok Ders Veren Öğretmenler</h2>
           {topEducators.length === 0 ? (
             <p className="text-slate-400 text-sm">Henüz veri yok.</p>
           ) : (
@@ -131,7 +131,7 @@ export default async function RaporlarPage() {
               <thead className="text-slate-500 border-b border-slate-100">
                 <tr>
                   <th className="text-left py-2 pr-4 font-medium">Öğrenci</th>
-                  <th className="text-left py-2 pr-4 font-medium">Eğitmen</th>
+                  <th className="text-left py-2 pr-4 font-medium">Öğretmen</th>
                   <th className="text-left py-2 pr-4 font-medium">Tutar</th>
                   <th className="text-left py-2 font-medium">Tarih</th>
                 </tr>

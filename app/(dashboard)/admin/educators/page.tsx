@@ -13,7 +13,7 @@ export default async function AdminEducatorsPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-gray-900">Eğitmen Yönetimi</h1>
+      <h1 className="text-2xl font-bold text-gray-900">Öğretmen Yönetimi</h1>
 
       {pending.length > 0 && (
         <section>
@@ -30,10 +30,10 @@ export default async function AdminEducatorsPage() {
 
       <section>
         <h2 className="text-lg font-semibold text-green-700 mb-4 flex items-center gap-2">
-          ✅ Onaylı Eğitmenler ({approved.length})
+          ✅ Onaylı Öğretmenler ({approved.length})
         </h2>
         {approved.length === 0 ? (
-          <p className="text-gray-500 text-sm">Henüz onaylı eğitmen yok.</p>
+          <p className="text-gray-500 text-sm">Henüz onaylı öğretmen yok.</p>
         ) : (
           <div className="space-y-3">
             {approved.map((e) => (

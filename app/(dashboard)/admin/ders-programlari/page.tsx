@@ -76,7 +76,7 @@ export default function DersProgramlariPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-navy-900">Ders Programları</h1>
-          <p className="text-slate-500 text-sm mt-0.5">Eğitmenler bu programlardan seçim yaparak fiyat belirler</p>
+          <p className="text-slate-500 text-sm mt-0.5">Öğretmenler bu programlardan seçim yaparak fiyat belirler</p>
         </div>
         <button
           onClick={() => { setShowForm(true); setEditId(null); setForm(empty); }}

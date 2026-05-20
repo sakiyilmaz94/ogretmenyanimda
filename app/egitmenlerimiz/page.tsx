@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
-export const metadata = { title: "Eğitmenlerimiz — Öğretmen Yanımda" };
+export const metadata = { title: "Öğretmenlerimiz — Öğretmen Yanımda" };
 
 export default async function EgitmenlerimizPage() {
   const educators = await db.educator.findMany({
@@ -27,10 +27,10 @@ export default async function EgitmenlerimizPage() {
         {/* Hero */}
         <section className="bg-navy-900 py-20 text-center">
           <div className="max-w-3xl mx-auto px-4">
-            <p className="text-gold-400 font-semibold text-sm uppercase tracking-widest mb-3">Eğitmenlerimiz</p>
+            <p className="text-gold-400 font-semibold text-sm uppercase tracking-widest mb-3">Öğretmenlerimiz</p>
             <h1 className="font-serif text-5xl text-white mb-4">Uzman Kadromuzla Tanışın</h1>
             <p className="text-navy-200 text-lg">
-              Onaylı eğitmenlerimizin tamamı özgeçmiş, diploma ve referans incelemesinden geçmiştir.
+              Onaylı öğretmenlerimizin tamamı özgeçmiş, diploma ve referans incelemesinden geçmiştir.
             </p>
           </div>
         </section>
@@ -40,7 +40,7 @@ export default async function EgitmenlerimizPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap justify-center gap-8 text-center">
               {[
-                { label: "Onaylı Eğitmen", count: `${allEducators.length}+` },
+                { label: "Onaylı Öğretmen", count: `${allEducators.length}+` },
                 { label: "Ortalama Deneyim", count: "5+ yıl" },
                 { label: "Öğrenci Memnuniyeti", count: "%98" },
               ].map((s) => (
@@ -64,7 +64,7 @@ export default async function EgitmenlerimizPage() {
                   </svg>
                 </div>
                 <h3 className="font-semibold text-navy-900 mb-2">Yakında Burada</h3>
-                <p className="text-slate-500 text-sm">Onaylı eğitmenlerimiz çok yakında yayında.</p>
+                <p className="text-slate-500 text-sm">Onaylı öğretmenlerimiz çok yakında yayında.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -151,10 +151,10 @@ export default async function EgitmenlerimizPage() {
         {/* CTA */}
         <section className="bg-gold-500 py-16">
           <div className="max-w-3xl mx-auto px-4 text-center">
-            <h2 className="font-serif text-3xl text-white mb-3">Siz de Eğitmen Olmak İster misiniz?</h2>
+            <h2 className="font-serif text-3xl text-white mb-3">Siz de Öğretmen Olmak İster misiniz?</h2>
             <p className="text-white/85 mb-6">Binlerce öğrenciye ulaşın, kendi programınızı oluşturun.</p>
             <Link href="/egitmen-basvurusu" className="inline-flex items-center gap-2 bg-white text-gold-600 px-7 py-3.5 rounded-xl font-bold hover:bg-gold-50 transition-colors cursor-pointer">
-              Eğitmen Başvurusu Yap
+              Öğretmen Başvurusu Yap
             </Link>
           </div>
         </section>

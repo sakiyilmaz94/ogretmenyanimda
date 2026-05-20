@@ -8,7 +8,7 @@ import Link from "next/link";
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const educator = await db.educator.findUnique({ where: { id }, include: { user: true } });
-  if (!educator) return { title: "Eğitmen Bulunamadı" };
+  if (!educator) return { title: "Öğretmen Bulunamadı" };
   return { title: `${educator.user.name} — Öğretmen Yanımda` };
 }
 
@@ -51,7 +51,7 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
               </div>
               <div className="flex-1">
                 <p className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-1">
-                  {educator.titleName ?? "Eğitmen"}
+                  {educator.titleName ?? "Öğretmen"}
                 </p>
                 <h1 className="font-serif text-3xl text-white mb-2">{educator.user.name}</h1>
                 <div className="flex flex-wrap items-center gap-4 text-navy-300 text-sm">

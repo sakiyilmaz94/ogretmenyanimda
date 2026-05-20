@@ -3,14 +3,14 @@ import Link from "next/link";
 const footerLinks = {
   platform: [
     { href: "/hizmetler",      label: "Hizmetler" },
-    { href: "/egitmenlerimiz", label: "Eğitmenlerimiz" },
+    { href: "/egitmenlerimiz", label: "Öğretmenlerimiz" },
     { href: "/fiyatlandirma",  label: "Fiyatlandırma" },
     { href: "/hakkimizda",     label: "Hakkımızda" },
   ],
   destek: [
     { href: "/sss",            label: "SSS" },
     { href: "/iletisim",       label: "İletişim" },
-    { href: "/egitmen-basvurusu", label: "Eğitmen Başvurusu" },
+    { href: "/egitmen-basvurusu", label: "Öğretmen Başvurusu" },
   ],
   yasal: [
     { href: "/gizlilik-politikasi",       label: "Gizlilik Politikası" },
@@ -37,7 +37,7 @@ export default function PublicFooter() {
               </span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
-              İlkokul ve ortaokul öğrencileri için uzman eğitmenlerle bireysel ve grup dersleri platformu.
+              İlkokul ve ortaokul öğrencileri için uzman öğretmenlerle bireysel ve grup dersleri platformu.
             </p>
             <div className="flex gap-3">
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"

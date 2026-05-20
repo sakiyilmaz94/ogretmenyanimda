@@ -136,6 +136,8 @@ model Educator {
   rejectionNote   String?
   phone           String?
   photoUrl        String?
+  diplomaUrl      String?
+  idCardUrl       String?
   titleName       String?
   experience      Int?
   skills          String[]
@@ -287,4 +289,18 @@ model Review {
   student  Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([educatorId, studentId])
+}
+
+model PricingPlan {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+  price       Decimal  @db.Decimal(10, 2)
+  duration    Int      // dakika cinsinden ders süresi
+  features    String[]
+  isPopular   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

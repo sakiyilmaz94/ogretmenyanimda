@@ -56,7 +56,7 @@ export default async function ParentBookingsPage({
           <span className="text-xl">✅</span>
           <div>
             <p className="font-semibold">Ödeme başarıyla tamamlandı!</p>
-            <p className="text-sm text-green-700">Rezervasyonunuz onaylandı. Eğitmenin onayı bekleniyor.</p>
+            <p className="text-sm text-green-700">Rezervasyonunuz onaylandı. Öğretmenin onayı bekleniyor.</p>
           </div>
         </div>
       )}
@@ -107,7 +107,7 @@ export default async function ParentBookingsPage({
             <thead className="bg-gray-50 text-gray-600">
               <tr>
                 <th className="text-left px-4 py-3 font-medium">Öğrenci</th>
-                <th className="text-left px-4 py-3 font-medium">Eğitmen</th>
+                <th className="text-left px-4 py-3 font-medium">Öğretmen</th>
                 <th className="text-left px-4 py-3 font-medium">Ders</th>
                 <th className="text-left px-4 py-3 font-medium">Tarih / Saat</th>
                 <th className="text-left px-4 py-3 font-medium">Tutar</th>

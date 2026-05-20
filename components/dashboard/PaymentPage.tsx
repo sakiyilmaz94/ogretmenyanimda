@@ -64,7 +64,7 @@ export default function PaymentPage({ booking }: { booking: BookingData }) {
             <span className="font-medium">{booking.studentName}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Eğitmen</span>
+            <span className="text-gray-500">Öğretmen</span>
             <span className="font-medium">{booking.educatorName}</span>
           </div>
           <div className="flex justify-between">

@@ -24,7 +24,7 @@ export default function IptalIadeKosullarPage() {
                 {[
                   { icon: "✅", title: "24 Saat Öncesi", desc: "Tam iade" },
                   { icon: "⚠️", title: "24 Saat İçinde", desc: "İade yapılmaz" },
-                  { icon: "🔄", title: "Eğitmen İptali", desc: "Tam iade veya erteleme" },
+                  { icon: "🔄", title: "Öğretmen İptali", desc: "Tam iade veya erteleme" },
                 ].map((item) => (
                   <div key={item.title} className="bg-slate-50 rounded-2xl p-5 text-center border border-slate-100">
                     <p className="text-2xl mb-2">{item.icon}</p>
@@ -38,14 +38,14 @@ export default function IptalIadeKosullarPage() {
                 <h2 className="font-serif text-xl text-navy-900 mb-3">1. İptal Koşulları</h2>
                 <ul className="list-disc pl-5 space-y-2">
                   <li><strong className="text-navy-900">Dersten 24 saat veya daha fazla önce yapılan iptaller:</strong> Ücretin tamamı iade edilir veya talep halinde ders başka bir tarihe ertelenir.</li>
-                  <li><strong className="text-navy-900">Dersten 24 saatten az önce yapılan iptaller:</strong> Ücret iadesi yapılmaz. Ancak eğitmenin onayıyla tek seferlik erteleme yapılabilir.</li>
+                  <li><strong className="text-navy-900">Dersten 24 saatten az önce yapılan iptaller:</strong> Ücret iadesi yapılmaz. Ancak öğretmenin onayıyla tek seferlik erteleme yapılabilir.</li>
                   <li><strong className="text-navy-900">Ders başladıktan sonra yapılan iptaller:</strong> Ücret iadesi yapılmaz.</li>
                 </ul>
               </div>
 
               <div>
-                <h2 className="font-serif text-xl text-navy-900 mb-3">2. Eğitmen Tarafından İptal</h2>
-                <p>Eğitmenin derse girmemesi veya dersi iptal etmesi durumunda ücretin tamamı 3–5 iş günü içinde iade edilir. Bunun yanı sıra alternatif eğitmen ya da erteleme seçeneği sunulur.</p>
+                <h2 className="font-serif text-xl text-navy-900 mb-3">2. Öğretmen Tarafından İptal</h2>
+                <p>Öğretmenin derse girmemesi veya dersi iptal etmesi durumunda ücretin tamamı 3–5 iş günü içinde iade edilir. Bunun yanı sıra alternatif öğretmen ya da erteleme seçeneği sunulur.</p>
               </div>
 
               <div>

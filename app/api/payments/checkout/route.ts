@@ -55,7 +55,7 @@ export async function POST(req: Request) {
     buyerPhone: booking.student.parent.phone ?? "+905000000000",
     buyerIp: ip,
     studentName: booking.student.name,
-    educatorName: booking.educator.user.name ?? "Eğitmen",
+    educatorName: booking.educator.user.name ?? "Öğretmen",
     callbackUrl,
   });
 

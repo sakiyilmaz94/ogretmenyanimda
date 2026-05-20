@@ -64,7 +64,7 @@ export default async function ParentPaymentsPage() {
             <thead className="bg-gray-50 text-gray-600">
               <tr>
                 <th className="text-left px-4 py-3 font-medium">Öğrenci</th>
-                <th className="text-left px-4 py-3 font-medium">Eğitmen</th>
+                <th className="text-left px-4 py-3 font-medium">Öğretmen</th>
                 <th className="text-left px-4 py-3 font-medium">Ders</th>
                 <th className="text-left px-4 py-3 font-medium">Tutar</th>
                 <th className="text-left px-4 py-3 font-medium">Taksit</th>

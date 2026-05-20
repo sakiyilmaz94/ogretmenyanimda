@@ -87,7 +87,7 @@ export default function BookingWizard({
     router.push(`/parent/payments/${data.id}`);
   }
 
-  const steps = ["Öğrenci", "Eğitmen", "Saat", "Onay"];
+  const steps = ["Öğrenci", "Öğretmen", "Saat", "Onay"];
 
   return (
     <div className="max-w-2xl">
@@ -133,12 +133,12 @@ export default function BookingWizard({
         </div>
       )}
 
-      {/* Step 2: Eğitmen seç */}
+      {/* Step 2: Öğretmen seç */}
       {step === 2 && (
         <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-4">Eğitmen seçin</h2>
+          <h2 className="text-lg font-semibold mb-4">Öğretmen seçin</h2>
           {educators.length === 0 ? (
-            <p className="text-gray-500">Şu anda onaylı eğitmen bulunmuyor.</p>
+            <p className="text-gray-500">Şu anda onaylı öğretmen bulunmuyor.</p>
           ) : (
             <div className="space-y-3">
               {educators.map((e) => (
@@ -184,7 +184,7 @@ export default function BookingWizard({
       {step === 3 && selectedEducator && (
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-lg font-semibold mb-2">Ders konusu ve saati seçin</h2>
-          <p className="text-sm text-gray-500 mb-4">Eğitmen: {selectedEducator.name}</p>
+          <p className="text-sm text-gray-500 mb-4">Öğretmen: {selectedEducator.name}</p>
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">Ders Konusu</label>
@@ -209,7 +209,7 @@ export default function BookingWizard({
               <p className="text-gray-400 text-sm">Yükleniyor...</p>
             ) : availableSlots.length === 0 ? (
               <p className="text-gray-500 text-sm bg-yellow-50 p-3 rounded-lg">
-                Bu eğitmenin şu an müsait saati bulunmuyor.
+                Bu öğretmenin şu an müsait saati bulunmuyor.
               </p>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-64 overflow-y-auto">
@@ -259,7 +259,7 @@ export default function BookingWizard({
               <span className="font-medium">{selectedStudent.name}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Eğitmen</span>
+              <span className="text-gray-500">Öğretmen</span>
               <span className="font-medium">{selectedEducator.name}</span>
             </div>
             <div className="flex justify-between text-sm">

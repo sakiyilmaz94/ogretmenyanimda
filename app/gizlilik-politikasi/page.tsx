@@ -31,7 +31,7 @@ export default function GizlilikPolitikasiPage() {
                   <li>Ad, soyad ve e-posta adresi (kayıt sırasında)</li>
                   <li>Telefon numarası (isteğe bağlı)</li>
                   <li>Ödeme bilgileri (yalnızca iyzico güvenli ödeme altyapısı üzerinden işlenir; kartınız sistemimizde saklanmaz)</li>
-                  <li>Profil fotoğrafı (yalnızca eğitmenler için, isteğe bağlı)</li>
+                  <li>Profil fotoğrafı (yalnızca öğretmenler için, isteğe bağlı)</li>
                   <li>Ders rezervasyon ve ödeme geçmişi</li>
                   <li>IP adresi ve tarayıcı bilgileri (güvenlik ve analiz amaçlı)</li>
                 </ul>
