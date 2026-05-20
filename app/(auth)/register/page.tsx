@@ -18,8 +18,9 @@ export default function RegisterPage() {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("type", type);
-    const res = await fetch("/api/upload", { method: "POST", body: fd });
+    const res = await fetch("/api/auth/register-upload", { method: "POST", body: fd });
     const data = await res.json();
+    if (!res.ok) throw new Error(data.error ?? "Dosya yüklenemedi");
     return data.url;
   }
 
