@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
+import EducatorDetailActions from "@/components/dashboard/EducatorDetailActions";
 
 const statusLabel: Record<string, string> = {
   PENDING: "Beklemede", CONFIRMED: "Onaylandı", CANCELLED: "İptal", COMPLETED: "Tamamlandı",
@@ -97,6 +98,88 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
           ))}
         </div>
       </div>
+
+      {/* Documents */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-6">
+        <h2 className="font-semibold text-navy-900 mb-4">Kimlik Doğrulama Belgeleri</h2>
+        {!educator.diplomaUrl && !educator.idCardUrl ? (
+          <p className="text-sm text-amber-600">Bu başvuruda belge yüklenmemiş.</p>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Diploma PDF */}
+            <div>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Diploma / Sertifika</p>
+              {educator.diplomaUrl ? (
+                <div className="border border-slate-200 rounded-xl overflow-hidden">
+                  <iframe
+                    src={educator.diplomaUrl}
+                    className="w-full h-64"
+                    title="Diploma"
+                  />
+                  <div className="p-3 bg-slate-50 border-t border-slate-200">
+                    <a
+                      href={educator.diplomaUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-600 hover:underline font-medium flex items-center gap-1"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      Yeni sekmede aç
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-slate-400 italic">Yüklenmemiş</p>
+              )}
+            </div>
+
+            {/* ID Card */}
+            <div>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Kimlik Belgesi</p>
+              {educator.idCardUrl ? (
+                <div className="border border-slate-200 rounded-xl overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={educator.idCardUrl}
+                    alt="Kimlik belgesi"
+                    className="w-full h-64 object-contain bg-slate-50"
+                  />
+                  <div className="p-3 bg-slate-50 border-t border-slate-200">
+                    <a
+                      href={educator.idCardUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-600 hover:underline font-medium flex items-center gap-1"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      Yeni sekmede aç
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-slate-400 italic">Yüklenmemiş</p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Approve/Reject actions — only for PENDING */}
+      {educator.status === "PENDING" && (
+        <EducatorDetailActions educatorId={educator.id} />
+      )}
+
+      {/* Rejection note if rejected */}
+      {educator.status === "REJECTED" && educator.rejectionNote && (
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
+          <p className="text-sm font-semibold text-red-700 mb-1">Red Notu</p>
+          <p className="text-sm text-red-600">{educator.rejectionNote}</p>
+        </div>
+      )}
 
       {/* Educator Lessons */}
       {educator.educatorLessons.length > 0 && (
