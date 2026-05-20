@@ -48,6 +48,8 @@ export const SUBJECT_LABELS: Record<string, string> = {
   SOSYAL_BILGILER: "Sosyal Bilgiler",
   INGILIZCE: "İngilizce",
   INKILAP_TARIHI: "İnkılap Tarihi",
+  ILK_OKUMA_YAZMA: "İlk Okuma Yazma",
+  HAYAT_BILGISI: "Hayat Bilgisi",
   OGRENCI_KOCLUGU: "Öğrenci Koçluğu",
   DIGER: "Diğer",
 };

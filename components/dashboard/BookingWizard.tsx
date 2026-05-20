@@ -30,19 +30,28 @@ interface Slot {
 export default function BookingWizard({
   students,
   educators,
+  parentId,
   defaultStudentId,
   defaultEducatorId,
 }: {
   students: Student[];
   educators: Educator[];
+  parentId: string;
   defaultStudentId?: string;
   defaultEducatorId?: string;
 }) {
   const router = useRouter();
-  const defaultEducator = educators.find((e) => e.id === defaultEducatorId) ?? null;
-  const defaultStudent = students.find((s) => s.id === defaultStudentId) ?? null;
 
-  const initialStep = defaultEducatorId && defaultStudentId ? 3 : defaultEducatorId ? 2 : 1;
+  const defaultEducator = educators.find((e) => e.id === defaultEducatorId) ?? null;
+  const defaultStudent =
+    students.length === 1
+      ? students[0]
+      : (students.find((s) => s.id === defaultStudentId) ?? null);
+
+  const initialStep =
+    defaultStudent && defaultEducatorId ? 3 :
+    defaultStudent ? 2 :
+    1;
 
   const [step, setStep] = useState(initialStep);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(defaultStudent);
@@ -55,6 +64,13 @@ export default function BookingWizard({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+
+  // Inline student creation state
+  const [showNewStudent, setShowNewStudent] = useState(students.length === 0);
+  const [newStudentName, setNewStudentName] = useState("");
+  const [newStudentGrade, setNewStudentGrade] = useState<GradeLevel | "">("");
+  const [creatingStudent, setCreatingStudent] = useState(false);
+  const [studentError, setStudentError] = useState("");
 
   useEffect(() => {
     if (defaultEducator) loadSlots(defaultEducator);
@@ -69,6 +85,24 @@ export default function BookingWizard({
     const data = await res.json();
     setAvailableSlots(data);
     setLoadingSlots(false);
+  }
+
+  async function createStudentAndProceed() {
+    if (!newStudentName.trim()) { setStudentError("Öğrenci adı gerekli."); return; }
+    if (!newStudentGrade) { setStudentError("Sınıf seçimi gerekli."); return; }
+    setCreatingStudent(true);
+    setStudentError("");
+    const res = await fetch("/api/parent/students", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ parentId, name: newStudentName.trim(), gradeLevel: newStudentGrade }),
+    });
+    const data = await res.json();
+    setCreatingStudent(false);
+    if (!res.ok) { setStudentError(data.error ?? "Öğrenci oluşturulamadı."); return; }
+    setSelectedStudent(data);
+    setShowNewStudent(false);
+    setStep(2);
   }
 
   async function handleConfirm() {
@@ -98,10 +132,9 @@ export default function BookingWizard({
     }
 
     setDone(true);
-    setTimeout(() => router.push("/parent/bookings"), 2000);
+    setTimeout(() => router.push("/parent/bookings"), 4000);
   }
 
-  // Group slots by date
   const slotsByDate = availableSlots.reduce<Record<string, Slot[]>>((acc, s) => {
     const key = s.date.split("T")[0];
     if (!acc[key]) acc[key] = [];
@@ -122,8 +155,10 @@ export default function BookingWizard({
             </svg>
           </div>
           <h2 className="font-serif text-2xl text-navy-900 mb-2">Randevu Talebiniz Gönderildi!</h2>
-          <p className="text-slate-500 text-sm">Öğretmen talebinizi inceleyecek ve onayladığında ödeme bilgileri size iletilecek.</p>
-          <p className="text-xs text-slate-400 mt-3">Rezervasyonlarım sayfasına yönlendiriliyorsunuz...</p>
+          <p className="text-slate-600 text-sm leading-relaxed mb-3">
+            Öğretmen talebinizi inceleyecek. <strong>Onaylandığında size bildirim ve e-posta gelecek</strong> ve ödeme adımına yönlendirileceksiniz.
+          </p>
+          <p className="text-xs text-slate-400">Rezervasyonlarım sayfasına yönlendiriliyorsunuz...</p>
         </div>
       </div>
     );
@@ -156,26 +191,77 @@ export default function BookingWizard({
       {step === 1 && (
         <div className="bg-white rounded-2xl border border-slate-100 p-6">
           <h2 className="font-semibold text-navy-900 text-lg mb-5">Hangi öğrenci için randevu alıyorsunuz?</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {students.map((s) => (
-              <button key={s.id} onClick={() => { setSelectedStudent(s); setStep(2); }}
-                className={`border-2 rounded-2xl p-4 text-left transition-all ${
-                  selectedStudent?.id === s.id ? "border-navy-900 bg-navy-50" : "border-slate-200 hover:border-navy-300"
-                }`}>
-                <div className="w-8 h-8 bg-navy-100 rounded-lg flex items-center justify-center mb-2">
-                  <span className="text-navy-700 font-bold text-sm">{s.name[0].toUpperCase()}</span>
-                </div>
-                <p className="font-semibold text-navy-900">{s.name}</p>
-                <p className="text-sm text-slate-500">{GRADE_LABELS[s.gradeLevel] ?? s.gradeLevel}</p>
+
+          {/* Mevcut öğrenciler */}
+          {students.length > 0 && !showNewStudent && (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                {students.map((s) => (
+                  <button key={s.id} onClick={() => { setSelectedStudent(s); setStep(2); }}
+                    className={`border-2 rounded-2xl p-4 text-left transition-all ${
+                      selectedStudent?.id === s.id ? "border-navy-900 bg-navy-50" : "border-slate-200 hover:border-navy-300"
+                    }`}>
+                    <div className="w-8 h-8 bg-navy-100 rounded-lg flex items-center justify-center mb-2">
+                      <span className="text-navy-700 font-bold text-sm">{s.name[0].toUpperCase()}</span>
+                    </div>
+                    <p className="font-semibold text-navy-900">{s.name}</p>
+                    <p className="text-sm text-slate-500">{GRADE_LABELS[s.gradeLevel] ?? s.gradeLevel}</p>
+                  </button>
+                ))}
+              </div>
+              <button onClick={() => setShowNewStudent(true)}
+                className="w-full border-2 border-dashed border-slate-200 rounded-2xl p-4 text-slate-500 hover:border-navy-300 hover:text-navy-700 transition-all text-sm font-medium">
+                + Yeni Öğrenci Ekle
               </button>
-            ))}
-          </div>
+            </>
+          )}
+
+          {/* Yeni öğrenci formu */}
+          {showNewStudent && (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">Öğrencinin Adı Soyadı</label>
+                <input type="text" value={newStudentName} onChange={(e) => setNewStudentName(e.target.value)}
+                  placeholder="örn: Ali Yılmaz"
+                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">Sınıf</label>
+                <select value={newStudentGrade} onChange={(e) => setNewStudentGrade(e.target.value as GradeLevel)}
+                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
+                  <option value="">Sınıf seçin...</option>
+                  {Object.entries(GRADE_LABELS).map(([key, label]) => (
+                    <option key={key} value={key}>{label}</option>
+                  ))}
+                </select>
+              </div>
+              {studentError && <p className="text-red-500 text-sm">{studentError}</p>}
+              <div className="flex gap-3">
+                {students.length > 0 && (
+                  <button onClick={() => setShowNewStudent(false)} className="text-sm text-slate-400 hover:text-slate-700">
+                    ← Geri
+                  </button>
+                )}
+                <button onClick={createStudentAndProceed} disabled={creatingStudent}
+                  className="flex-1 bg-navy-900 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-navy-800 disabled:opacity-50 transition-colors">
+                  {creatingStudent ? "Oluşturuluyor..." : "Devam Et →"}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {/* Step 2: Öğretmen */}
       {step === 2 && (
         <div className="bg-white rounded-2xl border border-slate-100 p-6">
+          {selectedStudent && (
+            <div className="flex items-center gap-2 mb-5 px-3 py-2 bg-slate-50 rounded-xl">
+              <span className="text-xs text-slate-500">Öğrenci:</span>
+              <span className="text-sm font-semibold text-navy-900">{selectedStudent.name}</span>
+              <span className="text-xs text-slate-400">— {GRADE_LABELS[selectedStudent.gradeLevel]}</span>
+            </div>
+          )}
           <h2 className="font-semibold text-navy-900 text-lg mb-5">Öğretmen seçin</h2>
           {educators.length === 0 ? (
             <p className="text-slate-500 text-sm">Şu anda onaylı öğretmen bulunmuyor.</p>
@@ -210,17 +296,30 @@ export default function BookingWizard({
         </div>
       )}
 
-      {/* Step 3: Konu + Saat + Not */}
+      {/* Step 3: Ders + Saat + Not */}
       {step === 3 && selectedEducator && (
         <div className="bg-white rounded-2xl border border-slate-100 p-6 space-y-5">
           <div>
-            <h2 className="font-semibold text-navy-900 text-lg">Ders konusu ve saat seçin</h2>
+            <h2 className="font-semibold text-navy-900 text-lg">Ders ve saat seçin</h2>
             <p className="text-sm text-slate-400 mt-0.5">{selectedEducator.name} · {formatCurrency(selectedEducator.hourlyRate)}/saat</p>
           </div>
 
-          {/* Konu */}
+          {/* Öğrenci bilgisi */}
+          {selectedStudent && (
+            <div className="flex items-center gap-3 bg-slate-50 rounded-xl px-4 py-3">
+              <div className="w-8 h-8 bg-navy-100 rounded-lg flex items-center justify-center shrink-0">
+                <span className="text-navy-700 font-bold text-xs">{selectedStudent.name[0].toUpperCase()}</span>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-navy-900">{selectedStudent.name}</p>
+                <p className="text-xs text-slate-500">{GRADE_LABELS[selectedStudent.gradeLevel] ?? selectedStudent.gradeLevel}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Dersler */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Ders Konusu</label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Dersler</label>
             <div className="flex flex-wrap gap-2">
               {selectedEducator.subjects.map((s) => (
                 <button key={s} onClick={() => setSelectedSubject(s)}
@@ -235,7 +334,7 @@ export default function BookingWizard({
             </div>
           </div>
 
-          {/* Saat */}
+          {/* Saatler */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">Uygun Saatler</label>
             {loadingSlots ? (
@@ -300,56 +399,70 @@ export default function BookingWizard({
         </div>
       )}
 
-      {/* Step 4: Onay */}
-      {step === 4 && selectedStudent && selectedEducator && selectedSubject && selectedSlot && (
+      {/* Step 4: Onayla */}
+      {step === 4 && (
         <div className="bg-white rounded-2xl border border-slate-100 p-6">
           <h2 className="font-semibold text-navy-900 text-lg mb-5">Randevu Özetini Onaylayın</h2>
 
-          <div className="bg-slate-50 rounded-2xl p-5 space-y-3 mb-5">
-            {[
-              { label: "Öğrenci", value: selectedStudent.name },
-              { label: "Öğretmen", value: selectedEducator.name },
-              { label: "Ders", value: SUBJECT_LABELS[selectedSubject] ?? selectedSubject },
-              {
-                label: "Tarih",
-                value: new Date(selectedSlot.date + "T12:00:00").toLocaleDateString("tr-TR", {
-                  weekday: "long", day: "numeric", month: "long",
-                }),
-              },
-              { label: "Saat", value: `${selectedSlot.startTime} – ${selectedSlot.endTime}` },
-            ].map(({ label, value }) => (
-              <div key={label} className="flex justify-between text-sm">
-                <span className="text-slate-500">{label}</span>
-                <span className="font-medium text-navy-900">{value}</span>
+          {selectedStudent && selectedEducator && selectedSubject && selectedSlot ? (
+            <>
+              <div className="bg-slate-50 rounded-2xl p-5 space-y-3 mb-5">
+                {[
+                  { label: "Öğrenci", value: `${selectedStudent.name} — ${GRADE_LABELS[selectedStudent.gradeLevel] ?? selectedStudent.gradeLevel}` },
+                  { label: "Öğretmen", value: selectedEducator.name },
+                  { label: "Ders", value: SUBJECT_LABELS[selectedSubject] ?? selectedSubject },
+                  {
+                    label: "Tarih",
+                    value: new Date(selectedSlot.date + "T12:00:00").toLocaleDateString("tr-TR", {
+                      weekday: "long", day: "numeric", month: "long",
+                    }),
+                  },
+                  { label: "Saat", value: `${selectedSlot.startTime} – ${selectedSlot.endTime}` },
+                ].map(({ label, value }) => (
+                  <div key={label} className="flex justify-between text-sm">
+                    <span className="text-slate-500">{label}</span>
+                    <span className="font-medium text-navy-900">{value}</span>
+                  </div>
+                ))}
+                {notes && (
+                  <div className="pt-2 border-t border-slate-200">
+                    <span className="text-xs text-slate-400 block mb-1">Not</span>
+                    <p className="text-sm text-slate-600 italic">{notes}</p>
+                  </div>
+                )}
+                <div className="border-t border-slate-200 pt-3 flex justify-between">
+                  <span className="font-semibold text-navy-900">Ders Ücreti</span>
+                  <span className="font-bold text-gold-600 text-lg">{formatCurrency(selectedEducator.hourlyRate)}</span>
+                </div>
               </div>
-            ))}
-            {notes && (
-              <div className="pt-2 border-t border-slate-200">
-                <span className="text-xs text-slate-400 block mb-1">Not</span>
-                <p className="text-sm text-slate-600 italic">{notes}</p>
+
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-800 mb-5 space-y-1">
+                <p><strong>Sonraki adımlar:</strong></p>
+                <p>① Talebiniz öğretmene iletilecek</p>
+                <p>② Öğretmen onayladığında size bildirim ve e-posta gelecek</p>
+                <p>③ Ödeme yaptıktan sonra randevunuz kesinleşecek</p>
               </div>
-            )}
-            <div className="border-t border-slate-200 pt-3 flex justify-between">
-              <span className="font-semibold text-navy-900">Ders Ücreti</span>
-              <span className="font-bold text-gold-600 text-lg">{formatCurrency(selectedEducator.hourlyRate)}</span>
+
+              {error && <p className="text-red-500 text-sm bg-red-50 rounded-xl p-3 mb-4">{error}</p>}
+
+              <div className="flex gap-3">
+                <button onClick={() => setStep(3)} className="text-sm text-slate-400 hover:text-slate-700">
+                  ← Geri
+                </button>
+                <button onClick={handleConfirm} disabled={submitting}
+                  className="flex-1 bg-gold-500 text-white py-3 rounded-xl font-bold hover:bg-gold-600 disabled:opacity-50 transition-colors">
+                  {submitting ? "Gönderiliyor..." : "Randevu Talebi Gönder"}
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-red-500 text-sm mb-4">Lütfen tüm adımları tamamlayın.</p>
+              <button onClick={() => setStep(1)} className="text-navy-900 font-semibold underline text-sm">
+                Başa Dön
+              </button>
             </div>
-          </div>
-
-          <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 text-sm text-amber-800 mb-5">
-            <strong>Bilgi:</strong> Ödeme, öğretmen randevunuzu onayladıktan sonra talep edilecektir.
-          </div>
-
-          {error && <p className="text-red-500 text-sm bg-red-50 rounded-xl p-3 mb-4">{error}</p>}
-
-          <div className="flex gap-3">
-            <button onClick={() => setStep(3)} className="text-sm text-slate-400 hover:text-slate-700">
-              ← Geri
-            </button>
-            <button onClick={handleConfirm} disabled={submitting}
-              className="flex-1 bg-gold-500 text-white py-3 rounded-xl font-bold hover:bg-gold-600 disabled:opacity-50 transition-colors">
-              {submitting ? "Gönderiliyor..." : "Randevu Talebi Gönder"}
-            </button>
-          </div>
+          )}
         </div>
       )}
     </div>

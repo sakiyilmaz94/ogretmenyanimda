@@ -17,7 +17,6 @@ export default async function ParentBookPage({
   });
 
   if (!parent) redirect("/parent");
-  if (parent.students.length === 0) redirect("/parent/students?next=" + encodeURIComponent(`/parent/book${params.educatorId ? `?educatorId=${params.educatorId}` : ""}`));
 
   const educators = await db.educator.findMany({
     where: { status: "APPROVED" },
@@ -32,11 +31,11 @@ export default async function ParentBookPage({
         <p className="text-gray-500">Çocuğunuz için uygun öğretmen ve saati seçin</p>
       </div>
       <BookingWizard
+        parentId={parent.id}
         students={parent.students.map((s) => ({
-          ...s,
-          birthDate: s.birthDate?.toISOString() ?? null,
-          createdAt: s.createdAt.toISOString(),
-          updatedAt: s.updatedAt.toISOString(),
+          id: s.id,
+          name: s.name,
+          gradeLevel: s.gradeLevel,
         }))}
         educators={educators.map((e) => ({
           id: e.id,
