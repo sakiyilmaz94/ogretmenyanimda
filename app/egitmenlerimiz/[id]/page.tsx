@@ -19,13 +19,30 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
   const role = session?.user?.role ?? null;
 
   const educator = await db.educator.findUnique({
-    where: { id, status: "APPROVED", isProfilePublic: true },
+    where: { id, status: "APPROVED" },
     include: {
       user: true,
       educatorLessons: { where: { status: "APPROVED" }, include: { lessonProgram: true } },
       reviews: { where: { isPublic: true }, include: { student: true }, orderBy: { createdAt: "desc" }, take: 10 },
     },
   });
+
+  // Gelecekteki müsait slotlar (30 gün)
+  const now = new Date();
+  const future = new Date(now);
+  future.setDate(future.getDate() + 30);
+  const availableSlots = educator ? await db.availabilitySlot.findMany({
+    where: { educatorId: educator.id, isBooked: false, date: { gte: now, lte: future } },
+    orderBy: [{ date: "asc" }, { startTime: "asc" }],
+    take: 50,
+  }) : [];
+
+  const slotsByDate = availableSlots.reduce<Record<string, typeof availableSlots>>((acc, s) => {
+    const key = s.date.toISOString().split("T")[0];
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(s);
+    return acc;
+  }, {});
 
   if (!educator) notFound();
 
@@ -146,6 +163,45 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
                         </div>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {/* Müsait Takvim */}
+                {Object.keys(slotsByDate).length > 0 && (
+                  <div>
+                    <h2 className="font-serif text-xl text-navy-900 mb-3">Müsait Günler</h2>
+                    <div className="space-y-3">
+                      {Object.entries(slotsByDate).slice(0, 7).map(([date, slots]) => (
+                        <div key={date} className="flex items-start gap-4 bg-slate-50 rounded-2xl p-4">
+                          <div className="text-center shrink-0 w-14">
+                            <p className="text-xs text-slate-400 uppercase">
+                              {new Date(date + "T12:00:00").toLocaleDateString("tr-TR", { weekday: "short" })}
+                            </p>
+                            <p className="text-2xl font-bold text-navy-900 leading-none">
+                              {new Date(date + "T12:00:00").getDate()}
+                            </p>
+                            <p className="text-xs text-slate-400">
+                              {new Date(date + "T12:00:00").toLocaleDateString("tr-TR", { month: "short" })}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {slots.map((s) => (
+                              <span key={s.id} className="text-xs bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-medium">
+                                {s.startTime}–{s.endTime}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {role === "PARENT" && (
+                      <div className="mt-4">
+                        <Link href={`/parent/book?educatorId=${educator.id}`}
+                          className="inline-flex items-center gap-2 bg-gold-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-600 transition">
+                          Bu saatlerden birini seç →
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 )}
 

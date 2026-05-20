@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   if (action === "approve") {
     await db.educator.update({
       where: { id: educatorId },
-      data: { status: "APPROVED", approvedAt: new Date() },
+      data: { status: "APPROVED", approvedAt: new Date(), isProfilePublic: true },
     });
     await notify({
       userId: educator.userId,

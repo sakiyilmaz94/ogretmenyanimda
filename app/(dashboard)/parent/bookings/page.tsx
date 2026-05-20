@@ -4,8 +4,8 @@ import { formatCurrency, formatDate, SUBJECT_LABELS } from "@/lib/utils";
 import Link from "next/link";
 
 const statusLabel: Record<string, string> = {
-  PENDING: "Ödeme Bekliyor",
-  CONFIRMED: "Onaylandı",
+  PENDING: "Öğretmen Onayı Bekleniyor",
+  CONFIRMED: "Onaylandı — Ödeme Bekleniyor",
   CANCELLED: "İptal Edildi",
   COMPLETED: "Tamamlandı",
 };
@@ -131,13 +131,16 @@ export default async function ParentBookingsPage({
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    {b.status === "PENDING" && b.payment?.status !== "PAID" && (
+                    {b.status === "CONFIRMED" && b.payment?.status !== "PAID" && (
                       <Link
                         href={`/parent/payments/${b.id}`}
-                        className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 font-medium"
+                        className="text-xs bg-gold-500 text-white px-3 py-1.5 rounded-lg hover:bg-gold-600 font-medium"
                       >
-                        Ödeme Yap
+                        Ödeme Yap →
                       </Link>
+                    )}
+                    {b.status === "PENDING" && (
+                      <span className="text-xs text-amber-600">Onay bekleniyor...</span>
                     )}
                   </td>
                 </tr>

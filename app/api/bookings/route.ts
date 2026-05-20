@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
+import { sendEmail, emailBookingRequest } from "@/lib/email";
+import { SUBJECT_LABELS } from "@/lib/utils";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -9,7 +11,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
   }
 
-  const { studentId, educatorId, slotId, subject, totalPrice } = await req.json();
+  const { studentId, educatorId, slotId, subject, totalPrice, notes } = await req.json();
 
   if (!studentId || !educatorId || !slotId || !subject || !totalPrice) {
     return NextResponse.json({ error: "Eksik alan." }, { status: 400 });
@@ -29,28 +31,46 @@ export async function POST(req: Request) {
   }
 
   const booking = await db.booking.create({
-    data: { studentId, educatorId, slotId, subject, totalPrice, status: "PENDING" },
+    data: { studentId, educatorId, slotId, subject, totalPrice, notes: notes || null, status: "PENDING" },
   });
 
   await db.availabilitySlot.update({ where: { id: slotId }, data: { isBooked: true } });
-  await db.payment.create({ data: { bookingId: booking.id, amount: totalPrice, currency: "TRY", status: "PENDING" } });
+  // Payment kaydı educator onayladıktan sonra oluşturulacak
 
-  // Veli bildirimi
+  // Veliye: talep oluşturuldu
   await notify({
     userId: session.user.id,
-    title: "Rezervasyon Oluşturuldu",
-    message: "Ders rezervasyonunuz oluşturuldu. Ödeme tamamlandığında onaylanacak.",
+    title: "Randevu Talebiniz Gönderildi",
+    message: "Talebiniz öğretmene iletildi. Onayladığında ödeme bilgileri size ulaşacak.",
     link: "/parent/bookings",
   });
 
-  // Öğretmene bildirim — educatorId Educator.id, userId farklı
-  const educator = await db.educator.findUnique({ where: { id: educatorId } });
+  // Öğretmene: yeni talep
+  const educator = await db.educator.findUnique({
+    where: { id: educatorId },
+    include: { user: true },
+  });
   if (educator) {
     await notify({
       userId: educator.userId,
       title: "Yeni Ders Talebi",
-      message: `${student.name} için yeni bir ders rezervasyonu bekleniyor.`,
+      message: `${student.name} için ${SUBJECT_LABELS[subject as keyof typeof SUBJECT_LABELS] ?? subject} dersine randevu talebi var.`,
       link: "/educator/bookings",
+    });
+
+    // Email to educator
+    const dateStr = new Date(slot.date).toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long" });
+    await sendEmail({
+      to: educator.user.email,
+      subject: `Yeni ders talebi — ${student.name}`,
+      html: emailBookingRequest({
+        educatorName: educator.user.name ?? "Öğretmen",
+        studentName: student.name,
+        subject: SUBJECT_LABELS[subject as keyof typeof SUBJECT_LABELS] ?? subject,
+        date: dateStr,
+        time: `${slot.startTime}–${slot.endTime}`,
+        notes: notes || null,
+      }),
     });
   }
 

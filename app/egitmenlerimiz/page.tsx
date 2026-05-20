@@ -1,12 +1,16 @@
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import { db } from "@/lib/db";
+import { auth } from "@/auth";
 import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
 export const metadata = { title: "Öğretmenlerimiz — Öğretmen Yanımda" };
 
 export default async function EgitmenlerimizPage() {
+  const session = await auth();
+  const role = session?.user?.role ?? null;
+
   const educators = await db.educator.findMany({
     where: { status: "APPROVED" },
     include: {
@@ -21,7 +25,7 @@ export default async function EgitmenlerimizPage() {
 
   return (
     <>
-      <PublicNavbar />
+      <PublicNavbar role={role} />
       <main className="pt-16">
 
         {/* Hero */}
@@ -119,23 +123,14 @@ export default async function EgitmenlerimizPage() {
                     )}
 
                     <div className="mt-auto flex gap-2">
-                      {e.isProfilePublic ? (
-                        <Link
-                          href={`/egitmenlerimiz/${e.id}`}
-                          className="flex-1 text-center bg-navy-900 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer"
-                        >
-                          Profili Gör
-                        </Link>
-                      ) : (
-                        <Link
-                          href="/register"
-                          className="flex-1 text-center bg-navy-900 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer"
-                        >
-                          Ders Al
-                        </Link>
-                      )}
                       <Link
-                        href="/register"
+                        href={`/egitmenlerimiz/${e.id}`}
+                        className="flex-1 text-center bg-navy-900 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer"
+                      >
+                        Profili Gör
+                      </Link>
+                      <Link
+                        href={role === "PARENT" ? `/parent/book?educatorId=${e.id}` : "/register"}
                         className="flex-1 text-center border border-gold-400 text-gold-600 py-2.5 rounded-xl text-sm font-semibold hover:bg-gold-50 transition-colors cursor-pointer"
                       >
                         Randevu Al
