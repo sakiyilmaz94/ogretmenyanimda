@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
   }
 
-  const { studentId, educatorId, slotId, subject, totalPrice, notes } = await req.json();
+  const { studentId, educatorId, slotId, subject, gradeLevel, totalPrice, notes } = await req.json();
 
   if (!studentId || !educatorId || !slotId || !subject || !totalPrice) {
     return NextResponse.json({ error: "Eksik alan." }, { status: 400 });
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   }
 
   const booking = await db.booking.create({
-    data: { studentId, educatorId, slotId, subject, totalPrice, notes: notes || null, status: "PENDING" },
+    data: { studentId, educatorId, slotId, subject, gradeLevel: gradeLevel ?? null, totalPrice, notes: notes || null, status: "PENDING" },
   });
 
   await db.availabilitySlot.update({ where: { id: slotId }, data: { isBooked: true } });
@@ -58,20 +58,24 @@ export async function POST(req: Request) {
       link: "/educator/bookings",
     });
 
-    // Email to educator
-    const dateStr = new Date(slot.date).toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long" });
-    await sendEmail({
-      to: educator.user.email,
-      subject: `Yeni ders talebi — ${student.name}`,
-      html: emailBookingRequest({
-        educatorName: educator.user.name ?? "Öğretmen",
-        studentName: student.name,
-        subject: SUBJECT_LABELS[subject as keyof typeof SUBJECT_LABELS] ?? subject,
-        date: dateStr,
-        time: `${slot.startTime}–${slot.endTime}`,
-        notes: notes || null,
-      }),
-    });
+    // Email to educator (hata booking'i engellemesin)
+    try {
+      const dateStr = new Date(slot.date).toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long" });
+      await sendEmail({
+        to: educator.user.email,
+        subject: `Yeni ders talebi — ${student.name}`,
+        html: emailBookingRequest({
+          educatorName: educator.user.name ?? "Öğretmen",
+          studentName: student.name,
+          subject: SUBJECT_LABELS[subject as keyof typeof SUBJECT_LABELS] ?? subject,
+          date: dateStr,
+          time: `${slot.startTime}–${slot.endTime}`,
+          notes: notes || null,
+        }),
+      });
+    } catch (emailErr) {
+      console.error("Educator email gönderilemedi:", emailErr);
+    }
   }
 
   return NextResponse.json(booking, { status: 201 });

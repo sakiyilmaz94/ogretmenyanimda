@@ -204,6 +204,7 @@ model Booking {
   slotId           String        @unique
   educatorLessonId String?
   subject          Subject
+  gradeLevel       GradeLevel?
   notes            String?       @db.Text
   status           BookingStatus @default(PENDING)
   totalPrice       Decimal       @db.Decimal(10, 2)
