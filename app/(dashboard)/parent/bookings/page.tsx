@@ -4,16 +4,16 @@ import { formatCurrency, formatDate, SUBJECT_LABELS } from "@/lib/utils";
 import Link from "next/link";
 
 const statusLabel: Record<string, string> = {
-  PENDING: "Öğretmen Onayı Bekleniyor",
+  PENDING: "Onay Bekleniyor",
   CONFIRMED: "Onaylandı — Ödeme Bekleniyor",
   CANCELLED: "İptal Edildi",
-  COMPLETED: "Tamamlandı",
+  COMPLETED: "Kesinleştirildi",
 };
 const statusColor: Record<string, string> = {
-  PENDING: "bg-yellow-100 text-yellow-700",
-  CONFIRMED: "bg-green-100 text-green-700",
-  CANCELLED: "bg-red-100 text-red-700",
-  COMPLETED: "bg-blue-100 text-blue-700",
+  PENDING: "bg-amber-100 text-amber-700 border border-amber-200",
+  CONFIRMED: "bg-blue-100 text-blue-700 border border-blue-200",
+  CANCELLED: "bg-slate-100 text-slate-500 border border-slate-200",
+  COMPLETED: "bg-green-100 text-green-700 border border-green-200",
 };
 
 export default async function ParentBookingsPage({
@@ -56,7 +56,7 @@ export default async function ParentBookingsPage({
           <span className="text-xl">✅</span>
           <div>
             <p className="font-semibold">Ödeme başarıyla tamamlandı!</p>
-            <p className="text-sm text-green-700">Rezervasyonunuz onaylandı. Öğretmenin onayı bekleniyor.</p>
+            <p className="text-sm text-green-700">Rezervasyonunuz kesinleşti. Öğretmen bilgilendirildi.</p>
           </div>
         </div>
       )}
@@ -117,30 +117,43 @@ export default async function ParentBookingsPage({
             </thead>
             <tbody className="divide-y divide-gray-100">
               {allBookings.map((b) => (
-                <tr key={b.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{b.studentName}</td>
-                  <td className="px-4 py-3">{b.educator.user.name}</td>
-                  <td className="px-4 py-3">{SUBJECT_LABELS[b.subject] ?? b.subject}</td>
-                  <td className="px-4 py-3 text-gray-500">
+                <tr key={b.id} className={`hover:bg-gray-50 ${b.status === "CANCELLED" ? "opacity-60" : ""}`}>
+                  <td className="px-4 py-3 font-medium text-navy-900">{b.studentName}</td>
+                  <td className="px-4 py-3 text-slate-700">{b.educator.user.name}</td>
+                  <td className="px-4 py-3 text-slate-700">{SUBJECT_LABELS[b.subject] ?? b.subject}</td>
+                  <td className="px-4 py-3 text-slate-500 text-xs">
                     {formatDate(b.slot.date)} · {b.slot.startTime}
                   </td>
-                  <td className="px-4 py-3 font-medium">{formatCurrency(b.totalPrice.toNumber())}</td>
+                  <td className="px-4 py-3 font-semibold">
+                    {b.status === "COMPLETED"
+                      ? <span className="text-green-700">{formatCurrency(b.totalPrice.toNumber())}</span>
+                      : b.status === "CONFIRMED"
+                        ? <span className="text-amber-600">{formatCurrency(b.totalPrice.toNumber())}</span>
+                        : <span className="text-slate-400 text-xs">—</span>
+                    }
+                  </td>
                   <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-1 rounded-full ${statusColor[b.status] ?? "bg-gray-100 text-gray-700"}`}>
-                      {statusLabel[b.status] ?? b.status}
-                    </span>
+                    {b.status === "COMPLETED" ? (
+                      <span className="inline-flex items-center gap-1.5 text-xs bg-green-100 text-green-700 border border-green-200 px-3 py-1 rounded-full font-semibold">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                        </svg>
+                        Kesinleştirildi
+                      </span>
+                    ) : (
+                      <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusColor[b.status] ?? "bg-gray-100 text-gray-700"}`}>
+                        {statusLabel[b.status] ?? b.status}
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     {b.status === "CONFIRMED" && b.payment?.status !== "PAID" && (
                       <Link
                         href={`/parent/payments/${b.id}`}
-                        className="text-xs bg-gold-500 text-white px-3 py-1.5 rounded-lg hover:bg-gold-600 font-medium"
+                        className="text-xs bg-amber-500 text-white px-3 py-1.5 rounded-lg hover:bg-amber-600 font-medium transition"
                       >
                         Ödeme Yap →
                       </Link>
-                    )}
-                    {b.status === "PENDING" && (
-                      <span className="text-xs text-amber-600">Onay bekleniyor...</span>
                     )}
                   </td>
                 </tr>

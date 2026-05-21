@@ -82,17 +82,62 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
     return NextResponse.json({ success: true });
   }
 
-  // Admin: ödeme sonrası tamamlandı vs.
+  // Veli: ödeme tamamlandı
+  if (session.user.role === "PARENT") {
+    const parent = await db.parent.findUnique({ where: { userId: session.user.id } });
+    if (!parent || booking.student.parentId !== parent.id) {
+      return NextResponse.json({ error: "Yetkisiz" }, { status: 403 });
+    }
+    if (action !== "payment_complete") {
+      return NextResponse.json({ error: "Geçersiz işlem" }, { status: 400 });
+    }
+    if (booking.status !== "CONFIRMED") {
+      return NextResponse.json({ error: "Ödeme için önce öğretmen onayı gerekli." }, { status: 400 });
+    }
+
+    await db.payment.update({ where: { bookingId }, data: { status: "PAID" } });
+    await db.booking.update({ where: { id: bookingId }, data: { status: "COMPLETED" } });
+
+    // Öğretmene bildirim + email
+    const amount = formatCurrency(booking.totalPrice.toNumber());
+    await notify({
+      userId: booking.educator.userId,
+      title: "Ödeme Alındı — Randevu Kesinleşti",
+      message: `${booking.student.name} için ödeme tamamlandı. Randevu kesinleşmiştir.`,
+      link: "/educator/bookings",
+    });
+    try {
+      await sendEmail({
+        to: booking.educator.user.email,
+        subject: `Ödeme Alındı — ${booking.student.name}`,
+        html: emailPaymentReceived({
+          educatorName: booking.educator.user.name ?? "Öğretmen",
+          studentName: booking.student.name,
+          date: dateStr,
+          time: timeStr,
+          amount,
+        }),
+      });
+    } catch (e) { console.error("Ödeme emaili gönderilemedi:", e); }
+
+    // Veliye bildirim
+    await notify({
+      userId: session.user.id,
+      title: "Ödeme Tamamlandı — Randevu Kesinleşti ✓",
+      message: `${subjectLabel} dersi için ödemeniz alındı. Randevunuz kesinleşmiştir.`,
+      link: "/parent/bookings",
+    });
+
+    return NextResponse.json({ success: true });
+  }
+
+  // Admin
   if (session.user.role === "ADMIN") {
     const statusMap: Record<string, string> = {
       confirm: "CONFIRMED", cancel: "CANCELLED", complete: "COMPLETED",
     };
     if (!statusMap[action]) return NextResponse.json({ error: "Geçersiz işlem" }, { status: 400 });
-
-    await db.booking.update({
-      where: { id: bookingId },
-      data: { status: statusMap[action] as never },
-    });
+    await db.booking.update({ where: { id: bookingId }, data: { status: statusMap[action] as never } });
     return NextResponse.json({ success: true });
   }
 
