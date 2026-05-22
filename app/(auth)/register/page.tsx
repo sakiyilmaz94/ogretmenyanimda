@@ -99,31 +99,45 @@ export default function RegisterPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-ivory flex flex-col">
+    <div className="min-h-screen bg-background relative overflow-hidden flex flex-col">
+      {/* Blobs */}
+      <div className="blob-bg bg-primary-fixed w-80 h-80 rounded-full absolute -top-20 -left-20" />
+      <div
+        className="blob-bg w-64 h-64 rounded-full absolute bottom-20 right-10"
+        style={{ backgroundColor: "var(--color-tertiary-fixed)", animationDelay: "-5s" }}
+      />
+
       {/* Header */}
-      <header className="bg-white border-b border-slate-100 px-6 py-4">
+      <header className="relative z-10 bg-transparent px-6 py-5">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-navy-900 rounded-lg flex items-center justify-center">
-              <span className="font-serif text-gold-400 text-sm font-bold">Ö</span>
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="font-display text-on-primary text-sm font-bold">Ö</span>
             </div>
-            <span className="font-serif text-navy-900 font-semibold text-lg hidden sm:block">Öğretmen Yanımda</span>
+            <span className="font-display text-primary font-bold text-lg hidden sm:block">
+              Öğretmen Yanımda
+            </span>
           </Link>
-          <p className="text-sm text-slate-500">
+          <p className="text-body-md text-on-surface-variant">
             Hesabınız var mı?{" "}
-            <Link href="/login" className="text-gold-600 font-medium hover:underline">
+            <Link href="/login" className="text-primary font-semibold hover:underline">
               Giriş yapın
             </Link>
           </p>
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center py-12 px-4">
+      <main className="relative z-10 flex-1 flex items-center justify-center py-12 px-4">
         {step === 1 ? (
+          /* ── STEP 1: Rol Seçimi ── */
           <div className="w-full max-w-3xl">
             <div className="text-center mb-10">
-              <h1 className="font-serif text-4xl text-navy-900 mb-3">Hesap Oluşturun</h1>
-              <p className="text-slate-500 text-lg">Devam etmek için hesap türünüzü seçin</p>
+              <h1 className="font-display text-headline-xl text-on-background mb-3">
+                Nasıl katılmak istersiniz?
+              </h1>
+              <p className="text-on-surface-variant text-body-md">
+                Devam etmek için hesap türünüzü seçin
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -132,27 +146,31 @@ export default function RegisterPage() {
                   key={role.value}
                   type="button"
                   onClick={() => { setForm({ ...form, role: role.value }); setStep(2); }}
-                  className="text-left bg-white rounded-2xl border-2 border-slate-100 p-8 hover:border-gold-400 hover:shadow-lg transition-all duration-300 group"
+                  className="group text-left bg-surface-container-lowest rounded-md p-8 soft-card border-2 border-outline-variant hover:border-primary cursor-pointer transition-all duration-300"
                 >
-                  <div className="w-14 h-14 bg-navy-50 text-navy-700 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-navy-900 group-hover:text-gold-400 transition-colors">
+                  <div className="w-14 h-14 bg-primary-fixed text-primary rounded-full flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-on-primary transition-colors">
                     {role.icon}
                   </div>
-                  <h2 className="font-serif text-2xl text-navy-900 mb-1">{role.title}</h2>
-                  <p className="text-gold-600 text-sm font-medium mb-4">{role.subtitle}</p>
-                  <p className="text-slate-500 text-sm leading-relaxed mb-5">{role.desc}</p>
+                  <h2 className="font-display text-headline-md text-on-background mb-1">
+                    {role.title}
+                  </h2>
+                  <p className="text-primary text-label-md mb-4">{role.subtitle}</p>
+                  <p className="text-on-surface-variant text-body-md leading-relaxed mb-5">
+                    {role.desc}
+                  </p>
                   <ul className="space-y-2">
                     {role.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-sm text-slate-600">
-                        <svg className="w-4 h-4 text-gold-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      <li key={f} className="flex items-center gap-2 text-label-md text-on-surface-variant">
+                        <svg className="w-4 h-4 text-secondary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                         </svg>
                         {f}
                       </li>
                     ))}
                   </ul>
                   <div className="mt-6 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-navy-900">Başla</span>
-                    <svg className="w-5 h-5 text-gold-500 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className="text-label-md text-on-background">Başla</span>
+                    <svg className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </div>
@@ -161,11 +179,12 @@ export default function RegisterPage() {
             </div>
           </div>
         ) : (
+          /* ── STEP 2: Kayıt Formu ── */
           <div className="w-full max-w-md">
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="flex items-center gap-1 text-sm text-slate-500 hover:text-navy-900 mb-6 transition-colors"
+              className="flex items-center gap-1 text-label-md text-on-surface-variant hover:text-primary mb-6 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -173,41 +192,49 @@ export default function RegisterPage() {
               Geri
             </button>
 
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8">
+            <div className="bg-surface-container-lowest rounded-md p-8 soft-card-static">
               <div className="mb-6">
-                <div className="inline-flex items-center gap-2 bg-gold-50 text-gold-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                <span className="bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 text-label-md inline-block mb-4">
                   {form.role === "PARENT" ? "Veli Başvurusu" : "Öğretmen Başvurusu"}
-                </div>
-                <h1 className="font-serif text-2xl text-navy-900">Bilgilerinizi girin</h1>
+                </span>
+                <h1 className="font-display text-headline-md text-on-background">
+                  Bilgilerinizi girin
+                </h1>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Ad Soyad</label>
+                  <label className="block text-label-md text-on-surface-variant mb-1.5">
+                    Ad Soyad
+                  </label>
                   <input
                     type="text"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     required
                     placeholder="Adınız Soyadınız"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-navy-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition"
+                    className="w-full px-4 py-3 bg-surface-container-low rounded-full border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition text-on-background"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">E-posta</label>
+                  <label className="block text-label-md text-on-surface-variant mb-1.5">
+                    E-posta
+                  </label>
                   <input
                     type="email"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     required
                     placeholder="ornek@email.com"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-navy-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition"
+                    className="w-full px-4 py-3 bg-surface-container-low rounded-full border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition text-on-background"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Şifre</label>
+                  <label className="block text-label-md text-on-surface-variant mb-1.5">
+                    Şifre
+                  </label>
                   <input
                     type="password"
                     value={form.password}
@@ -215,68 +242,70 @@ export default function RegisterPage() {
                     required
                     minLength={8}
                     placeholder="En az 8 karakter"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm text-navy-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition"
+                    className="w-full px-4 py-3 bg-surface-container-low rounded-full border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition text-on-background"
                   />
                 </div>
 
                 {form.role === "EDUCATOR" && (
                   <>
-                    <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 text-sm text-amber-700">
+                    <div className="bg-tertiary-fixed text-on-tertiary-fixed rounded-md p-4 text-label-md">
                       Başvurunuz 1–3 iş günü içinde incelenir. Onay sonrası platforma erişim sağlarsınız.
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                        Diploma / Mezuniyet Belgesi <span className="text-red-500">*</span>
+                      <label className="block text-label-md text-on-surface-variant mb-1.5">
+                        Diploma / Mezuniyet Belgesi{" "}
+                        <span className="text-on-error-container">*</span>
                       </label>
-                      <label className="flex items-center gap-3 w-full border-2 border-dashed border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-gold-400 transition-colors">
-                        <svg className="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <label className="flex items-center gap-3 w-full border-2 border-dashed border-outline-variant rounded-md px-4 py-3 cursor-pointer hover:border-primary transition-colors">
+                        <svg className="w-5 h-5 text-on-surface-variant shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <span className="text-sm text-slate-500 truncate">
+                        <span className="text-label-md text-on-surface-variant truncate">
                           {diploma ? diploma.name : "PDF dosyası seçin (maks. 5MB)"}
                         </span>
                         <input
                           type="file"
                           accept=".pdf"
                           className="hidden"
-                          onChange={e => setDiploma(e.target.files?.[0] || null)}
+                          onChange={(e) => setDiploma(e.target.files?.[0] || null)}
                         />
                       </label>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                        Kimlik Kartı Fotoğrafı <span className="text-red-500">*</span>
+                      <label className="block text-label-md text-on-surface-variant mb-1.5">
+                        Kimlik Kartı Fotoğrafı{" "}
+                        <span className="text-on-error-container">*</span>
                       </label>
-                      <label className="flex items-center gap-3 w-full border-2 border-dashed border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-gold-400 transition-colors">
-                        <svg className="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <label className="flex items-center gap-3 w-full border-2 border-dashed border-outline-variant rounded-md px-4 py-3 cursor-pointer hover:border-primary transition-colors">
+                        <svg className="w-5 h-5 text-on-surface-variant shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2" />
                         </svg>
-                        <span className="text-sm text-slate-500 truncate">
+                        <span className="text-label-md text-on-surface-variant truncate">
                           {idCard ? idCard.name : "JPG veya PNG seçin (maks. 5MB)"}
                         </span>
                         <input
                           type="file"
                           accept="image/*"
                           className="hidden"
-                          onChange={e => setIdCard(e.target.files?.[0] || null)}
+                          onChange={(e) => setIdCard(e.target.files?.[0] || null)}
                         />
                       </label>
                     </div>
 
-                    <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                      <p className="text-xs text-slate-500 leading-relaxed mb-3">
+                    <div className="bg-surface-container rounded-md p-4 border border-outline-variant">
+                      <p className="text-caption text-on-surface-variant leading-relaxed mb-3">
                         Yüklediğiniz diploma ve kimlik kartı bilgileri yalnızca kimlik doğrulama amacıyla kullanılır. Bu bilgiler hiçbir üçüncü tarafla paylaşılmaz, öğrencilere veya velilere gösterilmez. Onay sürecinin ardından belgeler güvenli şekilde saklanır. 6698 sayılı KVKK kapsamında haklarınız saklıdır.
                       </p>
                       <label className="flex items-start gap-2 cursor-pointer">
                         <input
                           type="checkbox"
                           checked={kvkkAccepted}
-                          onChange={e => setKvkkAccepted(e.target.checked)}
-                          className="mt-0.5 rounded"
+                          onChange={(e) => setKvkkAccepted(e.target.checked)}
+                          className="mt-0.5 rounded accent-primary"
                         />
-                        <span className="text-xs text-slate-600 font-medium">
+                        <span className="text-caption text-on-surface-variant font-semibold">
                           Belge bilgilerimin yalnızca kimlik doğrulama amacıyla kullanılacağını, üçüncü taraflarla paylaşılmayacağını okudum ve onaylıyorum.
                         </span>
                       </label>
@@ -285,13 +314,15 @@ export default function RegisterPage() {
                 )}
 
                 {error && (
-                  <p className="text-red-600 text-sm bg-red-50 rounded-xl px-4 py-3">{error}</p>
+                  <div className="bg-error-container text-on-error-container rounded-md px-4 py-3 text-label-md">
+                    {error}
+                  </div>
                 )}
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gold-500 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-gold-600 disabled:opacity-50 transition-colors"
+                  className="bg-primary text-on-primary rounded-full w-full py-4 font-display font-bold squishy-btn disabled:opacity-50 transition-opacity mt-2"
                 >
                   {loading ? "Hesap oluşturuluyor..." : "Hesap Oluştur"}
                 </button>

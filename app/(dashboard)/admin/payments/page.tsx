@@ -25,51 +25,54 @@ export default async function AdminPaymentsPage() {
     REFUNDED: "İade Edildi",
   };
   const statusColor: Record<string, string> = {
-    PAID: "bg-green-100 text-green-700",
-    PENDING: "bg-yellow-100 text-yellow-700",
-    FAILED: "bg-red-100 text-red-700",
-    REFUNDED: "bg-gray-100 text-gray-700",
+    PAID: "bg-secondary-container text-on-secondary-container",
+    PENDING: "bg-tertiary-fixed text-on-tertiary-fixed",
+    FAILED: "bg-error-container text-on-error-container",
+    REFUNDED: "bg-surface-container text-on-surface-variant",
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Ödeme Yönetimi</h1>
-        <div className="bg-green-50 text-green-700 px-4 py-2 rounded-lg text-sm font-medium">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="font-display text-headline-md text-on-background">Ödeme Yönetimi</h1>
+          <p className="text-label-md text-on-surface-variant mt-0.5">Tüm platform ödemelerini görüntüleyin</p>
+        </div>
+        <div className="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full text-label-md font-semibold">
           Toplam Gelir: {formatCurrency(totalPaid)}
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-gray-600">
+      <div className="bg-surface-container-lowest rounded-md soft-card-static overflow-hidden border border-outline-variant/20">
+        <table className="w-full text-body-md">
+          <thead className="bg-surface-container">
             <tr>
-              <th className="text-left px-4 py-3 font-medium">Öğrenci</th>
-              <th className="text-left px-4 py-3 font-medium">Öğretmen</th>
-              <th className="text-left px-4 py-3 font-medium">Tutar</th>
-              <th className="text-left px-4 py-3 font-medium">Durum</th>
-              <th className="text-left px-4 py-3 font-medium">Tarih</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Öğrenci</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Öğretmen</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Tutar</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Durum</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Tarih</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-outline-variant/20">
             {payments.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center py-8 text-gray-400">
+                <td colSpan={5} className="text-center py-12 text-on-surface-variant text-label-md">
                   Henüz ödeme bulunmuyor.
                 </td>
               </tr>
             ) : (
               payments.map((p) => (
-                <tr key={p.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">{p.booking.student.name}</td>
-                  <td className="px-4 py-3">{p.booking.educator.user.name}</td>
-                  <td className="px-4 py-3 font-medium">{formatCurrency(p.amount.toNumber())}</td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-1 rounded-full ${statusColor[p.status] ?? "bg-gray-100 text-gray-700"}`}>
+                <tr key={p.id} className="hover:bg-surface-container-low transition">
+                  <td className="px-5 py-3.5 text-on-background font-medium">{p.booking.student.name}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant">{p.booking.educator.user.name}</td>
+                  <td className="px-5 py-3.5 font-semibold text-on-background">{formatCurrency(p.amount.toNumber())}</td>
+                  <td className="px-5 py-3.5">
+                    <span className={`text-caption px-3 py-1 rounded-full font-semibold ${statusColor[p.status] ?? "bg-surface-container text-on-surface-variant"}`}>
                       {statusLabel[p.status] ?? p.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-500">{formatDateTime(p.createdAt)}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant">{formatDateTime(p.createdAt)}</td>
                 </tr>
               ))
             )}

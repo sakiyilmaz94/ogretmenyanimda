@@ -8,10 +8,10 @@ const statusLabel: Record<string, string> = {
   COMPLETED: "Tamamlandı",
 };
 const statusColor: Record<string, string> = {
-  PENDING: "bg-yellow-100 text-yellow-700",
-  CONFIRMED: "bg-green-100 text-green-700",
-  CANCELLED: "bg-red-100 text-red-700",
-  COMPLETED: "bg-blue-100 text-blue-700",
+  PENDING: "bg-tertiary-fixed text-on-tertiary-fixed",
+  CONFIRMED: "bg-secondary-container text-on-secondary-container",
+  CANCELLED: "bg-error-container text-on-error-container",
+  COMPLETED: "bg-surface-container text-on-surface-variant",
 };
 
 export default async function AdminBookingsPage() {
@@ -27,54 +27,59 @@ export default async function AdminBookingsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Rezervasyon Yönetimi</h1>
-        <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="font-display text-headline-md text-on-background">Rezervasyon Yönetimi</h1>
+          <p className="text-label-md text-on-surface-variant mt-0.5">Platforma ait tüm rezervasyonlar</p>
+        </div>
+        <span className="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-caption font-semibold">
           {bookings.length} rezervasyon
         </span>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-gray-600">
+      <div className="bg-surface-container-lowest rounded-md soft-card-static overflow-hidden border border-outline-variant/20">
+        <table className="w-full text-body-md">
+          <thead className="bg-surface-container">
             <tr>
-              <th className="text-left px-4 py-3 font-medium">Öğrenci</th>
-              <th className="text-left px-4 py-3 font-medium">Öğretmen</th>
-              <th className="text-left px-4 py-3 font-medium">Ders</th>
-              <th className="text-left px-4 py-3 font-medium">Tarih</th>
-              <th className="text-left px-4 py-3 font-medium">Ücret</th>
-              <th className="text-left px-4 py-3 font-medium">Ödeme</th>
-              <th className="text-left px-4 py-3 font-medium">Durum</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Öğrenci</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Öğretmen</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Ders</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Tarih</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Ücret</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Ödeme</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Durum</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-outline-variant/20">
             {bookings.length === 0 ? (
               <tr>
-                <td colSpan={7} className="text-center py-8 text-gray-400">
+                <td colSpan={7} className="text-center py-12 text-on-surface-variant text-label-md">
                   Henüz rezervasyon bulunmuyor.
                 </td>
               </tr>
             ) : (
               bookings.map((b) => (
-                <tr key={b.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{b.student.name}</td>
-                  <td className="px-4 py-3">{b.educator.user.name}</td>
-                  <td className="px-4 py-3">{SUBJECT_LABELS[b.subject] ?? b.subject}</td>
-                  <td className="px-4 py-3 text-gray-500">{formatDate(b.slot.date)} · {b.slot.startTime}</td>
-                  <td className="px-4 py-3 font-medium">{formatCurrency(b.totalPrice.toNumber())}</td>
-                  <td className="px-4 py-3">
+                <tr key={b.id} className="hover:bg-surface-container-low transition">
+                  <td className="px-5 py-3.5 font-medium text-on-background">{b.student.name}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant">{b.educator.user.name}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant">{SUBJECT_LABELS[b.subject] ?? b.subject}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant">{formatDate(b.slot.date)} · {b.slot.startTime}</td>
+                  <td className="px-5 py-3.5 font-semibold text-on-background">{formatCurrency(b.totalPrice.toNumber())}</td>
+                  <td className="px-5 py-3.5">
                     {b.payment ? (
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        b.payment.status === "PAID" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
+                      <span className={`text-caption px-3 py-1 rounded-full font-semibold ${
+                        b.payment.status === "PAID"
+                          ? "bg-secondary-container text-on-secondary-container"
+                          : "bg-tertiary-fixed text-on-tertiary-fixed"
                       }`}>
                         {b.payment.status === "PAID" ? "Ödendi" : "Beklemede"}
                       </span>
                     ) : (
-                      <span className="text-xs text-gray-400">—</span>
+                      <span className="text-caption text-on-surface-variant">—</span>
                     )}
                   </td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-1 rounded-full ${statusColor[b.status] ?? "bg-gray-100 text-gray-700"}`}>
+                  <td className="px-5 py-3.5">
+                    <span className={`text-caption px-3 py-1 rounded-full font-semibold ${statusColor[b.status] ?? "bg-surface-container text-on-surface-variant"}`}>
                       {statusLabel[b.status] ?? b.status}
                     </span>
                   </td>

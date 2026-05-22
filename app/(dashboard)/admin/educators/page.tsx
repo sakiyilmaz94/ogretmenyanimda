@@ -19,12 +19,17 @@ export default async function AdminEducatorsPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-gray-900">Öğretmen Yönetimi</h1>
+      <div className="mb-6">
+        <h1 className="font-display text-headline-md text-on-background">Öğretmen Yönetimi</h1>
+        <p className="text-label-md text-on-surface-variant mt-0.5">Tüm öğretmenleri görüntüleyin ve yönetin</p>
+      </div>
 
       {pending.length > 0 && (
         <section>
-          <h2 className="text-lg font-semibold text-yellow-700 mb-4 flex items-center gap-2">
-            ⏳ Onay Bekleyen ({pending.length})
+          <h2 className="text-label-md text-on-surface-variant mb-4 flex items-center gap-2">
+            <span className="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-caption font-semibold">
+              Onay Bekleyen ({pending.length})
+            </span>
           </h2>
           <div className="space-y-3">
             {pending.map((e) => (
@@ -35,11 +40,21 @@ export default async function AdminEducatorsPage() {
       )}
 
       <section>
-        <h2 className="text-lg font-semibold text-green-700 mb-4 flex items-center gap-2">
-          ✅ Onaylı Öğretmenler ({approved.length})
+        <h2 className="text-label-md text-on-surface-variant mb-4 flex items-center gap-2">
+          <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-caption font-semibold">
+            Onaylı Öğretmenler ({approved.length})
+          </span>
         </h2>
         {approved.length === 0 ? (
-          <p className="text-gray-500 text-sm">Henüz onaylı öğretmen yok.</p>
+          <div className="bg-surface-container-lowest rounded-md p-12 text-center soft-card-static border border-outline-variant/20">
+            <div className="bg-primary-fixed rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-on-primary-fixed-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <h3 className="font-display text-headline-md text-on-background mb-2">Henüz onaylı öğretmen yok</h3>
+            <p className="text-label-md text-on-surface-variant">Onaylanan öğretmenler burada görünecek.</p>
+          </div>
         ) : (
           <div className="space-y-3">
             {approved.map((e) => (
@@ -51,8 +66,10 @@ export default async function AdminEducatorsPage() {
 
       {rejected.length > 0 && (
         <section>
-          <h2 className="text-lg font-semibold text-red-700 mb-4 flex items-center gap-2">
-            ❌ Reddedilmiş ({rejected.length})
+          <h2 className="text-label-md text-on-surface-variant mb-4 flex items-center gap-2">
+            <span className="bg-error-container text-on-error-container px-3 py-1 rounded-full text-caption font-semibold">
+              Reddedilmiş ({rejected.length})
+            </span>
           </h2>
           <div className="space-y-3">
             {rejected.map((e) => (

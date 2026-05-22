@@ -44,12 +44,12 @@ export default function EducatorApprovalCard({ educator }: { educator: EducatorW
     router.refresh();
   }
 
-  const statusColor = {
-    PENDING: "bg-yellow-100 text-yellow-700",
-    APPROVED: "bg-green-100 text-green-700",
-    REJECTED: "bg-red-100 text-red-700",
-    SUSPENDED: "bg-gray-100 text-gray-700",
-  }[educator.status] ?? "bg-gray-100 text-gray-700";
+  const statusBadge = {
+    PENDING: "bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-caption font-medium",
+    APPROVED: "bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-caption font-medium",
+    REJECTED: "bg-error-container text-on-error-container px-3 py-1 rounded-full text-caption font-medium",
+    SUSPENDED: "bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-caption font-medium",
+  }[educator.status] ?? "bg-surface-container text-on-surface-variant px-3 py-1 rounded-full text-caption font-medium";
 
   const statusLabel = {
     PENDING: "Beklemede",
@@ -59,33 +59,38 @@ export default function EducatorApprovalCard({ educator }: { educator: EducatorW
   }[educator.status] ?? educator.status;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-5">
+    <div className="bg-surface-container-lowest rounded-md p-5 soft-card">
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <h3 className="font-semibold text-gray-900">{educator.user.name}</h3>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${statusColor}`}>
+            <div className="bg-primary rounded-full w-9 h-9 flex items-center justify-center text-on-primary font-display font-bold text-body-md shrink-0">
+              {(educator.user.name ?? "E")[0].toUpperCase()}
+            </div>
+            <div>
+              <h3 className="font-semibold text-on-background text-body-md">{educator.user.name}</h3>
+              <p className="text-caption text-on-surface-variant">{educator.user.email}</p>
+            </div>
+            <span className={statusBadge}>
               {statusLabel}
             </span>
           </div>
-          <p className="text-sm text-gray-500 mb-1">{educator.user.email}</p>
           {educator.bio && (
-            <p className="text-sm text-gray-600 mb-2">{educator.bio}</p>
+            <p className="text-body-md text-on-surface-variant mb-2 line-clamp-2">{educator.bio}</p>
           )}
-          <div className="flex flex-wrap gap-1 mb-2">
+          <div className="flex flex-wrap gap-1.5 mb-2">
             {educator.subjects.map((s) => (
-              <span key={s} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+              <span key={s} className="bg-primary-fixed text-on-primary-fixed rounded-full px-3 py-0.5 text-caption font-medium">
                 {SUBJECT_LABELS[s] ?? s}
               </span>
             ))}
             {educator.gradeLevels.map((g) => (
-              <span key={g} className="text-xs bg-purple-50 text-purple-700 px-2 py-0.5 rounded">
+              <span key={g} className="bg-surface-container text-on-surface-variant rounded-full px-3 py-0.5 text-caption font-medium">
                 {GRADE_LABELS[g] ?? g}
               </span>
             ))}
           </div>
           {educator.hourlyRate > 0 && (
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-label-md font-semibold text-on-background">
               Saatlik Ücret: {educator.hourlyRate} ₺
             </p>
           )}
@@ -93,22 +98,22 @@ export default function EducatorApprovalCard({ educator }: { educator: EducatorW
             <div className="flex gap-3 mt-2">
               {educator.diplomaUrl && (
                 <a href={educator.diplomaUrl} target="_blank" rel="noopener noreferrer"
-                  className="text-xs text-blue-600 hover:underline flex items-center gap-1">
+                  className="text-caption text-primary hover:underline flex items-center gap-1 font-medium">
                   📄 Diploma
                 </a>
               )}
               {educator.idCardUrl && (
                 <a href={educator.idCardUrl} target="_blank" rel="noopener noreferrer"
-                  className="text-xs text-blue-600 hover:underline flex items-center gap-1">
+                  className="text-caption text-primary hover:underline flex items-center gap-1 font-medium">
                   🪪 Kimlik
                 </a>
               )}
             </div>
           )}
           {educator.rejectionNote && (
-            <p className="text-sm text-red-600 mt-1">Red notu: {educator.rejectionNote}</p>
+            <p className="text-label-md text-on-error-container bg-error-container rounded-full px-3 py-1 mt-2 inline-block">Red notu: {educator.rejectionNote}</p>
           )}
-          <Link href={`/admin/educators/${educator.id}`} className="inline-block mt-2 text-xs text-gold-600 hover:underline font-medium">
+          <Link href={`/admin/educators/${educator.id}`} className="inline-block mt-2 text-label-md text-primary hover:underline font-semibold">
             Detayları Görüntüle →
           </Link>
         </div>
@@ -118,13 +123,13 @@ export default function EducatorApprovalCard({ educator }: { educator: EducatorW
             <button
               onClick={() => handleAction("approve")}
               disabled={!!loading}
-              className="bg-green-600 text-white text-sm px-3 py-1.5 rounded-lg hover:bg-green-700 disabled:opacity-50"
+              className="rounded-full bg-secondary-container text-on-secondary-container px-4 py-1.5 text-label-md hover:opacity-90 transition disabled:opacity-50"
             >
               {loading === "approve" ? "..." : "Onayla"}
             </button>
             <button
               onClick={() => setShowReject(!showReject)}
-              className="bg-red-50 text-red-600 text-sm px-3 py-1.5 rounded-lg hover:bg-red-100"
+              className="rounded-full bg-error-container text-on-error-container px-4 py-1.5 text-label-md hover:opacity-90 transition"
             >
               Reddet
             </button>
@@ -133,17 +138,17 @@ export default function EducatorApprovalCard({ educator }: { educator: EducatorW
       </div>
 
       {showReject && (
-        <div className="mt-3 pt-3 border-t">
+        <div className="mt-3 pt-3 border-t border-outline-variant">
           <textarea
             value={rejectionNote}
             onChange={(e) => setRejectionNote(e.target.value)}
             placeholder="Red sebebini yazın (isteğe bağlı)..."
-            className="w-full border rounded-lg p-2 text-sm resize-none h-20 focus:outline-none focus:ring-2 focus:ring-red-400"
+            className="w-full bg-surface-container-low border border-outline-variant rounded-md p-3 text-body-md text-on-background resize-none h-20 focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-outline"
           />
           <button
             onClick={() => handleAction("reject")}
             disabled={!!loading}
-            className="mt-2 bg-red-600 text-white text-sm px-4 py-1.5 rounded-lg hover:bg-red-700 disabled:opacity-50"
+            className="mt-2 rounded-full bg-error-container text-on-error-container px-4 py-1.5 text-label-md hover:opacity-90 transition disabled:opacity-50"
           >
             {loading === "reject" ? "..." : "Reddi Onayla"}
           </button>

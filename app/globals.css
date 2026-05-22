@@ -4,15 +4,21 @@
 
 @layer base {
   :root {
-    --radius: 0.5rem;
+    --radius: 1rem;
   }
 
   * {
-    @apply border-gray-200;
+    @apply border-outline-variant;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-background text-on-background;
+    font-family: var(--font-sans), "Plus Jakarta Sans", system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), "Quicksand", system-ui, sans-serif;
   }
 }
 
@@ -20,4 +26,60 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .font-display {
+    font-family: var(--font-display), "Quicksand", system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .blob-bg {
+    position: absolute;
+    filter: blur(80px);
+    z-index: 0;
+    opacity: 0.55;
+    animation: float 10s infinite ease-in-out alternate;
+    pointer-events: none;
+  }
+
+  /* Tactile primary button — translates down on click */
+  .squishy-btn {
+    box-shadow: 0 4px 0 #2f2ebe;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .squishy-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0px 0 #2f2ebe;
+  }
+
+  /* Tonal colored shadow card */
+  .soft-card {
+    box-shadow: 0 10px 30px -10px rgba(192, 193, 255, 0.55);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .soft-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 40px -15px rgba(192, 193, 255, 0.8);
+  }
+
+  /* Static version — no hover lift */
+  .soft-card-static {
+    box-shadow: 0 10px 30px -10px rgba(192, 193, 255, 0.55);
+  }
+
+  /* Shimmer progress bar */
+  .shimmer {
+    animation: shimmer 2s infinite;
+  }
+}
+
+@keyframes float {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(20px, -20px) scale(1.1); }
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }

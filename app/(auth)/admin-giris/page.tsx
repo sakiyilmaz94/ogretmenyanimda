@@ -32,42 +32,36 @@ export default function AdminGirisPage() {
   }
 
   return (
-    <div className="min-h-screen bg-navy-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex items-center justify-center relative overflow-hidden p-4">
+      {/* Blobs */}
+      <div className="blob-bg bg-primary-fixed w-80 h-80 rounded-full absolute -top-20 -right-20" />
+      <div
+        className="blob-bg w-64 h-64 rounded-full absolute -bottom-16 -left-16"
+        style={{ backgroundColor: "var(--color-tertiary-fixed)", animationDelay: "-5s" }}
+      />
 
-      {/* Arka plan doku */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-navy-700/30 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-navy-800/20 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative w-full max-w-md">
-
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gold-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-gold-500/20">
-            <svg className="w-9 h-9 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <h1 className="font-serif text-3xl text-white mb-1">Yönetici Girişi</h1>
-          <p className="text-navy-400 text-sm">Öğretmen Yanımda Admin Paneli</p>
+      <div className="relative z-10 w-full max-w-sm">
+        {/* Lock icon */}
+        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+          <svg className="w-8 h-8 text-on-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
         </div>
 
-        {/* Kart */}
-        <div className="bg-navy-900 rounded-2xl border border-navy-800 shadow-2xl p-8">
+        {/* Card */}
+        <div className="bg-surface-container-lowest rounded-md p-10 soft-card-static">
+          <h1 className="font-display text-headline-lg text-on-background text-center mb-2">
+            Yönetici Girişi
+          </h1>
+          <p className="text-on-surface-variant text-body-md text-center mb-8">
+            Yalnızca admin hesapları giriş yapabilir
+          </p>
 
-          {/* Güvenlik uyarısı */}
-          <div className="flex items-center gap-2 bg-navy-800 rounded-xl px-4 py-3 mb-6 border border-navy-700">
-            <svg className="w-4 h-4 text-gold-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-            <p className="text-xs text-navy-300">Bu alan yalnızca yetkili yöneticiler içindir.</p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-navy-300 mb-2">E-posta Adresi</label>
+              <label className="block text-label-md text-on-surface-variant mb-1.5">
+                E-posta Adresi
+              </label>
               <input
                 type="email"
                 value={email}
@@ -75,12 +69,14 @@ export default function AdminGirisPage() {
                 required
                 autoComplete="email"
                 placeholder="admin@ogretmenyanimda.com.tr"
-                className="w-full bg-navy-800 border border-navy-700 text-white rounded-xl px-4 py-3 text-sm placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition"
+                className="w-full px-4 py-3 bg-surface-container-low rounded-full border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition text-on-background"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-navy-300 mb-2">Şifre</label>
+              <label className="block text-label-md text-on-surface-variant mb-1.5">
+                Şifre
+              </label>
               <div className="relative">
                 <input
                   type={showPass ? "text" : "password"}
@@ -89,12 +85,12 @@ export default function AdminGirisPage() {
                   required
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className="w-full bg-navy-800 border border-navy-700 text-white rounded-xl px-4 py-3 pr-12 text-sm placeholder-navy-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition"
+                  className="w-full px-4 py-3 pr-12 bg-surface-container-low rounded-full border border-outline-variant focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition text-on-background"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-navy-400 hover:text-navy-200 transition p-1"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition p-1"
                 >
                   {showPass ? (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,18 +107,15 @@ export default function AdminGirisPage() {
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 bg-red-900/30 border border-red-700/50 rounded-xl px-4 py-3">
-                <svg className="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p className="text-red-300 text-sm">{error}</p>
+              <div className="bg-error-container text-on-error-container rounded-md px-4 py-3 text-label-md">
+                {error}
               </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gold-500 text-white py-3.5 rounded-xl font-bold hover:bg-gold-600 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 mt-2"
+              className="bg-primary text-on-primary rounded-full w-full py-4 font-display font-bold text-headline-md squishy-btn disabled:opacity-50 transition-opacity mt-2 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -132,30 +125,23 @@ export default function AdminGirisPage() {
                   Doğrulanıyor...
                 </>
               ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                  </svg>
-                  Panele Giriş Yap
-                </>
+                "Panele Giriş Yap"
               )}
             </button>
           </form>
-        </div>
 
-        {/* Alt bilgi */}
-        <div className="text-center mt-6 space-y-2">
-          <p className="text-navy-500 text-xs">
-            Yalnızca ADMIN rolüne sahip hesaplar giriş yapabilir.
-          </p>
-          <Link href="/" className="text-navy-400 hover:text-navy-200 text-xs transition-colors inline-flex items-center gap-1">
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Ana sayfaya dön
-          </Link>
+          <div className="mt-8 text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1 text-label-md text-on-surface-variant hover:text-primary transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Ana sayfaya dön
+            </Link>
+          </div>
         </div>
-
       </div>
     </div>
   );

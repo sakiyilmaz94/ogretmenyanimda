@@ -27,21 +27,22 @@ export default async function FiyatlandirmaPage() {
       <PublicNavbar />
       <main className="pt-16">
 
-        <section className="bg-ivory py-20 text-center">
-          <div className="max-w-3xl mx-auto px-4">
-            <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Fiyatlandırma</p>
-            <h1 className="font-serif text-5xl text-navy-900 mb-4">Şeffaf Fiyatlandırma</h1>
-            <p className="text-slate-600 text-lg">Gizli ücret yok. Her ders için önceden belirlenen, net fiyat.</p>
+        <section className="relative overflow-hidden bg-surface-container-low py-20 text-center">
+          <div className="blob-bg w-72 h-72 bg-primary/15 rounded-full -top-16 -left-16" />
+          <div className="max-w-3xl mx-auto px-4 relative">
+            <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Fiyatlandırma</p>
+            <h1 className="font-display text-headline-xl text-on-background mb-4">Şeffaf Fiyatlandırma</h1>
+            <p className="text-on-surface-variant text-body-lg">Gizli ücret yok. Her ders için önceden belirlenen, net fiyat.</p>
           </div>
         </section>
 
-        <section className="bg-white py-16">
+        <section className="bg-background py-16">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             {plans.length === 0 ? (
               <div className="text-center py-16">
-                <p className="text-slate-400 text-lg mb-2">Fiyat paketleri yakında burada olacak.</p>
-                <p className="text-slate-400 text-sm mb-8">Her öğretmen kendi ders ücretini belirler — öğretmen profilinden doğrudan ders alabilirsiniz.</p>
-                <Link href="/egitmenlerimiz" className="inline-block bg-gold-500 text-white px-7 py-3.5 rounded-xl font-bold hover:bg-gold-600 transition-colors">
+                <p className="text-outline text-body-lg mb-2">Fiyat paketleri yakında burada olacak.</p>
+                <p className="text-outline text-body-md mb-8">Her öğretmen kendi ders ücretini belirler — öğretmen profilinden doğrudan ders alabilirsiniz.</p>
+                <Link href="/egitmenlerimiz" className="inline-block rounded-full squishy-btn bg-primary text-on-primary px-7 py-3.5 font-semibold">
                   Öğretmenleri İncele
                 </Link>
               </div>
@@ -51,38 +52,38 @@ export default async function FiyatlandirmaPage() {
                   {plans.map((plan) => (
                     <div
                       key={plan.id}
-                      className={`rounded-2xl border p-8 relative ${
+                      className={`rounded-md p-8 relative soft-card ${
                         plan.isPopular
-                          ? "bg-navy-900 border-navy-700 shadow-2xl scale-105"
-                          : "bg-white border-slate-200 shadow-sm"
+                          ? "bg-primary"
+                          : "bg-surface-container-lowest"
                       }`}
                     >
                       {plan.isPopular && (
-                        <span className="inline-block bg-gold-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+                        <span className="inline-block bg-secondary-container text-on-secondary-container text-label-md px-3 py-1 rounded-full mb-4">
                           ✦ En Popüler
                         </span>
                       )}
-                      <h2 className={`font-semibold text-lg mb-1 ${plan.isPopular ? "text-white" : "text-navy-900"}`}>
+                      <h2 className={`font-semibold text-body-lg mb-1 ${plan.isPopular ? "text-on-primary" : "text-on-background"}`}>
                         {plan.name}
                       </h2>
                       {plan.description && (
-                        <p className={`text-sm mb-4 ${plan.isPopular ? "text-navy-300" : "text-slate-500"}`}>
+                        <p className={`text-body-md mb-4 ${plan.isPopular ? "text-on-primary/70" : "text-on-surface-variant"}`}>
                           {plan.description}
                         </p>
                       )}
                       <div className="flex items-baseline gap-1 mb-2">
-                        <span className={`text-4xl font-bold ${plan.isPopular ? "text-white" : "text-navy-900"}`}>
+                        <span className={`text-4xl font-bold ${plan.isPopular ? "text-on-primary" : "text-on-background"}`}>
                           ₺{parseFloat(plan.price.toString()).toLocaleString("tr-TR")}
                         </span>
                       </div>
-                      <p className={`text-xs mb-6 ${plan.isPopular ? "text-navy-400" : "text-slate-400"}`}>
+                      <p className={`text-caption mb-6 ${plan.isPopular ? "text-on-primary/60" : "text-outline"}`}>
                         {plan.duration} dakika ders
                       </p>
                       {plan.features.length > 0 && (
                         <ul className="space-y-3 mb-8">
                           {plan.features.map((f) => (
-                            <li key={f} className={`flex items-center gap-2 text-sm ${plan.isPopular ? "text-navy-200" : "text-slate-700"}`}>
-                              <svg className={`w-4 h-4 shrink-0 ${plan.isPopular ? "text-gold-400" : "text-green-500"}`} fill="currentColor" viewBox="0 0 20 20">
+                            <li key={f} className={`flex items-center gap-2 text-body-md ${plan.isPopular ? "text-on-primary/80" : "text-on-surface-variant"}`}>
+                              <svg className={`w-4 h-4 shrink-0 ${plan.isPopular ? "text-on-primary" : "text-primary"}`} fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                               </svg>
                               {f}
@@ -92,10 +93,10 @@ export default async function FiyatlandirmaPage() {
                       )}
                       <Link
                         href="/register"
-                        className={`block w-full text-center py-3 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
+                        className={`block w-full text-center py-3 rounded-full text-label-md font-semibold transition-colors cursor-pointer ${
                           plan.isPopular
-                            ? "bg-gold-500 text-white hover:bg-gold-600"
-                            : "bg-navy-900 text-white hover:bg-navy-800"
+                            ? "bg-on-primary text-primary hover:bg-on-primary/90"
+                            : "bg-primary text-on-primary hover:bg-primary/90"
                         }`}
                       >
                         Hemen Başla
@@ -103,18 +104,18 @@ export default async function FiyatlandirmaPage() {
                     </div>
                   ))}
                 </div>
-                <p className="text-center mt-8 text-slate-500 text-sm">
-                  Sorularınız için <a href="/iletisim" className="text-gold-600 hover:underline">bize ulaşın</a>.
+                <p className="text-center mt-8 text-on-surface-variant text-body-md">
+                  Sorularınız için <a href="/iletisim" className="text-primary hover:underline">bize ulaşın</a>.
                 </p>
               </>
             )}
           </div>
         </section>
 
-        <section className="bg-ivory py-20">
+        <section className="bg-surface-container-low py-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-serif text-3xl text-navy-900 text-center mb-10">Sıkça Sorulan Sorular</h2>
-            <div className="bg-white rounded-2xl border border-slate-100 p-8">
+            <h2 className="font-display text-headline-lg text-on-background text-center mb-10">Sıkça Sorulan Sorular</h2>
+            <div className="bg-surface-container-lowest rounded-md border border-outline-variant/30 p-8 soft-card-static">
               <FaqAccordion items={faqItems} />
             </div>
           </div>

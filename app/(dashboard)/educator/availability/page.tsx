@@ -21,8 +21,8 @@ export default async function AvailabilityPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Uygunluk Takvimi</h1>
-        <p className="text-gray-500">Müsait olduğunuz gün ve saatleri belirleyin</p>
+        <h1 className="font-display text-headline-xl text-on-background">Uygunluk Takvimi</h1>
+        <p className="text-body-md text-on-surface-variant">Müsait olduğunuz gün ve saatleri belirleyin</p>
       </div>
       <AvailabilityManager
         educatorId={educator.id}

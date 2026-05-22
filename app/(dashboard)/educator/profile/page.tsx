@@ -13,8 +13,8 @@ export default async function EducatorProfilePage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-navy-900">Profilim</h1>
-        <p className="text-slate-500 text-sm">Bilgilerinizi güncelleyin ve profilinizi yayına alın</p>
+        <h1 className="font-display text-headline-xl text-on-background">Profilim</h1>
+        <p className="text-body-md text-on-surface-variant">Bilgilerinizi güncelleyin ve profilinizi yayına alın</p>
       </div>
       <EducatorProfileForm
         educator={{

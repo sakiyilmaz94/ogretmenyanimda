@@ -42,21 +42,23 @@ export default function SSSPage() {
       <main className="pt-16">
 
         {/* Hero */}
-        <section className="bg-ivory py-20 text-center">
-          <div className="max-w-3xl mx-auto px-4">
-            <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">SSS</p>
-            <h1 className="font-serif text-5xl text-navy-900 mb-4">Sıkça Sorulan Sorular</h1>
-            <p className="text-slate-600 text-lg">İhtiyaç duyduğunuz bilgilere hızlıca ulaşabilirsiniz. Cevabı bulamazsanız bize yazın.</p>
+        <section className="relative overflow-hidden bg-surface-container-low py-20 text-center">
+          <div className="blob-bg w-64 h-64 bg-primary/15 rounded-full -top-12 -left-12" />
+          <div className="blob-bg w-48 h-48 bg-primary/10 rounded-full -bottom-8 -right-8" />
+          <div className="max-w-3xl mx-auto px-4 relative">
+            <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">SSS</p>
+            <h1 className="font-display text-headline-xl text-on-background mb-4">Sıkça Sorulan Sorular</h1>
+            <p className="text-on-surface-variant text-body-lg">İhtiyaç duyduğunuz bilgilere hızlıca ulaşabilirsiniz. Cevabı bulamazsanız bize yazın.</p>
           </div>
         </section>
 
         {/* FAQ Categories */}
-        <section className="bg-white py-16">
+        <section className="bg-background py-16">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             {faqCategories.map((cat) => (
               <div key={cat.title}>
-                <h2 className="font-semibold text-navy-900 text-lg mb-4 pb-2 border-b-2 border-gold-400 inline-block">{cat.title}</h2>
-                <div className="bg-slate-50 rounded-2xl border border-slate-100 p-6">
+                <h2 className="font-display text-headline-md text-on-background mb-4 pb-2 border-b-2 border-primary inline-block">{cat.title}</h2>
+                <div className="bg-surface-container-lowest rounded-md border border-outline-variant/30 overflow-hidden soft-card-static">
                   <FaqAccordion items={cat.items} />
                 </div>
               </div>
@@ -65,11 +67,11 @@ export default function SSSPage() {
         </section>
 
         {/* Contact CTA */}
-        <section className="bg-navy-900 py-16">
+        <section className="bg-inverse-surface py-16">
           <div className="max-w-3xl mx-auto px-4 text-center">
-            <h2 className="font-serif text-3xl text-white mb-3">Aradığınızı Bulamadınız mı?</h2>
-            <p className="text-navy-300 mb-6">Sorularınız için destek ekibimize ulaşabilirsiniz. Size en kısa sürede dönüş yapacağız.</p>
-            <Link href="/iletisim" className="inline-flex items-center gap-2 bg-gold-500 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-gold-600 transition-colors cursor-pointer">
+            <h2 className="font-display text-headline-lg text-inverse-on-surface mb-3">Aradığınızı Bulamadınız mı?</h2>
+            <p className="text-inverse-on-surface/70 text-body-lg mb-6">Sorularınız için destek ekibimize ulaşabilirsiniz. Size en kısa sürede dönüş yapacağız.</p>
+            <Link href="/iletisim" className="inline-flex items-center gap-2 rounded-full squishy-btn bg-primary text-on-primary px-7 py-3.5 font-semibold cursor-pointer">
               Bize Ulaşın
             </Link>
           </div>

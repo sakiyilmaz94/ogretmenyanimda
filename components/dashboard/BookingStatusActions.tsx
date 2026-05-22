@@ -23,14 +23,14 @@ export default function BookingStatusActions({ bookingId }: { bookingId: string 
       <button
         onClick={() => handle("approve")}
         disabled={loading}
-        className="bg-green-500 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-green-600 disabled:opacity-50 transition"
+        className="rounded-full bg-secondary-container text-on-secondary-container px-4 py-1.5 text-label-md hover:opacity-90 disabled:opacity-50 transition"
       >
         Onayla
       </button>
       <button
         onClick={() => handle("reject")}
         disabled={loading}
-        className="bg-red-50 text-red-600 text-sm px-4 py-2 rounded-lg font-medium hover:bg-red-100 transition"
+        className="rounded-full bg-error-container text-on-error-container px-4 py-1.5 text-label-md hover:opacity-90 transition"
       >
         Reddet
       </button>

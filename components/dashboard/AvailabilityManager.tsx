@@ -131,12 +131,26 @@ export default function AvailabilityManager({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Sol: Ekleme */}
-      <div className="bg-white rounded-2xl border border-slate-100 p-6">
-        <div className="flex gap-1 mb-5 bg-slate-100 rounded-xl p-1">
-          <button onClick={() => setTab("single")} className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "single" ? "bg-white shadow-sm text-navy-900" : "text-slate-500"}`}>
+      <div className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/20">
+        <div className="flex gap-1 mb-5 bg-surface-container rounded-xl p-1">
+          <button
+            onClick={() => setTab("single")}
+            className={`flex-1 py-2 rounded-lg text-label-md font-medium transition-colors ${
+              tab === "single"
+                ? "bg-surface-container-lowest shadow-sm text-on-background"
+                : "text-on-surface-variant hover:text-on-background"
+            }`}
+          >
             Tek Gün
           </button>
-          <button onClick={() => setTab("weekly")} className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${tab === "weekly" ? "bg-white shadow-sm text-navy-900" : "text-slate-500"}`}>
+          <button
+            onClick={() => setTab("weekly")}
+            className={`flex-1 py-2 rounded-lg text-label-md font-medium transition-colors ${
+              tab === "weekly"
+                ? "bg-surface-container-lowest shadow-sm text-on-background"
+                : "text-on-surface-variant hover:text-on-background"
+            }`}
+          >
             Haftalık Tekrar
           </button>
         </div>
@@ -144,45 +158,50 @@ export default function AvailabilityManager({
         {tab === "single" ? (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Tarih</label>
+              <label className="block text-body-md font-medium text-on-background mb-1.5">Tarih</label>
               <input type="date" value={date} min={new Date().toISOString().split("T")[0]}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
+                className="w-full bg-surface-container rounded-md px-5 py-3 text-on-background placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Başlangıç</label>
+                <label className="block text-body-md font-medium text-on-background mb-1.5">Başlangıç</label>
                 <select value={startTime} onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
+                  className="w-full bg-surface-container rounded-md px-5 py-3 text-on-background focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition">
                   {TIMES.slice(0, -1).map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Bitiş</label>
+                <label className="block text-body-md font-medium text-on-background mb-1.5">Bitiş</label>
                 <select value={endTime} onChange={(e) => setEndTime(e.target.value)}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
+                  className="w-full bg-surface-container rounded-md px-5 py-3 text-on-background focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition">
                   {TIMES.slice(1).map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
             </div>
-            <p className="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
+            <p className="text-caption text-on-surface-variant bg-surface-container rounded-lg px-3 py-2">
               Seçilen aralık otomatik olarak <strong>1&apos;er saatlik</strong> ders dilimlerine bölünür. Veliler dilediği saati seçer.
             </p>
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {error && <p className="text-on-error-container text-body-md">{error}</p>}
             <button onClick={addSingle} disabled={loading || !date}
-              className="w-full bg-navy-900 text-white py-3 rounded-xl text-sm font-semibold hover:bg-navy-800 disabled:opacity-50 transition-colors">
+              className="w-full rounded-full squishy-btn bg-primary text-on-primary py-3 text-label-md font-semibold disabled:opacity-50">
               {loading ? "Ekleniyor..." : "Uygunluk Ekle"}
             </button>
           </div>
         ) : (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Günler</label>
+              <label className="block text-body-md font-medium text-on-background mb-2">Günler</label>
               <div className="grid grid-cols-4 gap-2">
                 {DAYS.map((day, i) => (
-                  <button key={day} type="button" onClick={() => setSelectedDays((prev) => prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i])}
-                    className={`py-2 rounded-lg text-xs font-medium border transition-colors ${selectedDays.includes(i) ? "bg-navy-900 text-white border-navy-900" : "bg-white text-slate-600 border-slate-200 hover:border-navy-400"}`}>
+                  <button key={day} type="button"
+                    onClick={() => setSelectedDays((prev) => prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i])}
+                    className={`py-2 rounded-full text-label-md font-medium transition-colors ${
+                      selectedDays.includes(i)
+                        ? "bg-primary text-on-primary"
+                        : "bg-surface-container text-on-surface-variant hover:bg-surface-container-low"
+                    }`}>
                     {day.slice(0, 3)}
                   </button>
                 ))}
@@ -190,41 +209,45 @@ export default function AvailabilityManager({
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Başlangıç</label>
+                <label className="block text-body-md font-medium text-on-background mb-1.5">Başlangıç</label>
                 <select value={wStart} onChange={(e) => setWStart(e.target.value)}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
+                  className="w-full bg-surface-container rounded-md px-5 py-3 text-on-background focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition">
                   {TIMES.slice(0, -1).map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Bitiş</label>
+                <label className="block text-body-md font-medium text-on-background mb-1.5">Bitiş</label>
                 <select value={wEnd} onChange={(e) => setWEnd(e.target.value)}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
+                  className="w-full bg-surface-container rounded-md px-5 py-3 text-on-background focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition">
                   {TIMES.slice(1).map((t) => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Kaç hafta ileriye eklensin?</label>
+              <label className="block text-body-md font-medium text-on-background mb-1.5">Kaç hafta ileriye eklensin?</label>
               <div className="flex gap-2">
                 {[2, 4, 8, 12].map((w) => (
                   <button key={w} type="button" onClick={() => setWeeks(w)}
-                    className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${weeks === w ? "bg-gold-500 text-white border-gold-500" : "bg-white text-slate-600 border-slate-200"}`}>
+                    className={`flex-1 py-2 rounded-full text-label-md font-medium transition-colors ${
+                      weeks === w
+                        ? "bg-primary text-on-primary"
+                        : "bg-surface-container text-on-surface-variant hover:bg-surface-container-low"
+                    }`}>
                     {w} hafta
                   </button>
                 ))}
               </div>
             </div>
-            <p className="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
+            <p className="text-caption text-on-surface-variant bg-surface-container rounded-lg px-3 py-2">
               Seçilen aralık otomatik olarak <strong>1&apos;er saatlik</strong> ders dilimlerine bölünür. Veliler dilediği saati seçer.
             </p>
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {error && <p className="text-on-error-container text-body-md">{error}</p>}
             <button onClick={addWeekly} disabled={loading || selectedDays.length === 0}
-              className="w-full bg-navy-900 text-white py-3 rounded-xl text-sm font-semibold hover:bg-navy-800 disabled:opacity-50 transition-colors">
+              className="w-full rounded-full squishy-btn bg-primary text-on-primary py-3 text-label-md font-semibold disabled:opacity-50">
               {loading ? "Ekleniyor..." : selectedDays.length > 0 ? "Uygunluk Ekle" : "Gün seçin"}
             </button>
             {selectedDays.length > 0 && !loading && (
-              <p className="text-xs text-slate-500 text-center">
+              <p className="text-caption text-on-surface-variant text-center">
                 {selectedDays.map((i) => DAYS[i]).join(", ")} — {wStart}–{wEnd} arası, {weeks} hafta boyunca
               </p>
             )}
@@ -233,36 +256,36 @@ export default function AvailabilityManager({
       </div>
 
       {/* Sağ: Mevcut slotlar */}
-      <div className="bg-white rounded-2xl border border-slate-100 p-6">
+      <div className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/20">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-semibold text-navy-900">
+          <h2 className="font-display text-headline-md text-on-background">
             Mevcut Slotlar
             {existingSlots.length > 0 && (
-              <span className="ml-2 text-xs font-normal text-slate-400">({existingSlots.length} slot)</span>
+              <span className="ml-2 text-caption font-normal text-on-surface-variant">({existingSlots.length} slot)</span>
             )}
           </h2>
           {existingSlots.some((s) => !s.isBooked) && (
             <button
               onClick={deleteAll}
               disabled={loading}
-              className="text-xs text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+              className="text-caption rounded-full bg-error-container text-on-error-container px-4 py-1.5 font-semibold hover:opacity-90 transition disabled:opacity-50"
             >
               Tümünü Temizle
             </button>
           )}
         </div>
         {sortedDays.length === 0 ? (
-          <p className="text-slate-400 text-sm">Henüz uygunluk eklenmemiş.</p>
+          <p className="text-body-md text-on-surface-variant">Henüz uygunluk eklenmemiş.</p>
         ) : (
           <div className="space-y-4 max-h-[500px] overflow-y-auto pr-1">
             {sortedDays.map((day) => (
               <div key={day}>
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                  <p className="text-caption font-semibold text-on-surface-variant uppercase tracking-wide">
                     {new Date(day + "T12:00:00").toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long" })}
                   </p>
                   {grouped[day].some((s) => !s.isBooked) && (
-                    <button onClick={() => deleteDay(day)} className="text-xs text-red-400 hover:text-red-600 transition-colors">
+                    <button onClick={() => deleteDay(day)} className="text-caption text-on-error-container hover:opacity-70 transition-opacity">
                       Günü temizle
                     </button>
                   )}
@@ -270,11 +293,15 @@ export default function AvailabilityManager({
                 <div className="space-y-1">
                   {grouped[day].map((slot) => (
                     <div key={slot.id}
-                      className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm ${slot.isBooked ? "bg-green-50 text-green-700 border border-green-100" : "bg-slate-50 text-slate-700"}`}>
+                      className={`flex items-center justify-between px-4 py-2 rounded-lg text-body-md ${
+                        slot.isBooked
+                          ? "bg-secondary-container text-on-secondary-container border border-outline-variant/20"
+                          : "bg-surface-container text-on-background"
+                      }`}>
                       <span className="font-medium">{slot.startTime} – {slot.endTime}</span>
                       {slot.isBooked
-                        ? <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Rezerve</span>
-                        : <button onClick={() => deleteSlot(slot.id)} className="text-red-400 hover:text-red-600 transition-colors text-xs">Sil</button>
+                        ? <span className="text-caption bg-on-secondary-container/10 text-on-secondary-container px-2 py-0.5 rounded-full font-semibold">Rezerve</span>
+                        : <button onClick={() => deleteSlot(slot.id)} className="text-caption text-on-error-container hover:opacity-70 transition-opacity">Sil</button>
                       }
                     </div>
                   ))}

@@ -26,18 +26,24 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
 
   const sidebar = (
     <div className="flex flex-col h-full">
-      <div className="px-6 py-5 border-b border-navy-800">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-gold-500 rounded-lg flex items-center justify-center shrink-0">
-            <span className="font-serif text-white text-sm font-bold">Ö</span>
+      {/* Logo alanı */}
+      <div className="px-6 py-6 border-b border-white/10">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
           </div>
           <div>
-            <p className="font-serif text-white text-sm font-semibold leading-none">Öğretmen Yanımda</p>
-            <p className="text-navy-400 text-xs mt-0.5">{title}</p>
+            <p className="font-display text-inverse-on-surface font-bold text-base leading-none">
+              Öğretmen<span className="font-bold">Yanımda</span>
+            </p>
+            <p className="text-xs text-inverse-on-surface/60 mt-0.5">{title}</p>
           </div>
         </Link>
       </div>
 
+      {/* Nav linkleri */}
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => {
           const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href + "/") && item.href.split("/").length > 2);
@@ -47,10 +53,10 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
+                "flex items-center gap-3 px-4 py-2.5 rounded-xl text-label-md transition-colors",
                 active
-                  ? "bg-gold-500 text-white shadow-sm"
-                  : "text-navy-300 hover:bg-navy-800 hover:text-white"
+                  ? "bg-primary text-on-primary font-semibold"
+                  : "text-inverse-on-surface/70 hover:bg-white/10 hover:text-inverse-on-surface"
               )}
             >
               <span className="text-base w-5 text-center">{item.icon}</span>
@@ -60,17 +66,18 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
         })}
       </nav>
 
-      <div className="px-3 py-4 border-t border-navy-800">
-        <div className="flex items-center justify-between px-3 mb-3">
+      {/* Alt kullanıcı alanı */}
+      <div className="px-4 py-4 border-t border-white/10">
+        <div className="flex items-center justify-between px-1 mb-3">
           <div className="min-w-0">
-            <p className="text-sm font-medium text-white truncate">{session?.user?.name}</p>
-            <p className="text-xs text-navy-400 truncate">{session?.user?.email}</p>
+            <p className="text-inverse-on-surface font-medium text-label-md truncate">{session?.user?.name}</p>
+            <p className="text-inverse-on-surface/50 text-xs truncate">{session?.user?.email}</p>
           </div>
           <NotificationBell />
         </div>
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm text-navy-300 hover:bg-red-900/40 hover:text-red-400 transition"
+          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-label-md text-inverse-on-surface/70 hover:bg-error/20 hover:text-error transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -82,9 +89,9 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-surface-container-low flex">
       {/* Desktop sidebar */}
-      <aside className="w-60 bg-navy-900 flex-col fixed h-full hidden lg:flex z-30">
+      <aside className="w-64 bg-inverse-surface flex-col fixed h-full hidden lg:flex z-30">
         {sidebar}
       </aside>
 
@@ -98,25 +105,25 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
 
       {/* Mobile sidebar */}
       <aside className={cn(
-        "w-60 bg-navy-900 flex-col fixed h-full z-50 transition-transform duration-300 lg:hidden",
+        "w-64 bg-inverse-surface flex-col fixed h-full z-50 transition-transform duration-300 lg:hidden",
         mobileOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {sidebar}
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 lg:ml-60 flex flex-col min-h-screen">
+      <div className="flex-1 lg:ml-64 flex flex-col min-h-screen">
         {/* Mobile header */}
-        <header className="lg:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3 sticky top-0 z-20">
+        <header className="lg:hidden bg-surface-container-lowest border-b border-outline-variant/30 px-4 py-3 flex items-center gap-3 sticky top-0 z-20">
           <button
             onClick={() => setMobileOpen(true)}
-            className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition"
+            className="p-2 rounded-full text-on-surface hover:bg-surface-container transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <p className="font-serif font-semibold text-navy-900">{title}</p>
+          <p className="font-display font-bold text-on-background text-headline-md">{title}</p>
         </header>
 
         <main className="flex-1 p-6 lg:p-8">{children}</main>

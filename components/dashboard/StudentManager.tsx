@@ -56,22 +56,27 @@ export default function StudentManager({
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {students.map((student) => (
-          <div key={student.id} className="bg-white rounded-xl shadow-sm p-5">
-            <div className="flex items-start justify-between">
+          <div key={student.id} className="bg-surface-container-lowest rounded-md p-5 soft-card border border-outline-variant/20">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="bg-primary rounded-full w-10 h-10 flex items-center justify-center text-on-primary font-display font-bold">
+                {student.name[0]}
+              </div>
               <div>
-                <h3 className="font-semibold text-gray-900">{student.name}</h3>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="font-display text-on-background font-semibold">{student.name}</p>
+                <p className="text-caption text-on-surface-variant">
                   {GRADE_LABELS[student.gradeLevel] ?? student.gradeLevel}
                 </p>
-                {student.notes && (
-                  <p className="text-xs text-gray-400 mt-2">{student.notes}</p>
-                )}
               </div>
+            </div>
+            {student.notes && (
+              <p className="text-caption text-on-surface-variant mb-3 border-t border-outline-variant/20 pt-2">{student.notes}</p>
+            )}
+            <div className="flex justify-end">
               <button
                 onClick={() => handleDelete(student.id)}
-                className="text-red-400 hover:text-red-600 text-sm"
+                className="rounded-full bg-error-container text-on-error-container px-4 py-1.5 text-caption font-semibold hover:opacity-90 transition"
               >
-                ✕
+                Sil
               </button>
             </div>
           </div>
@@ -79,34 +84,34 @@ export default function StudentManager({
 
         <button
           onClick={() => setShowForm(true)}
-          className="border-2 border-dashed border-gray-300 rounded-xl p-5 text-gray-500 hover:border-blue-400 hover:text-blue-600 transition text-sm font-medium"
+          className="border-2 border-dashed border-outline-variant rounded-md p-5 text-on-surface-variant hover:border-primary hover:text-primary transition text-label-md font-medium flex items-center justify-center gap-2 min-h-[130px]"
         >
           + Öğrenci Ekle
         </button>
       </div>
 
       {showForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4">Yeni Öğrenci Ekle</h2>
+        <div className="fixed inset-0 bg-on-background/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-surface-container-lowest rounded-md p-6 w-full max-w-md soft-card-static border border-outline-variant/20">
+            <h2 className="font-display text-headline-md text-on-background mb-4">Yeni Öğrenci Ekle</h2>
             <form onSubmit={handleAdd} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Ad Soyad</label>
+                <label className="block text-label-md font-semibold text-on-background mb-1.5">Ad Soyad</label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   required
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-surface-container rounded-full px-5 py-3 text-on-background placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Sınıf Seviyesi</label>
+                <label className="block text-label-md font-semibold text-on-background mb-1.5">Sınıf Seviyesi</label>
                 <select
                   value={form.gradeLevel}
                   onChange={(e) => setForm({ ...form, gradeLevel: e.target.value as GradeLevel })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-surface-container rounded-md px-5 py-3 text-on-background focus:outline-none focus:ring-2 focus:ring-primary/40 transition"
                 >
                   {Object.entries(GRADE_LABELS).map(([val, label]) => (
                     <option key={val} value={val}>{label}</option>
@@ -115,22 +120,22 @@ export default function StudentManager({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Doğum Tarihi (isteğe bağlı)</label>
+                <label className="block text-label-md font-semibold text-on-background mb-1.5">Doğum Tarihi (isteğe bağlı)</label>
                 <input
                   type="date"
                   value={form.birthDate}
                   onChange={(e) => setForm({ ...form, birthDate: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-surface-container rounded-full px-5 py-3 text-on-background focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Notlar (isteğe bağlı)</label>
+                <label className="block text-label-md font-semibold text-on-background mb-1.5">Notlar (isteğe bağlı)</label>
                 <textarea
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   rows={3}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full bg-surface-container rounded-md px-5 py-3 text-on-background placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition resize-none"
                 />
               </div>
 
@@ -138,14 +143,14 @@ export default function StudentManager({
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="flex-1 border border-gray-300 text-gray-700 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50"
+                  className="flex-1 rounded-full border-2 border-primary text-primary px-6 py-3 text-label-md font-semibold hover:bg-primary/5 transition"
                 >
                   İptal
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 bg-blue-600 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+                  className="flex-1 rounded-full squishy-btn bg-primary text-on-primary px-6 py-3 text-label-md font-semibold disabled:opacity-50"
                 >
                   {loading ? "Ekleniyor..." : "Ekle"}
                 </button>

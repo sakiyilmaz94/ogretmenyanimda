@@ -11,24 +11,26 @@ export default function HakkimizdaPage() {
       <main className="pt-16">
 
         {/* Hero */}
-        <section className="bg-navy-900 py-24">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-gold-400 font-semibold text-sm uppercase tracking-widest mb-4">Hakkımızda</p>
-            <h1 className="font-serif text-5xl text-white mb-6 leading-tight">
+        <section className="relative overflow-hidden bg-primary py-24">
+          <div className="blob-bg w-96 h-96 bg-white/10 rounded-full -top-24 -left-24" />
+          <div className="blob-bg w-80 h-80 bg-white/10 rounded-full -bottom-16 -right-16" />
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+            <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-4">Hakkımızda</p>
+            <h1 className="font-display text-headline-xl text-on-primary mb-6 leading-tight">
               Formasyonlu Öğretmenlerle<br />Güvenli Özel Ders
             </h1>
-            <p className="text-navy-200 text-xl leading-relaxed max-w-2xl mx-auto">
+            <p className="text-on-primary/80 text-body-lg leading-relaxed max-w-2xl mx-auto">
               Yeni kurulduk. Büyük rakamlar değil, samimi bir başlangıç sunuyoruz. Her öğrenci bize önemli — ve bunu her adımda hissettirmeye kararlıyız.
             </p>
           </div>
         </section>
 
         {/* Story */}
-        <section className="bg-ivory py-20">
+        <section className="bg-surface-container-low py-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3 text-center">Hikayemiz</p>
-            <h2 className="font-serif text-4xl text-navy-900 mb-8 text-center">Neden Bunu Kuruyoruz?</h2>
-            <div className="space-y-5 text-slate-600 text-lg leading-relaxed">
+            <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3 block text-center mx-auto w-fit">Hikayemiz</p>
+            <h2 className="font-display text-headline-lg text-on-background mb-8 text-center">Neden Bunu Kuruyoruz?</h2>
+            <div className="space-y-5 text-on-surface-variant text-body-lg leading-relaxed">
               <p>
                 Türkiye&apos;de pek çok veli, çocuğu için güvenilir bir özel ders öğretmeni bulmakta zorlanıyor. Sosyal medya grupları, elden tavsiyeler... Ama hangi öğretmenin diploması var? Kim gerçekten formasyonlu?
               </p>
@@ -43,12 +45,12 @@ export default function HakkimizdaPage() {
         </section>
 
         {/* For parents */}
-        <section className="bg-white py-20">
+        <section className="bg-background py-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Veliler İçin</p>
-                <h2 className="font-serif text-4xl text-navy-900 mb-6">Çocuğunuz Emin Ellerde</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+              <div className="bg-surface-container-lowest rounded-md p-8 soft-card-static">
+                <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Veliler İçin</p>
+                <h2 className="font-display text-headline-md text-on-background mb-6">Çocuğunuz Emin Ellerde</h2>
                 <ul className="space-y-4">
                   {[
                     { icon: "✅", text: "Her öğretmen diploma ve kimlik doğrulamasından geçer" },
@@ -59,17 +61,17 @@ export default function HakkimizdaPage() {
                   ].map((item) => (
                     <li key={item.text} className="flex items-start gap-3">
                       <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
-                      <p className="text-slate-700">{item.text}</p>
+                      <p className="text-on-surface-variant text-body-md">{item.text}</p>
                     </li>
                   ))}
                 </ul>
-                <Link href="/register" className="inline-block mt-8 bg-gold-500 text-white px-7 py-3.5 rounded-xl font-bold hover:bg-gold-600 transition-colors">
+                <Link href="/register" className="inline-block mt-8 rounded-full squishy-btn bg-primary text-on-primary px-7 py-3.5 font-semibold">
                   Hemen Ders Al
                 </Link>
               </div>
-              <div className="bg-navy-50 rounded-3xl p-8 border border-navy-100">
-                <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Öğretmenler İçin</p>
-                <h2 className="font-serif text-3xl text-navy-900 mb-6">Emeğinizin Karşılığını Alın</h2>
+              <div className="bg-surface-container rounded-md p-8 soft-card-static">
+                <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Öğretmenler İçin</p>
+                <h2 className="font-display text-headline-md text-on-background mb-6">Emeğinizin Karşılığını Alın</h2>
                 <ul className="space-y-4">
                   {[
                     { icon: "🗓️", text: "Kendi takviminizi siz belirleyin, istediğiniz saatte ders verin" },
@@ -80,11 +82,11 @@ export default function HakkimizdaPage() {
                   ].map((item) => (
                     <li key={item.text} className="flex items-start gap-3">
                       <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
-                      <p className="text-slate-700">{item.text}</p>
+                      <p className="text-on-surface-variant text-body-md">{item.text}</p>
                     </li>
                   ))}
                 </ul>
-                <Link href="/egitmen-basvurusu" className="inline-block mt-8 bg-navy-900 text-white px-7 py-3.5 rounded-xl font-bold hover:bg-navy-800 transition-colors">
+                <Link href="/egitmen-basvurusu" className="inline-block mt-8 rounded-full border-2 border-primary text-primary px-7 py-3.5 font-semibold hover:bg-primary/5 transition">
                   Öğretmen Olarak Başvur
                 </Link>
               </div>
@@ -93,11 +95,11 @@ export default function HakkimizdaPage() {
         </section>
 
         {/* Values */}
-        <section className="bg-ivory py-20">
+        <section className="bg-surface-container-low py-20">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Değerlerimiz</p>
-              <h2 className="font-serif text-4xl text-navy-900">Bizi Biz Yapan İlkeler</h2>
+              <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Değerlerimiz</p>
+              <h2 className="font-display text-headline-lg text-on-background">Bizi Biz Yapan İlkeler</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {[
@@ -106,13 +108,13 @@ export default function HakkimizdaPage() {
                 { n: "3", title: "Erişilebilirlik", desc: "İstanbul'da da olsanız, Muş'ta da — aynı kalitede öğretmene ulaşabilirsiniz." },
                 { n: "4", title: "Samimiyet", desc: "Yeni bir platformuz. Büyük rakamlar yerine dürüst bir başlangıç sunuyoruz." },
               ].map((v) => (
-                <div key={v.title} className="p-7 bg-white rounded-2xl border border-slate-100 hover:border-gold-200 hover:shadow-md transition-all duration-300 flex gap-5">
-                  <div className="w-10 h-10 bg-navy-900 rounded-xl flex items-center justify-center shrink-0">
-                    <span className="font-serif text-gold-400 font-bold">{v.n}</span>
+                <div key={v.title} className="bg-surface-container-lowest rounded-md p-7 soft-card-static flex gap-5">
+                  <div className="bg-primary-fixed rounded-full w-12 h-12 flex items-center justify-center shrink-0">
+                    <span className="font-display text-headline-md text-on-primary-fixed-variant font-bold">{v.n}</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-navy-900 mb-1">{v.title}</h3>
-                    <p className="text-slate-600 text-sm leading-relaxed">{v.desc}</p>
+                    <h3 className="font-semibold text-on-background mb-1">{v.title}</h3>
+                    <p className="text-on-surface-variant text-body-md leading-relaxed">{v.desc}</p>
                   </div>
                 </div>
               ))}
@@ -121,17 +123,17 @@ export default function HakkimizdaPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-navy-900 py-16">
+        <section className="bg-inverse-surface py-16">
           <div className="max-w-3xl mx-auto px-4 text-center">
-            <h2 className="font-serif text-4xl text-white mb-4">Birlikte Büyüyelim</h2>
-            <p className="text-navy-200 text-lg mb-8 leading-relaxed">
+            <h2 className="font-display text-headline-lg text-inverse-on-surface mb-4">Birlikte Büyüyelim</h2>
+            <p className="text-inverse-on-surface/70 text-body-lg mb-8 leading-relaxed">
               Öğretmenlerimizin ilk üyeleri arasında yer alın ya da çocuğunuz için hemen ders ayarlayın.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/register" className="bg-gold-500 text-white px-7 py-3.5 rounded-xl font-bold hover:bg-gold-600 transition-colors">
+              <Link href="/register" className="rounded-full squishy-btn bg-primary text-on-primary px-7 py-3.5 font-semibold">
                 Ders Al
               </Link>
-              <Link href="/egitmen-basvurusu" className="bg-navy-800 text-white border border-navy-600 px-7 py-3.5 rounded-xl font-semibold hover:bg-navy-700 transition-colors">
+              <Link href="/egitmen-basvurusu" className="rounded-full border-2 border-inverse-on-surface/30 text-inverse-on-surface px-7 py-3.5 font-semibold hover:bg-white/5 transition">
                 Öğretmen Olarak Katıl
               </Link>
             </div>

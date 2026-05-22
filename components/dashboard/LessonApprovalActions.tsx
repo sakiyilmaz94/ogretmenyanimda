@@ -29,15 +29,15 @@ export default function LessonApprovalActions({ lessonId }: { lessonId: string }
           onChange={(e) => setNote(e.target.value)}
           placeholder="Red gerekçesi (opsiyonel)"
           rows={2}
-          className="text-sm px-3 py-2 rounded-lg border border-slate-200 resize-none focus:outline-none focus:ring-2 focus:ring-red-300"
+          className="text-body-md px-3 py-2 rounded-md border border-outline-variant bg-surface-container-low text-on-background resize-none focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-outline"
         />
         <div className="flex gap-2">
           <button onClick={() => handle("reject")} disabled={loading}
-            className="flex-1 bg-red-500 text-white text-sm py-2 rounded-lg font-medium hover:bg-red-600 disabled:opacity-50 transition">
+            className="flex-1 rounded-full bg-error-container text-on-error-container text-label-md py-2 hover:opacity-90 disabled:opacity-50 transition">
             Reddet
           </button>
           <button onClick={() => setShowReject(false)}
-            className="px-3 py-2 text-sm text-slate-500 hover:bg-slate-100 rounded-lg transition">
+            className="px-3 py-2 text-label-md text-on-surface-variant hover:bg-surface-container rounded-full transition">
             İptal
           </button>
         </div>
@@ -48,11 +48,11 @@ export default function LessonApprovalActions({ lessonId }: { lessonId: string }
   return (
     <div className="flex gap-2">
       <button onClick={() => handle("approve")} disabled={loading}
-        className="bg-green-500 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-green-600 disabled:opacity-50 transition">
+        className="rounded-full bg-secondary-container text-on-secondary-container px-4 py-1.5 text-label-md hover:opacity-90 disabled:opacity-50 transition">
         Onayla
       </button>
       <button onClick={() => setShowReject(true)} disabled={loading}
-        className="bg-red-50 text-red-600 text-sm px-4 py-2 rounded-lg font-medium hover:bg-red-100 transition">
+        className="rounded-full bg-error-container text-on-error-container px-4 py-1.5 text-label-md hover:opacity-90 transition">
         Reddet
       </button>
     </div>

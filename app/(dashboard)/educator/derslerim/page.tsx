@@ -58,28 +58,28 @@ export default function EducatorDerslerimPage() {
     setTimeout(() => setSaved(false), 3000);
   }
 
-  if (loading) return <div className="text-center py-12 text-gray-400">Yükleniyor...</div>;
+  if (loading) return <div className="text-center py-12 text-on-surface-variant text-body-lg">Yükleniyor...</div>;
 
   return (
     <div className="space-y-8 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-navy-900">Derslerim</h1>
-        <p className="text-slate-500 text-sm mt-1">Hangi dersleri verdiğinizi ve ücretinizi buradan belirleyin.</p>
+        <h1 className="font-display text-headline-xl text-on-background">Derslerim</h1>
+        <p className="text-body-md text-on-surface-variant mt-1">Hangi dersleri verdiğinizi ve ücretinizi buradan belirleyin.</p>
       </div>
 
       {/* Subjects */}
-      <div className="bg-white rounded-2xl border border-slate-100 p-6">
-        <h2 className="font-semibold text-navy-900 mb-4">Verdiğim Dersler</h2>
+      <div className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/20">
+        <h2 className="font-display text-headline-md text-on-background mb-4">Verdiğim Dersler</h2>
         <div className="flex flex-wrap gap-2">
           {ALL_SUBJECTS.map(([key, label]) => (
             <button
               key={key}
               type="button"
               onClick={() => toggleSubject(key)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+              className={`px-4 py-2 rounded-full text-label-md font-medium transition-colors ${
                 form.subjects.includes(key)
-                  ? "bg-navy-900 text-white border-navy-900"
-                  : "bg-white text-slate-600 border-slate-200 hover:border-navy-400"
+                  ? "bg-primary text-on-primary"
+                  : "bg-surface-container text-on-surface-variant hover:bg-surface-container-low"
               }`}
             >
               {label}
@@ -87,23 +87,23 @@ export default function EducatorDerslerimPage() {
           ))}
         </div>
         {form.subjects.length === 0 && (
-          <p className="text-xs text-amber-600 mt-3">En az bir ders seçin.</p>
+          <p className="text-caption text-on-tertiary-fixed mt-3">En az bir ders seçin.</p>
         )}
       </div>
 
       {/* Grade levels */}
-      <div className="bg-white rounded-2xl border border-slate-100 p-6">
-        <h2 className="font-semibold text-navy-900 mb-4">Sınıf Seviyeleri</h2>
+      <div className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/20">
+        <h2 className="font-display text-headline-md text-on-background mb-4">Sınıf Seviyeleri</h2>
         <div className="flex flex-wrap gap-2">
           {ALL_GRADES.map(([key, label]) => (
             <button
               key={key}
               type="button"
               onClick={() => toggleGrade(key)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+              className={`px-4 py-2 rounded-full text-label-md font-medium transition-colors ${
                 form.gradeLevels.includes(key)
-                  ? "bg-gold-500 text-white border-gold-500"
-                  : "bg-white text-slate-600 border-slate-200 hover:border-gold-400"
+                  ? "bg-primary text-on-primary"
+                  : "bg-surface-container text-on-surface-variant hover:bg-surface-container-low"
               }`}
             >
               {label}
@@ -111,43 +111,43 @@ export default function EducatorDerslerimPage() {
           ))}
         </div>
         {form.gradeLevels.length === 0 && (
-          <p className="text-xs text-amber-600 mt-3">En az bir sınıf seviyesi seçin.</p>
+          <p className="text-caption text-on-tertiary-fixed mt-3">En az bir sınıf seviyesi seçin.</p>
         )}
       </div>
 
       {/* Hourly rate */}
-      <div className="bg-white rounded-2xl border border-slate-100 p-6">
-        <h2 className="font-semibold text-navy-900 mb-1">Saatlik Ücret</h2>
-        <p className="text-slate-500 text-sm mb-4">Velilerin profilinizde göreceği ders ücreti. Platformun %20 komisyon kesintisi sonrasında kalan tutar size ödenir.</p>
+      <div className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/20">
+        <h2 className="font-display text-headline-md text-on-background mb-1">Saatlik Ücret</h2>
+        <p className="text-body-md text-on-surface-variant mb-4">Velilerin profilinizde göreceği ders ücreti. Platformun %20 komisyon kesintisi sonrasında kalan tutar size ödenir.</p>
         <div className="flex items-center gap-2 max-w-xs">
-          <span className="text-slate-500 font-medium">₺</span>
+          <span className="text-on-surface-variant font-medium">₺</span>
           <input
             type="number"
             value={form.hourlyRate}
             onChange={(e) => setForm((f) => ({ ...f, hourlyRate: e.target.value }))}
             placeholder="örn: 400"
             min={0}
-            className="flex-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
+            className="flex-1 bg-surface-container rounded-full px-5 py-3 text-on-background placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition"
           />
-          <span className="text-slate-400 text-sm">/ ders</span>
+          <span className="text-on-surface-variant text-body-md">/ ders</span>
         </div>
         {form.hourlyRate && parseFloat(form.hourlyRate) > 0 && (
-          <p className="text-xs text-green-600 mt-2">
+          <p className="text-caption text-on-secondary-container mt-2">
             Net kazancınız: ₺{(parseFloat(form.hourlyRate) * 0.8).toFixed(0)} / ders (%80)
           </p>
         )}
       </div>
 
       {/* Bio */}
-      <div className="bg-white rounded-2xl border border-slate-100 p-6">
-        <h2 className="font-semibold text-navy-900 mb-1">Kısa Biyografi</h2>
-        <p className="text-slate-500 text-sm mb-4">Velilerin profilinizde okuyacağı tanıtım metni.</p>
+      <div className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/20">
+        <h2 className="font-display text-headline-md text-on-background mb-1">Kısa Biyografi</h2>
+        <p className="text-body-md text-on-surface-variant mb-4">Velilerin profilinizde okuyacağı tanıtım metni.</p>
         <textarea
           value={form.bio}
           onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))}
           rows={4}
           placeholder="Kendinizi kısaca tanıtın..."
-          className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 resize-none"
+          className="w-full bg-surface-container rounded-md px-5 py-3 text-on-background placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition resize-none"
         />
       </div>
 
@@ -155,11 +155,11 @@ export default function EducatorDerslerimPage() {
         <button
           onClick={save}
           disabled={saving}
-          className="bg-gold-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gold-600 disabled:opacity-50 transition-colors"
+          className="rounded-full squishy-btn bg-primary text-on-primary px-6 py-3 text-label-md font-semibold disabled:opacity-50"
         >
           {saving ? "Kaydediliyor..." : "Kaydet"}
         </button>
-        {saved && <span className="text-green-600 text-sm font-medium">✓ Kaydedildi</span>}
+        {saved && <span className="text-on-secondary-container text-body-md font-medium">✓ Kaydedildi</span>}
       </div>
     </div>
   );

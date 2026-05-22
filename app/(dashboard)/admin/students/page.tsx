@@ -12,43 +12,46 @@ export default async function AdminStudentsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Öğrenci Yönetimi</h1>
-        <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="font-display text-headline-md text-on-background">Öğrenci Yönetimi</h1>
+          <p className="text-label-md text-on-surface-variant mt-0.5">Platforma kayıtlı tüm öğrenciler</p>
+        </div>
+        <span className="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-caption font-semibold">
           {students.length} öğrenci
         </span>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-gray-600">
+      <div className="bg-surface-container-lowest rounded-md soft-card-static overflow-hidden border border-outline-variant/20">
+        <table className="w-full text-body-md">
+          <thead className="bg-surface-container">
             <tr>
-              <th className="text-left px-4 py-3 font-medium">Öğrenci</th>
-              <th className="text-left px-4 py-3 font-medium">Sınıf</th>
-              <th className="text-left px-4 py-3 font-medium">Veli</th>
-              <th className="text-left px-4 py-3 font-medium">Rezervasyon</th>
-              <th className="text-left px-4 py-3 font-medium">Kayıt Tarihi</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Öğrenci</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Sınıf</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Veli</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Rezervasyon</th>
+              <th className="text-left px-5 py-3 text-label-md text-on-surface-variant">Kayıt Tarihi</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-outline-variant/20">
             {students.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center py-8 text-gray-400">
+                <td colSpan={5} className="text-center py-12 text-on-surface-variant text-label-md">
                   Henüz öğrenci bulunmuyor.
                 </td>
               </tr>
             ) : (
               students.map((s) => (
-                <tr key={s.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{s.name}</td>
-                  <td className="px-4 py-3">{GRADE_LABELS[s.gradeLevel] ?? s.gradeLevel}</td>
-                  <td className="px-4 py-3 text-gray-600">{s.parent.user.name}</td>
-                  <td className="px-4 py-3">
-                    <span className="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded-full">
+                <tr key={s.id} className="hover:bg-surface-container-low transition">
+                  <td className="px-5 py-3.5 font-medium text-on-background">{s.name}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant">{GRADE_LABELS[s.gradeLevel] ?? s.gradeLevel}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant">{s.parent.user.name}</td>
+                  <td className="px-5 py-3.5">
+                    <span className="bg-primary-fixed text-on-primary-fixed-variant text-caption px-2 py-0.5 rounded-full font-semibold">
                       {s.bookings.length} ders
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-500">{formatDate(s.createdAt)}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant">{formatDate(s.createdAt)}</td>
                 </tr>
               ))
             )}

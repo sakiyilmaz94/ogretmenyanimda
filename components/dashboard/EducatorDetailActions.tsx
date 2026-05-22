@@ -22,23 +22,23 @@ export default function EducatorDetailActions({ educatorId }: { educatorId: stri
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-amber-200 p-6">
-      <h2 className="font-semibold text-navy-900 mb-4 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
+    <div className="bg-surface-container-lowest rounded-md border border-tertiary-fixed p-6 soft-card-static">
+      <h2 className="font-display font-semibold text-on-background text-body-md mb-4 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-tertiary-fixed inline-block"></span>
         Onay Kararı
       </h2>
-      <p className="text-sm text-slate-500 mb-4">Yukarıdaki belgeleri inceledikten sonra başvuruyu onaylayın veya reddedin.</p>
+      <p className="text-body-md text-on-surface-variant mb-4">Yukarıdaki belgeleri inceledikten sonra başvuruyu onaylayın veya reddedin.</p>
       <div className="flex gap-3">
         <button
           onClick={() => handleAction("approve")}
           disabled={!!loading}
-          className="flex-1 bg-green-600 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-green-700 disabled:opacity-50 transition-colors"
+          className="flex-1 rounded-full bg-secondary-container text-on-secondary-container py-2.5 text-label-md font-semibold hover:opacity-90 disabled:opacity-50 transition"
         >
           {loading === "approve" ? "Onaylanıyor..." : "✓ Onayla"}
         </button>
         <button
           onClick={() => setShowReject(!showReject)}
-          className="flex-1 bg-red-50 text-red-600 py-2.5 rounded-xl text-sm font-semibold hover:bg-red-100 transition-colors border border-red-200"
+          className="flex-1 rounded-full bg-error-container text-on-error-container py-2.5 text-label-md font-semibold hover:opacity-90 transition"
         >
           ✕ Reddet
         </button>
@@ -49,12 +49,12 @@ export default function EducatorDetailActions({ educatorId }: { educatorId: stri
             value={rejectionNote}
             onChange={(e) => setRejectionNote(e.target.value)}
             placeholder="Red sebebini yazın (öğretmene gösterilecek)..."
-            className="w-full border border-slate-200 rounded-xl p-3 text-sm resize-none h-24 focus:outline-none focus:ring-2 focus:ring-red-400"
+            className="w-full bg-surface-container-low border border-outline-variant rounded-md p-3 text-body-md text-on-background resize-none h-24 focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-outline"
           />
           <button
             onClick={() => handleAction("reject")}
             disabled={!!loading}
-            className="mt-2 w-full bg-red-600 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-red-700 disabled:opacity-50 transition-colors"
+            className="mt-2 w-full rounded-full bg-error-container text-on-error-container py-2.5 text-label-md font-semibold hover:opacity-90 disabled:opacity-50 transition"
           >
             {loading === "reject" ? "Reddediliyor..." : "Reddi Onayla"}
           </button>

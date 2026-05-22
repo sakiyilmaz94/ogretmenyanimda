@@ -29,32 +29,37 @@ export default async function HomePage() {
     <>
       <PublicNavbar role={role} />
 
-      <main className="pt-16">
+      <main>
 
         {/* ── HERO ─────────────────────────────────────────── */}
-        <section className="bg-ivory min-h-[88vh] flex items-center">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 w-full text-center">
-            <span className="inline-flex items-center gap-2 bg-gold-50 text-gold-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-gold-200 mb-6">
+        <section className="min-h-[90vh] flex items-center relative overflow-hidden bg-background">
+          {/* Blob arka planlar */}
+          <div className="blob-bg bg-primary-fixed w-[500px] h-[500px] rounded-full -top-24 -left-32" />
+          <div className="blob-bg bg-secondary-fixed w-[400px] h-[400px] rounded-full top-40 -right-20" style={{ animationDelay: "-5s" }} />
+
+          <div className="relative z-10 max-w-container-max mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 w-full text-center">
+            {/* Badge */}
+            <span className="inline-flex items-center gap-2 bg-primary-fixed text-on-primary-fixed px-4 py-2 rounded-full text-label-md font-semibold mb-8">
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
               </svg>
               Türkiye&apos;nin Güvenilir Özel Ders Platformu
             </span>
 
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-navy-900 leading-tight mb-6">
+            <h1 className="font-display text-headline-lg-mobile md:text-headline-xl text-on-background mb-6">
               Uzmanlarla<br/>
-              <span className="text-gold-500">Kaliteli</span> ve Etkili Öğrenim
+              <span className="text-primary">Kaliteli</span> ve Etkili Öğrenim
             </h1>
 
-            <p className="text-lg text-slate-600 leading-relaxed mb-8 max-w-2xl mx-auto">
+            <p className="text-body-lg text-on-surface-variant leading-relaxed mb-10 max-w-2xl mx-auto">
               İlkokul ve ortaokul öğrencileri için alanında uzman, yönetici onaylı öğretmenlerle bireysel dersler. Randevu al, öde, öğren.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
               {role === "PARENT" ? (
                 <Link
                   href="/egitmenlerimiz"
-                  className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 shadow-lg shadow-gold-200"
+                  className="inline-flex items-center justify-center gap-2 bg-primary text-on-primary px-8 py-4 rounded-full font-display font-bold text-body-md squishy-btn"
                 >
                   Öğretmen Bul
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,7 +69,7 @@ export default async function HomePage() {
               ) : role ? (
                 <Link
                   href={role === "EDUCATOR" ? "/educator" : role === "ADMIN" ? "/admin" : "/parent"}
-                  className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 shadow-lg shadow-gold-200"
+                  className="inline-flex items-center justify-center gap-2 bg-primary text-on-primary px-8 py-4 rounded-full font-display font-bold text-body-md squishy-btn"
                 >
                   Panelime Git
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,7 +79,7 @@ export default async function HomePage() {
               ) : (
                 <Link
                   href="/register"
-                  className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 shadow-lg shadow-gold-200"
+                  className="inline-flex items-center justify-center gap-2 bg-primary text-on-primary px-8 py-4 rounded-full font-display font-bold text-body-md squishy-btn"
                 >
                   Ücretsiz Başla
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,7 +89,7 @@ export default async function HomePage() {
               )}
               <Link
                 href="/egitmenlerimiz"
-                className="inline-flex items-center justify-center gap-2 bg-white text-navy-900 border-2 border-navy-200 px-8 py-4 rounded-xl text-base font-semibold hover:border-navy-400 transition-colors duration-200"
+                className="inline-flex items-center justify-center gap-2 bg-surface-container text-primary px-8 py-4 rounded-full border-2 border-primary-fixed hover:bg-surface-variant font-display font-semibold text-body-md transition-colors duration-200"
               >
                 Öğretmenleri Keşfet
               </Link>
@@ -92,7 +97,9 @@ export default async function HomePage() {
 
             {/* Ders konuları */}
             <div>
-              <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-3">Hangi derste destek arıyorsunuz?</p>
+              <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-widest mb-4">
+                Hangi derste destek arıyorsunuz?
+              </p>
               <div className="flex flex-wrap gap-2 justify-center">
                 {[
                   { label: "Matematik",       slug: "MATEMATIK" },
@@ -106,7 +113,7 @@ export default async function HomePage() {
                   <Link
                     key={s.slug}
                     href={`/egitmenlerimiz?subject=${s.slug}`}
-                    className="inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium bg-white border border-slate-200 text-navy-700 hover:border-gold-400 hover:text-gold-700 hover:bg-gold-50 transition-colors duration-150 shadow-sm"
+                    className="inline-flex items-center px-4 py-1.5 rounded-full text-label-md bg-surface-container-lowest border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary-fixed transition-colors duration-150"
                   >
                     {s.label}
                   </Link>
@@ -116,12 +123,66 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* ── TRUST BAR (3 özellik) ────────────────────────── */}
+        <section className="bg-surface-container-low py-12">
+          <div className="max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-surface-container-lowest rounded-md p-8 soft-card-static">
+              <div className="flex flex-col md:flex-row items-center justify-around gap-8">
+                {[
+                  {
+                    icon: (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                      </svg>
+                    ),
+                    title: "Onaylı Öğretmenler",
+                    desc: "Her öğretmen belge ve referans incelemesinden geçer",
+                  },
+                  {
+                    icon: (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    ),
+                    title: "Şeffaf Fiyatlandırma",
+                    desc: "Abonelik yok, gizli ücret yok — sadece ders başına ödeme",
+                  },
+                  {
+                    icon: (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                    ),
+                    title: "Veli Takip Raporu",
+                    desc: "Her dersin ardından öğretmen ilerleme notu bırakır",
+                  },
+                ].map((item, i, arr) => (
+                  <div key={item.title} className="flex flex-col md:flex-row items-center gap-6 w-full md:w-auto">
+                    <div className="flex flex-col items-center text-center md:items-start md:text-left gap-3 max-w-[220px]">
+                      <div className="w-14 h-14 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <p className="font-display text-headline-md text-on-background mb-1">{item.title}</p>
+                        <p className="text-sm text-on-surface-variant leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+                    {i < arr.length - 1 && (
+                      <div className="hidden md:block w-px h-20 bg-outline-variant mx-4 shrink-0" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── NASIL ÇALIŞIR ────────────────────────────────── */}
-        <section className="bg-white py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-surface-container-lowest py-20">
+          <div className="max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Nasıl Çalışır?</p>
-              <h2 className="font-serif text-4xl text-navy-900">3 Adımda Ders Al</h2>
+              <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-3">Nasıl Çalışır?</p>
+              <h2 className="font-display text-headline-lg text-on-background">3 Adımda Ders Al</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
@@ -156,13 +217,15 @@ export default async function HomePage() {
                   ),
                 },
               ].map((item) => (
-                <div key={item.step} className="relative p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:border-gold-200 hover:shadow-md transition-all duration-300 cursor-default">
-                  <span className="absolute top-6 right-6 font-serif text-5xl text-slate-100 font-bold select-none">{item.step}</span>
-                  <div className="w-12 h-12 bg-navy-900 text-gold-400 rounded-xl flex items-center justify-center mb-5">
+                <div key={item.step} className="relative bg-surface-container-low rounded-md p-8 soft-card cursor-default overflow-hidden">
+                  <span className="absolute top-6 right-6 font-display text-5xl text-primary-fixed font-bold opacity-40 select-none">
+                    {item.step}
+                  </span>
+                  <div className="w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center mb-5">
                     {item.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-navy-900 mb-2">{item.title}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="font-display text-headline-md text-on-background mb-2">{item.title}</h3>
+                  <p className="text-on-surface-variant text-sm leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -170,20 +233,22 @@ export default async function HomePage() {
         </section>
 
         {/* ── HİZMETLER ────────────────────────────────────── */}
-        <section className="bg-ivory py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-background py-20">
+          <div className="max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Hizmetlerimiz</p>
-              <h2 className="font-serif text-4xl text-navy-900">Kişiye Özel Eğitim Seçenekleri</h2>
-              <p className="mt-4 text-slate-600 max-w-xl mx-auto">Öğrencilerimizin başarısı için uzman öğretmenlerle çeşitli ders seçenekleri sunuyoruz.</p>
+              <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-3">Hizmetlerimiz</p>
+              <h2 className="font-display text-headline-lg text-on-background">Kişiye Özel Eğitim Seçenekleri</h2>
+              <p className="mt-4 text-on-surface-variant text-body-md max-w-xl mx-auto">
+                Öğrencilerimizin başarısı için uzman öğretmenlerle çeşitli ders seçenekleri sunuyoruz.
+              </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
                   title: "Bireysel Dersler",
                   desc: "Öğrencinin bireysel ihtiyaçlarına göre hazırlanan ders programlarıyla maksimum verim. 45 dakika, birebir eğitim.",
-                  color: "bg-navy-900",
-                  textColor: "text-gold-400",
+                  iconBg: "bg-secondary-container",
+                  iconColor: "text-on-secondary-container",
                   icon: (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -194,8 +259,8 @@ export default async function HomePage() {
                 {
                   title: "Veli Takip Paketi",
                   desc: "Her dersin sonunda öğretmen kısa bir ilerleme notu bırakır; veli panelinden kolayca takip edersiniz.",
-                  color: "bg-gold-500",
-                  textColor: "text-white",
+                  iconBg: "bg-primary-fixed",
+                  iconColor: "text-on-primary-fixed",
                   icon: (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -206,8 +271,8 @@ export default async function HomePage() {
                 {
                   title: "Öğrenci Koçluğu",
                   desc: "Akademik başarının ötesinde motivasyon, çalışma stratejisi ve hedef belirleme seansları.",
-                  color: "bg-sage-500",
-                  textColor: "text-white",
+                  iconBg: "bg-tertiary-fixed",
+                  iconColor: "text-on-tertiary-fixed",
                   icon: (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -216,16 +281,16 @@ export default async function HomePage() {
                   features: ["Hedef belirleme", "Motivasyon artırma", "Çalışma planı"],
                 },
               ].map((s) => (
-                <div key={s.title} className="bg-white rounded-2xl border border-slate-100 p-7 hover:shadow-lg hover:border-gold-200 transition-all duration-300 cursor-default">
-                  <div className={`w-12 h-12 ${s.color} ${s.textColor} rounded-xl flex items-center justify-center mb-5`}>
+                <div key={s.title} className="bg-surface-container-lowest rounded-md p-8 soft-card border border-outline-variant/30 cursor-default">
+                  <div className={`w-12 h-12 ${s.iconBg} ${s.iconColor} rounded-full flex items-center justify-center mb-5`}>
                     {s.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-navy-900 mb-2">{s.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-5">{s.desc}</p>
-                  <ul className="space-y-2">
+                  <h3 className="font-display text-headline-md text-on-background mb-3">{s.title}</h3>
+                  <p className="text-sm text-on-surface-variant leading-relaxed mb-6">{s.desc}</p>
+                  <ul className="space-y-2.5">
                     {s.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-sm text-slate-700">
-                        <svg className="w-4 h-4 text-sage-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <li key={f} className="flex items-center gap-2.5 text-sm text-on-background">
+                        <svg className="w-4 h-4 text-secondary shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                         </svg>
                         {f}
@@ -236,7 +301,10 @@ export default async function HomePage() {
               ))}
             </div>
             <div className="text-center mt-10">
-              <Link href="/hizmetler" className="inline-flex items-center gap-2 text-navy-900 font-semibold hover:text-gold-600 transition-colors cursor-pointer">
+              <Link
+                href="/hizmetler"
+                className="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary-container transition-colors cursor-pointer"
+              >
                 Tüm hizmetleri incele
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -248,25 +316,27 @@ export default async function HomePage() {
 
         {/* ── EĞİTMENLER ───────────────────────────────────── */}
         {educators.length > 0 && (
-          <section className="bg-white py-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <section className="bg-surface-container-low py-20">
+            <div className="max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-14">
-                <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Öğretmenlerimiz</p>
-                <h2 className="font-serif text-4xl text-navy-900">Uzman Kadromuzla Tanışın</h2>
-                <p className="mt-4 text-slate-600 max-w-xl mx-auto">Onaylı öğretmenlerimizin tamamı özgeçmiş ve belge incelemesinden geçmiştir.</p>
+                <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-3">Öğretmenlerimiz</p>
+                <h2 className="font-display text-headline-lg text-on-background">Uzman Kadromuzla Tanışın</h2>
+                <p className="mt-4 text-on-surface-variant text-body-md max-w-xl mx-auto">
+                  Onaylı öğretmenlerimizin tamamı özgeçmiş ve belge incelemesinden geçmiştir.
+                </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {educators.map((e) => (
-                  <div key={e.id} className="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:border-gold-200 hover:shadow-md transition-all duration-300 cursor-default text-center">
-                    <div className="w-16 h-16 bg-navy-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl font-serif text-gold-400">
+                  <div key={e.id} className="bg-surface-container-lowest rounded-md p-7 soft-card text-center cursor-default">
+                    <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl font-display font-bold text-on-primary">
                         {(e.user.name ?? "E")[0].toUpperCase()}
                       </span>
                     </div>
-                    <h3 className="font-semibold text-navy-900 mb-1">{e.user.name}</h3>
-                    {e.bio && <p className="text-xs text-slate-500 line-clamp-2">{e.bio}</p>}
+                    <h3 className="font-display font-semibold text-on-background mb-1">{e.user.name}</h3>
+                    {e.bio && <p className="text-xs text-on-surface-variant line-clamp-2 mt-1">{e.bio}</p>}
                     {e.hourlyRate && (
-                      <p className="mt-3 text-gold-600 font-semibold text-sm">
+                      <p className="mt-3 text-primary font-bold text-sm">
                         ₺{Number(e.hourlyRate).toFixed(0)}/saat
                       </p>
                     )}
@@ -274,7 +344,10 @@ export default async function HomePage() {
                 ))}
               </div>
               <div className="text-center mt-10">
-                <Link href="/egitmenlerimiz" className="inline-flex items-center gap-2 bg-navy-900 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer">
+                <Link
+                  href="/egitmenlerimiz"
+                  className="inline-flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full text-label-md font-bold squishy-btn"
+                >
                   Tüm Öğretmenleri Gör
                 </Link>
               </div>
@@ -283,12 +356,16 @@ export default async function HomePage() {
         )}
 
         {/* ── NASIL ÜCRETLENDİRİLİR ───────────────────────── */}
-        <section className="bg-navy-900 py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-primary py-20 relative overflow-hidden">
+          {/* Hafif blob dekorasyonu */}
+          <div className="blob-bg bg-primary-container w-80 h-80 rounded-full -top-20 -right-20 opacity-30" />
+          <div className="blob-bg bg-primary-fixed-dim w-64 h-64 rounded-full bottom-10 -left-16 opacity-20" style={{ animationDelay: "-3s" }} />
+
+          <div className="relative z-10 max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <p className="text-gold-400 font-semibold text-sm uppercase tracking-widest mb-3">Şeffaf Fiyatlandırma</p>
-              <h2 className="font-serif text-4xl text-white">Nasıl Ücretlendirilir?</h2>
-              <p className="mt-4 text-navy-200 max-w-xl mx-auto">
+              <p className="text-primary-fixed font-semibold text-label-md uppercase tracking-widest mb-3">Şeffaf Fiyatlandırma</p>
+              <h2 className="font-display text-headline-lg text-on-primary">Nasıl Ücretlendirilir?</h2>
+              <p className="mt-4 text-on-primary/75 text-body-md max-w-xl mx-auto">
                 Abonelik yok, gizli ücret yok. Sadece aldığınız ders için ödeme yaparsınız.
               </p>
             </div>
@@ -331,41 +408,55 @@ export default async function HomePage() {
               ].map((item) => (
                 <div
                   key={item.step}
-                  className={`rounded-2xl p-8 border ${
+                  className={`rounded-md p-8 ${
                     item.highlight
-                      ? "bg-gold-500 border-gold-400 shadow-2xl scale-105"
-                      : "bg-navy-800 border-navy-700"
+                      ? "bg-on-primary-fixed scale-105 shadow-2xl"
+                      : "bg-primary-container"
                   }`}
                 >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-5 ${item.highlight ? "bg-white/20 text-white" : "bg-navy-700 text-gold-400"}`}>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-5 ${
+                    item.highlight
+                      ? "bg-primary text-on-primary"
+                      : "bg-primary/30 text-on-primary"
+                  }`}>
                     {item.icon}
                   </div>
-                  <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${item.highlight ? "text-white/60" : "text-navy-400"}`}>
+                  <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${
+                    item.highlight ? "text-on-surface-variant" : "text-on-primary/50"
+                  }`}>
                     Adım {item.step}
                   </p>
-                  <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
-                  <p className={`text-sm leading-relaxed ${item.highlight ? "text-white/80" : "text-navy-300"}`}>{item.desc}</p>
+                  <h3 className={`font-display text-headline-md mb-3 ${
+                    item.highlight ? "text-on-background" : "text-on-primary"
+                  }`}>
+                    {item.title}
+                  </h3>
+                  <p className={`text-sm leading-relaxed ${
+                    item.highlight ? "text-on-surface-variant" : "text-on-primary/75"
+                  }`}>
+                    {item.desc}
+                  </p>
                 </div>
               ))}
             </div>
 
             {/* Alt bilgi şeridi */}
-            <div className="bg-navy-800 rounded-2xl border border-navy-700 px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="bg-primary-container rounded-md px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="flex flex-wrap justify-center sm:justify-start gap-8 text-center sm:text-left">
                 {[
-                  { label: "Üyelik Ücreti", value: "Ücretsiz" },
-                  { label: "Rezervasyon Ücreti", value: "Ücretsiz" },
+                  { label: "Üyelik Ücreti",        value: "Ücretsiz" },
+                  { label: "Rezervasyon Ücreti",   value: "Ücretsiz" },
                   { label: "İptal (24 saat önce)", value: "Tam İade" },
                 ].map((item) => (
                   <div key={item.label}>
-                    <p className="text-white font-bold text-lg">{item.value}</p>
-                    <p className="text-navy-300 text-xs mt-0.5">{item.label}</p>
+                    <p className="text-on-primary font-bold text-lg font-display">{item.value}</p>
+                    <p className="text-on-primary/60 text-xs mt-0.5">{item.label}</p>
                   </div>
                 ))}
               </div>
               <Link
                 href="/egitmenlerimiz"
-                className="shrink-0 inline-flex items-center gap-2 bg-gold-500 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-gold-600 transition-colors cursor-pointer"
+                className="shrink-0 inline-flex items-center gap-2 bg-surface-container-lowest text-primary px-6 py-3 rounded-full text-label-md font-bold hover:bg-primary-fixed transition-colors cursor-pointer"
               >
                 Öğretmen Fiyatlarını Gör
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -376,20 +467,20 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ── GÜVEN ROZETLERI ──────────────────────────────── */}
-        <section className="bg-white py-16 border-y border-slate-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* ── GÜVEN ROZETLERİ ──────────────────────────────── */}
+        <section className="bg-surface-container-low py-16">
+          <div className="max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {[
-                { icon: "🛡️", title: "Güvenli Ödeme", desc: "iyzico 256-bit SSL" },
+                { icon: "🛡️", title: "Güvenli Ödeme",      desc: "iyzico 256-bit SSL" },
                 { icon: "✅", title: "Onaylı Öğretmenler", desc: "Belge incelemeli kabul" },
-                { icon: "📋", title: "Veli Takip Raporu", desc: "Her dersten sonra not" },
-                { icon: "🔄", title: "Ücretsiz İptal", desc: "24 saat öncesinde" },
+                { icon: "📋", title: "Veli Takip Raporu",  desc: "Her dersten sonra not" },
+                { icon: "🔄", title: "Ücretsiz İptal",     desc: "24 saat öncesinde" },
               ].map((b) => (
                 <div key={b.title} className="cursor-default">
-                  <div className="text-3xl mb-2">{b.icon}</div>
-                  <p className="font-semibold text-navy-900 text-sm">{b.title}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">{b.desc}</p>
+                  <div className="text-3xl mb-3">{b.icon}</div>
+                  <p className="font-display font-bold text-on-background text-sm">{b.title}</p>
+                  <p className="text-xs text-on-surface-variant mt-1">{b.desc}</p>
                 </div>
               ))}
             </div>
@@ -397,18 +488,18 @@ export default async function HomePage() {
         </section>
 
         {/* ── SSS ──────────────────────────────────────────── */}
-        <section className="bg-ivory py-20">
+        <section className="bg-background py-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">SSS</p>
-              <h2 className="font-serif text-4xl text-navy-900">Sıkça Sorulan Sorular</h2>
+              <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-3">SSS</p>
+              <h2 className="font-display text-headline-lg text-on-background">Sıkça Sorulan Sorular</h2>
             </div>
-            <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm">
+            <div className="bg-surface-container-lowest rounded-md p-8 soft-card-static">
               <FaqAccordion items={faqItems} />
             </div>
-            <p className="text-center mt-6 text-slate-500 text-sm">
+            <p className="text-center mt-6 text-on-surface-variant text-sm">
               Aklınıza başka sorular mı takıldı?{" "}
-              <Link href="/iletisim" className="text-gold-600 font-medium hover:underline cursor-pointer">
+              <Link href="/iletisim" className="text-primary font-semibold hover:underline cursor-pointer">
                 Bize ulaşın
               </Link>
             </p>
@@ -416,18 +507,22 @@ export default async function HomePage() {
         </section>
 
         {/* ── CTA ──────────────────────────────────────────── */}
-        <section className="bg-gold-500 py-20">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="font-serif text-4xl sm:text-5xl text-white mb-4">
+        <section className="bg-primary py-20 relative overflow-hidden">
+          <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full -top-20 -left-20 opacity-25" />
+          <div className="blob-bg bg-secondary-fixed w-72 h-72 rounded-full bottom-10 -right-16 opacity-20" style={{ animationDelay: "-4s" }} />
+
+          <div className="relative z-10 max-w-container-max mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="font-display text-headline-lg md:text-headline-xl text-on-primary mb-4">
               Çocuğunuzun Başarısı<br/>Bir Tık Uzağınızda
             </h2>
-            <p className="text-white/85 text-lg mb-8 max-w-xl mx-auto">
+            <p className="text-on-primary/80 text-body-lg mb-10 max-w-xl mx-auto">
               Hemen üye olun, uzman öğretmenlerle ilk dersi planlayın. İlk ders memnuniyeti garantilidir.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center gap-2 bg-white text-gold-600 px-8 py-4 rounded-xl text-base font-bold hover:bg-gold-50 transition-colors cursor-pointer shadow-lg"
+                className="inline-flex items-center justify-center gap-2 bg-surface-container-lowest text-primary px-8 py-4 rounded-full font-display font-bold text-body-md hover:bg-primary-fixed transition-colors cursor-pointer squishy-btn"
+                style={{ boxShadow: "0 4px 0 rgba(0,0,0,0.2)" }}
               >
                 Ücretsiz Kayıt Ol
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -436,7 +531,7 @@ export default async function HomePage() {
               </Link>
               <Link
                 href="/egitmen-basvurusu"
-                className="inline-flex items-center justify-center gap-2 bg-gold-600 text-white border-2 border-white/30 px-8 py-4 rounded-xl text-base font-semibold hover:bg-gold-700 transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-primary-container text-on-primary border-2 border-primary-fixed-dim/40 px-8 py-4 rounded-full font-display font-semibold text-body-md hover:bg-primary-fixed/20 transition-colors cursor-pointer"
               >
                 Öğretmen Başvurusu
               </Link>

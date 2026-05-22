@@ -42,23 +42,26 @@ export default function DerslerPage() {
       <PublicNavbar />
       <main className="pt-16">
 
-        <section className="bg-ivory py-20 text-center">
-          <div className="max-w-3xl mx-auto px-4">
-            <p className="text-gold-600 font-semibold text-sm uppercase tracking-widest mb-3">Dersler</p>
-            <h1 className="font-serif text-5xl text-navy-900 mb-4">Hangi Derste Destek Arıyorsunuz?</h1>
-            <p className="text-slate-500 text-lg">Seviye ve ders seçerek o alanda uzman öğretmenlere ulaşın.</p>
+        <section className="relative overflow-hidden bg-surface-container-low py-20 text-center">
+          <div className="blob-bg w-72 h-72 bg-primary/15 rounded-full -top-16 -left-16" />
+          <div className="max-w-3xl mx-auto px-4 relative">
+            <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Dersler</p>
+            <h1 className="font-display text-headline-xl text-on-background mb-4">Hangi Derste Destek Arıyorsunuz?</h1>
+            <p className="text-on-surface-variant text-body-lg">Seviye ve ders seçerek o alanda uzman öğretmenlere ulaşın.</p>
           </div>
         </section>
 
-        <section className="bg-white py-16">
+        <section className="bg-background py-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
             {Object.entries(dersler).map(([key, kategori]) => (
               <div key={key}>
                 <div className="flex items-center gap-3 mb-8">
-                  <span className="text-3xl">{kategori.icon}</span>
+                  <div className="bg-primary-fixed rounded-xl p-3 w-14 h-14 flex items-center justify-center shrink-0">
+                    <span className="text-2xl">{kategori.icon}</span>
+                  </div>
                   <div>
-                    <h2 className="font-serif text-3xl text-navy-900">{kategori.label}</h2>
-                    <p className="text-slate-500 text-sm">{kategori.sinif}</p>
+                    <h2 className="font-display text-headline-md text-on-background">{kategori.label}</h2>
+                    <p className="text-on-surface-variant text-body-md">{kategori.sinif}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -66,13 +69,13 @@ export default function DerslerPage() {
                     <Link
                       key={ders.slug}
                       href={`/egitmenlerimiz?seviye=${key}&ders=${ders.slug}`}
-                      className="flex flex-col items-center gap-3 bg-slate-50 hover:bg-navy-900 border border-slate-100 hover:border-navy-900 rounded-2xl p-5 text-center transition-all duration-300 group cursor-pointer"
+                      className="bg-surface-container-lowest rounded-md p-5 flex flex-col items-center gap-3 text-center soft-card group cursor-pointer hover:bg-primary transition-all duration-300"
                     >
                       <span className="text-3xl">{ders.icon}</span>
-                      <span className="text-sm font-semibold text-navy-800 group-hover:text-white transition-colors">
+                      <span className="text-label-md text-on-background group-hover:text-on-primary transition-colors">
                         {ders.ad}
                       </span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${kategori.color} group-hover:bg-gold-500 group-hover:text-white group-hover:border-gold-500 transition-colors`}>
+                      <span className="text-caption px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed group-hover:bg-on-primary/20 group-hover:text-on-primary transition-colors">
                         {kategori.label}
                       </span>
                     </Link>
@@ -83,13 +86,13 @@ export default function DerslerPage() {
           </div>
         </section>
 
-        <section className="bg-navy-900 py-16 text-center">
+        <section className="bg-inverse-surface py-16 text-center">
           <div className="max-w-2xl mx-auto px-4">
-            <h2 className="font-serif text-3xl text-white mb-3">Tüm Öğretmenleri Gör</h2>
-            <p className="text-navy-200 mb-6">Filtreler ile ders ve sınıf seviyesine göre öğretmenleri bulun.</p>
+            <h2 className="font-display text-headline-lg text-inverse-on-surface mb-3">Tüm Öğretmenleri Gör</h2>
+            <p className="text-inverse-on-surface/70 text-body-lg mb-6">Filtreler ile ders ve sınıf seviyesine göre öğretmenleri bulun.</p>
             <Link
               href="/egitmenlerimiz"
-              className="inline-block bg-gold-500 text-white px-7 py-3.5 rounded-xl font-bold hover:bg-gold-600 transition-colors"
+              className="inline-block rounded-full squishy-btn bg-primary text-on-primary px-7 py-3.5 font-semibold"
             >
               Öğretmenleri İncele
             </Link>

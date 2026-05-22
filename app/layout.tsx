@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, DM_Serif_Display } from "next/font/google";
+import { Quicksand, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const dmSerif = DM_Serif_Display({
+const quicksand = Quicksand({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-serif",
+  weight: ["600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +32,7 @@ export default async function RootLayout({
 
   return (
     <html lang="tr">
-      <body className={`${inter.variable} ${dmSerif.variable} font-sans`}>
+      <body className={`${quicksand.variable} ${plusJakarta.variable}`}>
         <SessionProvider session={session}>{children}</SessionProvider>
       </body>
     </html>
