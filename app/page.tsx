@@ -327,88 +327,97 @@ export default async function HomePage() {
           </section>
         )}
 
-        {/* ── FİYATLANDIRMA ────────────────────────────────── */}
+        {/* ── NASIL ÜCRETLENDİRİLİR ───────────────────────── */}
         <section className="bg-navy-900 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <p className="text-gold-400 font-semibold text-sm uppercase tracking-widest mb-3">Fiyatlandırma</p>
-              <h2 className="font-serif text-4xl text-white">Çocuklarınız İçin En İyi Eğitim</h2>
-              <p className="mt-4 text-navy-200 max-w-xl mx-auto">Eğitim ihtiyaçlarınıza uygun planlar — faturanıza sürpriz yok.</p>
+              <p className="text-gold-400 font-semibold text-sm uppercase tracking-widest mb-3">Şeffaf Fiyatlandırma</p>
+              <h2 className="font-serif text-4xl text-white">Nasıl Ücretlendirilir?</h2>
+              <p className="mt-4 text-navy-200 max-w-xl mx-auto">
+                Abonelik yok, gizli ücret yok. Sadece aldığınız ders için ödeme yaparsınız.
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {[
                 {
-                  name: "Başlangıç",
-                  price: "199",
-                  desc: "Temel derslerle akademik temelleri güçlendirin.",
-                  features: ["Ayda 4 ders", "Grup dersleri", "İlerleme raporu", "E-posta desteği"],
-                  cta: "Başla",
+                  step: "1",
+                  title: "Öğretmeni Seç",
+                  desc: "Her öğretmenin profil sayfasında saatlik ücreti açıkça yazar. Bütçenize uygun öğretmeni kolayca bulun.",
+                  icon: (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                  ),
                   highlight: false,
                 },
                 {
-                  name: "Standart",
-                  price: "299",
-                  desc: "Bireysel ve grup dersleriyle öğrenmeyi derinleştirin.",
-                  features: ["Ayda 8 ders", "Bireysel + grup", "Haftalık rapor", "Öncelikli destek", "Esnek saat seçimi"],
-                  cta: "En Popüler",
+                  step: "2",
+                  title: "Rezervasyon Yap",
+                  desc: "Uygun saate tıklayın, rezervasyonunuzu oluşturun. Öğretmen onayının ardından ödeme ekranına geçin.",
+                  icon: (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                  ),
                   highlight: true,
                 },
                 {
-                  name: "Premium",
-                  price: "499",
-                  desc: "Uzman öğretmenlerle kapsamlı, kişiye özel destek.",
-                  features: ["Sınırsız ders", "Sadece bireysel", "Günlük rapor", "7/24 destek", "Özel eğitim planı", "Koçluk seansı"],
-                  cta: "Premium Başla",
+                  step: "3",
+                  title: "Güvenle Öde",
+                  desc: "iyzico güvencesiyle tek seferlik ödeme yapın. Kart bilgileriniz sistemimizde saklanmaz.",
+                  icon: (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                    </svg>
+                  ),
                   highlight: false,
                 },
-              ].map((plan) => (
+              ].map((item) => (
                 <div
-                  key={plan.name}
+                  key={item.step}
                   className={`rounded-2xl p-8 border ${
-                    plan.highlight
-                      ? "bg-gold-500 border-gold-400 scale-105 shadow-2xl"
+                    item.highlight
+                      ? "bg-gold-500 border-gold-400 shadow-2xl scale-105"
                       : "bg-navy-800 border-navy-700"
                   }`}
                 >
-                  {plan.highlight && (
-                    <span className="inline-block bg-white text-gold-600 text-xs font-bold px-3 py-1 rounded-full mb-4">
-                      ✦ En Popüler
-                    </span>
-                  )}
-                  <h3 className={`font-semibold text-lg mb-1 ${plan.highlight ? "text-white" : "text-slate-300"}`}>
-                    {plan.name}
-                  </h3>
-                  <p className={`text-sm mb-4 ${plan.highlight ? "text-white/80" : "text-navy-300"}`}>{plan.desc}</p>
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className={`text-4xl font-bold ${plan.highlight ? "text-white" : "text-white"}`}>₺{plan.price}</span>
-                    <span className={`text-sm ${plan.highlight ? "text-white/70" : "text-navy-300"}`}>/ay</span>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-5 ${item.highlight ? "bg-white/20 text-white" : "bg-navy-700 text-gold-400"}`}>
+                    {item.icon}
                   </div>
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((f) => (
-                      <li key={f} className={`flex items-center gap-2 text-sm ${plan.highlight ? "text-white" : "text-navy-200"}`}>
-                        <svg className={`w-4 h-4 shrink-0 ${plan.highlight ? "text-white" : "text-gold-400"}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                        </svg>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href="/register"
-                    className={`block w-full text-center py-3 rounded-xl text-sm font-semibold transition-colors duration-200 cursor-pointer ${
-                      plan.highlight
-                        ? "bg-white text-gold-600 hover:bg-gold-50"
-                        : "bg-navy-700 text-white hover:bg-navy-600 border border-navy-600"
-                    }`}
-                  >
-                    {plan.cta}
-                  </Link>
+                  <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${item.highlight ? "text-white/60" : "text-navy-400"}`}>
+                    Adım {item.step}
+                  </p>
+                  <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
+                  <p className={`text-sm leading-relaxed ${item.highlight ? "text-white/80" : "text-navy-300"}`}>{item.desc}</p>
                 </div>
               ))}
             </div>
-            <p className="text-center mt-8 text-navy-300 text-sm">
-              Tüm planlar 14 gün deneme içerir. Kredi kartı gerektirmez.
-            </p>
+
+            {/* Alt bilgi şeridi */}
+            <div className="bg-navy-800 rounded-2xl border border-navy-700 px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+              <div className="flex flex-wrap justify-center sm:justify-start gap-8 text-center sm:text-left">
+                {[
+                  { label: "Üyelik Ücreti", value: "Ücretsiz" },
+                  { label: "Rezervasyon Ücreti", value: "Ücretsiz" },
+                  { label: "İptal (24 saat önce)", value: "Tam İade" },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <p className="text-white font-bold text-lg">{item.value}</p>
+                    <p className="text-navy-300 text-xs mt-0.5">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+              <Link
+                href="/egitmenlerimiz"
+                className="shrink-0 inline-flex items-center gap-2 bg-gold-500 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-gold-600 transition-colors cursor-pointer"
+              >
+                Öğretmen Fiyatlarını Gör
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </Link>
+            </div>
           </div>
         </section>
 
