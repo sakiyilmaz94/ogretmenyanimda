@@ -42,12 +42,12 @@ export default function DerslerPage() {
       <PublicNavbar />
       <main className="pt-16">
 
-        <section className="relative overflow-hidden bg-surface-container-low py-20 text-center">
-          <div className="blob-bg w-72 h-72 bg-primary/15 rounded-full -top-16 -left-16" />
-          <div className="max-w-3xl mx-auto px-4 relative">
+        <section className="relative overflow-hidden bg-[url('/hero.png')] bg-cover bg-center py-24 text-center">
+          <div className="absolute inset-0 bg-on-background/55" />
+          <div className="max-w-3xl mx-auto px-4 relative z-10">
             <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Dersler</p>
-            <h1 className="font-display text-headline-xl text-on-background mb-4">Hangi Derste Destek Arıyorsunuz?</h1>
-            <p className="text-on-surface-variant text-body-lg">Seviye ve ders seçerek o alanda uzman öğretmenlere ulaşın.</p>
+            <h1 className="font-display text-headline-xl text-on-primary mb-4">Hangi Derste Destek Arıyorsunuz?</h1>
+            <p className="text-on-primary/80 text-body-lg">Seviye ve ders seçerek o alanda uzman öğretmenlere ulaşın.</p>
           </div>
         </section>
 
