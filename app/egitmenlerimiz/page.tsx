@@ -7,12 +7,20 @@ import Link from "next/link";
 
 export const metadata = { title: "Öğretmenlerimiz — Öğretmen Yanımda" };
 
-export default async function EgitmenlerimizPage() {
+export default async function EgitmenlerimizPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ subject?: string }>;
+}) {
   const session = await auth();
   const role = session?.user?.role ?? null;
+  const { subject } = await searchParams;
 
   const educators = await db.educator.findMany({
-    where: { status: "APPROVED" },
+    where: {
+      status: "APPROVED",
+      ...(subject ? { subjects: { has: subject as never } } : {}),
+    },
     include: {
       user: true,
       educatorLessons: { where: { status: "APPROVED" }, include: { lessonProgram: true } },
@@ -60,6 +68,19 @@ export default async function EgitmenlerimizPage() {
         {/* Grid */}
         <section className="bg-slate-50 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {subject && (
+              <div className="mb-6 flex items-center gap-3">
+                <span className="text-sm text-slate-600">
+                  <span className="font-semibold text-navy-900">{SUBJECT_LABELS[subject] ?? subject}</span> branşındaki öğretmenler gösteriliyor
+                </span>
+                <Link
+                  href="/egitmenlerimiz"
+                  className="text-xs text-slate-400 hover:text-slate-600 underline transition-colors"
+                >
+                  Filtreyi kaldır
+                </Link>
+              </div>
+            )}
             {allEducators.length === 0 ? (
               <div className="text-center py-20">
                 <div className="w-16 h-16 bg-navy-100 rounded-full flex items-center justify-center mx-auto mb-4">

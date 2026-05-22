@@ -90,18 +90,28 @@ export default async function HomePage() {
                   </Link>
                 </div>
 
-                {/* Stats */}
-                <div className="mt-10 flex flex-wrap gap-8">
-                  {[
-                    { n: "500+", label: "Aktif Öğrenci" },
-                    { n: "50+",  label: "Uzman Öğretmen" },
-                    { n: "4.9",  label: "Ortalama Puan" },
-                  ].map((s) => (
-                    <div key={s.label}>
-                      <p className="text-3xl font-bold text-navy-900">{s.n}</p>
-                      <p className="text-sm text-slate-500">{s.label}</p>
-                    </div>
-                  ))}
+                {/* Ders konuları */}
+                <div className="mt-10">
+                  <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-3">Hangi derste destek arıyorsunuz?</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { label: "Matematik",       slug: "MATEMATIK" },
+                      { label: "Türkçe",           slug: "TURKCE" },
+                      { label: "Fen Bilgisi",      slug: "FEN_BILGISI" },
+                      { label: "İngilizce",        slug: "INGILIZCE" },
+                      { label: "Hayat Bilgisi",    slug: "HAYAT_BILGISI" },
+                      { label: "İlk Okuma Yazma",  slug: "ILK_OKUMA_YAZMA" },
+                      { label: "Sosyal Bilgiler",  slug: "SOSYAL_BILGILER" },
+                    ].map((s) => (
+                      <Link
+                        key={s.slug}
+                        href={`/egitmenlerimiz?subject=${s.slug}`}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium bg-white border border-slate-200 text-navy-700 hover:border-gold-400 hover:text-gold-700 hover:bg-gold-50 transition-colors duration-150 cursor-pointer shadow-sm"
+                      >
+                        {s.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
 
