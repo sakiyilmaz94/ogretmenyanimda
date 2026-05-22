@@ -65,6 +65,7 @@ export function emailBookingConfirmed({
   date,
   time,
   amount,
+  meetingUrl,
 }: {
   parentName: string;
   educatorName: string;
@@ -72,6 +73,7 @@ export function emailBookingConfirmed({
   date: string;
   time: string;
   amount: string;
+  meetingUrl?: string;
 }) {
   return `
     <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px">
@@ -83,9 +85,11 @@ export function emailBookingConfirmed({
         <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;color:#64748b">Öğretmen</td><td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:600">${educatorName}</td></tr>
         <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;color:#64748b">Tarih</td><td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:600">${date}</td></tr>
         <tr><td style="padding:8px;border-bottom:1px solid #e2e8f0;color:#64748b">Saat</td><td style="padding:8px;border-bottom:1px solid #e2e8f0;font-weight:600">${time}</td></tr>
-        <tr><td style="padding:8px;color:#64748b">Ödeme Tutarı</td><td style="padding:8px;font-weight:600;color:#d97706">${amount}</td></tr>
+        <tr><td style="padding:8px;${meetingUrl ? "border-bottom:1px solid #e2e8f0;" : ""}color:#64748b">Ödeme Tutarı</td><td style="padding:8px;${meetingUrl ? "border-bottom:1px solid #e2e8f0;" : ""}font-weight:600;color:#d97706">${amount}</td></tr>
+        ${meetingUrl ? `<tr><td style="padding:8px;color:#64748b">Google Meet</td><td style="padding:8px;font-weight:600"><a href="${meetingUrl}" style="color:#1a73e8">${meetingUrl}</a></td></tr>` : ""}
       </table>
       <a href="https://ogretmenyanimda.com.tr/parent/bookings" style="display:inline-block;background:#d97706;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Ödeme Yap →</a>
+      ${meetingUrl ? `<a href="${meetingUrl}" style="display:inline-block;margin-left:12px;background:#1a73e8;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Google Meet'e Katıl →</a>` : ""}
     </div>`;
 }
 

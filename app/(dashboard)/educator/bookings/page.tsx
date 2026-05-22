@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import BookingStatusActions from "@/components/dashboard/BookingStatusActions";
+import Link from "next/link";
 
 export default async function EducatorBookingsPage() {
   const session = await auth();
@@ -105,9 +106,24 @@ export default async function EducatorBookingsPage() {
                     <p className="text-sm font-medium text-slate-700">{SUBJECT_LABELS[b.subject] ?? b.subject}</p>
                     <p className="text-xs text-slate-400">{formatDate(b.slot.date)} · {b.slot.startTime}–{b.slot.endTime}</p>
                   </div>
-                  <span className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-full font-medium">
-                    Veli ödemesi bekleniyor…
-                  </span>
+                  <div className="flex flex-col sm:items-end gap-2">
+                    <span className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-full font-medium">
+                      Veli ödemesi bekleniyor…
+                    </span>
+                    {b.meetingUrl && (
+                      <Link
+                        href={b.meetingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs bg-[#1a73e8] text-white px-3 py-1.5 rounded-full font-medium hover:bg-[#1558b0] transition-colors"
+                      >
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19.4 13c.1-.3.1-.7.1-1s0-.7-.1-1l2.1-1.6c.2-.2.2-.4.1-.6l-2-3.5c-.1-.2-.4-.3-.6-.2l-2.5 1c-.5-.4-1.1-.7-1.7-.9l-.4-2.7c0-.2-.2-.4-.5-.4h-4c-.2 0-.4.2-.5.4l-.4 2.7c-.6.2-1.2.5-1.7.9l-2.5-1c-.2-.1-.5 0-.6.2l-2 3.5c-.1.2-.1.5.1.6L4.6 11c-.1.3-.1.7-.1 1s0 .7.1 1L2.5 14.6c-.2.2-.2.4-.1.6l2 3.5c.1.2.4.3.6.2l2.5-1c.5.4 1.1.7 1.7.9l.4 2.7c.1.2.3.4.5.4h4c.2 0 .4-.2.5-.4l.4-2.7c.6-.2 1.2-.5 1.7-.9l2.5 1c.2.1.5 0 .6-.2l2-3.5c.1-.2.1-.5-.1-.6L19.4 13zM12 15.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/>
+                        </svg>
+                        Google Meet'e Katıl
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -132,6 +148,7 @@ export default async function EducatorBookingsPage() {
                   <th className="text-left px-5 py-3 font-medium hidden md:table-cell">Tarih</th>
                   <th className="text-left px-5 py-3 font-medium">Ücret</th>
                   <th className="text-left px-5 py-3 font-medium">Durum</th>
+                  <th className="text-left px-5 py-3 font-medium"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
@@ -151,6 +168,21 @@ export default async function EducatorBookingsPage() {
                         </svg>
                         Kesinleşti
                       </span>
+                    </td>
+                    <td className="px-5 py-3">
+                      {b.meetingUrl && (
+                        <Link
+                          href={b.meetingUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-[#1a73e8] hover:underline font-medium"
+                        >
+                          Meet Linki
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                          </svg>
+                        </Link>
+                      )}
                     </td>
                   </tr>
                 ))}

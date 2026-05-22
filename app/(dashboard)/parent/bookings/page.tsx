@@ -147,14 +147,29 @@ export default async function ParentBookingsPage({
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    {b.status === "CONFIRMED" && b.payment?.status !== "PAID" && (
-                      <Link
-                        href={`/parent/payments/${b.id}`}
-                        className="text-xs bg-amber-500 text-white px-3 py-1.5 rounded-lg hover:bg-amber-600 font-medium transition"
-                      >
-                        Ödeme Yap →
-                      </Link>
-                    )}
+                    <div className="flex flex-col gap-1.5">
+                      {b.status === "CONFIRMED" && b.payment?.status !== "PAID" && (
+                        <Link
+                          href={`/parent/payments/${b.id}`}
+                          className="text-xs bg-amber-500 text-white px-3 py-1.5 rounded-lg hover:bg-amber-600 font-medium transition text-center"
+                        >
+                          Ödeme Yap →
+                        </Link>
+                      )}
+                      {(b.status === "CONFIRMED" || b.status === "COMPLETED") && b.meetingUrl && (
+                        <Link
+                          href={b.meetingUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-1.5 text-xs bg-[#1a73e8] text-white px-3 py-1.5 rounded-lg hover:bg-[#1558b0] font-medium transition"
+                        >
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                          </svg>
+                          Google Meet
+                        </Link>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

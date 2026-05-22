@@ -211,6 +211,8 @@ model Booking {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
+  meetingUrl     String?
+
   student        Student          @relation(fields: [studentId], references: [id])
   educator       Educator         @relation(fields: [educatorId], references: [id])
   slot           AvailabilitySlot @relation(fields: [slotId], references: [id])

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
 import { sendEmail, emailBookingConfirmed, emailPaymentReceived } from "@/lib/email";
+import { createMeetingSpace } from "@/lib/google-meet";
 import { NextResponse } from "next/server";
 import { SUBJECT_LABELS, formatCurrency } from "@/lib/utils";
 
@@ -37,7 +38,13 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
     }
 
     if (action === "approve") {
-      await db.booking.update({ where: { id: bookingId }, data: { status: "CONFIRMED" } });
+      // Google Meet linki oluştur
+      const meetingUrl = await createMeetingSpace();
+
+      await db.booking.update({
+        where: { id: bookingId },
+        data: { status: "CONFIRMED", ...(meetingUrl ? { meetingUrl } : {}) },
+      });
       // Ödeme kaydını şimdi oluştur
       await db.payment.upsert({
         where: { bookingId },
@@ -65,6 +72,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
           date: dateStr,
           time: timeStr,
           amount,
+          meetingUrl: meetingUrl ?? undefined,
         }),
       });
     } else {
