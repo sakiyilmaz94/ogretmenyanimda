@@ -34,19 +34,18 @@ export default function NotificationBell() {
 
   async function markRead(id: string) {
     await fetch(`/api/notifications/${id}/read`, { method: "POST" });
-    setNotifications((prev) => prev.map((n) => n.id === id ? { ...n, read: true } : n));
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
   }
 
   useEffect(() => {
     loadNotifications();
   }, []);
 
-  // Supabase Realtime broadcast
   useEffect(() => {
     if (!session?.user?.id) return;
-
     const channel = supabase.channel(`user-${session.user.id}`);
-
     channel.on("broadcast", { event: "notification" }, (payload) => {
       const newNotif: Notification = {
         id: `rt-${Date.now()}`,
@@ -58,13 +57,10 @@ export default function NotificationBell() {
       };
       setNotifications((prev) => [newNotif, ...prev]);
     });
-
     channel.subscribe();
-
     return () => { supabase.removeChannel(channel); };
   }, [session?.user?.id]);
 
-  // Dışarı tıklayınca kapat
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -77,9 +73,14 @@ export default function NotificationBell() {
 
   return (
     <div className="relative" ref={ref}>
+      {/* Zil butonu */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="relative p-2 rounded-full text-inverse-on-surface/60 hover:bg-surface-container-lowest/10 hover:text-inverse-on-surface transition"
+        className={`relative p-2 rounded-full transition-all duration-200 ${
+          open
+            ? "bg-white/20 text-inverse-on-surface"
+            : "text-inverse-on-surface/60 hover:bg-white/10 hover:text-inverse-on-surface"
+        }`}
         aria-label="Bildirimler"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,53 +88,102 @@ export default function NotificationBell() {
             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
         </svg>
         {unread > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-error-container text-on-error-container text-caption rounded-full flex items-center justify-center font-bold">
+          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-error text-on-error text-[10px] rounded-full flex items-center justify-center font-bold leading-none">
             {unread > 9 ? "9+" : unread}
           </span>
         )}
       </button>
 
+      {/* Bildirim paneli — yukarı açılır */}
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-80 bg-surface-container-lowest rounded-md border border-outline-variant z-50 overflow-hidden soft-card-static">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-outline-variant">
-            <p className="font-display font-semibold text-on-background text-label-md">Bildirimler</p>
+        <div
+          className="absolute bottom-full mb-3 right-0 w-80 rounded-2xl border border-white/10 z-50 overflow-hidden shadow-2xl"
+          style={{
+            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+            backdropFilter: "blur(16px)",
+          }}
+        >
+          {/* Başlık */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-primary rounded-full" />
+              <p className="font-display font-semibold text-white text-sm">Bildirimler</p>
+              {unread > 0 && (
+                <span className="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  {unread} yeni
+                </span>
+              )}
+            </div>
             {unread > 0 && (
-              <button onClick={markAllRead} className="text-caption text-primary hover:underline font-semibold">
+              <button
+                onClick={markAllRead}
+                className="text-[11px] text-white/50 hover:text-white transition-colors font-medium"
+              >
                 Tümünü oku
               </button>
             )}
           </div>
 
-          <div className="max-h-80 overflow-y-auto">
+          {/* Liste */}
+          <div className="max-h-72 overflow-y-auto scrollbar-thin">
             {notifications.length === 0 ? (
-              <div className="py-8 text-center">
-                <p className="text-on-surface-variant text-body-md">Bildirim yok</p>
+              <div className="py-10 text-center flex flex-col items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                </div>
+                <p className="text-white/40 text-sm">Henüz bildirim yok</p>
               </div>
             ) : (
-              notifications.slice(0, 15).map((n) => (
-                <div
-                  key={n.id}
-                  onClick={() => { markRead(n.id); if (n.link) setOpen(false); }}
-                  className={`px-4 py-3 border-b border-outline-variant last:border-0 cursor-pointer hover:bg-surface-container-low transition ${!n.read ? "bg-primary-fixed/30" : ""}`}
-                >
-                  {n.link ? (
-                    <Link href={n.link} className="block">
-                      <p className={`text-label-md font-medium ${!n.read ? "text-on-background" : "text-on-surface-variant"}`}>{n.title}</p>
-                      <p className="text-caption text-on-surface-variant mt-0.5 line-clamp-2">{n.message}</p>
-                      <p className="text-caption text-outline mt-1">{new Date(n.createdAt).toLocaleString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</p>
-                    </Link>
-                  ) : (
-                    <>
-                      <p className={`text-label-md font-medium ${!n.read ? "text-on-background" : "text-on-surface-variant"}`}>{n.title}</p>
-                      <p className="text-caption text-on-surface-variant mt-0.5 line-clamp-2">{n.message}</p>
-                      <p className="text-caption text-outline mt-1">{new Date(n.createdAt).toLocaleString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</p>
-                    </>
-                  )}
-                  {!n.read && <span className="inline-block w-2 h-2 bg-primary rounded-full mt-1" />}
-                </div>
-              ))
+              notifications.slice(0, 15).map((n) => {
+                const content = (
+                  <>
+                    <div className="flex items-start justify-between gap-2">
+                      <p className={`text-sm font-medium leading-snug flex-1 ${!n.read ? "text-white" : "text-white/60"}`}>
+                        {n.title}
+                      </p>
+                      {!n.read && (
+                        <span className="w-2 h-2 bg-primary rounded-full mt-1 shrink-0" />
+                      )}
+                    </div>
+                    <p className="text-[12px] text-white/40 mt-0.5 line-clamp-2 leading-relaxed">
+                      {n.message}
+                    </p>
+                    <p className="text-[11px] text-white/25 mt-1.5">
+                      {new Date(n.createdAt).toLocaleString("tr-TR", {
+                        day: "numeric", month: "short",
+                        hour: "2-digit", minute: "2-digit",
+                      })}
+                    </p>
+                  </>
+                );
+
+                return (
+                  <div
+                    key={n.id}
+                    onClick={() => { markRead(n.id); if (n.link) setOpen(false); }}
+                    className={`px-4 py-3 border-b border-white/5 last:border-0 cursor-pointer transition-colors duration-150 ${
+                      !n.read ? "bg-primary/10 hover:bg-primary/15" : "hover:bg-white/5"
+                    }`}
+                  >
+                    {n.link ? (
+                      <Link href={n.link} className="block">{content}</Link>
+                    ) : (
+                      content
+                    )}
+                  </div>
+                );
+              })
             )}
           </div>
+
+          {/* Ok işareti (aşağıyı gösterir) */}
+          <div
+            className="absolute -bottom-2 right-3 w-3 h-3 rotate-45 border-r border-b border-white/10"
+            style={{ background: "#0f172a" }}
+          />
         </div>
       )}
     </div>

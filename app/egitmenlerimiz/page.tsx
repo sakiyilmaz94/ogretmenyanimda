@@ -2,6 +2,8 @@ import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
+
+export const dynamic = "force-dynamic";
 import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 

@@ -36,7 +36,8 @@ export async function PATCH(req: Request) {
       skills: skills ?? [],
       certificates: certificates ?? [],
       linkedinUrl: linkedinUrl ?? null,
-      isProfilePublic: isProfilePublic ?? false,
+      // APPROVED öğretmenin mevcut değeri korunur; form göndermediyse false'a düşmez
+      ...(isProfilePublic !== undefined ? { isProfilePublic } : {}),
     },
   });
 
