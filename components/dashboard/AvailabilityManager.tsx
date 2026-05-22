@@ -22,17 +22,6 @@ TIMES.push("23:59");
 const DAYS = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
 const DAY_MAP = [1, 2, 3, 4, 5, 6, 0]; // JS getDay() values
 
-function getNextDateForDay(dayIndex: number): string {
-  const today = new Date();
-  const todayDay = today.getDay();
-  const jsDay = DAY_MAP[dayIndex];
-  let diff = jsDay - todayDay;
-  if (diff <= 0) diff += 7;
-  const d = new Date(today);
-  d.setDate(today.getDate() + diff);
-  return d.toISOString().split("T")[0];
-}
-
 export default function AvailabilityManager({
   educatorId,
   existingSlots,
@@ -178,7 +167,7 @@ export default function AvailabilityManager({
               </div>
             </div>
             <p className="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
-              Seçilen aralık otomatik olarak <strong>1'er saatlik</strong> ders dilimlerine bölünür. Veliler dilediği saati seçer.
+              Seçilen aralık otomatik olarak <strong>1&apos;er saatlik</strong> ders dilimlerine bölünür. Veliler dilediği saati seçer.
             </p>
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button onClick={addSingle} disabled={loading || !date}
@@ -227,7 +216,7 @@ export default function AvailabilityManager({
               </div>
             </div>
             <p className="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2">
-              Seçilen aralık otomatik olarak <strong>1'er saatlik</strong> ders dilimlerine bölünür. Veliler dilediği saati seçer.
+              Seçilen aralık otomatik olarak <strong>1&apos;er saatlik</strong> ders dilimlerine bölünür. Veliler dilediği saati seçer.
             </p>
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button onClick={addWeekly} disabled={loading || selectedDays.length === 0}

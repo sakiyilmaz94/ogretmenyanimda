@@ -28,8 +28,7 @@ export default async function EgitmenlerimizPage({
     orderBy: { createdAt: "asc" },
   });
 
-  const publicEducators = educators.filter((e) => e.isProfilePublic);
-  const allEducators = educators;
+  const allEducators = educators.filter((e) => e.isProfilePublic);
 
   return (
     <>

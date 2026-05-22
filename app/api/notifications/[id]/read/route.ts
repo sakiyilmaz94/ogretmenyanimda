@@ -15,7 +15,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
   return NextResponse.json({ ok: true });
 }
 
-export async function DELETE(_req: Request) {
+export async function DELETE() {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
 

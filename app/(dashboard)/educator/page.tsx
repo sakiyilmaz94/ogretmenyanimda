@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import Link from "next/link";
-import { formatCurrency, SUBJECT_LABELS } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import ReapplyForm from "@/components/dashboard/ReapplyForm";
 
 export default async function EducatorDashboard() {

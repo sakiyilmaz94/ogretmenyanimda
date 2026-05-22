@@ -6,15 +6,8 @@ import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 const ALL_SUBJECTS = Object.entries(SUBJECT_LABELS);
 const ALL_GRADES = Object.entries(GRADE_LABELS);
 
-interface Profile {
-  subjects: string[];
-  gradeLevels: string[];
-  hourlyRate: number;
-  bio: string | null;
-}
 
 export default function EducatorDerslerimPage() {
-  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -24,7 +17,6 @@ export default function EducatorDerslerimPage() {
     fetch("/api/educator/profile")
       .then((r) => r.json())
       .then((d) => {
-        setProfile(d);
         setForm({
           subjects: d.subjects || [],
           gradeLevels: d.gradeLevels || [],
