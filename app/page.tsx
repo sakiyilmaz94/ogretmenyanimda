@@ -237,16 +237,16 @@ export default async function HomePage() {
                   features: ["Kişiselleştirilmiş müfredat", "Esnek saat seçimi", "İlerleme takibi"],
                 },
                 {
-                  title: "Grup Dersleri",
-                  desc: "Maks. 6 öğrenciyle sosyal öğrenme. Akranlarla birlikte öğrenmek motivasyonu artırır. 60 dakika.",
+                  title: "Veli Takip Paketi",
+                  desc: "Her dersin sonunda öğretmen kısa bir ilerleme notu bırakır; veli panelinden kolayca takip edersiniz.",
                   color: "bg-gold-500",
                   textColor: "text-white",
                   icon: (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                   ),
-                  features: ["Uygun fiyat", "Sosyal beceri gelişimi", "Rekabetçi ortam"],
+                  features: ["Ders sonrası ilerleme notu", "Güçlü / zayıf konu raporu", "Veli–öğretmen iletişimi"],
                 },
                 {
                   title: "Öğrenci Koçluğu",
@@ -419,7 +419,7 @@ export default async function HomePage() {
               {[
                 { icon: "🛡️", title: "Güvenli Ödeme", desc: "iyzico 256-bit SSL" },
                 { icon: "✅", title: "Onaylı Öğretmenler", desc: "Belge incelemeli kabul" },
-                { icon: "⭐", title: "4.9/5 Memnuniyet", desc: "500+ veli değerlendirmesi" },
+                { icon: "📋", title: "Veli Takip Raporu", desc: "Her dersten sonra not" },
                 { icon: "🔄", title: "Ücretsiz İptal", desc: "24 saat öncesinde" },
               ].map((b) => (
                 <div key={b.title} className="cursor-default">
