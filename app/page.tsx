@@ -33,129 +33,84 @@ export default async function HomePage() {
 
         {/* ── HERO ─────────────────────────────────────────── */}
         <section className="bg-ivory min-h-[88vh] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              <div>
-                <span className="inline-flex items-center gap-2 bg-gold-50 text-gold-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-gold-200 mb-6">
-                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 w-full text-center">
+            <span className="inline-flex items-center gap-2 bg-gold-50 text-gold-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-gold-200 mb-6">
+              <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+              </svg>
+              Türkiye&apos;nin Güvenilir Özel Ders Platformu
+            </span>
+
+            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-navy-900 leading-tight mb-6">
+              Uzmanlarla<br/>
+              <span className="text-gold-500">Kaliteli</span> ve Etkili Öğrenim
+            </h1>
+
+            <p className="text-lg text-slate-600 leading-relaxed mb-8 max-w-2xl mx-auto">
+              İlkokul ve ortaokul öğrencileri için alanında uzman, yönetici onaylı öğretmenlerle bireysel dersler. Randevu al, öde, öğren.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
+              {role === "PARENT" ? (
+                <Link
+                  href="/egitmenlerimiz"
+                  className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 shadow-lg shadow-gold-200"
+                >
+                  Öğretmen Bul
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                   </svg>
-                  Türkiye&apos;nin Güvenilir Özel Ders Platformu
-                </span>
-                <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-navy-900 leading-tight mb-6">
-                  Uzmanlarla<br/>
-                  <span className="text-gold-500">Kaliteli</span> ve<br/>
-                  Etkili Öğrenim
-                </h1>
-                <p className="text-lg text-slate-600 leading-relaxed mb-8 max-w-lg">
-                  İlkokul ve ortaokul öğrencileri için alanında uzman öğretmenlerle bireysel ve grup dersleri. Randevu al, öde, öğren.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  {role === "PARENT" ? (
-                    <Link
-                      href="/egitmenlerimiz"
-                      className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-7 py-3.5 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 cursor-pointer shadow-lg shadow-gold-200"
-                    >
-                      Öğretmen Bul
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                      </svg>
-                    </Link>
-                  ) : role ? (
-                    <Link
-                      href={role === "EDUCATOR" ? "/educator" : role === "ADMIN" ? "/admin" : "/parent"}
-                      className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-7 py-3.5 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 cursor-pointer shadow-lg shadow-gold-200"
-                    >
-                      Panelime Git
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                      </svg>
-                    </Link>
-                  ) : (
-                    <Link
-                      href="/register"
-                      className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-7 py-3.5 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 cursor-pointer shadow-lg shadow-gold-200"
-                    >
-                      Ücretsiz Başla
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                      </svg>
-                    </Link>
-                  )}
+                </Link>
+              ) : role ? (
+                <Link
+                  href={role === "EDUCATOR" ? "/educator" : role === "ADMIN" ? "/admin" : "/parent"}
+                  className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 shadow-lg shadow-gold-200"
+                >
+                  Panelime Git
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                  </svg>
+                </Link>
+              ) : (
+                <Link
+                  href="/register"
+                  className="inline-flex items-center justify-center gap-2 bg-gold-500 text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-gold-600 transition-colors duration-200 shadow-lg shadow-gold-200"
+                >
+                  Ücretsiz Başla
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                  </svg>
+                </Link>
+              )}
+              <Link
+                href="/egitmenlerimiz"
+                className="inline-flex items-center justify-center gap-2 bg-white text-navy-900 border-2 border-navy-200 px-8 py-4 rounded-xl text-base font-semibold hover:border-navy-400 transition-colors duration-200"
+              >
+                Öğretmenleri Keşfet
+              </Link>
+            </div>
+
+            {/* Ders konuları */}
+            <div>
+              <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-3">Hangi derste destek arıyorsunuz?</p>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {[
+                  { label: "Matematik",       slug: "MATEMATIK" },
+                  { label: "Türkçe",          slug: "TURKCE" },
+                  { label: "Fen Bilgisi",     slug: "FEN_BILGISI" },
+                  { label: "İngilizce",       slug: "INGILIZCE" },
+                  { label: "Hayat Bilgisi",   slug: "HAYAT_BILGISI" },
+                  { label: "İlk Okuma Yazma", slug: "ILK_OKUMA_YAZMA" },
+                  { label: "Sosyal Bilgiler", slug: "SOSYAL_BILGILER" },
+                ].map((s) => (
                   <Link
-                    href="/egitmenlerimiz"
-                    className="inline-flex items-center justify-center gap-2 bg-white text-navy-900 border-2 border-navy-200 px-7 py-3.5 rounded-xl text-base font-semibold hover:border-navy-400 transition-colors duration-200 cursor-pointer"
+                    key={s.slug}
+                    href={`/egitmenlerimiz?subject=${s.slug}`}
+                    className="inline-flex items-center px-3.5 py-1.5 rounded-full text-sm font-medium bg-white border border-slate-200 text-navy-700 hover:border-gold-400 hover:text-gold-700 hover:bg-gold-50 transition-colors duration-150 shadow-sm"
                   >
-                    Öğretmenleri Keşfet
+                    {s.label}
                   </Link>
-                </div>
-
-                {/* Ders konuları */}
-                <div className="mt-10">
-                  <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-3">Hangi derste destek arıyorsunuz?</p>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      { label: "Matematik",       slug: "MATEMATIK" },
-                      { label: "Türkçe",           slug: "TURKCE" },
-                      { label: "Fen Bilgisi",      slug: "FEN_BILGISI" },
-                      { label: "İngilizce",        slug: "INGILIZCE" },
-                      { label: "Hayat Bilgisi",    slug: "HAYAT_BILGISI" },
-                      { label: "İlk Okuma Yazma",  slug: "ILK_OKUMA_YAZMA" },
-                      { label: "Sosyal Bilgiler",  slug: "SOSYAL_BILGILER" },
-                    ].map((s) => (
-                      <Link
-                        key={s.slug}
-                        href={`/egitmenlerimiz?subject=${s.slug}`}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium bg-white border border-slate-200 text-navy-700 hover:border-gold-400 hover:text-gold-700 hover:bg-gold-50 transition-colors duration-150 cursor-pointer shadow-sm"
-                      >
-                        {s.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Hero visual */}
-              <div className="relative hidden lg:block">
-                <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-navy-900 rounded-xl flex items-center justify-center">
-                      <svg className="w-5 h-5 text-gold-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-navy-900 text-sm">Ders Rezervasyonu</p>
-                      <p className="text-xs text-slate-500">Bugün müsait saatler</p>
-                    </div>
-                  </div>
-                  {[
-                    { time: "09:00", subject: "Matematik", educator: "Elif Hanım", avail: true },
-                    { time: "11:00", subject: "Türkçe",    educator: "Ahmet Bey",  avail: true },
-                    { time: "14:00", subject: "Fen Bilgisi",educator: "Ayşe Hanım",avail: false },
-                    { time: "16:00", subject: "İngilizce", educator: "Can Bey",    avail: true },
-                  ].map((slot) => (
-                    <div key={slot.time} className="flex items-center justify-between py-3 border-b border-slate-50 last:border-0">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xs font-mono text-slate-400 w-12">{slot.time}</span>
-                        <div>
-                          <p className="text-sm font-medium text-navy-900">{slot.subject}</p>
-                          <p className="text-xs text-slate-500">{slot.educator}</p>
-                        </div>
-                      </div>
-                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${slot.avail ? "bg-sage-50 text-sage-600" : "bg-slate-100 text-slate-400"}`}>
-                        {slot.avail ? "Müsait" : "Dolu"}
-                      </span>
-                    </div>
-                  ))}
-                  <Link href="/register" className="mt-4 block w-full text-center bg-navy-900 text-white py-3 rounded-xl text-sm font-semibold hover:bg-navy-800 transition-colors cursor-pointer">
-                    Ders Al
-                  </Link>
-                </div>
-                {/* Floating badge */}
-                <div className="absolute -top-4 -right-4 bg-gold-500 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg">
-                  ✓ Hemen Başla
-                </div>
+                ))}
               </div>
             </div>
           </div>
