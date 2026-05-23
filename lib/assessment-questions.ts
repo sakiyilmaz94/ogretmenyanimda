@@ -137,7 +137,55 @@ const questions: QuestionBank = {
   ],
 };
 
+// 1. ve 2. sınıflar için temel sorular (okuma-yazma düzeyi)
+const earlyGradeQuestions: QuestionBank = {
+  "TURKCE_ERKEN": [
+    { question: "'Kedi' kelimesinde kaç harf vardır?", options: ["3", "4", "5", "2"], correct: 0 },
+    { question: "Hangisi bir hayvan ismidir?", options: ["Elma", "Köpek", "Masa", "Kalem"], correct: 1 },
+    { question: "'Anne' kelimesinin ilk harfi hangisidir?", options: ["E", "N", "A", "M"], correct: 2 },
+    { question: "Hangisi bir meyve ismidir?", options: ["Kalem", "Sandalye", "Armut", "Kapı"], correct: 2 },
+    { question: "'Güneş' kelimesi kaç heceden oluşur?", options: ["1", "2", "3", "4"], correct: 1 },
+    { question: "Cümlenin sonuna hangi işaret konur?", options: ["Virgül ,", "Nokta .", "Soru ?", "Ünlem !"], correct: 1 },
+    { question: "Hangisi büyük harfle başlar?", options: ["kitap", "masa", "Türkiye", "elma"], correct: 2 },
+    { question: "'Okul' nedir?", options: ["Yemek yenilen yer", "Ders çalışılan yer", "Oyun oynanan park", "Uyunan yer"], correct: 1 },
+    { question: "Hangisi bir renk değildir?", options: ["Kırmızı", "Mavi", "Büyük", "Sarı"], correct: 2 },
+    { question: "'Top' kelimesinin zıt anlamlısı nedir?", options: ["Küçük", "Yuvarlak", "Düz", "Sert"], correct: 2 },
+  ],
+  "MATEMATIK_ERKEN": [
+    { question: "5 + 3 kaç eder?", options: ["7", "8", "9", "6"], correct: 1 },
+    { question: "10 - 4 kaç eder?", options: ["5", "6", "7", "8"], correct: 1 },
+    { question: "Hangisi en büyük sayıdır?", options: ["12", "9", "15", "7"], correct: 2 },
+    { question: "2 + 2 + 2 kaç eder?", options: ["4", "5", "6", "8"], correct: 2 },
+    { question: "1 düzine kaç tanedir?", options: ["10", "11", "12", "13"], correct: 2 },
+    { question: "Hangisi çift sayıdır?", options: ["3", "5", "8", "7"], correct: 2 },
+    { question: "20'den sonra gelen sayı hangisidir?", options: ["19", "21", "22", "18"], correct: 1 },
+    { question: "5 × 2 kaç eder?", options: ["7", "8", "10", "12"], correct: 2 },
+    { question: "Bir haftada kaç gün vardır?", options: ["5", "6", "7", "8"], correct: 2 },
+    { question: "Bir günde kaç saat vardır?", options: ["12", "20", "24", "48"], correct: 2 },
+  ],
+  "FEN_BILIMLERI_ERKEN": [
+    { question: "Hangisi bir bitki değildir?", options: ["Çiçek", "Ağaç", "Balık", "Çimen"], correct: 2 },
+    { question: "Yağmur nereden yağar?", options: ["Güneş", "Bulut", "Rüzgar", "Dağ"], correct: 1 },
+    { question: "Hangi mevsimde kar yağar?", options: ["Yaz", "Bahar", "Sonbahar", "Kış"], correct: 3 },
+    { question: "Hangisi bir hayvanın yavrusudur?", options: ["Kedi-yavru kedi", "Ağaç-filiz", "Su-buz", "Ekmek-un"], correct: 0 },
+    { question: "Güneş hangi yönden doğar?", options: ["Batı", "Kuzey", "Doğu", "Güney"], correct: 2 },
+    { question: "Hangi organ ile görürüz?", options: ["Kulak", "Burun", "Göz", "Ağız"], correct: 2 },
+    { question: "Su hangi hâlde içilir?", options: ["Katı", "Sıvı", "Gaz", "Toz"], correct: 1 },
+    { question: "Bitkiler büyümek için neye ihtiyaç duyar?", options: ["Sadece su", "Su, toprak ve güneş", "Sadece toprak", "Sadece güneş"], correct: 1 },
+    { question: "Hangisi sürünmez?", options: ["Yılan", "Kertenkele", "Kartal", "Timsah"], correct: 2 },
+    { question: "Gökyüzü hangi renktir?", options: ["Yeşil", "Sarı", "Mavi", "Kırmızı"], correct: 2 },
+  ],
+};
+
 export function getQuestions(subject: string, gradeLevel: string): Question[] {
+  // 1. ve 2. sınıflar için çok daha temel sorular
+  const gradeNum = parseInt(gradeLevel.replace(/\D/g, ""), 10);
+  if (gradeNum <= 2) {
+    const earlyKey = `${subject}_ERKEN`;
+    if (earlyGradeQuestions[earlyKey]) return earlyGradeQuestions[earlyKey]!;
+    if (earlyGradeQuestions["MATEMATIK_ERKEN"]) return earlyGradeQuestions["MATEMATIK_ERKEN"]!;
+  }
+
   const isIlkokul = gradeLevel.startsWith("ILKOKUL");
   const levelKey = isIlkokul ? "ILKOKUL" : "ORTAOKUL";
   const key = `${subject}_${levelKey}`;

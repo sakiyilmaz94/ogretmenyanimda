@@ -21,6 +21,7 @@ export default function NotificationBell() {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ bottom: 0, left: 0 });
   const btnRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const unread = notifications.filter((n) => !n.read).length;
 
@@ -67,6 +68,7 @@ export default function NotificationBell() {
     if (!open) return;
     function handleClick(e: MouseEvent) {
       if (btnRef.current && btnRef.current.contains(e.target as Node)) return;
+      if (panelRef.current && panelRef.current.contains(e.target as Node)) return;
       setOpen(false);
     }
     document.addEventListener("mousedown", handleClick);
@@ -87,6 +89,7 @@ export default function NotificationBell() {
   const panel = open
     ? createPortal(
         <div
+          ref={panelRef}
           style={{
             position: "fixed",
             bottom: pos.bottom,
