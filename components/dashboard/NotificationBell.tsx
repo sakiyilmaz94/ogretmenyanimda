@@ -19,7 +19,7 @@ export default function NotificationBell() {
   const { data: session } = useSession();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [open, setOpen] = useState(false);
-  const [pos, setPos] = useState({ top: 0, right: 0 });
+  const [pos, setPos] = useState({ bottom: 0, right: 0 });
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const unread = notifications.filter((n) => !n.read).length;
@@ -77,7 +77,7 @@ export default function NotificationBell() {
     if (!open && btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect();
       setPos({
-        top: rect.bottom + 12,
+        bottom: window.innerHeight - rect.top + 12,
         right: window.innerWidth - rect.right,
       });
     }
@@ -89,7 +89,7 @@ export default function NotificationBell() {
         <div
           style={{
             position: "fixed",
-            top: pos.top,
+            bottom: pos.bottom,
             right: pos.right,
             width: 320,
             zIndex: 9999,
