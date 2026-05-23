@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { Role } from "@prisma/client";
+import { sendEmail, emailWelcome } from "@/lib/email";
 
 export async function POST(req: Request) {
   const { name, email, password, role, diplomaUrl, idCardUrl } = await req.json();
@@ -44,6 +45,12 @@ export async function POST(req: Request) {
       },
     });
   }
+
+  sendEmail({
+    to: email,
+    subject: "Öğretmen Yanımda'ya Hoş Geldiniz!",
+    html: emailWelcome({ name, role: userRole }),
+  }).catch(console.error);
 
   return NextResponse.json({ success: true });
 }

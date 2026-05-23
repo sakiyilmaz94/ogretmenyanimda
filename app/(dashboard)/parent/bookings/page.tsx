@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { formatCurrency, formatDate, SUBJECT_LABELS } from "@/lib/utils";
 import Link from "next/link";
+import LessonReportViewer from "@/components/dashboard/LessonReportViewer";
 
 const statusLabel: Record<string, string> = {
   PENDING: "Onay Bekleniyor",
@@ -36,6 +37,7 @@ export default async function ParentBookingsPage({
               educator: { include: { user: true } },
               slot: true,
               payment: true,
+              lessonReport: true,
             },
           },
         },
@@ -156,6 +158,9 @@ export default async function ParentBookingsPage({
                         >
                           Ödeme Yap →
                         </Link>
+                      )}
+                      {b.status === "COMPLETED" && b.lessonReport && (
+                        <LessonReportViewer report={b.lessonReport} />
                       )}
                       {(b.status === "CONFIRMED" || b.status === "COMPLETED") && b.meetingUrl && (
                         <Link

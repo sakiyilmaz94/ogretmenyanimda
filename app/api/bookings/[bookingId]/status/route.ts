@@ -1,10 +1,10 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
-import { sendEmail, emailBookingConfirmed, emailPaymentReceived } from "@/lib/email";
+import { sendEmail, emailBookingConfirmed, emailPaymentReceived, emailLessonReportRequest } from "@/lib/email";
 import { createMeetingSpace } from "@/lib/google-meet";
 import { NextResponse } from "next/server";
-import { SUBJECT_LABELS, formatCurrency } from "@/lib/utils";
+import { SUBJECT_LABELS, formatCurrency, formatDate } from "@/lib/utils";
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ bookingId: string }> }) {
   const session = await auth();
@@ -75,6 +75,32 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
           meetingUrl: meetingUrl ?? undefined,
         }),
       });
+
+      // Seviye belirleme testi oluştur
+      if (booking.gradeLevel) {
+        const assessment = await db.levelAssessment.create({
+          data: {
+            bookingId,
+            studentId: booking.studentId,
+            subject: booking.subject,
+            gradeLevel: booking.gradeLevel,
+          },
+        });
+        const baseUrl = process.env.NEXTAUTH_URL ?? "https://ogretmenyanimda.com.tr";
+        sendEmail({
+          to: parentUser.email,
+          subject: `${booking.student.name} için seviye testi hazır`,
+          html: `
+            <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px">
+              <h2 style="color:#0f172a">Seviye Belirleme Testi 📝</h2>
+              <p>Merhaba <strong>${parentUser.name ?? "Veli"}</strong>,</p>
+              <p>Öğretmenin <strong>${booking.student.name}</strong>'e özel ilk ders planını hazırlayabilmesi için kısa bir seviye belirleme testi hazırlandı.</p>
+              <p>Lütfen <strong>${booking.student.name}</strong>'e aşağıdaki linki verin ve testi birlikte yapın:</p>
+              <a href="${baseUrl}/test/${assessment.id}" style="display:inline-block;background:#0f172a;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Testi Başlat →</a>
+              <p style="color:#64748b;font-size:13px;margin-top:16px">Test yaklaşık 5–10 dakika sürmektedir.</p>
+            </div>`,
+        }).catch(console.error);
+      }
     } else {
       await db.booking.update({ where: { id: bookingId }, data: { status: "CANCELLED" } });
       await db.availabilitySlot.update({ where: { id: booking.slotId }, data: { isBooked: false } });
@@ -127,6 +153,17 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
         }),
       });
     } catch (e) { console.error("Ödeme emaili gönderilemedi:", e); }
+
+    // Ders sonu rapor hatırlatıcısı — ders günü için planlanmış (şimdilik aynı anda gönderilir)
+    sendEmail({
+      to: booking.educator.user.email,
+      subject: `Ders Raporu — ${booking.student.name} (${formatDate(booking.slot.date)})`,
+      html: emailLessonReportRequest({
+        educatorName: booking.educator.user.name ?? "Öğretmen",
+        studentName: booking.student.name,
+        date: formatDate(booking.slot.date),
+      }),
+    }).catch(console.error);
 
     // Veliye bildirim
     await notify({

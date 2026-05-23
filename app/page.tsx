@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 const faqItems = [
   { q: "Özel dersler nasıl işliyor?", a: "Veliler platformdan onaylı öğretmeni seçer, uygun saat dilimini rezerve eder ve ödeme yapar. Dersler tamamen online, interaktif ortamda gerçekleşir." },
   { q: "Dersler hangi seviyeleri kapsıyor?", a: "İlkokul (1–4. sınıf) ve ortaokul (5–8. sınıf) öğrencilerine yönelik kapsamlı dersler sunmaktayız." },
-  { q: "Ders süresi ne kadardır?", a: "Bireysel dersler 45 dakika, grup dersleri (maks. 6 öğrenci) 60 dakika sürmektedir." },
+  { q: "Ders süresi ne kadardır?", a: "Derslerimiz 1 saattir. Bireysel birebir ders formatında gerçekleşmektedir." },
   { q: "Ders iptali durumunda ne olur?", a: "En az 24 saat öncesinden bildirilen iptallerде tam ücret iadesi veya ders erteleme yapılmaktadır." },
   { q: "Öğretmenler nasıl seçiliyor?", a: "Tüm öğretmenlerimiz özgeçmiş, belge ve referans incelemesinden geçer; yönetici onayıyla platforma kabul edilir." },
   { q: "Ödeme güvenli mi?", a: "Ödemeler iyzico altyapısıyla 256-bit SSL şifrelemeli olarak işlenmektedir. Kart bilgileriniz sistemimizde saklanmaz." },
@@ -49,8 +49,8 @@ export default async function HomePage() {
             </span>
 
             <h1 className="font-display text-headline-lg-mobile md:text-headline-xl text-on-background mb-6">
-              Uzmanlarla<br/>
-              <span className="text-primary">Kaliteli</span> ve Etkili Öğrenim
+              Öğretmenlerimizle<br/>
+              <span className="text-primary">Sıcak</span> ve Etkili Öğrenim
             </h1>
 
             <p className="text-body-lg text-on-surface-variant leading-relaxed mb-10 max-w-2xl mx-auto">
@@ -394,7 +394,7 @@ export default async function HomePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                   ),
-                  highlight: true,
+                  highlight: false,
                 },
                 {
                   step: "3",

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import BookingStatusActions from "@/components/dashboard/BookingStatusActions";
+import LessonReportButton from "@/components/dashboard/LessonReportButton";
 import Link from "next/link";
 
 export default async function EducatorBookingsPage() {
@@ -16,6 +17,8 @@ export default async function EducatorBookingsPage() {
       student: { include: { parent: { include: { user: true } } } },
       slot: true,
       payment: true,
+      lessonReport: true,
+      assessment: { include: { responses: true } },
     },
   });
 
@@ -110,6 +113,11 @@ export default async function EducatorBookingsPage() {
                     <span className="text-caption bg-primary-fixed text-on-primary-fixed border border-outline-variant/20 px-3 py-1.5 rounded-full font-medium">
                       Veli ödemesi bekleniyor…
                     </span>
+                    {b.assessment?.status === "COMPLETED" && b.assessment.responses.length > 0 && (
+                      <span className="text-caption bg-secondary-container text-on-secondary-container px-3 py-1.5 rounded-full font-medium">
+                        📊 Seviye testi tamamlandı
+                      </span>
+                    )}
                     {b.meetingUrl && (
                       <Link
                         href={b.meetingUrl}
@@ -170,19 +178,22 @@ export default async function EducatorBookingsPage() {
                       </span>
                     </td>
                     <td className="px-5 py-3">
-                      {b.meetingUrl && (
-                        <Link
-                          href={b.meetingUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-caption text-primary hover:underline font-medium"
-                        >
-                          Meet Linki
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                          </svg>
-                        </Link>
-                      )}
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {b.meetingUrl && (
+                          <Link
+                            href={b.meetingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-caption text-primary hover:underline font-medium"
+                          >
+                            Meet
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                          </Link>
+                        )}
+                        <LessonReportButton bookingId={b.id} hasReport={!!b.lessonReport} />
+                      </div>
                     </td>
                   </tr>
                 ))}

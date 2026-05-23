@@ -24,6 +24,7 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
       user: true,
       educatorLessons: { where: { status: "APPROVED" }, include: { lessonProgram: true } },
       reviews: { where: { isPublic: true }, include: { student: true }, orderBy: { createdAt: "desc" }, take: 10 },
+      resources: { where: { isFree: true }, orderBy: { createdAt: "desc" } },
     },
   });
 
@@ -300,6 +301,42 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
             </div>
           </div>
         </section>
+
+        {/* Ücretsiz Kaynaklar */}
+        {educator.resources.length > 0 && (
+          <section className="bg-surface-container-low py-12">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="mb-6">
+                <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-1">Ücretsiz Kaynaklar</p>
+                <h2 className="font-display text-headline-md text-on-background">
+                  {educator.user.name} tarafından paylaşıldı
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {educator.resources.map((r) => (
+                  <a
+                    key={r.id}
+                    href={r.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-surface-container-lowest rounded-md p-5 soft-card flex items-start gap-4 group hover:bg-primary-fixed/30 transition-colors"
+                  >
+                    <div className="w-10 h-10 bg-primary-fixed text-primary rounded-full flex items-center justify-center shrink-0">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-on-background text-body-md truncate group-hover:text-primary transition-colors">{r.title}</p>
+                      {r.description && <p className="text-sm text-on-surface-variant mt-0.5 line-clamp-2">{r.description}</p>}
+                      <p className="text-caption text-secondary mt-1.5 font-medium">PDF · Ücretsiz İndir ↓</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
       </main>
       <PublicFooter />

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
+import { createPortal } from "react-dom";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
@@ -18,7 +19,8 @@ export default function NotificationBell() {
   const { data: session } = useSession();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ top: 0, right: 0 });
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   const unread = notifications.filter((n) => !n.read).length;
 
@@ -39,68 +41,63 @@ export default function NotificationBell() {
     );
   }
 
-  useEffect(() => {
-    loadNotifications();
-  }, []);
+  useEffect(() => { loadNotifications(); }, []);
 
   useEffect(() => {
     if (!session?.user?.id) return;
     const channel = supabase.channel(`user-${session.user.id}`);
     channel.on("broadcast", { event: "notification" }, (payload) => {
-      const newNotif: Notification = {
-        id: `rt-${Date.now()}`,
-        title: payload.payload.title,
-        message: payload.payload.message,
-        read: false,
-        link: payload.payload.link ?? null,
-        createdAt: new Date().toISOString(),
-      };
-      setNotifications((prev) => [newNotif, ...prev]);
+      setNotifications((prev) => [
+        {
+          id: `rt-${Date.now()}`,
+          title: payload.payload.title,
+          message: payload.payload.message,
+          read: false,
+          link: payload.payload.link ?? null,
+          createdAt: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
     });
     channel.subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [session?.user?.id]);
 
   useEffect(() => {
+    if (!open) return;
     function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      if (btnRef.current && btnRef.current.contains(e.target as Node)) return;
+      setOpen(false);
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
+  }, [open]);
 
-  return (
-    <div className="relative" ref={ref}>
-      {/* Zil butonu */}
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className={`relative p-2 rounded-full transition-all duration-200 ${
-          open
-            ? "bg-white/20 text-inverse-on-surface"
-            : "text-inverse-on-surface/60 hover:bg-white/10 hover:text-inverse-on-surface"
-        }`}
-        aria-label="Bildirimler"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-        {unread > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-error text-on-error text-[10px] rounded-full flex items-center justify-center font-bold leading-none">
-            {unread > 9 ? "9+" : unread}
-          </span>
-        )}
-      </button>
+  function handleToggle() {
+    if (!open && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setPos({
+        top: rect.bottom + 12,
+        right: window.innerWidth - rect.right,
+      });
+    }
+    setOpen((o) => !o);
+  }
 
-      {/* Bildirim paneli — yukarı açılır */}
-      {open && (
+  const panel = open
+    ? createPortal(
         <div
-          className="absolute bottom-full mb-3 right-0 w-80 rounded-2xl border border-white/10 z-50 overflow-hidden shadow-2xl"
           style={{
+            position: "fixed",
+            top: pos.top,
+            right: pos.right,
+            width: 320,
+            zIndex: 9999,
             background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-            backdropFilter: "blur(16px)",
+            borderRadius: 16,
+            border: "1px solid rgba(255,255,255,0.1)",
+            boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
+            overflow: "hidden",
           }}
         >
           {/* Başlık */}
@@ -125,7 +122,7 @@ export default function NotificationBell() {
           </div>
 
           {/* Liste */}
-          <div className="max-h-72 overflow-y-auto scrollbar-thin">
+          <div className="max-h-72 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="py-10 text-center flex flex-col items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
@@ -144,17 +141,14 @@ export default function NotificationBell() {
                       <p className={`text-sm font-medium leading-snug flex-1 ${!n.read ? "text-white" : "text-white/60"}`}>
                         {n.title}
                       </p>
-                      {!n.read && (
-                        <span className="w-2 h-2 bg-primary rounded-full mt-1 shrink-0" />
-                      )}
+                      {!n.read && <span className="w-2 h-2 bg-primary rounded-full mt-1 shrink-0" />}
                     </div>
                     <p className="text-[12px] text-white/40 mt-0.5 line-clamp-2 leading-relaxed">
                       {n.message}
                     </p>
                     <p className="text-[11px] text-white/25 mt-1.5">
                       {new Date(n.createdAt).toLocaleString("tr-TR", {
-                        day: "numeric", month: "short",
-                        hour: "2-digit", minute: "2-digit",
+                        day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
                       })}
                     </p>
                   </>
@@ -170,22 +164,40 @@ export default function NotificationBell() {
                   >
                     {n.link ? (
                       <Link href={n.link} className="block">{content}</Link>
-                    ) : (
-                      content
-                    )}
+                    ) : content}
                   </div>
                 );
               })
             )}
           </div>
+        </div>,
+        document.body
+      )
+    : null;
 
-          {/* Ok işareti (aşağıyı gösterir) */}
-          <div
-            className="absolute -bottom-2 right-3 w-3 h-3 rotate-45 border-r border-b border-white/10"
-            style={{ background: "#0f172a" }}
-          />
-        </div>
-      )}
-    </div>
+  return (
+    <>
+      <button
+        ref={btnRef}
+        onClick={handleToggle}
+        className={`relative p-2 rounded-full transition-all duration-200 ${
+          open
+            ? "bg-white/20 text-inverse-on-surface"
+            : "text-inverse-on-surface/60 hover:bg-white/10 hover:text-inverse-on-surface"
+        }`}
+        aria-label="Bildirimler"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        {unread > 0 && (
+          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-error text-on-error text-[10px] rounded-full flex items-center justify-center font-bold leading-none">
+            {unread > 9 ? "9+" : unread}
+          </span>
+        )}
+      </button>
+      {panel}
+    </>
   );
 }

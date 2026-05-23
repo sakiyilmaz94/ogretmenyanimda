@@ -9,19 +9,41 @@ import Link from "next/link";
 
 export const metadata = { title: "Öğretmenlerimiz — Öğretmen Yanımda" };
 
+const SLUG_TO_SUBJECT: Record<string, string> = {
+  "matematik":        "MATEMATIK",
+  "turkce":           "TURKCE",
+  "fen-bilimleri":    "FEN_BILIMLERI",
+  "sosyal-bilgiler":  "SOSYAL_BILGILER",
+  "ingilizce":        "INGILIZCE",
+  "inkilap-tarihi":   "INKILAP_TARIHI",
+  "ilk-okuma-yazma":  "ILK_OKUMA_YAZMA",
+  "hayat-bilgisi":    "HAYAT_BILGISI",
+};
+
+const ILKOKUL_GRADES = ["ILKOKUL_1", "ILKOKUL_2", "ILKOKUL_3", "ILKOKUL_4"];
+const ORTAOKUL_GRADES = ["ORTAOKUL_5", "ORTAOKUL_6", "ORTAOKUL_7", "ORTAOKUL_8"];
+
 export default async function EgitmenlerimizPage({
   searchParams,
 }: {
-  searchParams: Promise<{ subject?: string }>;
+  searchParams: Promise<{ subject?: string; seviye?: string; ders?: string }>;
 }) {
   const session = await auth();
   const role = session?.user?.role ?? null;
-  const { subject } = await searchParams;
+  const { subject, seviye, ders } = await searchParams;
+
+  const resolvedSubject = subject ?? (ders ? SLUG_TO_SUBJECT[ders] : undefined);
+  const gradeFilter = seviye === "ilkokul"
+    ? ILKOKUL_GRADES
+    : seviye === "ortaokul"
+    ? ORTAOKUL_GRADES
+    : undefined;
 
   const educators = await db.educator.findMany({
     where: {
       status: "APPROVED",
-      ...(subject ? { subjects: { has: subject as never } } : {}),
+      ...(resolvedSubject ? { subjects: { has: resolvedSubject as never } } : {}),
+      ...(gradeFilter ? { gradeLevels: { hasSome: gradeFilter as never[] } } : {}),
     },
     include: {
       user: true,
@@ -57,7 +79,7 @@ export default async function EgitmenlerimizPage({
               {[
                 { label: "Onaylı Öğretmen", count: `${allEducators.length}+` },
                 { label: "Ortalama Deneyim", count: "5+ yıl" },
-                { label: "Öğrenci Memnuniyeti", count: "%98" },
+                { label: "Birebir Dersler", count: "1:1" },
               ].map((s) => (
                 <div key={s.label}>
                   <p className="text-headline-md font-display font-bold text-on-background">{s.count}</p>
@@ -71,10 +93,16 @@ export default async function EgitmenlerimizPage({
         {/* Grid */}
         <section className="bg-surface-container-low py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {subject && (
-              <div className="mb-6 flex items-center gap-3">
+            {(resolvedSubject || gradeFilter) && (
+              <div className="mb-6 flex items-center gap-3 flex-wrap">
                 <span className="text-body-md text-on-surface-variant">
-                  <span className="font-semibold text-on-background">{SUBJECT_LABELS[subject] ?? subject}</span> branşındaki öğretmenler gösteriliyor
+                  {seviye && (
+                    <span className="font-semibold text-on-background capitalize">{seviye} </span>
+                  )}
+                  {resolvedSubject && (
+                    <span className="font-semibold text-on-background">{SUBJECT_LABELS[resolvedSubject] ?? resolvedSubject} </span>
+                  )}
+                  branşındaki öğretmenler gösteriliyor
                 </span>
                 <Link
                   href="/egitmenlerimiz"

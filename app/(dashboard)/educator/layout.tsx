@@ -8,6 +8,7 @@ const educatorNav = [
   { href: "/educator/derslerim", label: "Derslerim", icon: "📚" },
   { href: "/educator/availability", label: "Uygunluk Takvimi", icon: "📅" },
   { href: "/educator/bookings", label: "Rezervasyonlar", icon: "📋" },
+  { href: "/educator/kaynaklar", label: "Kaynaklarım", icon: "📎" },
 ];
 
 export default async function EducatorLayout({ children }: { children: React.ReactNode }) {

@@ -27,6 +27,74 @@ export async function sendEmail({ to, subject, html }: EmailPayload) {
 
 // --- Şablonlar ---
 
+export function emailWelcome({ name, role }: { name: string; role: "EDUCATOR" | "PARENT" }) {
+  const isEducator = role === "EDUCATOR";
+  return `
+    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:16px">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="display:inline-block;background:#0f172a;border-radius:12px;padding:12px 20px">
+          <span style="color:white;font-weight:700;font-size:18px">Öğretmen Yanımda</span>
+        </div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:32px;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
+        <h2 style="color:#0f172a;margin:0 0 8px">Aramıza Hoş Geldiniz! 🎉</h2>
+        <p style="color:#475569;margin:0 0 20px">Merhaba <strong>${name}</strong>,</p>
+        ${isEducator ? `
+          <p style="color:#475569;line-height:1.6">Öğretmen başvurunuz başarıyla alındı. Yöneticilerimiz diplomanızı ve kimlik bilgilerinizi inceleyecek; <strong>1–3 iş günü</strong> içinde onay/red durumunuz e-posta ile bildirilecektir.</p>
+          <p style="color:#475569;line-height:1.6">Onaylandıktan sonra profilinizi oluşturabilir, uygunluk saatlerinizi belirleyebilir ve ders vermeye başlayabilirsiniz.</p>
+        ` : `
+          <p style="color:#475569;line-height:1.6">Hesabınız başarıyla oluşturuldu. Artık onaylı öğretmenlerimiz arasından çocuğunuza en uygun olanı seçebilir, randevu alabilir ve ders ilerlemesini takip edebilirsiniz.</p>
+          <div style="margin:24px 0;text-align:center">
+            <a href="https://ogretmenyanimda.com.tr/egitmenlerimiz" style="display:inline-block;background:#0f172a;color:white;padding:12px 28px;border-radius:50px;text-decoration:none;font-weight:600">Öğretmenleri Keşfet →</a>
+          </div>
+        `}
+        <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0"/>
+        <p style="color:#94a3b8;font-size:13px;margin:0">Sorularınız için <a href="mailto:destek@ogretmenyanimda.com.tr" style="color:#0f172a">destek@ogretmenyanimda.com.tr</a> adresine yazabilirsiniz.</p>
+      </div>
+    </div>`;
+}
+
+export function emailLessonReportRequest({
+  educatorName,
+  studentName,
+  date,
+}: {
+  educatorName: string;
+  studentName: string;
+  date: string;
+}) {
+  return `
+    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px">
+      <h2 style="color:#0f172a">Ders Raporu Bekleniyor 📋</h2>
+      <p>Merhaba <strong>${educatorName}</strong>,</p>
+      <p><strong>${studentName}</strong> ile yaptığınız <strong>${date}</strong> tarihli ders tamamlandı.</p>
+      <p>Velinin çocuğunun gelişimini takip edebilmesi için lütfen aşağıdaki butona tıklayarak ders raporunu doldurunuz.</p>
+      <a href="https://ogretmenyanimda.com.tr/educator/bookings" style="display:inline-block;background:#0f172a;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Raporu Doldur →</a>
+      <p style="color:#64748b;font-size:13px;margin-top:16px">Raporda işlenen konular, bir sonraki ders planı ve varsa ödev bilgilerini paylaşmanızı rica ederiz.</p>
+    </div>`;
+}
+
+export function emailLessonReportReady({
+  parentName,
+  educatorName,
+  studentName,
+  date,
+}: {
+  parentName: string;
+  educatorName: string;
+  studentName: string;
+  date: string;
+}) {
+  return `
+    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px">
+      <h2 style="color:#15803d">Ders Raporu Hazır ✅</h2>
+      <p>Merhaba <strong>${parentName}</strong>,</p>
+      <p><strong>${educatorName}</strong>, <strong>${studentName}</strong> için ${date} tarihli ders raporunu doldurdu.</p>
+      <p>Raporunuzu görüntülemek için panele gidiniz.</p>
+      <a href="https://ogretmenyanimda.com.tr/parent/bookings" style="display:inline-block;background:#15803d;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Raporu Görüntüle →</a>
+    </div>`;
+}
+
 export function emailBookingRequest({
   educatorName,
   studentName,
