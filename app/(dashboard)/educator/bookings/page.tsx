@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import BookingStatusActions from "@/components/dashboard/BookingStatusActions";
 import LessonReportButton from "@/components/dashboard/LessonReportButton";
+import AssessmentResultViewer from "@/components/dashboard/AssessmentResultViewer";
 import Link from "next/link";
 
 export default async function EducatorBookingsPage() {
@@ -114,9 +115,7 @@ export default async function EducatorBookingsPage() {
                       Veli ödemesi bekleniyor…
                     </span>
                     {b.assessment?.status === "COMPLETED" && b.assessment.responses.length > 0 && (
-                      <span className="text-caption bg-secondary-container text-on-secondary-container px-3 py-1.5 rounded-full font-medium">
-                        📊 Seviye testi tamamlandı
-                      </span>
+                      <AssessmentResultViewer assessmentId={b.assessment.id} />
                     )}
                     {b.meetingUrl && (
                       <Link
