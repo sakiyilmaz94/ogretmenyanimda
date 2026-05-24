@@ -143,7 +143,6 @@ function LoginForm() {
               {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
             </button>
           </form>
-
           <p className="mt-6 text-center text-body-md text-on-surface-variant">
             Hesabınız yok mu?{" "}
             <Link href="/register" className="text-primary font-semibold hover:underline">
