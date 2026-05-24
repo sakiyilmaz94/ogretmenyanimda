@@ -17,7 +17,7 @@ export async function GET(
     where: { id },
     include: {
       responses: { orderBy: { questionIndex: "asc" } },
-      booking: { include: { educator: true, student: true } },
+      booking: { include: { educator: true, student: true, topic: true } },
     },
   });
 
@@ -47,6 +47,7 @@ export async function GET(
     subject: assessment.subject,
     gradeLevel: assessment.gradeLevel,
     studentName: assessment.booking.student.name,
+    topic: (assessment.booking.topic as any)?.name || null,
     completedAt: assessment.completedAt,
     results,
     correctCount,

@@ -207,6 +207,7 @@ model Booking {
   educatorLessonId String?
   subject          Subject
   gradeLevel       GradeLevel?
+  topicId          String?
   notes            String?       @db.Text
   status           BookingStatus @default(PENDING)
   totalPrice       Decimal       @db.Decimal(10, 2)
@@ -218,6 +219,7 @@ model Booking {
   student        Student          @relation(fields: [studentId], references: [id])
   educator       Educator         @relation(fields: [educatorId], references: [id])
   slot           AvailabilitySlot @relation(fields: [slotId], references: [id])
+  topic          CurriculumTopic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
   educatorLesson EducatorLesson?  @relation(fields: [educatorLessonId], references: [id])
   payment        Payment?
   assessment     LevelAssessment?
@@ -318,6 +320,24 @@ model EducatorResource {
   educator Educator @relation(fields: [educatorId], references: [id], onDelete: Cascade)
 }
 
+model CurriculumTopic {
+  id           String   @id @default(cuid())
+  subject      String
+  gradeLevel   Int
+  name         String
+  description  String?
+  unit         String?
+  learningObjects String[] @default([])
+  createdAt    DateTime @default(now())
+
+  assessments  LevelAssessment[]
+  bookings     Booking[]
+
+  @@unique([subject, gradeLevel, name])
+  @@index([subject, gradeLevel])
+  @@map("curriculum_topics")
+}
+
 model LevelAssessment {
   id          String           @id @default(cuid())
   bookingId   String           @unique
@@ -327,9 +347,13 @@ model LevelAssessment {
   status      AssessmentStatus @default(PENDING)
   sentAt      DateTime         @default(now())
   completedAt DateTime?
+  topicId     String?
 
   booking   Booking              @relation(fields: [bookingId], references: [id])
+  topic     CurriculumTopic?     @relation(fields: [topicId], references: [id], onDelete: SetNull)
   responses AssessmentResponse[]
+
+  @@index([topicId])
 }
 
 model AssessmentResponse {

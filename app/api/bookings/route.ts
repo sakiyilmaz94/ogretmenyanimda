@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
   }
 
-  const { studentId, educatorId, slotId, subject, gradeLevel, totalPrice, notes } = await req.json();
+  const { studentId, educatorId, slotId, subject, gradeLevel, totalPrice, notes, topicId } = await req.json();
 
   if (!studentId || !educatorId || !slotId || !subject || !totalPrice) {
     return NextResponse.json({ error: "Eksik alan." }, { status: 400 });
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   }
 
   const booking = await db.booking.create({
-    data: { studentId, educatorId, slotId, subject, gradeLevel: gradeLevel ?? null, totalPrice, notes: notes || null, status: "PENDING" },
+    data: { studentId, educatorId, slotId, subject, gradeLevel: gradeLevel ?? null, topicId: topicId || null, totalPrice, notes: notes || null, status: "PENDING" },
   });
 
   await db.availabilitySlot.update({ where: { id: slotId }, data: { isBooked: true } });

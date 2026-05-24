@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { GradeLevel, Subject } from "@prisma/client";
 import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
+import TopicSelector from "./TopicSelector";
 
 interface Student {
   id: string;
@@ -51,6 +52,7 @@ export default function BookingWizard({
   const [selectedEducator, setSelectedEducator] = useState<Educator | null>(preselectedEducator);
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [selectedGrade, setSelectedGrade] = useState<GradeLevel | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<{ id: string; name: string } | null>(null);
   const [availableSlots, setAvailableSlots] = useState<Slot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
   const [notes, setNotes] = useState("");
@@ -117,7 +119,7 @@ export default function BookingWizard({
   }
 
   async function handleConfirm() {
-    if (!selectedStudent || !selectedEducator || !selectedSubject || !selectedSlot || !selectedGrade) return;
+    if (!selectedStudent || !selectedEducator || !selectedSubject || !selectedSlot || !selectedGrade || !selectedTopic) return;
     setSubmitting(true);
     setError("");
 
@@ -130,6 +132,7 @@ export default function BookingWizard({
         slotId: selectedSlot.id,
         subject: selectedSubject,
         gradeLevel: selectedGrade,
+        topicId: selectedTopic.id,
         totalPrice: selectedEducator.hourlyRate,
         notes: notes.trim() || undefined,
       }),
@@ -331,7 +334,7 @@ export default function BookingWizard({
             <label className="block text-label-md font-semibold text-on-background mb-2">Dersler</label>
             <div className="flex flex-wrap gap-2">
               {selectedEducator.subjects.map((s) => (
-                <button key={s} onClick={() => setSelectedSubject(s)}
+                <button key={s} onClick={() => { setSelectedSubject(s); setSelectedTopic(null); }}
                   className={`px-4 py-2 rounded-full text-label-md font-semibold border-2 transition-all ${
                     selectedSubject === s
                       ? "border-primary bg-primary text-on-primary"
@@ -359,6 +362,18 @@ export default function BookingWizard({
               ))}
             </div>
           </div>
+
+          {/* Konu Seçimi */}
+          {selectedSubject && selectedGrade && (
+            <div className="bg-surface-container rounded-md p-4 border border-outline-variant/20">
+              <TopicSelector
+                subject={selectedSubject}
+                gradeLevel={Object.keys(GRADE_LABELS).indexOf(selectedGrade) + 1}
+                onSelect={(id, name) => setSelectedTopic({ id, name })}
+                selected={selectedTopic?.id}
+              />
+            </div>
+          )}
 
           {/* Uygun Saatler */}
           <div>
@@ -409,7 +424,7 @@ export default function BookingWizard({
           <div className="flex gap-3 items-center">
             <button onClick={() => { setSelectedSlot(null); setStep(selectedEducator ? 2 : 2); }}
               className="text-label-md text-on-surface-variant hover:text-on-background transition">← Geri</button>
-            <button disabled={!selectedSlot || !selectedSubject || !selectedGrade} onClick={() => setStep(4)}
+            <button disabled={!selectedSlot || !selectedSubject || !selectedGrade || !selectedTopic} onClick={() => setStep(4)}
               className="ml-auto rounded-full squishy-btn bg-primary text-on-primary px-6 py-3 text-label-md font-semibold disabled:opacity-50 transition">
               İleri →
             </button>
@@ -418,7 +433,7 @@ export default function BookingWizard({
       )}
 
       {/* ── Adım 4: Onayla ── */}
-      {step === 4 && selectedStudent && selectedEducator && selectedSubject && selectedSlot && selectedGrade && (
+      {step === 4 && selectedStudent && selectedEducator && selectedSubject && selectedSlot && selectedGrade && selectedTopic && (
         <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">
           <h2 className="font-display font-semibold text-on-background text-headline-md mb-5">Randevu Özeti</h2>
 
@@ -429,6 +444,7 @@ export default function BookingWizard({
               { label: "Öğretmen", value: selectedEducator.name },
               { label: "Ders", value: SUBJECT_LABELS[selectedSubject] ?? selectedSubject },
               { label: "Sınıf", value: GRADE_LABELS[selectedGrade] ?? selectedGrade },
+              { label: "Konu", value: selectedTopic.name },
               {
                 label: "Tarih",
                 value: new Date(selectedSlot.date + "T12:00:00").toLocaleDateString("tr-TR", {

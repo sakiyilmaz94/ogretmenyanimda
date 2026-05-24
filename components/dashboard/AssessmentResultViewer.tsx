@@ -15,6 +15,7 @@ interface AssessmentResult {
   subject: string;
   gradeLevel: string;
   studentName: string;
+  topic?: string | null;
   completedAt: string | null;
   results: QuestionResult[];
   correctCount: number;
@@ -64,6 +65,7 @@ export default function AssessmentResultViewer({ assessmentId }: { assessmentId:
                 {data && (
                   <p className="text-caption text-on-surface-variant mt-0.5">
                     {data.studentName} · {SUBJECT_LABELS[data.subject] ?? data.subject} · {GRADE_LABELS[data.gradeLevel] ?? data.gradeLevel}
+                    {data.topic && ` · 📚 ${data.topic}`}
                   </p>
                 )}
               </div>

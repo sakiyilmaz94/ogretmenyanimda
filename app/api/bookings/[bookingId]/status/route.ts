@@ -19,6 +19,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
       educator: { include: { user: true } },
       student: { include: { parent: { include: { user: true } } } },
       slot: true,
+      topic: true,
     },
   });
   if (!booking) return NextResponse.json({ error: "Rezervasyon bulunamadı" }, { status: 404 });
@@ -78,14 +79,16 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
 
       // Seviye belirleme testi oluştur
       if (booking.gradeLevel) {
-        const assessment = await db.levelAssessment.create({
-          data: {
-            bookingId,
-            studentId: booking.studentId,
-            subject: booking.subject,
-            gradeLevel: booking.gradeLevel,
-          },
-        });
+        const assessmentData: any = {
+          bookingId,
+          studentId: booking.studentId,
+          subject: booking.subject,
+          gradeLevel: booking.gradeLevel,
+        };
+        if (booking.topic) {
+          assessmentData.topicId = (booking.topic as any).id;
+        }
+        const assessment = await db.levelAssessment.create({ data: assessmentData });
         const baseUrl = process.env.NEXTAUTH_URL ?? "https://ogretmenyanimda.com.tr";
         sendEmail({
           to: parentUser.email,

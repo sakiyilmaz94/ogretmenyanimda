@@ -1,5 +1,4 @@
-import { PrismaClient, Role } from "@prisma/client";
-import bcrypt from "bcryptjs";
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -95,46 +94,34 @@ const curriculumData = [
   { subject: "INGILIZCE", grade: 8, name: "Writing Skills", description: "Yazılı anlatım becerisi" },
 ];
 
-async function seedCurriculum() {
-  console.log("🌱 MEB müfradatı konuları ekleniyor...");
-  const deleted = await prisma.curriculumTopic.deleteMany({});
-  console.log(`Deleted ${deleted.count} existing topics`);
-
-  for (const topic of curriculumData) {
-    await prisma.curriculumTopic.create({
-      data: {
-        subject: topic.subject,
-        gradeLevel: topic.grade,
-        name: topic.name,
-        description: topic.description,
-      },
-    });
-  }
-
-  const count = await prisma.curriculumTopic.count();
-  console.log(`✅ ${count} konu başarıyla eklendi!`);
-}
-
 async function main() {
-  const adminPassword = await bcrypt.hash("Admin.2026!", 12);
+  console.log("🌱 Curriculum topics seed başladı...");
 
-  const admin = await prisma.user.upsert({
-    where: { email: "admin@ogretmenyanimda.com.tr" },
-    update: {},
-    create: {
-      name: "Admin",
-      email: "admin@ogretmenyanimda.com.tr",
-      password: adminPassword,
-      role: Role.ADMIN,
-    },
-  });
+  try {
+    const deleted = await prisma.curriculumTopic.deleteMany({});
+    console.log(`Deleted ${deleted.count} existing topics`);
 
-  console.log("✅ Admin oluşturuldu:", admin.email);
-  console.log("🔑 Şifre: Admin.2026!");
+    for (const topic of curriculumData) {
+      await prisma.curriculumTopic.create({
+        data: {
+          subject: topic.subject,
+          gradeLevel: topic.grade,
+          name: topic.name,
+          description: topic.description,
+        },
+      });
+    }
 
-  await seedCurriculum();
+    const count = await prisma.curriculumTopic.count();
+    console.log(`✅ ${count} konu başarıyla eklendi!`);
+  } catch (error) {
+    console.error("❌ Error:", error);
+    throw error;
+  }
 }
 
 main()
   .catch(console.error)
-  .finally(() => prisma.$disconnect());
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
