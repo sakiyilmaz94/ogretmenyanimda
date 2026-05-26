@@ -34,7 +34,7 @@ export default function EgitmenBasvurusuPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { n: "500+", label: "Aktif Öğrenci" },
+                  { n: "Hızla", label: "Büyüyen Komunite" },
                   { n: "₺", label: "Düzenli Gelir" },
                   { n: "Esnek", label: "Çalışma Saati" },
                   { n: "Online", label: "Tamamen Dijital" },

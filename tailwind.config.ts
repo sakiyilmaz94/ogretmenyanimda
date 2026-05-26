@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        "container-max": "1280px",
+      },
       colors: {
         brand: {
           50: "#f0f7ff",
