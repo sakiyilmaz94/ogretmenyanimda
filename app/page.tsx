@@ -34,12 +34,12 @@ export default async function HomePage() {
       <main>
 
         {/* ── HERO ─────────────────────────────────────────── */}
-        <section className="min-h-[90vh] flex items-center relative overflow-hidden bg-background">
+        <section className="min-h-[90vh] flex items-center justify-center relative overflow-hidden bg-background w-full">
           {/* Blob arka planlar */}
           <div className="blob-bg bg-primary-fixed w-[500px] h-[500px] rounded-full -top-24 -left-32" />
           <div className="blob-bg bg-secondary-fixed w-[400px] h-[400px] rounded-full top-40 -right-20" style={{ animationDelay: "-5s" }} />
 
-          <div className="relative z-10 max-w-container-max mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 w-full text-center">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 w-full text-center">
             {/* Badge */}
             <span className="inline-flex items-center gap-2 bg-primary-fixed text-on-primary-fixed px-4 py-2 rounded-full text-label-md font-semibold mb-8">
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
