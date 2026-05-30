@@ -1,0 +1,210 @@
+{
+  "grade2_turkce": [
+    {
+      "name": "Harf Bilgisi - Alfabe",
+      "description": "Türkçe alfabesi ve harf tanıma"
+    },
+    {
+      "name": "Harf Bilgisi - Sesi Sessiz Harfler",
+      "description": "Sesli ve sessiz harfler"
+    },
+    {
+      "name": "Harf Bilgisi - Alfabetik Sıraya Koyma",
+      "description": "Alfabetik sıraya koyma becerisi"
+    },
+    {
+      "name": "Hece Bilgisi - Hecelerine Ayırma",
+      "description": "Kelimeleri hecelerine ayırma"
+    },
+    {
+      "name": "Hece Bilgisi - Hecelerden Kelime Oluşturma",
+      "description": "Hecelerden kelime oluşturma"
+    },
+    {
+      "name": "Kelime Bilgisi - Kelime Sayısı ve Baş Harfine Göre Kelimeler",
+      "description": "Kelime sayısı ve baş harfi tanıma"
+    },
+    {
+      "name": "Kelime Bilgisi - Tek Başına Anlamı Olmayan Kelimeler",
+      "description": "Ek, fiil ve yardımcı unsurlar"
+    },
+    {
+      "name": "Kelime Bilgisi - Eş Anlamlı Kelimeler",
+      "description": "Eş anlamlı kelimeler (sinonimler)"
+    },
+    {
+      "name": "Kelime Bilgisi - Zıt Anlamlı Kelimeler",
+      "description": "Zıt anlamlı kelimeler (antonimler)"
+    },
+    {
+      "name": "Kelime Bilgisi - Eş Sesli Kelimeler",
+      "description": "Aynı yazılı ama farklı anlamda kelimeler"
+    },
+    {
+      "name": "Kelime Bilgisi - Sözcükte Anlam",
+      "description": "Sözcüklerin gerçek ve mecaz anlamları"
+    },
+    {
+      "name": "Kelime Bilgisi - Yazımında Hata Yapılan Sözcükler",
+      "description": "Sık yazım hataları yapılan sözcükler"
+    },
+    {
+      "name": "Cümle Bilgisi - Cümle Oluşturma",
+      "description": "Cümle yapısı ve oluşturma"
+    },
+    {
+      "name": "Cümle Bilgisi - Olumlı Olumsuz Soru Cümlesi",
+      "description": "Olumlu, olumsuz ve soru cümleleri"
+    },
+    {
+      "name": "Cümle Bilgisi - Sebep Sonuç Cümleleri",
+      "description": "Sebep-sonuç ilişkisi gösteren cümleler"
+    },
+    {
+      "name": "Cümle Bilgisi - Karşılaştırma Cümleleri",
+      "description": "Karşılaştırma yapan cümleler"
+    },
+    {
+      "name": "Cümle Bilgisi - Olayları Sıralayan Cümleler",
+      "description": "Olayları zaman sırasına göre sıralayan cümleler"
+    },
+    {
+      "name": "Ad Bilgisi - Adlar (İsimler)",
+      "description": "Adlar ve isim tanıma"
+    },
+    {
+      "name": "Ad Bilgisi - Özel Ad Cins Ad",
+      "description": "Özel adlar ve cins adlar"
+    },
+    {
+      "name": "Ad Bilgisi - Tekil ve Çoğul Adlar",
+      "description": "Tekil ve çoğul adlar"
+    },
+    {
+      "name": "Varlıkların Özelliklerini Belirten Kelimeler",
+      "description": "Sıfatlar ve niteleyici kelimeler"
+    },
+    {
+      "name": "Noktanma İşaretleri - Nokta",
+      "description": "Nokta işaretinin kullanımı"
+    },
+    {
+      "name": "Noktanma İşaretleri - Virgül ve Kesme İşareti",
+      "description": "Virgül ve kesme işaretinin kullanımı"
+    },
+    {
+      "name": "Noktanma İşaretleri - Soru İşareti ve Ünlem",
+      "description": "Soru ve ünlem işaretleri"
+    },
+    {
+      "name": "Yazım Kuralları",
+      "description": "Türkçe yazım kuralları"
+    },
+    {
+      "name": "Tebrik Kartı ve Davetiye Yazma, Tablo Form Veri Okuma",
+      "description": "Tebrik kartı, davetiye yazma ve tablo okuma"
+    },
+    {
+      "name": "Hikayenin Unsurları ve Zaman Kavramı",
+      "description": "Hikaye unsurları ve zaman ilişkileri"
+    },
+    {
+      "name": "Şiirde Ana Duygu",
+      "description": "Şiir analizi ve duygu tanıma"
+    },
+    {
+      "name": "Atasözleri",
+      "description": "Atasözleri ve özlü sözler"
+    }
+  ],
+  "grade2_matematik": [
+    {
+      "name": "Geometrik Cisimler",
+      "description": "Üç boyutlu geometrik şekiller"
+    },
+    {
+      "name": "Geometrik Cisim Modelleri",
+      "description": "Cisim modellerinin tasarımı"
+    },
+    {
+      "name": "Geometrik Şekil Modelleri",
+      "description": "İki boyutlu şekil modelleri"
+    },
+    {
+      "name": "Geometrik Cisim ve Şekillerin Biçimsel Özellikleri",
+      "description": "Cisim ve şekillerin özellikleri"
+    },
+    {
+      "name": "Sıvı Ölçme",
+      "description": "Sıvıları ölçme ve litre"
+    },
+    {
+      "name": "Sayılar",
+      "description": "0-100 arası sayılar"
+    },
+    {
+      "name": "Sayılarda Çözümleme",
+      "description": "Sayıları basamaklara göre çözümleme"
+    },
+    {
+      "name": "Sayı Doğrusu",
+      "description": "Sayı doğrusu ve sayıların sayı doğrusunda gösterilmesi"
+    },
+    {
+      "name": "Ritmik Sayma",
+      "description": "Belirli kurallara göre sayma"
+    },
+    {
+      "name": "Örüntü",
+      "description": "Tekrar eden şekil ve sayı örüntüleri"
+    },
+    {
+      "name": "Tahmin Etme",
+      "description": "Sayılar ile tahmin etme"
+    },
+    {
+      "name": "Toplama ve Çıkarma İşlemleriyle İlgili Problemler",
+      "description": "Toplama ve çıkarma problemleri"
+    },
+    {
+      "name": "Toplama ve Çıkarma İşlemlerinin Sonuçlarını Tahmin Etme",
+      "description": "İşlem sonuçlarını tahmin etme"
+    },
+    {
+      "name": "Toplama ve Çıkarma İşlemlerinin İlişkisi",
+      "description": "Toplama ve çıkarmanın ters işlem olması"
+    },
+    {
+      "name": "Bütün, Yarım ve Çeyrek",
+      "description": "Kesir kavramının temeli"
+    },
+    {
+      "name": "Paralarımız",
+      "description": "Türk parası ve para işlemleri"
+    },
+    {
+      "name": "Zaman Ölçme",
+      "description": "Saat, gün, ay, yıl kavramları"
+    },
+    {
+      "name": "Uzunluk ve Kütle Ölçme",
+      "description": "Uzunluk ve ağırlık ölçme"
+    },
+    {
+      "name": "Uzunluk ve Kütle Ölçmeyi Tahmin Etme",
+      "description": "Ölçü tahmin etme"
+    },
+    {
+      "name": "Yer ve Yön Bulma",
+      "description": "Konum ve yön kavramları"
+    },
+    {
+      "name": "Simetri",
+      "description": "Simetri ve simetrik şekiller"
+    },
+    {
+      "name": "Veri Toplama ve Değerlendirme",
+      "description": "Veri toplama ve grafik oluşturma"
+    }
+  ]
+}
