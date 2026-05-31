@@ -59,7 +59,7 @@ const SCIENCE_TOPICS = [
       const existing = await db.curriculumTopic.findFirst({
         where: {
           gradeLevel: 3,
-          subject: "FEN_BİLİMLERİ",
+          subject: "FEN_BILIMLERI",
           name: topicName
         }
       });
@@ -68,15 +68,15 @@ const SCIENCE_TOPICS = [
         await db.curriculumTopic.create({
           data: {
             gradeLevel: 3,
-            subject: "FEN_BİLİMLERİ",
+            subject: "FEN_BILIMLERI",
             name: topicName,
             description: topicName
           }
         });
-        console.log(`   ✓ Oluşturuldu: [FEN_BİLİMLERİ] ${topicName}`);
+        console.log(`   ✓ Oluşturuldu: [FEN_BILIMLERI] ${topicName}`);
         created++;
       } else {
-        console.log(`   - Zaten var: [FEN_BİLİMLERİ] ${topicName}`);
+        console.log(`   - Zaten var: [FEN_BILIMLERI] ${topicName}`);
       }
     }
 

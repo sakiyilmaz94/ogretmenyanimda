@@ -19,7 +19,7 @@ const SOCIAL_TOPICS = [
       const existing = await db.curriculumTopic.findFirst({
         where: {
           gradeLevel: 4,
-          subject: "SOSYAL_BİLGİLER",
+          subject: "SOSYAL_BILGILER",
           name: topicName
         }
       });
@@ -28,15 +28,15 @@ const SOCIAL_TOPICS = [
         await db.curriculumTopic.create({
           data: {
             gradeLevel: 4,
-            subject: "SOSYAL_BİLGİLER",
+            subject: "SOSYAL_BILGILER",
             name: topicName,
             description: topicName
           }
         });
-        console.log(`   ✓ Oluşturuldu: [SOSYAL_BİLGİLER] ${topicName}`);
+        console.log(`   ✓ Oluşturuldu: [SOSYAL_BILGILER] ${topicName}`);
         created++;
       } else {
-        console.log(`   - Zaten var: [SOSYAL_BİLGİLER] ${topicName}`);
+        console.log(`   - Zaten var: [SOSYAL_BILGILER] ${topicName}`);
       }
     }
 

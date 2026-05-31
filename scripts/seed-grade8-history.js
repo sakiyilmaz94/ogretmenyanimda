@@ -21,7 +21,7 @@ const db = new PrismaClient();
       const topic = await db.curriculumTopic.findFirst({
         where: {
           gradeLevel: 8,
-          subject: "TC_INKILAP_TARIHI",
+          subject: "INKILAP_TARIHI",
           name: q.theme
         }
       });
@@ -35,7 +35,7 @@ const db = new PrismaClient();
         data: {
           topicId: topic.id,
           gradeLevel: 8,
-          subject: "TC_INKILAP_TARIHI",
+          subject: "INKILAP_TARIHI",
           topicName: q.theme,
           question: q.question,
           option1: q.option1,

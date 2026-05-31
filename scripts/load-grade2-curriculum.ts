@@ -74,7 +74,7 @@ async function loadGrade2Curriculum() {
     console.log("\n📝 Türkçe konuları ekleniyor...");
     const turkishTopics = grade2Topics.grade2_turkce.map((t) => ({
       gradeLevel: 2,
-      subject: "TÜRKÇE",
+      subject: "TURKCE",
       name: t.name,
       description: t.description || "",
     }));
@@ -116,7 +116,7 @@ async function loadGrade2Curriculum() {
 
     // 5. Sonuç
     const finalTurkish = await db.curriculumTopic.count({
-      where: { gradeLevel: 2, subject: "TÜRKÇE" },
+      where: { gradeLevel: 2, subject: "TURKCE" },
     });
     const finalMath = await db.curriculumTopic.count({
       where: { gradeLevel: 2, subject: "MATEMATIK" },

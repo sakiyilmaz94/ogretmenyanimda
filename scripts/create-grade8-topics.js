@@ -73,7 +73,7 @@ const HISTORY_TOPICS = [
       const existing = await db.curriculumTopic.findFirst({
         where: {
           gradeLevel: 8,
-          subject: "FEN_BİLİMLERİ",
+          subject: "FEN_BILIMLERI",
           name: topicName
         }
       });
@@ -82,12 +82,12 @@ const HISTORY_TOPICS = [
         await db.curriculumTopic.create({
           data: {
             gradeLevel: 8,
-            subject: "FEN_BİLİMLERİ",
+            subject: "FEN_BILIMLERI",
             name: topicName,
             description: topicName
           }
         });
-        console.log(`   ✓ Oluşturuldu: [FEN_BİLİMLERİ] ${topicName}`);
+        console.log(`   ✓ Oluşturuldu: [FEN_BILIMLERI] ${topicName}`);
         created++;
       }
     }
@@ -97,7 +97,7 @@ const HISTORY_TOPICS = [
       const existing = await db.curriculumTopic.findFirst({
         where: {
           gradeLevel: 8,
-          subject: "TC_INKILAP_TARIHI",
+          subject: "INKILAP_TARIHI",
           name: topicName
         }
       });
@@ -106,12 +106,12 @@ const HISTORY_TOPICS = [
         await db.curriculumTopic.create({
           data: {
             gradeLevel: 8,
-            subject: "TC_INKILAP_TARIHI",
+            subject: "INKILAP_TARIHI",
             name: topicName,
             description: topicName
           }
         });
-        console.log(`   ✓ Oluşturuldu: [TC_INKILAP_TARIHI] ${topicName}`);
+        console.log(`   ✓ Oluşturuldu: [INKILAP_TARIHI] ${topicName}`);
         created++;
       }
     }
