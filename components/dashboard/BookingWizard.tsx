@@ -369,7 +369,7 @@ export default function BookingWizard({
               {selectedGrade ? (
                 <TopicSelector
                   subject={selectedSubject}
-                  gradeLevel={Object.keys(GRADE_LABELS).indexOf(selectedGrade) + 1}
+                  gradeLevel={parseInt(selectedGrade.match(/\d+$/)?.[0] || "1", 10)}
                   onSelect={(id, name) => setSelectedTopic({ id, name })}
                   selected={selectedTopic?.id}
                 />

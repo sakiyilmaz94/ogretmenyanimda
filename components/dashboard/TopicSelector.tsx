@@ -60,16 +60,16 @@ export default function TopicSelector({
 
       {topics.length > 0 && (
         <>
-          <div className="overflow-x-auto flex gap-2 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {topics.map((topic) => (
               <button
                 key={topic.id}
                 onClick={() => onSelect(topic.id, topic.name)}
-                title={topic.description}
-                className={`shrink-0 px-4 py-2 rounded-full font-medium text-caption transition whitespace-nowrap ${
+                title={topic.description || topic.name}
+                className={`px-3 py-2.5 rounded-lg font-medium text-caption transition text-center ${
                   selected === topic.id
-                    ? "bg-primary text-on-primary shadow-md"
-                    : "bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary/50 hover:bg-surface-container-high"
+                    ? "bg-primary text-on-primary shadow-md scale-105"
+                    : "bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary/50 hover:bg-surface-container-high hover:scale-105"
                 }`}
               >
                 {topic.name}
@@ -77,12 +77,12 @@ export default function TopicSelector({
             ))}
           </div>
           {selected && (
-            <div className="mt-2 p-2 bg-primary-fixed rounded-lg text-on-primary-fixed text-caption flex items-center gap-2">
-              <span>✓</span>
-              <span>
-                <strong>Seçilen konu:</strong>{" "}
-                {topics.find((t) => t.id === selected)?.name}
-              </span>
+            <div className="mt-3 p-3 bg-primary-fixed rounded-lg text-on-primary-fixed text-body-sm flex items-center gap-2">
+              <span className="text-lg">✓</span>
+              <div>
+                <span className="block font-semibold">Seçilen konu:</span>
+                <span className="block">{topics.find((t) => t.id === selected)?.name}</span>
+              </div>
             </div>
           )}
         </>
