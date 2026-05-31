@@ -11,6 +11,7 @@ const PUBLIC_ROUTES = [
   "/gizlilik-politikasi", "/mesafeli-satis-sozlesmesi", "/iptal-ve-iade-kosullar",
   "/admin-giris",
   "/api/payments/callback",
+  "/api/curriculum/topics",
 ];
 const AUTH_ROUTES = ["/login", "/register"];
 
