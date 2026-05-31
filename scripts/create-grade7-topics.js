@@ -4,22 +4,22 @@ const { PrismaClient } = require("@prisma/client");
 const db = new PrismaClient();
 
 const MATH_TOPICS = [
-  "1. Ünite: Doğal Sayılar ve İşlemler",
-  "2. Ünite: Çarpma ve Bölme İşlemleri",
-  "3. Ünite: Kesirler",
-  "4. Ünite: Zaman Ölçme ve Veri İşleme",
-  "5. Ünite: Geometri",
-  "6. Ünite: Ölçme (Uzunluk, Çevre, Alan, Tartma, Sıvı)"
+  "1. Ünite: Tam Sayılarla İşlemler",
+  "2. Ünite: Rasyonel Sayılar",
+  "3. Ünite: Cebirsel İfadeler ve Denklemler",
+  "4. Ünite: Oran, Orantı ve Yüzdeler",
+  "5. Ünite: Çokgenler ve Cisimlerin Görünümleri",
+  "6. Ünite: Veri Analizi"
 ];
 
 const SCIENCE_TOPICS = [
-  "1. Ünite: Yer Kabuğu ve Dünya'mızın Hareketleri",
-  "2. Ünite: Besinlerimiz",
-  "3. Ünite: Kuvvetin Etkileri",
-  "4. Ünite: Maddenin Özellikleri",
-  "5. Ünite: Aydınlatma ve Ses Teknolojileri",
-  "6. Ünite: İnsan ve Çevre",
-  "7. Ünite: Basit Elektrik Devreleri"
+  "1. Ünite: Güneş Sistemi ve Ötesi",
+  "2. Ünite: Hücre ve Bölünmeler",
+  "3. Ünite: Kuvvet ve Enerji",
+  "4. Ünite: Saf Madde ve Karışımlar",
+  "5. Ünite: Işığın Madde ile Etkileşimi",
+  "6. Ünite: Canlılarda Üreme, Büyüme ve Gelişme",
+  "7. Ünite: Elektrik Devreleri"
 ];
 
 const SOCIAL_TOPICS = [
@@ -27,14 +27,14 @@ const SOCIAL_TOPICS = [
   "2. Ünite: Kültür ve Miras",
   "3. Ünite: İnsanlar, Yerler ve Çevreler",
   "4. Ünite: Bilim, Teknoloji ve Toplum",
-  "5. Ünite: Üretim, Dağıtım ve Tüketim",
-  "6. Ünite: Etkin Vatandaşlık",
-  "7. Ünite: Küresel Bağlantılar"
+  "5. Ünite: Ekonomi ve Yaşam",
+  "6. Ünite: Demokrasi ve Vatandaşlık",
+  "7. Ünite: Dünyadaki Yerimiz"
 ];
 
 (async () => {
   try {
-    console.log("📚 Grade 4 Konuları Oluşturuluyor...\n");
+    console.log("📚 Grade 7 Konuları Oluşturuluyor...\n");
 
     let created = 0;
 
@@ -42,7 +42,7 @@ const SOCIAL_TOPICS = [
     for (const topicName of MATH_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
+          gradeLevel: 7,
           subject: "MATEMATIK",
           name: topicName
         }
@@ -51,7 +51,7 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
+            gradeLevel: 7,
             subject: "MATEMATIK",
             name: topicName,
             description: topicName
@@ -59,8 +59,6 @@ const SOCIAL_TOPICS = [
         });
         console.log(`   ✓ Oluşturuldu: [MATEMATIK] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [MATEMATIK] ${topicName}`);
       }
     }
 
@@ -68,7 +66,7 @@ const SOCIAL_TOPICS = [
     for (const topicName of SCIENCE_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
+          gradeLevel: 7,
           subject: "FEN_BİLİMLERİ",
           name: topicName
         }
@@ -77,7 +75,7 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
+            gradeLevel: 7,
             subject: "FEN_BİLİMLERİ",
             name: topicName,
             description: topicName
@@ -85,8 +83,6 @@ const SOCIAL_TOPICS = [
         });
         console.log(`   ✓ Oluşturuldu: [FEN_BİLİMLERİ] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [FEN_BİLİMLERİ] ${topicName}`);
       }
     }
 
@@ -94,7 +90,7 @@ const SOCIAL_TOPICS = [
     for (const topicName of SOCIAL_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
+          gradeLevel: 7,
           subject: "SOSYAL_BİLGİLER",
           name: topicName
         }
@@ -103,7 +99,7 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
+            gradeLevel: 7,
             subject: "SOSYAL_BİLGİLER",
             name: topicName,
             description: topicName
@@ -111,8 +107,6 @@ const SOCIAL_TOPICS = [
         });
         console.log(`   ✓ Oluşturuldu: [SOSYAL_BİLGİLER] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [SOSYAL_BİLGİLER] ${topicName}`);
       }
     }
 

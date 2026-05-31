@@ -4,22 +4,23 @@ const { PrismaClient } = require("@prisma/client");
 const db = new PrismaClient();
 
 const MATH_TOPICS = [
-  "1. Ünite: Doğal Sayılar ve İşlemler",
-  "2. Ünite: Çarpma ve Bölme İşlemleri",
-  "3. Ünite: Kesirler",
-  "4. Ünite: Zaman Ölçme ve Veri İşleme",
-  "5. Ünite: Geometri",
-  "6. Ünite: Ölçme (Uzunluk, Çevre, Alan, Tartma, Sıvı)"
+  "1. Ünite: Doğal Sayılarla İşlemler",
+  "2. Ünite: Çarpanlar ve Katlar, Kümeler",
+  "3. Ünite: Tam Sayılar ve Kesirlerle İşlemler",
+  "4. Ünite: Ondalık Gösterim ve Oran",
+  "5. Ünite: Cebirsel İfadeler ve Veri Analizi",
+  "6. Ünite: Açılar ve Alan Ölçme",
+  "7. Ünite: Çember, Geometrik Cisimler ve Hacim"
 ];
 
 const SCIENCE_TOPICS = [
-  "1. Ünite: Yer Kabuğu ve Dünya'mızın Hareketleri",
-  "2. Ünite: Besinlerimiz",
-  "3. Ünite: Kuvvetin Etkileri",
-  "4. Ünite: Maddenin Özellikleri",
-  "5. Ünite: Aydınlatma ve Ses Teknolojileri",
-  "6. Ünite: İnsan ve Çevre",
-  "7. Ünite: Basit Elektrik Devreleri"
+  "1. Ünite: Güneş Sistemi ve Tutulmalar",
+  "2. Ünite: Vücudumuzdaki Sistemler",
+  "3. Ünite: Kuvvet ve Hareket",
+  "4. Ünite: Madde ve Isı",
+  "5. Ünite: Ses ve Özellikleri",
+  "6. Ünite: Vücudumuzdaki Sistemler ve Sağlığı",
+  "7. Ünite: Elektriğin İletimi"
 ];
 
 const SOCIAL_TOPICS = [
@@ -34,7 +35,7 @@ const SOCIAL_TOPICS = [
 
 (async () => {
   try {
-    console.log("📚 Grade 4 Konuları Oluşturuluyor...\n");
+    console.log("📚 Grade 6 Konuları Oluşturuluyor...\n");
 
     let created = 0;
 
@@ -42,7 +43,7 @@ const SOCIAL_TOPICS = [
     for (const topicName of MATH_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
+          gradeLevel: 6,
           subject: "MATEMATIK",
           name: topicName
         }
@@ -51,7 +52,7 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
+            gradeLevel: 6,
             subject: "MATEMATIK",
             name: topicName,
             description: topicName
@@ -59,8 +60,6 @@ const SOCIAL_TOPICS = [
         });
         console.log(`   ✓ Oluşturuldu: [MATEMATIK] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [MATEMATIK] ${topicName}`);
       }
     }
 
@@ -68,7 +67,7 @@ const SOCIAL_TOPICS = [
     for (const topicName of SCIENCE_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
+          gradeLevel: 6,
           subject: "FEN_BİLİMLERİ",
           name: topicName
         }
@@ -77,7 +76,7 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
+            gradeLevel: 6,
             subject: "FEN_BİLİMLERİ",
             name: topicName,
             description: topicName
@@ -85,8 +84,6 @@ const SOCIAL_TOPICS = [
         });
         console.log(`   ✓ Oluşturuldu: [FEN_BİLİMLERİ] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [FEN_BİLİMLERİ] ${topicName}`);
       }
     }
 
@@ -94,7 +91,7 @@ const SOCIAL_TOPICS = [
     for (const topicName of SOCIAL_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
+          gradeLevel: 6,
           subject: "SOSYAL_BİLGİLER",
           name: topicName
         }
@@ -103,7 +100,7 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
+            gradeLevel: 6,
             subject: "SOSYAL_BİLGİLER",
             name: topicName,
             description: topicName
@@ -111,8 +108,6 @@ const SOCIAL_TOPICS = [
         });
         console.log(`   ✓ Oluşturuldu: [SOSYAL_BİLGİLER] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [SOSYAL_BİLGİLER] ${topicName}`);
       }
     }
 

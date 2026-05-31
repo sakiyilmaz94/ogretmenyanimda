@@ -17,7 +17,9 @@ const SCIENCE_TOPICS = [
   "2. Ünite: Beş Duyumuz",
   "3. Ünite: Kuvveti Tanıyalım",
   "4. Ünite: Maddeyi Tanıyalım",
-  "5. Ünite: Çevremizdeki Işık ve Sesler"
+  "5. Ünite: Çevremizdeki Işık ve Sesler",
+  "6. Ünite: Canlılar Dünyasına Yolculuk",
+  "7. Ünite: Elektrikli Araçlar"
 ];
 
 (async () => {

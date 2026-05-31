@@ -2,20 +2,21 @@
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
-    "question": "Dünya'nın uzaydan bakıldığında görünen geometrik şekli neye benzer?",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
+    "question": "Dünya'nın uzaydan bakıldığında görülen geometrik şekli neye benzer?",
     "option1": "Kutu",
     "option2": "Küre",
     "option3": "Tepsi",
     "option4": "Silindir",
     "correctAnswer": 1,
     "difficulty": "easy",
-    "explanation": "Dünya'nın şekli alttan ve üstten hafif basık bir küreye benzer."
+    "explanation": "Dünya'nın şekli alttan ve üstten hafif basık bir küreye benzer.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Dünya'mızın etrafını saran ve canlıların nefes almasını sağlayan katman hangisidir?",
     "option1": "Manto",
     "option2": "Su katmanı",
@@ -23,12 +24,13 @@
     "option4": "Kara katmanı",
     "correctAnswer": 2,
     "difficulty": "easy",
-    "explanation": "Dünya'yı saran hava tabakasına atmosfer veya hava katmanı denir."
+    "explanation": "Dünya'yı saran hava tabakasına atmosfer veya hava katmanı denir.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Dünya yüzeyinde karalar mı yoksa sular mı daha fazla yer kaplamaktadır?",
     "option1": "Karalar",
     "option2": "Sular",
@@ -36,12 +38,13 @@
     "option4": "Hiç kara yoktur",
     "correctAnswer": 1,
     "difficulty": "easy",
-    "explanation": "Dünya yüzeyinin yaklaşık dörtte üçü (büyük kısmı) sularla kaplıdır."
+    "explanation": "Dünya yüzeyinin yaklaşık dörtte üçü (büyük kısmı) sularla kaplıdır.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Aşağıdaki yapılardan hangisi kara katmanında yer almaz?",
     "option1": "Okyanuslar",
     "option2": "Dağlar",
@@ -49,12 +52,13 @@
     "option4": "Vadiler",
     "correctAnswer": 0,
     "difficulty": "medium",
-    "explanation": "Okyanuslar su katmanını oluştururken dağ, ova gibi yerler kara katmanındadır."
+    "explanation": "Okyanuslar su katmanını oluştururken dağ, ova gibi yerler kara katmanındadır.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Yer kabuğunun hemen altında bulunan erimiş, çok sıcak kayalardan oluşan bölümün adı nedir?",
     "option1": "Atmosfer",
     "option2": "Çekirdek",
@@ -62,12 +66,13 @@
     "option4": "Okyanus",
     "correctAnswer": 2,
     "difficulty": "medium",
-    "explanation": "Çok sıcak ve erimiş kayalardan oluşan sıvı katmana magma (manto) adı verilir."
+    "explanation": "Çok sıcak ve erimiş kayalardan oluşan sıvı katmana magma (manto) adı verilir.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Dünya haritası veya model küreye baktığımızda mavi renkli alanlar neyi gösterir?",
     "option1": "Dağları",
     "option2": "Ormanları",
@@ -75,12 +80,13 @@
     "option4": "Suları (deniz, okyanus)",
     "correctAnswer": 3,
     "difficulty": "medium",
-    "explanation": "Mavi renkler suları temsil eder, kahverengi/yeşil renkler ise karaları gösterir."
+    "explanation": "Mavi renkler suları temsil eder, kahverengi/yeşil renkler ise karaları gösterir.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Aşağıdakilerden hangisi doğrudan gözlemleyemediğimiz, Dünya'nın merkezinde yer alan katmandır?",
     "option1": "Çekirdek",
     "option2": "Kara katmanı",
@@ -88,12 +94,13 @@
     "option4": "Hava katmanı",
     "correctAnswer": 0,
     "difficulty": "hard",
-    "explanation": "Çekirdek gezegenimizin en iç kısmında bulunur ve gözlemleyebildiğimiz dış katmanlardan değildir."
+    "explanation": "Çekirdek gezegenimizin en iç kısmında bulunur ve gözlemleyebildiğimiz dış katmanlardan değildir.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Eski çağlarda teknolojinin olmadığı dönemlerde insanlar Dünya'nın şekliyle ilgili aşağıdaki fikirlerden hangisine sahip değildi?",
     "option1": "Dünya öküzün boynuzlarındadır.",
     "option2": "Dünya düz bir tepsidir.",
@@ -101,12 +108,13 @@
     "option4": "Dünya suda yüzen bir odun gibidir.",
     "correctAnswer": 2,
     "difficulty": "hard",
-    "explanation": "Eski çağlarda uzay teknolojisi ve fotoğraflama imkânı olmadığı için bunu bilemezlerdi."
+    "explanation": "Eski çağlarda uzay teknolojisi ve fotoğraflama imkânı olmadığı için bunu bilemezlerdi.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Rüzgâr, yağmur, kar gibi doğa olayları Dünya'mızın hangi katmanında gerçekleşir?",
     "option1": "Çekirdek",
     "option2": "Kara katmanı",
@@ -114,12 +122,13 @@
     "option4": "Hava katmanı (Atmosfer)",
     "correctAnswer": 3,
     "difficulty": "medium",
-    "explanation": "Hava olayları atmosferde (hava katmanında) gerçekleşir."
+    "explanation": "Hava olayları atmosferde (hava katmanında) gerçekleşir.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "1. Ünite: Gezegenimizi Tanıyalım",
+    "unit": "1. Ünite: Gezegenimizi Tanıyalım",
     "question": "Canlıların üzerinde yaşadığı; toprak, kaya ve madenlerin bulunduğu katman hangisidir?",
     "option1": "Su",
     "option2": "Kara (Yer kabuğu)",
@@ -127,12 +136,13 @@
     "option4": "Magma",
     "correctAnswer": 1,
     "difficulty": "easy",
-    "explanation": "Bitki, hayvan ve insanların hayatını sürdürdüğü katman kara katmanıdır."
+    "explanation": "Bitki, hayvan ve insanların hayatını sürdürdüğü katman kara katmanıdır.",
+    "theme": "1. Ünite: Gezegenimizi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Çevremizdeki eşyaların rengini ve şeklini algılamamızı sağlayan duyu organımız hangisidir?",
     "option1": "Göz",
     "option2": "Kulak",
@@ -140,12 +150,13 @@
     "option4": "Dil",
     "correctAnswer": 0,
     "difficulty": "easy",
-    "explanation": "Görme duyu organımız gözdür."
+    "explanation": "Görme duyu organımız gözdür.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Çevremizdeki sesleri duymamızı ve yönünü belirlememizi sağlayan organımız hangisidir?",
     "option1": "Göz",
     "option2": "Kulak",
@@ -153,12 +164,13 @@
     "option4": "Burun",
     "correctAnswer": 1,
     "difficulty": "easy",
-    "explanation": "İşitme duyu organımız olan kulak sesleri duymamızı sağlar."
+    "explanation": "İşitme duyu organımız olan kulak sesleri duymamızı sağlar.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Vücudumuzu dış etkilere karşı koruyan, sıcaklık veya sertlik gibi dokunma hislerini algıladığımız organımız nedir?",
     "option1": "Dil",
     "option2": "Göz",
@@ -166,12 +178,13 @@
     "option4": "Burun",
     "correctAnswer": 2,
     "difficulty": "easy",
-    "explanation": "Vücudumuzu tamamen saran ve dokunma duyu organı olan yapımız deridir."
+    "explanation": "Vücudumuzu tamamen saran ve dokunma duyu organı olan yapımız deridir.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Yiyecek ve içeceklerin tadını almamızı sağlayan duyu organımız hangisidir?",
     "option1": "Burun",
     "option2": "Kulak",
@@ -179,12 +192,13 @@
     "option4": "Dil",
     "correctAnswer": 3,
     "difficulty": "easy",
-    "explanation": "Tat alma duyu organımız olan dil, acı, tatlı, ekşi gibi tatları ayırmamızı sağlar."
+    "explanation": "Tat alma duyu organımız olan dil, acı, tatlı, ekşi gibi tatları ayırmamızı sağlar.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Burun ile ilgili aşağıda verilen bilgilerden hangisi doğrudur?",
     "option1": "Sadece koku almaya yarar.",
     "option2": "Hem koku almaya hem de solunum yapmaya yarar.",
@@ -192,12 +206,13 @@
     "option4": "Tatları algılamamızı sağlar.",
     "correctAnswer": 1,
     "difficulty": "medium",
-    "explanation": "Burun, kokuyu almamızın yanı sıra temiz havayı soluyarak akciğerlerimize almamızı da sağlar."
+    "explanation": "Burun, kokuyu almamızın yanı sıra temiz havayı soluyarak akciğerlerimize almamızı da sağlar.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Grip ve nezle gibi hastalıklara yakalandığımızda yemeğin tadını iyi alamamamızın nedeni nedir?",
     "option1": "Dilimizin hastalanması",
     "option2": "Yemeklerin lezzetini kaybetmesi",
@@ -205,12 +220,13 @@
     "option4": "Koku ve tat alma duyularımızın uyum içinde birlikte çalışması",
     "correctAnswer": 3,
     "difficulty": "medium",
-    "explanation": "Yemeğin kokusunu alamadığımız durumlarda tadını da tam algılayamayız, çünkü birlikte çalışırlar."
+    "explanation": "Yemeğin kokusunu alamadığımız durumlarda tadını da tam algılayamayız, çünkü birlikte çalışırlar.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Göz sağlığımızı korumak için aşağıdakilerden hangisi yapılmamalıdır?",
     "option1": "Kitap okurken yeterli ışık olmasına dikkat etmeliyiz.",
     "option2": "Televizyon veya tableti çok yakından izlemeliyiz.",
@@ -218,12 +234,13 @@
     "option4": "Başkalarının gözlüğünü kullanmamalıyız.",
     "correctAnswer": 1,
     "difficulty": "medium",
-    "explanation": "Ekrana çok yakından ve uzun süre bakmak göz sağlığını bozar."
+    "explanation": "Ekrana çok yakından ve uzun süre bakmak göz sağlığını bozar.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Çok yüksek ve gürültülü sesli ortamlarda bulunmak hangi organımıza zarar verebilir?",
     "option1": "Göz",
     "option2": "Deri",
@@ -231,12 +248,13 @@
     "option4": "Dil",
     "correctAnswer": 2,
     "difficulty": "hard",
-    "explanation": "Gürültülü ortamlar işitme organımız kulağın sağlığını olumsuz etkiler."
+    "explanation": "Gürültülü ortamlar işitme organımız kulağın sağlığını olumsuz etkiler.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Zehirli ve tehlikeli olduğu için kesinlikle koklanmaması veya tadılmaması gereken maddeye hangi örnek verilebilir?",
     "option1": "Çamaşır suyu gibi temizlik malzemeleri",
     "option2": "Taze bir elma",
@@ -244,12 +262,13 @@
     "option4": "Fırından yeni çıkmış ekmek",
     "correctAnswer": 0,
     "difficulty": "hard",
-    "explanation": "Temizlik malzemeleri kimyasaldır, koklanması ve tadılması çok tehlikelidir."
+    "explanation": "Temizlik malzemeleri kimyasaldır, koklanması ve tadılması çok tehlikelidir.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "2. Ünite: Beş Duyumuz",
+    "unit": "2. Ünite: Beş Duyumuz",
     "question": "Gözleri tamamen kapalı olan bir kişi, bir limonun limon olduğunu nasıl algılayabilir?",
     "option1": "Sadece dokunarak",
     "option2": "Sadece dinleyerek",
@@ -257,12 +276,13 @@
     "option4": "Görmediği için asla anlayamaz",
     "correctAnswer": 2,
     "difficulty": "hard",
-    "explanation": "Duyu organları birbirine yardım eder; şekli (dokunma), kokusu ve ekşiliği (tat) ile anlaşılabilir."
+    "explanation": "Duyu organları birbirine yardım eder; şekli (dokunma), kokusu ve ekşiliği (tat) ile anlaşılabilir.",
+    "theme": "2. Ünite: Beş Duyumuz"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Cisimleri kendimizden uzaklaştırmak için uyguladığımız kuvvete ne ad verilir?",
     "option1": "İtme kuvveti",
     "option2": "Çekme kuvveti",
@@ -270,12 +290,13 @@
     "option4": "Yavaşlama",
     "correctAnswer": 0,
     "difficulty": "easy",
-    "explanation": "Duran veya hareket eden cismi uzaklaştırmak amacıyla itme kuvveti uygularız."
+    "explanation": "Duran veya hareket eden cismi uzaklaştırmak amacıyla itme kuvveti uygularız.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Kapalı bir çekmeceyi açarken veya bir kapıyı kendimize doğru aralarken hangi kuvveti uygularız?",
     "option1": "İtme",
     "option2": "Dönme",
@@ -283,12 +304,13 @@
     "option4": "Sallanma",
     "correctAnswer": 2,
     "difficulty": "easy",
-    "explanation": "Cismi kendimize doğru yaklaştırmak için çekme kuvvetini kullanırız."
+    "explanation": "Cismi kendimize doğru yaklaştırmak için çekme kuvvetini kullanırız.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Trafik lambasında yeşil ışığı görünce kalkış yapan ve ilerleyen bir otomobil hangi hareketi yapar?",
     "option1": "Yavaşlama",
     "option2": "Hızlanma",
@@ -296,12 +318,13 @@
     "option4": "Yön değiştirme",
     "correctAnswer": 1,
     "difficulty": "medium",
-    "explanation": "Duran bir cismin harekete geçip hızını artırmasına hızlanma hareketi denir."
+    "explanation": "Duran bir cismin harekete geçip hızını artırmasına hızlanma hareketi denir.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Parkta bindiğimiz salıncak çalışırken aşağıdakilerden hangi hareket türünü yapar?",
     "option1": "Sallanma",
     "option2": "Dönme",
@@ -309,12 +332,13 @@
     "option4": "Hızlanma",
     "correctAnswer": 0,
     "difficulty": "easy",
-    "explanation": "Salıncak sürekli ileri ve geri gidip gelerek sallanma hareketi yapar."
+    "explanation": "Salıncak sürekli ileri ve geri gidip gelerek sallanma hareketi yapar.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Vantilatörün pervanesi veya bisiklet tekerleği hareket ederken hangi hareket türünü gerçekleştirir?",
     "option1": "Yön değiştirme",
     "option2": "Sallanma",
@@ -322,12 +346,13 @@
     "option4": "İtme",
     "correctAnswer": 2,
     "difficulty": "medium",
-    "explanation": "Sabit bir nokta etrafında atılan turlar dönme hareketine örnektir."
+    "explanation": "Sabit bir nokta etrafında atılan turlar dönme hareketine örnektir.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Karşıdan gelen bir topa raketle veya ayakla hızlıca vurulursa, top hangi hareketi yapmış olur?",
     "option1": "Sallanma",
     "option2": "Yavaşlama",
@@ -335,12 +360,13 @@
     "option4": "Dönme",
     "correctAnswer": 2,
     "difficulty": "medium",
-    "explanation": "Topa vurarak onun geliş yönünün dışına doğru gitmesini sağlamak yön değiştirmedir."
+    "explanation": "Topa vurarak onun geliş yönünün dışına doğru gitmesini sağlamak yön değiştirmedir.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Hareket hâlindeki cisimleri durdurmaya çalışmak bazı durumlarda kazalara yol açabilir. Aşağıdakilerden hangisini ellerimizle durdurmak tehlikelidir?",
     "option1": "Yerde yavaşça dönen bir bilyeyi",
     "option2": "Çok hızlı çalışan bir matkabın veya testerenin ucunu",
@@ -348,12 +374,13 @@
     "option4": "Arkadaşımızın attığı yumuşak topu",
     "correctAnswer": 1,
     "difficulty": "hard",
-    "explanation": "Çok hızlı dönen veya ağır olan makine, araç vb. hareketli nesneleri el ile durdurmak çok tehlikelidir."
+    "explanation": "Çok hızlı dönen veya ağır olan makine, araç vb. hareketli nesneleri el ile durdurmak çok tehlikelidir.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Kırmızı ışığı gören bir şoförün frene basmasıyla otomobilin yaptığı harekete ne ad verilir?",
     "option1": "Hızlanma",
     "option2": "Dönme",
@@ -361,12 +388,13 @@
     "option4": "Çekme",
     "correctAnswer": 2,
     "difficulty": "medium",
-    "explanation": "Cismin durmak veya hızını azaltmak amacıyla hareket gücünü düşürmesi yavaşlamadır."
+    "explanation": "Cismin durmak veya hızını azaltmak amacıyla hareket gücünü düşürmesi yavaşlamadır.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Bir pazar arabası, dik bir yokuştan aşağı bırakıldığında nasıl hareket eder?",
     "option1": "Yavaşlayarak durur.",
     "option2": "Sürekli dönme hareketi yapar.",
@@ -374,12 +402,13 @@
     "option4": "Geriye doğru çekilir.",
     "correctAnswer": 2,
     "difficulty": "hard",
-    "explanation": "Yokuş aşağı yuvarlanan/hareket eden nesneler ivme kazanarak hızlanma hareketi yapar."
+    "explanation": "Yokuş aşağı yuvarlanan/hareket eden nesneler ivme kazanarak hızlanma hareketi yapar.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "3. Ünite: Kuvveti Tanıyalım",
+    "unit": "3. Ünite: Kuvveti Tanıyalım",
     "question": "Kuvvetle ilgili aşağıdaki bilgilerden hangisi yanlıştır?",
     "option1": "Duran bir cismi harekete geçirebilir.",
     "option2": "Hareketli bir cismin yönünü değiştirebilir.",
@@ -387,12 +416,13 @@
     "option4": "Cisimlerin şeklini değiştirebilir.",
     "correctAnswer": 2,
     "difficulty": "hard",
-    "explanation": "Çok ağır ve hızlı giden tren, otomobil vb. araçları ellerimizle iterek veya çekerek durduramayız."
+    "explanation": "Çok ağır ve hızlı giden tren, otomobil vb. araçları ellerimizle iterek veya çekerek durduramayız.",
+    "theme": "3. Ünite: Kuvveti Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Çevremizde beş duyumuzdan en az biriyle algılayabildiğimiz, boşlukta yer kaplayan varlıklara ne ad verilir?",
     "option1": "Işık",
     "option2": "Enerji",
@@ -400,12 +430,13 @@
     "option4": "Madde",
     "correctAnswer": 3,
     "difficulty": "easy",
-    "explanation": "Kütlesi olan ve boşlukta yer kaplayan tüm nesnelere madde denir."
+    "explanation": "Kütlesi olan ve boşlukta yer kaplayan tüm nesnelere madde denir.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Kuvvet uyguladığımızda şekli değişen ama kuvvet ortadan kalktığında yeniden eski hâline dönen madde türüne ne ad verilir?",
     "option1": "Kırılgan",
     "option2": "Esnek",
@@ -413,12 +444,13 @@
     "option4": "Sert",
     "correctAnswer": 1,
     "difficulty": "easy",
-    "explanation": "Sünger ve paket lastiği gibi maddeler sıkılınca şekil değiştirir, bırakılınca eski hâlini alır. Bu esnekliktir."
+    "explanation": "Sünger ve paket lastiği gibi maddeler sıkılınca şekil değiştirir, bırakılınca eski hâlini alır. Bu esnekliktir.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Cam bardak ve porselen tabak yere düştüğünde kırılır. Bu, onların hangi madde özelliğine sahip olduğunu gösterir?",
     "option1": "Kırılgan",
     "option2": "Pürüzsüz",
@@ -426,12 +458,13 @@
     "option4": "Esnek",
     "correctAnswer": 0,
     "difficulty": "easy",
-    "explanation": "Kolayca çatlayan, parçalanan maddeler kırılgan özelliğe sahiptir."
+    "explanation": "Kolayca çatlayan, parçalanan maddeler kırılgan özelliğe sahiptir.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Aşağıdaki eşleşmelerden hangisi yanlıştır?",
     "option1": "Pamuk -> Yumuşak",
     "option2": "Ayna -> Pürüzsüz",
@@ -439,12 +472,13 @@
     "option4": "Ceviz kabuğu -> Pürüzlü",
     "correctAnswer": 2,
     "difficulty": "medium",
-    "explanation": "Taş sert bir maddedir, sıkılınca şekil değiştirip eski hâline dönmez, yani esnek değildir."
+    "explanation": "Taş sert bir maddedir, sıkılınca şekil değiştirip eski hâline dönmez, yani esnek değildir.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Tanımadığımız veya içeriğinden emin olmadığımız maddelere dokunmak veya tatlarına bakmak neden tehlikelidir?",
     "option1": "Zehirlenebileceğimiz ve vücudumuza zarar verebileceği için",
     "option2": "O maddeler hemen bozulacağı için",
@@ -452,12 +486,13 @@
     "option4": "Hızlı eridiği için",
     "correctAnswer": 0,
     "difficulty": "medium",
-    "explanation": "Kimyasal maddeleri (örneğin temizlik ürünleri) tatmak veya koklamak zehirlenmeye yol açar."
+    "explanation": "Kimyasal maddeleri (örneğin temizlik ürünleri) tatmak veya koklamak zehirlenmeye yol açar.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Madde doğada hangi üç temel hâlde bulunabilir?",
     "option1": "Büyük - Küçük - Orta",
     "option2": "Katı - Sıvı - Gaz",
@@ -465,12 +500,13 @@
     "option4": "Renkli - Kokusuz - Tatlı",
     "correctAnswer": 1,
     "difficulty": "medium",
-    "explanation": "Maddeler doğada katı, sıvı ve gaz olmak üzere 3 farklı hâlde bulunur."
+    "explanation": "Maddeler doğada katı, sıvı ve gaz olmak üzere 3 farklı hâlde bulunur.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Aşağıdakilerden hangisi gaz hâlde bulunan bir maddeye örnektir?",
     "option1": "Su",
     "option2": "Zeytinyağı",
@@ -478,12 +514,13 @@
     "option4": "Su buharı (Hava)",
     "correctAnswer": 3,
     "difficulty": "medium",
-    "explanation": "Su ve zeytinyağı sıvı, tahta katı, su buharı ve soluduğumuz hava ise gazdır."
+    "explanation": "Su ve zeytinyağı sıvı, tahta katı, su buharı ve soluduğumuz hava ise gazdır.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Kendi özel bir şekli olmayan ve döküldüğü kabın şeklini kolayca alan (dökülebilen) maddelere ne denir?",
     "option1": "Katı",
     "option2": "Sert",
@@ -491,12 +528,13 @@
     "option4": "Kırılgan",
     "correctAnswer": 2,
     "difficulty": "hard",
-    "explanation": "Sıvı maddelerin (su, süt vb.) belirli şekli yoktur, akışkandırlar ve içine girdikleri kabın şeklini alırlar."
+    "explanation": "Sıvı maddelerin (su, süt vb.) belirli şekli yoktur, akışkandırlar ve içine girdikleri kabın şeklini alırlar.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Bir su şişesini buzdolabının buzluğuna koyarsak, su bir süre sonra donar. Suyun donarak buza dönüşmesi maddenin hangi hâlden hangi hâle geçtiğini gösterir?",
     "option1": "Gazdan sıvıya",
     "option2": "Sıvıdan katıya",
@@ -504,12 +542,13 @@
     "option4": "Sıvıdan gaza",
     "correctAnswer": 1,
     "difficulty": "hard",
-    "explanation": "Su (sıvı) donarak buza (katı) dönüşür, böylece hâl değiştirir."
+    "explanation": "Su (sıvı) donarak buza (katı) dönüşür, böylece hâl değiştirir.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "4. Ünite: Maddeyi Tanıyalım",
+    "unit": "4. Ünite: Maddeyi Tanıyalım",
     "question": "Aşağıdaki olaylardan hangisi maddenin hâl değiştirdiğine örnektir?",
     "option1": "Cam bardağın kırılması",
     "option2": "Kalemin kırılması",
@@ -517,12 +556,13 @@
     "option4": "Kâğıdın yırtılması",
     "correctAnswer": 2,
     "difficulty": "hard",
-    "explanation": "Katı bir dondurma eriyerek sıvı hâle geçer. Kırılma ve yırtılma hâl değişimi değildir."
+    "explanation": "Katı bir dondurma eriyerek sıvı hâle geçer. Kırılma ve yırtılma hâl değişimi değildir.",
+    "theme": "4. Ünite: Maddeyi Tanıyalım"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
     "question": "Karanlık ortamlarda nesneleri görebilmemiz için aşağıdakilerden hangisine ihtiyacımız vardır?",
     "option1": "Işık",
     "option2": "Ses",
@@ -530,12 +570,13 @@
     "option4": "Sıcaklık",
     "correctAnswer": 0,
     "difficulty": "easy",
-    "explanation": "Görme olayının gerçekleşebilmesi için ortamda mutlaka ışık olması gerekir."
+    "explanation": "Görme olayının gerçekleşebilmesi için ortamda mutlaka ışık olması gerekir.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
     "question": "Dünya'mızın ısı ve ışık ihtiyacını karşılayan en büyük doğal ışık kaynağı nedir?",
     "option1": "Ay",
     "option2": "El feneri",
@@ -543,12 +584,13 @@
     "option4": "Güneş",
     "correctAnswer": 3,
     "difficulty": "easy",
-    "explanation": "Güneş, gezegenimizi aydınlatan en önemli ve en büyük doğal ışık kaynağımızdır."
+    "explanation": "Güneş, gezegenimizi aydınlatan en önemli ve en büyük doğal ışık kaynağımızdır.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
     "question": "İnsanlar tarafından çeşitli aletlerle üretilen, gerektiğinde açıp kapatabildiğimiz ışık kaynaklarına ne denir?",
     "option1": "Doğal ışık kaynağı",
     "option2": "Gök cismi",
@@ -556,12 +598,13 @@
     "option4": "Ay ışığı",
     "correctAnswer": 2,
     "difficulty": "medium",
-    "explanation": "El feneri, ampul, mum gibi araçlar insanlar tarafından yapıldığı için yapay ışık kaynağıdır."
+    "explanation": "El feneri, ampul, mum gibi araçlar insanlar tarafından yapıldığı için yapay ışık kaynağıdır.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
     "question": "Aşağıdakilerden hangisi bir ışık kaynağı DEĞİLDİR?",
     "option1": "Güneş",
     "option2": "Ay",
@@ -569,12 +612,13 @@
     "option4": "Yanan mum",
     "correctAnswer": 1,
     "difficulty": "hard",
-    "explanation": "Ay bir ışık kaynağı değildir; sadece Güneş'ten aldığı ışığı geceleri bize yansıtır."
+    "explanation": "Ay bir ışık kaynağı değildir; sadece Güneş'ten aldığı ışığı geceleri bize yansıtır.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
     "question": "Maddelerin titreşmesiyle meydana gelen ve işitme organımızla algıladığımız olaya ne denir?",
     "option1": "Görüntü",
     "option2": "Yankı",
@@ -582,12 +626,13 @@
     "option4": "Ses",
     "correctAnswer": 3,
     "difficulty": "medium",
-    "explanation": "Ses, nesnelerin (tellerin, suyun, havanın) titreşimiyle oluşur ve kulakla algılanır."
+    "explanation": "Ses, nesnelerin (tellerin, suyun, havanın) titreşimiyle oluşur ve kulakla algılanır.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
     "question": "Aşağıdakilerden hangisi doğal ses kaynağıdır?",
     "option1": "Otomobil kornası",
     "option2": "Gitar sesi",
@@ -595,12 +640,13 @@
     "option4": "Televizyon sesi",
     "correctAnswer": 2,
     "difficulty": "easy",
-    "explanation": "Hayvan sesleri, rüzgâr ve su sesi gibi doğada kendiliğinden olan sesler doğal ses kaynağıdır."
+    "explanation": "Hayvan sesleri, rüzgâr ve su sesi gibi doğada kendiliğinden olan sesler doğal ses kaynağıdır.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
   },
   {
     "grade": 3,
     "subject": "Fen Bilimleri",
-    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
     "question": "İnsanlar tarafından üretilmiş eşyalardan çıkan seslere ne denir?",
     "option1": "Doğal ses kaynağı",
     "option2": "Yapay ses kaynağı",
@@ -608,6 +654,329 @@
     "option4": "Gök gürültüsü",
     "correctAnswer": 1,
     "difficulty": "medium",
-    "explanation": "Müzik aletleri, taşıtlar ve elektronik cihazların sesleri yapay ses kaynaklarıdır."
+    "explanation": "Müzik aletleri, taşıtlar ve elektronik cihazların sesleri yapay ses kaynaklarıdır.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "question": "Dışarıdaki bir sesi uzaklaştıkça daha az, yaklaştıkça daha çok duyarız. Bu durum sesin hangi özelliğine bağlıdır?",
+    "option1": "Sesin şiddetine",
+    "option2": "Sesin hızına",
+    "option3": "Rengine",
+    "option4": "Işığına",
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "explanation": "Sesin duyulabilirliğini belirleyen özelliğe sesin şiddeti denir. Uzaklaştıkça şiddet azalır.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "question": "Konser, düğün veya inşaat alanı gibi ses şiddetinin çok yüksek (gürültülü) olduğu yerlerde uzun süre bulunmak neye sebep olabilir?",
+    "option1": "Gözlerimizin iyi görmesine",
+    "option2": "İşitme kaybı yaşamamıza",
+    "option3": "Koku alma duyumuzun gelişmesine",
+    "option4": "Boyumuzun uzamasına",
+    "correctAnswer": 1,
+    "difficulty": "medium",
+    "explanation": "Yüksek şiddetli sesler zamanla kalıcı veya geçici işitme (duyma) sorunlarına yol açabilir.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "5. Ünite: Çevremizdeki Işık ve Sesler",
+    "question": "Kalabalıklara seslenirken ses şiddetini artırmak, sesin daha uzağa gitmesini sağlamak için kullanılan araç hangisidir?",
+    "option1": "Ampul",
+    "option2": "Megafon (Mikrofon)",
+    "option3": "Teleskop",
+    "option4": "Büyüteç",
+    "correctAnswer": 1,
+    "difficulty": "hard",
+    "explanation": "Megafon veya mikrofon, ses şiddetini artırmak (sesi güçlendirmek) için kullanılan araçlardır.",
+    "theme": "5. Ünite: Çevremizdeki Işık ve Sesler"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Büyüme, gelişme, beslenme, solunum yapma ve çoğalma özelliklerine sahip olan varlıklara ne ad verilir?",
+    "option1": "Cansız varlıklar",
+    "option2": "Doğal çevre",
+    "option3": "Canlı varlıklar",
+    "option4": "Uzay",
+    "correctAnswer": 2,
+    "difficulty": "easy",
+    "explanation": "Bitki, hayvan ve insan gibi bu özelliklere sahip varlıklar canlı varlıklardır.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Aşağıdakilerden hangisi cansız bir varlıktır?",
+    "option1": "Tohum",
+    "option2": "Ağaç",
+    "option3": "Toprak",
+    "option4": "Kedi",
+    "correctAnswer": 2,
+    "difficulty": "easy",
+    "explanation": "Toprak, taş, su, hava gibi doğada bulunan unsurlar cansız varlıklardır.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Aşağıdakilerden hangisi bir canlının sahip olduğu özelliklerden (canlılık belirtilerinden) biri değildir?",
+    "option1": "Beslenme",
+    "option2": "Pil ile çalışma",
+    "option3": "Çoğalma",
+    "option4": "Hareket etme",
+    "correctAnswer": 1,
+    "difficulty": "medium",
+    "explanation": "Canlılar pil veya elektrik ile değil, beslenerek elde ettikleri enerjiyle yaşarlar.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Bitkiler kendi besinlerini üretmek için genellikle aşağıdakilerden hangisini kullanırlar?",
+    "option1": "Sadece karanlık ortamı",
+    "option2": "Güneş ışığı, hava ve suyu",
+    "option3": "Başka bitkileri",
+    "option4": "Plastikleri",
+    "correctAnswer": 1,
+    "difficulty": "medium",
+    "explanation": "Bitkiler; topraktan aldıkları su, havadan aldıkları gaz ve güneş ışığı ile kendi besinini yapar.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Toprağa ekilen bir tohumun çimlenebilmesi (filizlenmesi) için aşağıdakilerden hangisine ihtiyaç YOKTUR?",
+    "option1": "Suya (Neme)",
+    "option2": "Havaya",
+    "option3": "Uygun sıcaklığa",
+    "option4": "Koyu karanlığa",
+    "correctAnswer": 3,
+    "difficulty": "hard",
+    "explanation": "Tohum toprağın altında zaten karanlık bir yerdedir; çimlenmek için asıl suya, havaya ve sıcaklığa muhtaçtır.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Kendiliğinden oluşmuş, insan eli değmeden meydana gelen orman, göl ve dağ gibi yaşam alanlarına ne denir?",
+    "option1": "Cansız çevre",
+    "option2": "Yapay çevre",
+    "option3": "Doğal çevre",
+    "option4": "Şehir ortamı",
+    "correctAnswer": 2,
+    "difficulty": "medium",
+    "explanation": "İnsanın etkisinin olmadığı doğaya doğal çevre denir.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "İnsanlar tarafından inşa edilmiş olan park, bina, köprü, baraj gibi yaşam alanlarına ne ad verilir?",
+    "option1": "Ormanlık alan",
+    "option2": "Yapay çevre",
+    "option3": "Doğal çevre",
+    "option4": "Uzay boşluğu",
+    "correctAnswer": 1,
+    "difficulty": "easy",
+    "explanation": "İnsanın kendi ihtiyaçları için değiştirdiği, yeniden şekillendirdiği çevre yapay çevredir.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Aşağıdakilerden hangisi doğal çevreyi korumak için yapabileceğimiz olumlu bir davranıştır?",
+    "option1": "Ormanlara çöp atmak",
+    "option2": "Fabrika atıklarını nehre dökmek",
+    "option3": "Ağaç dikmek",
+    "option4": "Plastikleri denize bırakmak",
+    "correctAnswer": 2,
+    "difficulty": "easy",
+    "explanation": "Ağaç dikmek (fidan ekmek) çevreyi güzelleştirir ve oksijen sağlar.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Çevremizdeki kedi, köpek, kuş, balık gibi varlıklar canlıların hangi grubuna örnektir?",
+    "option1": "Cansızlar",
+    "option2": "Mantarlar",
+    "option3": "Hayvanlar",
+    "option4": "Bitkiler",
+    "correctAnswer": 2,
+    "difficulty": "medium",
+    "explanation": "Bu canlılar çevrelerinde kendi istekleriyle hareket eden hayvanlar grubundadır.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "6. Ünite: Canlılar Dünyasına Yolculuk",
+    "question": "Bitkilerin toprağa sıkıca tutunmasını ve topraktaki suyun alınmasını sağlayan bölümü neresidir?",
+    "option1": "Yaprak",
+    "option2": "Çiçek",
+    "option3": "Gövde",
+    "option4": "Kök",
+    "correctAnswer": 3,
+    "difficulty": "hard",
+    "explanation": "Bitkilerin toprak altındaki kısımlarına kök denir; hem beslenmeyi hem bitkinin yere tutunmasını sağlar.",
+    "theme": "6. Ünite: Canlılar Dünyasına Yolculuk"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Evlerimizi aydınlatmak ve gece karanlığında görebilmek için kullandığımız elektrikli alet hangisidir?",
+    "option1": "Ütü",
+    "option2": "Ampul",
+    "option3": "Radyo",
+    "option4": "Bulaşık makinesi",
+    "correctAnswer": 1,
+    "difficulty": "easy",
+    "explanation": "Ampul ve florasan gibi elektrikli araçlar aydınlatma amacıyla kullanılır.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Aşağıdaki elektrikli aletlerden hangisi duvardaki prize takılarak (şehir elektriği ile) çalışır?",
+    "option1": "El feneri",
+    "option2": "Kumanda",
+    "option3": "Buzdolabı",
+    "option4": "Kol saati",
+    "correctAnswer": 2,
+    "difficulty": "easy",
+    "explanation": "Büyük enerji gerektiren buzdolabı, fırın gibi aletler priz (şehir elektriği) kullanır.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Televizyon kumandası, kol saati ve küçük oyuncaklar genellikle hangi elektrik kaynağıyla çalışır?",
+    "option1": "Şehir elektriği",
+    "option2": "Akü",
+    "option3": "Rüzgâr gülü",
+    "option4": "Pil",
+    "correctAnswer": 3,
+    "difficulty": "easy",
+    "explanation": "Çok küçük enerji harcayan taşınabilir aletlerde genellikle piller kullanılır.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Otomobil, kamyon, otobüs veya uçak gibi motorlu taşıtların çalışması için gereken elektriği sağlayan kaynak nedir?",
+    "option1": "Pil",
+    "option2": "Akü",
+    "option3": "Santral",
+    "option4": "Ampul",
+    "correctAnswer": 1,
+    "difficulty": "medium",
+    "explanation": "Motorlu taşıtların motorunu çalıştırıp ışıklarını yakan yüksek kapasiteli elektrik kaynağı aküdür.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Cep telefonları ve dizüstü bilgisayarların elektrik deposu ne adla anılır?",
+    "option1": "Batarya",
+    "option2": "Güneş paneli",
+    "option3": "Dinamo",
+    "option4": "Akü",
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "explanation": "Şarj edilen ve birden fazla pil hücresi içeren yapılara batarya denir.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Ömrünü tamamlamış olan (bitmiş) pilleri doğayı kirletmemesi için ne yapmalıyız?",
+    "option1": "Toprağa gömmeliyiz",
+    "option2": "Sobaya atıp yakmalıyız",
+    "option3": "Atık pil toplama kutularına atmalıyız",
+    "option4": "Denize veya çöpe atmalıyız",
+    "correctAnswer": 2,
+    "difficulty": "medium",
+    "explanation": "Pillerin içindeki kimyasal maddeler zehirlidir, mutlaka geri dönüşüm (atık pil) kutularına atılmalıdır.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Elektrik çarpmalarından korunmak için aşağıdakilerden hangisini yapmak ÇOK TEHLİKELİDİR?",
+    "option1": "Cihazların fişini kuru ellerle çekmek",
+    "option2": "Prizlere çivi, iğne gibi cisimler sokmak",
+    "option3": "Yıpranmış kabloları kullanmamak",
+    "option4": "Kabloları ezmemeye dikkat etmek",
+    "correctAnswer": 1,
+    "difficulty": "hard",
+    "explanation": "Prizlere metal veya sivri cisimler sokmak anında elektrik çarpmasına (şoka) yol açar.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Aşağıdaki davranışlardan hangisi evdeki güvenliğimiz için doğru bir davranıştır?",
+    "option1": "Banyodan çıktıktan sonra ıslak ellerle saç kurutma makinesini çalıştırmak",
+    "option2": "Prizlere oyuncaklarımızı sokmaya çalışmak",
+    "option3": "Kablosu kopmuş olan eski eşyaları prizden uzak tutmak",
+    "option4": "Çok sayıdaki fişi tek bir prize aynı anda takmak",
+    "correctAnswer": 2,
+    "difficulty": "hard",
+    "explanation": "Hasar görmüş (kopuk, yırtık) kablolar tehlikelidir ve asla prize takılmamalıdır.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "Elektrikli bir ev aleti bozulduğunda ve çalışmadığında tamir etmesi için ne yapmalıyız?",
+    "option1": "Kendimiz parçalara ayırarak tamir etmeliyiz.",
+    "option2": "Uzman bir tamirci çağırmalı veya servise götürmeliyiz.",
+    "option3": "Su ile yıkayıp tekrar prize takmalıyız.",
+    "option4": "Düğmelerine defalarca sertçe basmalıyız.",
+    "correctAnswer": 1,
+    "difficulty": "hard",
+    "explanation": "Elektrikli aletler bilinçsizce açıldığında elektrik çarpabilir. Bunu yalnızca uzman kişiler (teknik servis) yapmalıdır.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
+  },
+  {
+    "grade": 3,
+    "subject": "Fen Bilimleri",
+    "unit": "7. Ünite: Elektrikli Araçlar",
+    "question": "İçindeki kimyasal enerji tükendiğinde prize takılarak enerjisi tekrar doldurulan pillere ne denir?",
+    "option1": "Tek kullanımlık pil",
+    "option2": "Atık pil",
+    "option3": "Güneş pili",
+    "option4": "Şarj edilebilir pil",
+    "correctAnswer": 3,
+    "difficulty": "medium",
+    "explanation": "Tekrar tekrar doldurulup kullanılabilen piller (telefon bataryaları gibi) şarj edilebilir pillerdir.",
+    "theme": "7. Ünite: Elektrikli Araçlar"
   }
 ]

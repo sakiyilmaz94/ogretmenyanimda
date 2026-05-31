@@ -8,7 +8,6 @@ const db = new PrismaClient();
   try {
     console.log("📚 Grade 3 Matematik Soruları Yüklüyorum...\n");
 
-    // Load questions from JSON
     const questions = JSON.parse(
       fs.readFileSync("./grade3-math.json", "utf-8")
     );
@@ -19,7 +18,6 @@ const db = new PrismaClient();
     const themes = {};
 
     for (const q of questions) {
-      // Find topic by theme name
       const topic = await db.curriculumTopic.findFirst({
         where: {
           gradeLevel: 3,
@@ -33,7 +31,6 @@ const db = new PrismaClient();
         continue;
       }
 
-      // Insert question
       await db.levelAssessmentQuestion.create({
         data: {
           topicId: topic.id,
@@ -54,7 +51,6 @@ const db = new PrismaClient();
       themes[q.theme] = (themes[q.theme] || 0) + 1;
     }
 
-    // Print summary
     console.log("\n" + "=".repeat(60));
     console.log("✅ GRADE 3 MATEMATİK YÜKLEME TAMAMLANDI!");
     console.log("=".repeat(60));

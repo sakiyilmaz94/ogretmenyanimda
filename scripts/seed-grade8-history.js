@@ -6,10 +6,10 @@ const db = new PrismaClient();
 
 (async () => {
   try {
-    console.log("📚 Grade 3 Fen Bilimleri Soruları Yüklüyorum...\n");
+    console.log("📚 Grade 8 T.C. İnkılap Tarihi Soruları Yüklüyorum...\n");
 
     const questions = JSON.parse(
-      fs.readFileSync("./grade3-science.json", "utf-8")
+      fs.readFileSync("./grade8-history.json", "utf-8")
     );
 
     console.log(`✓ ${questions.length} soru JSON'dan okundu\n`);
@@ -20,8 +20,8 @@ const db = new PrismaClient();
     for (const q of questions) {
       const topic = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 3,
-          subject: "FEN_BİLİMLERİ",
+          gradeLevel: 8,
+          subject: "TC_INKILAP_TARIHI",
           name: q.theme
         }
       });
@@ -34,8 +34,8 @@ const db = new PrismaClient();
       await db.levelAssessmentQuestion.create({
         data: {
           topicId: topic.id,
-          gradeLevel: 3,
-          subject: "FEN_BİLİMLERİ",
+          gradeLevel: 8,
+          subject: "TC_INKILAP_TARIHI",
           topicName: q.theme,
           question: q.question,
           option1: q.option1,
@@ -52,7 +52,7 @@ const db = new PrismaClient();
     }
 
     console.log("\n" + "=".repeat(60));
-    console.log("✅ GRADE 3 FEN BİLİMLERİ YÜKLEME TAMAMLANDI!");
+    console.log("✅ GRADE 8 T.C. İNKILAP TARİHİ YÜKLEME TAMAMLANDI!");
     console.log("=".repeat(60));
     console.log(`\n📊 Tema Özeti:`);
     for (const [theme, count] of Object.entries(themes)) {

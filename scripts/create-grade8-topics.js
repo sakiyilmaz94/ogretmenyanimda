@@ -4,37 +4,43 @@ const { PrismaClient } = require("@prisma/client");
 const db = new PrismaClient();
 
 const MATH_TOPICS = [
-  "1. Ünite: Doğal Sayılar ve İşlemler",
-  "2. Ünite: Çarpma ve Bölme İşlemleri",
-  "3. Ünite: Kesirler",
-  "4. Ünite: Zaman Ölçme ve Veri İşleme",
-  "5. Ünite: Geometri",
-  "6. Ünite: Ölçme (Uzunluk, Çevre, Alan, Tartma, Sıvı)"
+  "1. Ünite: Çarpanlar ve Katlar",
+  "1. Ünite: Üslü İfadeler",
+  "2. Ünite: Kareköklü İfadeler",
+  "2. Ünite: Veri Analizi",
+  "3. Ünite: Basit Olayların Olma Olasılığı",
+  "3. Ünite: Cebirsel İfadeler ve Özdeşlikler",
+  "4. Ünite: Doğrusal Denklemler",
+  "4. Ünite: Eşitsizlikler",
+  "5. Ünite: Eşlik ve Benzerlik",
+  "5. Ünite: Üçgenler",
+  "6. Ünite: Dönüşüm Geometrisi",
+  "6. Ünite: Geometrik Cisimler"
 ];
 
 const SCIENCE_TOPICS = [
-  "1. Ünite: Yer Kabuğu ve Dünya'mızın Hareketleri",
-  "2. Ünite: Besinlerimiz",
-  "3. Ünite: Kuvvetin Etkileri",
-  "4. Ünite: Maddenin Özellikleri",
-  "5. Ünite: Aydınlatma ve Ses Teknolojileri",
-  "6. Ünite: İnsan ve Çevre",
-  "7. Ünite: Basit Elektrik Devreleri"
+  "1. Ünite: Mevsimler ve İklim",
+  "2. Ünite: DNA ve Genetik Kod",
+  "3. Ünite: Basınç",
+  "4. Ünite: Madde ve Endüstri",
+  "5. Ünite: Basit Makineler",
+  "6. Ünite: Enerji Dönüşümleri ve Çevre Bilimi",
+  "7. Ünite: Elektrik Yükleri ve Elektrik Enerjisi"
 ];
 
-const SOCIAL_TOPICS = [
-  "1. Ünite: Birey ve Toplum",
-  "2. Ünite: Kültür ve Miras",
-  "3. Ünite: İnsanlar, Yerler ve Çevreler",
-  "4. Ünite: Bilim, Teknoloji ve Toplum",
-  "5. Ünite: Üretim, Dağıtım ve Tüketim",
-  "6. Ünite: Etkin Vatandaşlık",
-  "7. Ünite: Küresel Bağlantılar"
+const HISTORY_TOPICS = [
+  "1. Ünite: Bir Kahraman Doğuyor",
+  "2. Ünite: Millî Uyanış",
+  "3. Ünite: Milli Bir Destan",
+  "4. Ünite: Atatürkçülük ve Çağdaşlaşan Türkiye",
+  "5. Ünite: Demokratikleşme Çabaları",
+  "6. Ünite: Atatürk Dönemi Türk Dış Politikası",
+  "7. Ünite: Atatürk'ün Ölümü ve Sonrası"
 ];
 
 (async () => {
   try {
-    console.log("📚 Grade 4 Konuları Oluşturuluyor...\n");
+    console.log("📚 Grade 8 Konuları Oluşturuluyor...\n");
 
     let created = 0;
 
@@ -42,7 +48,7 @@ const SOCIAL_TOPICS = [
     for (const topicName of MATH_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
+          gradeLevel: 8,
           subject: "MATEMATIK",
           name: topicName
         }
@@ -51,7 +57,7 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
+            gradeLevel: 8,
             subject: "MATEMATIK",
             name: topicName,
             description: topicName
@@ -59,8 +65,6 @@ const SOCIAL_TOPICS = [
         });
         console.log(`   ✓ Oluşturuldu: [MATEMATIK] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [MATEMATIK] ${topicName}`);
       }
     }
 
@@ -68,7 +72,7 @@ const SOCIAL_TOPICS = [
     for (const topicName of SCIENCE_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
+          gradeLevel: 8,
           subject: "FEN_BİLİMLERİ",
           name: topicName
         }
@@ -77,7 +81,7 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
+            gradeLevel: 8,
             subject: "FEN_BİLİMLERİ",
             name: topicName,
             description: topicName
@@ -85,17 +89,15 @@ const SOCIAL_TOPICS = [
         });
         console.log(`   ✓ Oluşturuldu: [FEN_BİLİMLERİ] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [FEN_BİLİMLERİ] ${topicName}`);
       }
     }
 
-    // Create Social Studies topics
-    for (const topicName of SOCIAL_TOPICS) {
+    // Create History topics
+    for (const topicName of HISTORY_TOPICS) {
       const existing = await db.curriculumTopic.findFirst({
         where: {
-          gradeLevel: 4,
-          subject: "SOSYAL_BİLGİLER",
+          gradeLevel: 8,
+          subject: "TC_INKILAP_TARIHI",
           name: topicName
         }
       });
@@ -103,16 +105,14 @@ const SOCIAL_TOPICS = [
       if (!existing) {
         await db.curriculumTopic.create({
           data: {
-            gradeLevel: 4,
-            subject: "SOSYAL_BİLGİLER",
+            gradeLevel: 8,
+            subject: "TC_INKILAP_TARIHI",
             name: topicName,
             description: topicName
           }
         });
-        console.log(`   ✓ Oluşturuldu: [SOSYAL_BİLGİLER] ${topicName}`);
+        console.log(`   ✓ Oluşturuldu: [TC_INKILAP_TARIHI] ${topicName}`);
         created++;
-      } else {
-        console.log(`   - Zaten var: [SOSYAL_BİLGİLER] ${topicName}`);
       }
     }
 
