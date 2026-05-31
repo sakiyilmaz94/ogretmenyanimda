@@ -26,19 +26,31 @@ export default function TopicSelector({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!subject || gradeLevel === undefined) return;
+    console.log("🔍 TopicSelector props - subject:", subject, "gradeLevel:", gradeLevel);
+    
+    if (!subject || gradeLevel === undefined) {
+      console.log("❌ Subject veya gradeLevel boş!");
+      return;
+    }
 
     setLoading(true);
     setError(null);
 
-    fetch(`/api/curriculum/topics?subject=${encodeURIComponent(subject)}&gradeLevel=${gradeLevel}`)
+    const url = `/api/curriculum/topics?subject=${encodeURIComponent(subject)}&gradeLevel=${gradeLevel}`;
+    console.log("📚 Fetching:", url);
+
+    fetch(url)
       .then((res) => {
+        console.log("📡 Response status:", res.status);
         if (!res.ok) throw new Error("Konular yüklenemedi");
         return res.json();
       })
-      .then(setTopics)
+      .then((data) => {
+        console.log("✅ Topics received:", data.length);
+        setTopics(data);
+      })
       .catch((e) => {
-        console.error("Topic fetch error:", e);
+        console.error("❌ Topic fetch error:", e);
         setError("Konular yüklenirken hata oluştu");
       })
       .finally(() => setLoading(false));
