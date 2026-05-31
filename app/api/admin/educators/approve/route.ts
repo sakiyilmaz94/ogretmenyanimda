@@ -17,7 +17,14 @@ export async function POST(req: Request) {
   if (action === "approve") {
     await db.educator.update({
       where: { id: educatorId },
-      data: { status: "APPROVED", approvedAt: new Date(), isProfilePublic: true },
+      data: {
+        status: "APPROVED",
+        approvedAt: new Date(),
+        isProfilePublic: true,
+        // Subjects/gradeLevels set edilmemişse, default values
+        ...(educator.subjects.length === 0 && { subjects: ["MATEMATIK"] }),
+        ...(educator.gradeLevels.length === 0 && { gradeLevels: ["ILKOKUL_1", "ILKOKUL_2", "ILKOKUL_3", "ILKOKUL_4", "ORTAOKUL_5", "ORTAOKUL_6", "ORTAOKUL_7", "ORTAOKUL_8"] }),
+      },
     });
     await notify({
       userId: educator.userId,
