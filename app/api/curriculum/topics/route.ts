@@ -6,6 +6,8 @@ export async function GET(req: Request) {
   const subject = searchParams.get("subject");
   const gradeLevel = searchParams.get("gradeLevel");
 
+  console.log("📚 API /curriculum/topics:", { subject, gradeLevel });
+
   if (!subject || !gradeLevel) {
     return NextResponse.json({ error: "Subject ve gradeLevel gerekli" }, { status: 400 });
   }
@@ -24,5 +26,6 @@ export async function GET(req: Request) {
     orderBy: { name: "asc" },
   });
 
+  console.log("📚 Found topics:", topics.length);
   return NextResponse.json(topics);
 }
