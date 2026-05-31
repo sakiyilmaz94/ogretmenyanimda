@@ -55,8 +55,8 @@ export async function GET(
       questions: questions.map((q, i) => ({
         index: i,
         question: q.question,
-        // Cevap anahtarını gösterme — sadece soru ve açık uçlu cevap (option1)
-        options: [q.option1],
+        // 4 seçenek - cevap anahtarı server-side gizli
+        options: [q.option1, q.option2, q.option3, q.option4].filter(Boolean),
         image: q.imageData ? {
           data: q.imageData,
           format: q.imageFormat || "svg"
