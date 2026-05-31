@@ -49,13 +49,17 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^20",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.19.41",
     "@types/react": "^19",
     "@types/react-big-calendar": "^1.8.12",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.0.1",
     "eslint": "^9",
     "eslint-config-next": "15.1.8",
+    "fs-extra": "^11.3.5",
+    "pdf-parse": "^2.4.5",
+    "pdfkit": "^0.18.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

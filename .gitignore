@@ -37,3 +37,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large education PDFs (exceeds GitHub limits)
+Eğitim Kitaplığı/
+*.pdf

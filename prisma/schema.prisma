@@ -332,6 +332,7 @@ model CurriculumTopic {
 
   assessments  LevelAssessment[]
   bookings     Booking[]
+  questions    LevelAssessmentQuestion[]
 
   @@unique([subject, gradeLevel, name])
   @@index([subject, gradeLevel])
@@ -377,6 +378,29 @@ model LessonReport {
 
   booking  Booking  @relation(fields: [bookingId], references: [id])
   educator Educator @relation(fields: [educatorId], references: [id])
+}
+
+model LevelAssessmentQuestion {
+  id              String   @id @default(cuid())
+  topicId         String
+  gradeLevel      Int
+  subject         String
+  topicName       String   // tema adı
+  question        String   @db.Text
+  imageData       String?  @db.Text  // SVG veya ASCII art şekli
+  imageFormat     String?  @default("svg") // "svg", "ascii", "url"
+  option1         String?  @db.Text  // cevap veya şık 1
+  option2         String?  @db.Text  // şık 2
+  option3         String?  @db.Text  // şık 3
+  option4         String?  @db.Text  // şık 4
+  correctAnswer   Int      @default(0) // 0-3
+  difficulty      String   @default("medium") // easy, medium, hard
+  createdAt       DateTime @default(now())
+
+  topic           CurriculumTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@index([gradeLevel, subject, topicId])
+  @@map("level_assessment_questions")
 }
 
 model PricingPlan {

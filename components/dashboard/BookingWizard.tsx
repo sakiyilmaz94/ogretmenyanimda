@@ -366,12 +366,16 @@ export default function BookingWizard({
           {/* Konu Seçimi */}
           {selectedSubject && selectedGrade && (
             <div className="bg-surface-container rounded-md p-4 border border-outline-variant/20">
-              <TopicSelector
-                subject={selectedSubject}
-                gradeLevel={Object.keys(GRADE_LABELS).indexOf(selectedGrade) + 1}
-                onSelect={(id, name) => setSelectedTopic({ id, name })}
-                selected={selectedTopic?.id}
-              />
+              {selectedGrade ? (
+                <TopicSelector
+                  subject={selectedSubject}
+                  gradeLevel={Object.keys(GRADE_LABELS).indexOf(selectedGrade) + 1}
+                  onSelect={(id, name) => setSelectedTopic({ id, name })}
+                  selected={selectedTopic?.id}
+                />
+              ) : (
+                <p className="text-caption text-on-surface-variant">Önce sınıf seçiniz.</p>
+              )}
             </div>
           )}
 

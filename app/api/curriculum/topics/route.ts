@@ -44,20 +44,37 @@ export async function GET(req: Request) {
     // Parse grade level (could be enum like "ILKOKUL_1" or number like "1")
     const gradeLevelNum = gradeMap[gradeLevel] || parseInt(gradeLevel);
 
-    const topics = await db.curriculumTopic.findMany({
+    // Sadece sorularının olduğu topic'leri getir
+    const allTopics = await db.curriculumTopic.findMany({
       where: {
         subject: dbSubject,
         gradeLevel: gradeLevelNum,
       },
       orderBy: { name: "asc" },
-      select: {
-        id: true,
-        name: true,
-        description: true,
+      include: {
+        questions: {
+          select: { id: true },
+          take: 1, // Sadece birinin var olup olmadığını kontrol et
+        },
       },
     });
 
-    return NextResponse.json(topics);
+    // Sorularının olduğu topic'leri filter'le
+    const topicsWithQuestions = allTopics
+      .filter((t) => t.questions.length > 0)
+      .map((t) => ({
+        id: t.id,
+        name: t.name,
+        description: t.description,
+      }));
+
+    return NextResponse.json(topicsWithQuestions, {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+      },
+    });
   } catch (error) {
     console.error("Error fetching topics:", error);
     return NextResponse.json({ error: "Failed to fetch topics" }, { status: 500 });

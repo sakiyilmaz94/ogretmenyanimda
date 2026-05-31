@@ -3,56 +3,6 @@ import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
 import { sendEmail } from "@/lib/email";
 import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
-import Anthropic from "@anthropic-ai/sdk";
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
-interface Question {
-  question: string;
-  options: [string, string, string, string];
-  correct: number;
-  difficulty: string;
-}
-
-async function generateQuestions(
-  gradeLevel: string,
-  subject: string,
-  topicName: string
-): Promise<Question[]> {
-  const systemPrompt = `Sen Türkiye MEB müfredatına göre ilkokul seviye belirleme sınavı soruları üreten bir sistemsin. Görevin: verilen sınıf, ders ve konuya birebir uygun, o konuyu doğrudan ölçen sorular üretmek. Başka konu veya ders karıştırma. Sadece geçerli JSON döndür, açıklama veya markdown yazma.`;
-
-  const userPrompt = `Sınıf: ${gradeLevel}. Ders: ${subject}. Konu: ${topicName}. Bu bilgilere göre tam olarak 10 çoktan seçmeli soru üret. Kurallar: 1) Her soru yalnızca '${topicName}' konusunu test etsin, başka konu girmesin. 2) Sorular MEB ${gradeLevel}. sınıf ${subject} müfredatına uygun dil ve kavramlarla yazılsın. 3) Her sorunun 4 şıkkı olsun. 4) Zorluk dağılımı: 3 kolay, 4 orta, 3 zor. 5) Sadece şu JSON formatında dön, başka hiçbir şey yazma: {"questions":[{"question":"...","options":["...","...","...","..."],"correct":0,"difficulty":"easy"}]}`;
-
-  const message = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 2048,
-    system: systemPrompt,
-    messages: [
-      {
-        role: "user",
-        content: userPrompt,
-      },
-    ],
-  });
-
-  const responseText =
-    message.content[0].type === "text" ? message.content[0].text : "";
-
-  try {
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error("JSON bulunamadı");
-    }
-
-    const parsed = JSON.parse(jsonMatch[0]);
-    return parsed.questions;
-  } catch (error) {
-    console.error("Soru parse hatası:", error, "Response:", responseText);
-    throw new Error("Sorular oluşturulamadı");
-  }
-}
 
 export async function GET(
   _req: Request,
@@ -70,12 +20,33 @@ export async function GET(
   }
 
   try {
-    const topicName = (assessment.topic as any)?.name || "Genel";
-    const questions = await generateQuestions(
-      assessment.gradeLevel,
-      assessment.subject,
-      topicName
-    );
+    // Grade level'i sayıya dönüştür
+    const gradeMap: Record<string, number> = {
+      ILKOKUL_1: 1,
+      ILKOKUL_2: 2,
+      ILKOKUL_3: 3,
+      ILKOKUL_4: 4,
+      ORTAOKUL_5: 5,
+      ORTAOKUL_6: 6,
+      ORTAOKUL_7: 7,
+      ORTAOKUL_8: 8,
+    };
+
+    const gradeNumber = gradeMap[assessment.gradeLevel as string] || 2;
+
+    // Database'den soruları çek
+    const questions = await db.levelAssessmentQuestion.findMany({
+      where: {
+        gradeLevel: gradeNumber,
+        subject: assessment.subject,
+        topicId: assessment.topicId || undefined,
+      },
+      take: 10,
+    });
+
+    if (questions.length === 0) {
+      return NextResponse.json({ error: "Sorular bulunamadı" }, { status: 404 });
+    }
 
     return NextResponse.json({
       id: assessment.id,
@@ -84,11 +55,16 @@ export async function GET(
       questions: questions.map((q, i) => ({
         index: i,
         question: q.question,
-        options: q.options,
+        // Cevap anahtarını gösterme — sadece soru ve açık uçlu cevap (option1)
+        options: [q.option1],
+        image: q.imageData ? {
+          data: q.imageData,
+          format: q.imageFormat || "svg"
+        } : null,
       })),
     });
   } catch (error) {
-    console.error("Soru üretme hatası:", error);
+    console.error("Soru çekme hatası:", error);
     return NextResponse.json(
       { error: "Sorular oluşturulamadı" },
       { status: 500 }
@@ -121,13 +97,36 @@ export async function POST(
   const { answers } = await req.json() as { answers: { index: number; selected: number }[] };
 
   try {
-    const topicName = (assessment.topic as any)?.name || "Genel";
-    const questions = await generateQuestions(
-      assessment.gradeLevel,
-      assessment.subject,
-      topicName
-    );
+    // Grade level'i sayıya dönüştür
+    const gradeMap: Record<string, number> = {
+      ILKOKUL_1: 1,
+      ILKOKUL_2: 2,
+      ILKOKUL_3: 3,
+      ILKOKUL_4: 4,
+      ORTAOKUL_5: 5,
+      ORTAOKUL_6: 6,
+      ORTAOKUL_7: 7,
+      ORTAOKUL_8: 8,
+    };
 
+    const gradeNumber = gradeMap[assessment.gradeLevel as string] || 2;
+
+    // Database'den soruları çek
+    const questions = await db.levelAssessmentQuestion.findMany({
+      where: {
+        gradeLevel: gradeNumber,
+        subject: assessment.subject,
+        topicId: assessment.topicId || undefined,
+      },
+      take: 10,
+    });
+
+    if (questions.length === 0) {
+      return NextResponse.json({ error: "Sorular bulunamadı" }, { status: 404 });
+    }
+
+    // Cevapları kaydet ve puanla
+    let correct = 0;
     await db.$transaction([
       db.assessmentResponse.deleteMany({ where: { assessmentId: id } }),
       ...answers.map((a) =>
@@ -145,7 +144,8 @@ export async function POST(
       }),
     ]);
 
-    const correct = answers.filter((a) => questions[a.index]?.correct === a.selected).length;
+    // Doğru cevapları hesapla
+    correct = answers.filter((a) => questions[a.index]?.correctAnswer === a.selected).length;
 
     // Öğretmene bildirim ve email gönder
     const educator = assessment.booking.educator;

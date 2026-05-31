@@ -7,7 +7,11 @@ import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 interface Question {
   index: number;
   question: string;
-  options: [string, string, string, string];
+  options: string[];
+  image?: {
+    data: string;
+    format: string;
+  } | null;
 }
 
 interface AssessmentData {
@@ -33,6 +37,16 @@ export default function TestPage() {
         if (!r.ok) { const d = await r.json(); setErrorMsg(d.error ?? "Hata"); setStep("error"); return; }
         const d = await r.json();
         setData(d);
+
+        // Açık uçlu soruları otomatik işaretle
+        const autoAnswers: Record<number, number> = {};
+        d.questions.forEach((q: Question) => {
+          if (q.options.length === 1) {
+            autoAnswers[q.index] = 0; // Cevap index'i 0
+          }
+        });
+        setAnswers(autoAnswers);
+
         setStep("test");
       })
       .catch(() => { setErrorMsg("Bağlantı hatası."); setStep("error"); });
@@ -152,31 +166,54 @@ export default function TestPage() {
 
         {/* Sorular */}
         <div className="space-y-6">
-          {data.questions.map((q, qi) => (
-            <div key={qi} className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/30">
-              <p className="font-display font-semibold text-on-background mb-4">
-                <span className="text-primary mr-2">{qi + 1}.</span>{q.question}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {q.options.map((opt, oi) => (
-                  <button
-                    key={oi}
-                    onClick={() => setAnswers((prev) => ({ ...prev, [q.index]: oi }))}
-                    className={`text-left px-4 py-3 rounded-md border-2 text-body-md transition-all duration-150 ${
-                      answers[q.index] === oi
-                        ? "border-primary bg-primary-fixed text-on-primary-fixed font-semibold"
-                        : "border-outline-variant bg-surface-container-low text-on-background hover:border-primary/50"
-                    }`}
-                  >
-                    <span className="font-bold mr-2 text-primary/70">
-                      {["A", "B", "C", "D"][oi]})
-                    </span>
-                    {opt}
-                  </button>
-                ))}
+          {data.questions.map((q, qi) => {
+            const isOpenEnded = q.options.length === 1;
+            return (
+              <div key={qi} className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/30">
+                <p className="font-display font-semibold text-on-background mb-4">
+                  <span className="text-primary mr-2">{qi + 1}.</span>{q.question}
+                </p>
+
+                {/* Şekil varsa göster */}
+                {q.image && q.image.format === "svg" && (
+                  <div className="mb-4 p-4 bg-surface-container-low rounded-md flex justify-center">
+                    <div
+                      dangerouslySetInnerHTML={{ __html: q.image.data }}
+                      className="max-w-xs"
+                    />
+                  </div>
+                )}
+
+                {isOpenEnded ? (
+                  // Açık uçlu soru (bilgi amaçlı, seçmeli test için)
+                  <div className="text-sm text-on-surface-variant bg-surface-container-low rounded-md p-3">
+                    <p className="mb-1 font-semibold">✓ {q.options[0]}</p>
+                    <p className="text-xs">Cevap kaydedilmiştir.</p>
+                  </div>
+                ) : (
+                  // Çoktan seçmeli soru
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {q.options.map((opt, oi) => (
+                      <button
+                        key={oi}
+                        onClick={() => setAnswers((prev) => ({ ...prev, [q.index]: oi }))}
+                        className={`text-left px-4 py-3 rounded-md border-2 text-body-md transition-all duration-150 ${
+                          answers[q.index] === oi
+                            ? "border-primary bg-primary-fixed text-on-primary-fixed font-semibold"
+                            : "border-outline-variant bg-surface-container-low text-on-background hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="font-bold mr-2 text-primary/70">
+                          {["A", "B", "C", "D"][oi]})
+                        </span>
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-8 text-center">
