@@ -172,7 +172,7 @@ const GRADE2_MATH_QUESTIONS = [
   }
 ];
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     console.log("🚀 2. Sınıf Matematik Soruları Insert Başladı");
 
