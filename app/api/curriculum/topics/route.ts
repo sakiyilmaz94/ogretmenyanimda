@@ -30,21 +30,41 @@ export async function GET(req: Request) {
   }
 
   const subjectVariants = normalizeSubject(subject);
+  const gradeLevelNum = parseInt(gradeLevel, 10);
 
-  const topics = await db.curriculumTopic.findMany({
+  const allTopics = await db.curriculumTopic.findMany({
     where: {
       subject: {
         in: subjectVariants,
       },
-      gradeLevel: parseInt(gradeLevel, 10),
+      gradeLevel: gradeLevelNum,
     },
     select: {
       id: true,
       name: true,
       description: true,
+      unit: true,
     },
-    orderBy: { name: "asc" },
   });
+
+  // Group by theme/unit name and deduplicate
+  const topicMap = new Map<string, { id: string; name: string; description?: string }>();
+
+  for (const topic of allTopics) {
+    // For new data: use name (already tema/ünite adı)
+    // For old data: use unit field (tema adı) instead of name (learning outcome)
+    const themeName = topic.unit || topic.name;
+
+    if (!topicMap.has(themeName)) {
+      topicMap.set(themeName, {
+        id: topic.id,
+        name: themeName,
+        description: topic.description,
+      });
+    }
+  }
+
+  const topics = Array.from(topicMap.values()).sort((a, b) => a.name.localeCompare(b.name, "tr-TR"));
 
   return NextResponse.json(topics);
 }
