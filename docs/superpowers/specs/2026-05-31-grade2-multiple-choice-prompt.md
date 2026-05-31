@@ -17,12 +17,11 @@ Her soru **JSON** formatında olmalı:
 {
   "theme": "Nesnelerin Geometrisi | Sayılar | İşlemlerden Cebirsel Düşünmeye",
   "question": "Soru metni (net, açık, öğrenciye uygun)",
-  "option1": "A) Seçenek (DOĞRU CEVAP OLABILIR VEYA YANLIŞ)",
-  "option2": "B) Seçenek",
-  "option3": "C) Seçenek",
-  "option4": "D) Seçenek",
+  "option1": "Seçenek metni (ÖNEMLİ: A) B) C) D) prefix'i KOYMAYACAKSIN, sadece metni yaz)",
+  "option2": "Seçenek metni (prefix yok)",
+  "option3": "Seçenek metni (prefix yok)",
+  "option4": "Seçenek metni (prefix yok)",
   "correctAnswer": 0,
-  "correctAnswerText": "A) ...",
   "difficulty": "easy | medium | hard",
   "explanation": "Neden bu doğru? (öğretmen açıklaması)"
 }
@@ -70,29 +69,35 @@ Her soru **JSON** formatında olmalı:
   {
     "theme": "Sayılar",
     "question": "4 onluk ve 6 birlikten oluşan sayı kaçtır?",
-    "option1": "A) 36",
-    "option2": "B) 46",
-    "option3": "C) 64",
-    "option4": "D) 60",
+    "option1": "36",
+    "option2": "46",
+    "option3": "64",
+    "option4": "60",
     "correctAnswer": 1,
-    "correctAnswerText": "B) 46",
     "difficulty": "easy",
     "explanation": "4 onluk = 40, 6 birlik = 6. Toplam: 40 + 6 = 46"
   },
   {
     "theme": "Nesnelerin Geometrisi",
     "question": "Aşağıdakilerden hangisi dikdörtgen prizmaya benzer?",
-    "option1": "A) Futbol topu",
-    "option2": "B) Kare zar",
-    "option3": "C) Kibrit kutusu",
-    "option4": "D) Piramit şekli",
+    "option1": "Futbol topu",
+    "option2": "Kare zar",
+    "option3": "Kibrit kutusu",
+    "option4": "Piramit şekli",
     "correctAnswer": 2,
-    "correctAnswerText": "C) Kibrit kutusu",
     "difficulty": "easy",
     "explanation": "Kibrit kutusu 6 yüzlü, 12 kenarı olan dikdörtgen prizmadır."
   }
 ]
 ```
+
+### Puan Sistemi (Cevaplandıktan Sonra)
+
+Frontend otomatik olarak şu şekilde feedback gösterir:
+- **80%+:** "Harika!" 🌟 (Çok başarılı performans)
+- **60-79%:** "İyi Gidiyorsun" 👍 (Yoldasın, biraz daha)
+- **40-59%:** "Daha Çalışmalısın" 💪 (Pratik yap, öğretmen yardımcı olur)
+- **<40%:** "Başlangıç Seviyesi" 📚 (Endişeleme, beraber çalışacağız)
 
 ### İstediğin Soru Sayısını Belirt
 
