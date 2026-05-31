@@ -46,7 +46,8 @@ export default function TestPage() {
     if (!data) return;
     const answered = Object.keys(answers).length;
     if (answered < data.questions.length) {
-      alert("Lütfen tüm soruları yanıtlayın.");
+      const missing = data.questions.length - answered;
+      alert(`⚠️ ${missing} soruyu yanıtlamadınız.\n\nLütfen tüm soruları tamamlayın.`);
       return;
     }
     setSubmitting(true);
@@ -105,18 +106,48 @@ export default function TestPage() {
 
   if (step === "done" && score) {
     const pct = Math.round((score.correct / score.total) * 100);
+
+    // Puana göre mesaj ve emoji
+    let title = "";
+    let emoji = "🎉";
+    let message = "";
+    let feedback = "";
+
+    if (pct >= 80) {
+      title = "Harika!";
+      emoji = "🌟";
+      message = "Çok başarılı bir performans gösterdin!";
+      feedback = "Devam et, bu tempoyu koru! Öğretmenin seninle daha ileri konular çalışabilir.";
+    } else if (pct >= 60) {
+      title = "İyi Gidiyorsun";
+      emoji = "👍";
+      message = "Testi başarıyla tamamladın.";
+      feedback = "Biraz daha pratik yapman gerekiyor. Öğretmen contigo beraber zayıf noktaları çalışacak.";
+    } else if (pct >= 40) {
+      title = "Daha Çalışmalısın";
+      emoji = "💪";
+      message = "Testi tamamladın, ama daha fazla çalışman gerek.";
+      feedback = "Endişelenme! Öğretmen seninle bu konuları adım adım tekrar edeceğiz.";
+    } else {
+      title = "Başlangıç Seviyesi";
+      emoji = "📚";
+      message = "Bu konu için daha fazla hazırlık gerekiyor.";
+      feedback = "Merak etme, öğretmen baştan başlayarak sana yardımcı olacak!";
+    }
+
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="bg-surface-container-lowest rounded-md p-8 soft-card-static max-w-sm w-full text-center">
-          <p className="text-5xl mb-4">🎉</p>
-          <h2 className="font-display text-headline-lg text-on-background mb-2">Harika!</h2>
-          <p className="text-on-surface-variant text-body-md mb-6">Testi tamamladın.</p>
+          <p className="text-5xl mb-4">{emoji}</p>
+          <h2 className="font-display text-headline-lg text-on-background mb-2">{title}</h2>
+          <p className="text-on-surface-variant text-body-md mb-6">{message}</p>
           <div className="bg-primary-fixed rounded-md p-6 mb-4">
             <p className="font-display text-5xl font-bold text-primary mb-1">{pct}%</p>
             <p className="text-on-surface-variant text-body-md">{score.correct} / {score.total} doğru</p>
           </div>
-          <p className="text-on-surface-variant text-sm">
-            Sonuçların öğretmenine iletildi. İlk derste sana özel bir program hazırlanacak!
+          <p className="text-on-surface-variant text-sm mb-4">{feedback}</p>
+          <p className="text-on-surface-variant text-xs border-t border-outline-variant/30 pt-4">
+            Sonuçların öğretmenine iletildi. İlk derste seninle çalışmak için hazırlanıyor.
           </p>
         </div>
       </div>
