@@ -41,3 +41,6 @@ next-env.d.ts
 # large education PDFs (exceeds GitHub limits)
 Eğitim Kitaplığı/
 *.pdf
+
+# Word lock files
+~$*.docx
