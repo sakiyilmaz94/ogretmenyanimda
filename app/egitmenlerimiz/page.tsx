@@ -64,7 +64,7 @@ export default async function EgitmenlerimizPage({
           <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full absolute -top-20 -right-20 opacity-10" />
           <div className="blob-bg bg-primary-fixed w-64 h-64 rounded-full absolute -bottom-10 -left-10 opacity-10" />
           <div className="max-w-3xl mx-auto px-4 relative">
-            <p className="text-on-primary-fixed font-semibold text-label-md uppercase tracking-widest mb-3">Öğretmenlerimiz</p>
+            <p className="text-primary-fixed font-semibold text-label-md uppercase tracking-widest mb-3">Öğretmenlerimiz</p>
             <h1 className="font-display text-headline-xl text-inverse-on-surface mb-4">Uzman Kadromuzla Tanışın</h1>
             <p className="text-inverse-on-surface/70 text-body-lg">
               Onaylı öğretmenlerimizin tamamı özgeçmiş, diploma ve referans incelemesinden geçmiştir.

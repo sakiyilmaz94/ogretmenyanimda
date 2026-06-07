@@ -24,7 +24,7 @@ export default function EgitmenBasvurusuPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <p className="text-on-primary-fixed font-semibold text-label-md uppercase tracking-widest mb-4">Öğretmen Başvurusu</p>
+                <p className="text-primary-fixed font-semibold text-label-md uppercase tracking-widest mb-4">Öğretmen Başvurusu</p>
                 <h1 className="font-display text-headline-xl text-inverse-on-surface mb-4 leading-tight">
                   Öğretmen Yanımda Ailesine Katılın!
                 </h1>
@@ -40,7 +40,7 @@ export default function EgitmenBasvurusuPage() {
                   { n: "Online", label: "Tamamen Dijital" },
                 ].map((s) => (
                   <div key={s.label} className="bg-surface-container-lowest/10 rounded-md p-5 border border-inverse-on-surface/20">
-                    <p className="font-display text-headline-lg text-on-primary-fixed mb-1">{s.n}</p>
+                    <p className="font-display text-headline-lg text-primary-fixed mb-1">{s.n}</p>
                     <p className="text-inverse-on-surface/60 text-label-md">{s.label}</p>
                   </div>
                 ))}

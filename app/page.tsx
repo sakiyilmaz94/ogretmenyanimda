@@ -307,7 +307,7 @@ export default async function HomePage() {
             <div className="text-center mt-10">
               <Link
                 href="/hizmetler"
-                className="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary-container transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 text-primary font-semibold hover:opacity-70 transition-opacity cursor-pointer"
               >
                 Tüm hizmetleri incele
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -415,7 +415,7 @@ export default async function HomePage() {
                   className={`rounded-md p-8 ${
                     item.highlight
                       ? "bg-on-primary-fixed scale-105 shadow-2xl"
-                      : "bg-primary-container"
+                      : "bg-white/10 border border-white/15"
                   }`}
                 >
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-5 ${
@@ -445,7 +445,7 @@ export default async function HomePage() {
             </div>
 
             {/* Alt bilgi şeridi */}
-            <div className="bg-primary-container rounded-md px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="bg-white/10 border border-white/15 rounded-md px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="flex flex-wrap justify-center sm:justify-start gap-8 text-center sm:text-left">
                 {[
                   { label: "Üyelik Ücreti",        value: "Ücretsiz" },
@@ -535,7 +535,7 @@ export default async function HomePage() {
               </Link>
               <Link
                 href="/egitmen-basvurusu"
-                className="inline-flex items-center justify-center gap-2 bg-primary-container text-on-primary border-2 border-primary-fixed-dim/40 px-8 py-4 rounded-full font-display font-semibold text-body-md hover:bg-primary-fixed/20 transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-white/10 text-on-primary border-2 border-primary-fixed-dim/40 px-8 py-4 rounded-full font-display font-semibold text-body-md hover:bg-primary-fixed/20 transition-colors cursor-pointer"
               >
                 Öğretmen Başvurusu
               </Link>

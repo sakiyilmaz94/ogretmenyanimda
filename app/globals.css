@@ -26,6 +26,21 @@
     --color-on-error-container:        #93000a;
     --color-tertiary-fixed:            #ffddb8;
     --color-on-tertiary-fixed:         #7c3800;
+
+    /* Eklenen M3 tokenları (kodda kullanılıp tanımsız kalmış olanlar) */
+    --color-inverse-surface:           #1f2733; /* koyu zemin: dashboard sidebar + koyu hero'lar */
+    --color-inverse-on-surface:        #eef1f7; /* koyu zemin üzeri açık metin */
+    --color-on-primary-fixed-variant:  #3730a3; /* açık lavanta üzeri orta-koyu indigo aksan */
+    --color-primary-container:         #e1e0ff;
+    --color-on-primary-container:      #07006c;
+    --color-secondary-fixed:           #6cf8bb;
+    --color-surface:                   #f8f9ff;
+    --color-on-surface:                #0b1c30;
+    --color-surface-variant:           #e1e2ec;
+    --color-surface-container-high:    #dce6f7;
+    --color-outline:                   #76748b;
+    --color-error:                     #ba1a1a;
+    --color-on-error:                  #ffffff;
   }
 
   * {
