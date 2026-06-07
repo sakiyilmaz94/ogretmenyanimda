@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import PublicNavbar from "@/components/layout/PublicNavbar";
@@ -98,6 +99,18 @@ export default async function HomePage() {
               </Link>
             </div>
 
+            {/* Hero görseli */}
+            <div className="relative w-full max-w-2xl mx-auto aspect-[4/3] mb-12">
+              <Image
+                src="/illustrations/hero-ana-gorsel.png"
+                alt="Online özel ders veren öğretmen ve mutlu bir öğrenci"
+                fill
+                priority
+                sizes="(max-width: 768px) 90vw, 640px"
+                className="object-contain"
+              />
+            </div>
+
             {/* Ders konuları */}
             <div>
               <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-widest mb-4">
@@ -194,6 +207,7 @@ export default async function HomePage() {
                   step: "01",
                   title: "Öğretmen Seç",
                   desc: "Branşına ve bütçene uygun uzman öğretmeni incele, değerlendirmeleri oku.",
+                  img: "/illustrations/adim-ogretmen-bul.png",
                   icon: (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -204,6 +218,7 @@ export default async function HomePage() {
                   step: "02",
                   title: "Saat Reserv Et",
                   desc: "Öğrencine en uygun saat dilimine tıkla, hızlıca rezervasyon yap.",
+                  img: "/illustrations/adim-randevu-ode.png",
                   icon: (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -214,6 +229,7 @@ export default async function HomePage() {
                   step: "03",
                   title: "Güvenle Öde",
                   desc: "iyzico güvencesiyle öde; ders başlasın, başarı yaklaşsın.",
+                  img: "/illustrations/adim-ders-al.png",
                   icon: (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
@@ -225,8 +241,8 @@ export default async function HomePage() {
                   <span className="absolute top-6 right-6 font-display text-5xl text-primary-fixed font-bold opacity-40 select-none">
                     {item.step}
                   </span>
-                  <div className="w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center mb-5">
-                    {item.icon}
+                  <div className="relative w-24 h-24 mb-5">
+                    <Image src={item.img} alt="" fill sizes="96px" className="object-contain" />
                   </div>
                   <h3 className="font-display text-headline-md text-on-background mb-2">{item.title}</h3>
                   <p className="text-on-surface-variant text-sm leading-relaxed">{item.desc}</p>
@@ -251,6 +267,7 @@ export default async function HomePage() {
                 {
                   title: "Bireysel Dersler",
                   desc: "Öğrencinin bireysel ihtiyaçlarına göre hazırlanan ders programlarıyla maksimum verim. 45 dakika, birebir eğitim.",
+                  img: "/illustrations/secenek-bireysel-dersler.png",
                   iconBg: "bg-secondary-container",
                   iconColor: "text-on-secondary-container",
                   icon: (
@@ -263,6 +280,7 @@ export default async function HomePage() {
                 {
                   title: "Veli Takip Paketi",
                   desc: "Her dersin sonunda öğretmen kısa bir ilerleme notu bırakır; veli panelinden kolayca takip edersiniz.",
+                  img: "/illustrations/secenek-veli-takip.png",
                   iconBg: "bg-primary-fixed",
                   iconColor: "text-on-primary-fixed",
                   icon: (
@@ -275,6 +293,7 @@ export default async function HomePage() {
                 {
                   title: "Öğrenci Koçluğu",
                   desc: "Akademik başarının ötesinde motivasyon, çalışma stratejisi ve hedef belirleme seansları.",
+                  img: "/illustrations/secenek-ogrenci-koclugu.png",
                   iconBg: "bg-tertiary-fixed",
                   iconColor: "text-on-tertiary-fixed",
                   icon: (
@@ -286,8 +305,8 @@ export default async function HomePage() {
                 },
               ].map((s) => (
                 <div key={s.title} className="bg-surface-container-lowest rounded-md p-8 soft-card border border-outline-variant/30 cursor-default">
-                  <div className={`w-12 h-12 ${s.iconBg} ${s.iconColor} rounded-full flex items-center justify-center mb-5`}>
-                    {s.icon}
+                  <div className="relative w-24 h-24 mb-5">
+                    <Image src={s.img} alt="" fill sizes="96px" className="object-contain" />
                   </div>
                   <h3 className="font-display text-headline-md text-on-background mb-3">{s.title}</h3>
                   <p className="text-sm text-on-surface-variant leading-relaxed mb-6">{s.desc}</p>
@@ -476,13 +495,27 @@ export default async function HomePage() {
           <div className="max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {[
-                { icon: "🛡️", title: "Güvenli Ödeme",      desc: "iyzico 256-bit SSL" },
-                { icon: "✅", title: "Onaylı Öğretmenler", desc: "Belge incelemeli kabul" },
-                { icon: "📋", title: "Veli Takip Raporu",  desc: "Her dersten sonra not" },
-                { icon: "🔄", title: "Ücretsiz İptal",     desc: "24 saat öncesinde" },
+                {
+                  title: "Güvenli Ödeme", desc: "iyzico 256-bit SSL",
+                  icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />,
+                },
+                {
+                  title: "Onaylı Öğretmenler", desc: "Belge incelemeli kabul",
+                  icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />,
+                },
+                {
+                  title: "Veli Takip Raporu", desc: "Her dersten sonra not",
+                  icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />,
+                },
+                {
+                  title: "Ücretsiz İptal", desc: "24 saat öncesinde",
+                  icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />,
+                },
               ].map((b) => (
-                <div key={b.title} className="cursor-default">
-                  <div className="text-3xl mb-3">{b.icon}</div>
+                <div key={b.title} className="cursor-default flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-full bg-primary-fixed text-primary flex items-center justify-center mb-3">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">{b.icon}</svg>
+                  </div>
                   <p className="font-display font-bold text-on-background text-sm">{b.title}</p>
                   <p className="text-xs text-on-surface-variant mt-1">{b.desc}</p>
                 </div>
@@ -516,6 +549,15 @@ export default async function HomePage() {
           <div className="blob-bg bg-secondary-fixed w-72 h-72 rounded-full bottom-10 -right-16 opacity-20" style={{ animationDelay: "-4s" }} />
 
           <div className="relative z-10 max-w-container-max mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="relative w-full max-w-md mx-auto aspect-video mb-8">
+              <Image
+                src="/illustrations/cta-kayit.png"
+                alt="Ücretsiz kaydolup öğrenmeye başlayan neşeli öğrenci"
+                fill
+                sizes="(max-width: 768px) 90vw, 448px"
+                className="object-contain"
+              />
+            </div>
             <h2 className="font-display text-headline-lg md:text-headline-xl text-on-primary mb-4">
               Çocuğunuzun Başarısı<br/>Bir Tık Uzağınızda
             </h2>

@@ -1,6 +1,7 @@
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = { title: "Öğretmen Başvurusu — Öğretmen Yanımda" };
 
@@ -19,6 +20,7 @@ export default function EgitmenBasvurusuPage() {
 
         {/* Hero */}
         <section className="bg-inverse-surface py-20 relative overflow-hidden">
+          <Image src="/illustrations/koyu-hero-deseni.png" alt="" fill aria-hidden sizes="100vw" className="object-cover opacity-[0.12] pointer-events-none" />
           <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full absolute -top-20 -right-20 opacity-10" />
           <div className="blob-bg bg-primary-fixed w-64 h-64 rounded-full absolute -bottom-10 -left-10 opacity-10" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">

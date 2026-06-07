@@ -1,5 +1,6 @@
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
+import Image from "next/image";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
 
@@ -61,6 +62,7 @@ export default async function EgitmenlerimizPage({
 
         {/* Hero */}
         <section className="bg-inverse-surface py-20 text-center relative overflow-hidden">
+          <Image src="/illustrations/koyu-hero-deseni.png" alt="" fill aria-hidden sizes="100vw" className="object-cover opacity-[0.12] pointer-events-none" />
           <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full absolute -top-20 -right-20 opacity-10" />
           <div className="blob-bg bg-primary-fixed w-64 h-64 rounded-full absolute -bottom-10 -left-10 opacity-10" />
           <div className="max-w-3xl mx-auto px-4 relative">

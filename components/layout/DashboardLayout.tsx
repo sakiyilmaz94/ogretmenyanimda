@@ -6,11 +6,12 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import NotificationBell from "@/components/dashboard/NotificationBell";
+import NavIcon, { type NavIconName } from "@/components/layout/NavIcon";
 
 interface NavItem {
   href: string;
   label: string;
-  icon: string;
+  icon: NavIconName;
 }
 
 interface DashboardLayoutProps {
@@ -59,7 +60,7 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
                   : "text-inverse-on-surface/70 hover:bg-white/10 hover:text-inverse-on-surface"
               )}
             >
-              <span className="text-base w-5 text-center">{item.icon}</span>
+              <NavIcon name={item.icon} className="w-5 h-5 shrink-0" />
               {item.label}
             </Link>
           );

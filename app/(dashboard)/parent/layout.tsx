@@ -3,11 +3,11 @@ import { redirect } from "next/navigation";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 const parentNav = [
-  { href: "/parent", label: "Genel Bakış", icon: "📊" },
-  { href: "/parent/students", label: "Öğrencilerim", icon: "🎒" },
-  { href: "/parent/book", label: "Ders Rezervasyonu", icon: "📅" },
-  { href: "/parent/bookings", label: "Rezervasyonlarım", icon: "📋" },
-  { href: "/parent/payments", label: "Ödemelerim", icon: "💳" },
+  { href: "/parent", label: "Genel Bakış", icon: "overview" as const },
+  { href: "/parent/students", label: "Öğrencilerim", icon: "students" as const },
+  { href: "/parent/book", label: "Ders Rezervasyonu", icon: "availability" as const },
+  { href: "/parent/bookings", label: "Rezervasyonlarım", icon: "bookings" as const },
+  { href: "/parent/payments", label: "Ödemelerim", icon: "payments" as const },
 ];
 
 export default async function ParentLayout({ children }: { children: React.ReactNode }) {
