@@ -379,16 +379,16 @@ export default async function HomePage() {
         )}
 
         {/* ── NASIL ÜCRETLENDİRİLİR ───────────────────────── */}
-        <section className="bg-primary py-20 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-primary-fixed via-surface-container-lowest to-secondary-container/40 py-20 relative overflow-hidden">
           {/* Hafif blob dekorasyonu */}
-          <div className="blob-bg bg-primary-container w-80 h-80 rounded-full -top-20 -right-20 opacity-30" />
-          <div className="blob-bg bg-primary-fixed-dim w-64 h-64 rounded-full bottom-10 -left-16 opacity-20" style={{ animationDelay: "-3s" }} />
+          <div className="blob-bg bg-primary-fixed-dim w-80 h-80 rounded-full -top-20 -right-20 opacity-40" />
+          <div className="blob-bg bg-secondary-container w-64 h-64 rounded-full bottom-10 -left-16 opacity-30" style={{ animationDelay: "-3s" }} />
 
           <div className="relative z-10 max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <p className="text-primary-fixed font-semibold text-label-md uppercase tracking-widest mb-3">Şeffaf Fiyatlandırma</p>
-              <h2 className="font-display text-headline-lg text-on-primary">Nasıl Ücretlendirilir?</h2>
-              <p className="mt-4 text-on-primary/75 text-body-md max-w-xl mx-auto">
+              <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-3">Şeffaf Fiyatlandırma</p>
+              <h2 className="font-display text-headline-lg text-on-background">Nasıl Ücretlendirilir?</h2>
+              <p className="mt-4 text-on-surface-variant text-body-md max-w-xl mx-auto">
                 Abonelik yok, gizli ücret yok. Sadece aldığınız ders için ödeme yaparsınız.
               </p>
             </div>
@@ -431,32 +431,18 @@ export default async function HomePage() {
               ].map((item) => (
                 <div
                   key={item.step}
-                  className={`rounded-md p-8 ${
-                    item.highlight
-                      ? "bg-on-primary-fixed scale-105 shadow-2xl"
-                      : "bg-white/10 border border-white/15"
-                  }`}
+                  className="rounded-md p-8 bg-surface-container-lowest border border-outline-variant/30 soft-card-static"
                 >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-5 ${
-                    item.highlight
-                      ? "bg-primary text-on-primary"
-                      : "bg-primary/30 text-on-primary"
-                  }`}>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mb-5 bg-primary-fixed text-primary">
                     {item.icon}
                   </div>
-                  <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${
-                    item.highlight ? "text-on-surface-variant" : "text-on-primary/50"
-                  }`}>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-2 text-on-surface-variant">
                     Adım {item.step}
                   </p>
-                  <h3 className={`font-display text-headline-md mb-3 ${
-                    item.highlight ? "text-on-background" : "text-on-primary"
-                  }`}>
+                  <h3 className="font-display text-headline-md mb-3 text-on-background">
                     {item.title}
                   </h3>
-                  <p className={`text-sm leading-relaxed ${
-                    item.highlight ? "text-on-surface-variant" : "text-on-primary/75"
-                  }`}>
+                  <p className="text-sm leading-relaxed text-on-surface-variant">
                     {item.desc}
                   </p>
                 </div>
@@ -464,7 +450,7 @@ export default async function HomePage() {
             </div>
 
             {/* Alt bilgi şeridi */}
-            <div className="bg-white/10 border border-white/15 rounded-md px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-md px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-6 soft-card-static">
               <div className="flex flex-wrap justify-center sm:justify-start gap-8 text-center sm:text-left">
                 {[
                   { label: "Üyelik Ücreti",        value: "Ücretsiz" },
@@ -472,14 +458,14 @@ export default async function HomePage() {
                   { label: "İptal (24 saat önce)", value: "Tam İade" },
                 ].map((item) => (
                   <div key={item.label}>
-                    <p className="text-on-primary font-bold text-lg font-display">{item.value}</p>
-                    <p className="text-on-primary/60 text-xs mt-0.5">{item.label}</p>
+                    <p className="text-primary font-bold text-lg font-display">{item.value}</p>
+                    <p className="text-on-surface-variant text-xs mt-0.5">{item.label}</p>
                   </div>
                 ))}
               </div>
               <Link
                 href="/egitmenlerimiz"
-                className="shrink-0 inline-flex items-center gap-2 bg-surface-container-lowest text-primary px-6 py-3 rounded-full text-label-md font-bold hover:bg-primary-fixed transition-colors cursor-pointer"
+                className="shrink-0 inline-flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full text-label-md font-bold squishy-btn cursor-pointer"
               >
                 Öğretmen Fiyatlarını Gör
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -544,9 +530,9 @@ export default async function HomePage() {
         </section>
 
         {/* ── CTA ──────────────────────────────────────────── */}
-        <section className="bg-primary py-20 relative overflow-hidden">
-          <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full -top-20 -left-20 opacity-25" />
-          <div className="blob-bg bg-secondary-fixed w-72 h-72 rounded-full bottom-10 -right-16 opacity-20" style={{ animationDelay: "-4s" }} />
+        <section className="bg-gradient-to-br from-primary-fixed via-surface-container-lowest to-secondary-container/40 py-20 relative overflow-hidden">
+          <div className="blob-bg bg-primary-fixed-dim w-96 h-96 rounded-full -top-20 -left-20 opacity-40" />
+          <div className="blob-bg bg-secondary-fixed w-72 h-72 rounded-full bottom-10 -right-16 opacity-40" style={{ animationDelay: "-4s" }} />
 
           <div className="relative z-10 max-w-container-max mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="relative w-full max-w-md mx-auto aspect-video mb-8">
@@ -558,17 +544,16 @@ export default async function HomePage() {
                 className="object-contain"
               />
             </div>
-            <h2 className="font-display text-headline-lg md:text-headline-xl text-on-primary mb-4">
+            <h2 className="font-display text-headline-lg md:text-headline-xl text-on-background mb-4">
               Çocuğunuzun Başarısı<br/>Bir Tık Uzağınızda
             </h2>
-            <p className="text-on-primary/80 text-body-lg mb-10 max-w-xl mx-auto">
+            <p className="text-on-surface-variant text-body-lg mb-10 max-w-xl mx-auto">
               Hemen üye olun, uzman öğretmenlerle ilk dersi planlayın. İlk ders memnuniyeti garantilidir.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center gap-2 bg-surface-container-lowest text-primary px-8 py-4 rounded-full font-display font-bold text-body-md hover:bg-primary-fixed transition-colors cursor-pointer squishy-btn"
-                style={{ boxShadow: "0 4px 0 rgba(0,0,0,0.2)" }}
+                className="inline-flex items-center justify-center gap-2 bg-primary text-on-primary px-8 py-4 rounded-full font-display font-bold text-body-md squishy-btn cursor-pointer"
               >
                 Ücretsiz Kayıt Ol
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -577,7 +562,7 @@ export default async function HomePage() {
               </Link>
               <Link
                 href="/egitmen-basvurusu"
-                className="inline-flex items-center justify-center gap-2 bg-white/10 text-on-primary border-2 border-primary-fixed-dim/40 px-8 py-4 rounded-full font-display font-semibold text-body-md hover:bg-primary-fixed/20 transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 bg-surface-container-lowest text-primary border-2 border-primary px-8 py-4 rounded-full font-display font-semibold text-body-md hover:bg-primary-fixed transition-colors cursor-pointer"
               >
                 Öğretmen Başvurusu
               </Link>

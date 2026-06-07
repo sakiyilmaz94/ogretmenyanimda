@@ -11,15 +11,15 @@ export default function HakkimizdaPage() {
       <main className="pt-16">
 
         {/* Hero */}
-        <section className="relative overflow-hidden bg-primary py-24">
-          <div className="blob-bg w-96 h-96 bg-white/10 rounded-full -top-24 -left-24" />
-          <div className="blob-bg w-80 h-80 bg-white/10 rounded-full -bottom-16 -right-16" />
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary-fixed via-surface-container-lowest to-secondary-container/40 py-24">
+          <div className="blob-bg w-96 h-96 bg-primary-fixed-dim rounded-full -top-24 -left-24" />
+          <div className="blob-bg w-80 h-80 bg-secondary-container rounded-full -bottom-16 -right-16" />
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-            <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-4">Hakkımızda</p>
-            <h1 className="font-display text-headline-xl text-on-primary mb-6 leading-tight">
+            <p className="inline-block text-label-md bg-primary text-on-primary rounded-full px-4 py-1.5 mb-4">Hakkımızda</p>
+            <h1 className="font-display text-headline-xl text-on-background mb-6 leading-tight">
               Formasyonlu Öğretmenlerle<br />Güvenli Özel Ders
             </h1>
-            <p className="text-on-primary/80 text-body-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="text-on-surface-variant text-body-lg leading-relaxed max-w-2xl mx-auto">
               Yeni kurulduk. Büyük rakamlar değil, samimi bir başlangıç sunuyoruz. Her öğrenci bize önemli — ve bunu her adımda hissettirmeye kararlıyız.
             </p>
           </div>
@@ -137,7 +137,7 @@ export default function HakkimizdaPage() {
               <Link href="/register" className="rounded-full squishy-btn bg-primary text-on-primary px-7 py-3.5 font-semibold">
                 Ders Al
               </Link>
-              <Link href="/egitmen-basvurusu" className="rounded-full border-2 border-inverse-on-surface/30 text-inverse-on-surface px-7 py-3.5 font-semibold hover:bg-white/5 transition">
+              <Link href="/egitmen-basvurusu" className="rounded-full border-2 border-primary text-primary px-7 py-3.5 font-semibold hover:bg-primary-fixed transition">
                 Öğretmen Olarak Katıl
               </Link>
             </div>

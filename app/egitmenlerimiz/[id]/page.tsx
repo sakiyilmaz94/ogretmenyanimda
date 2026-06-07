@@ -273,24 +273,24 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
                   </a>
                 )}
 
-                <div className="bg-primary rounded-md p-6 text-center relative overflow-hidden">
-                  <div className="blob-bg bg-surface-container-lowest w-32 h-32 rounded-full absolute -top-8 -right-8 opacity-10" />
-                  <p className="font-display text-inverse-on-surface text-headline-md mb-2">Ders Al</p>
+                <div className="bg-primary-fixed border border-primary/15 rounded-md p-6 text-center relative overflow-hidden">
+                  <div className="blob-bg bg-primary-fixed-dim w-32 h-32 rounded-full absolute -top-8 -right-8 opacity-40" />
+                  <p className="font-display text-on-background text-headline-md mb-2 relative">Ders Al</p>
                   {role === "PARENT" ? (
                     <>
-                      <p className="text-on-primary/80 text-body-md mb-4">Bu öğretmenle hemen randevu alın.</p>
+                      <p className="text-on-surface-variant text-body-md mb-4 relative">Bu öğretmenle hemen randevu alın.</p>
                       <Link href={`/parent/book?educatorId=${educator.id}`}
-                        className="block w-full bg-surface-container-lowest text-primary py-3 rounded-full font-bold text-label-md hover:bg-primary-fixed transition">
+                        className="block w-full bg-primary text-on-primary py-3 rounded-full font-bold text-label-md squishy-btn relative">
                         Randevu Al
                       </Link>
                     </>
                   ) : role ? (
-                    <p className="text-on-primary/80 text-body-md">Ders almak için veli hesabı gereklidir.</p>
+                    <p className="text-on-surface-variant text-body-md relative">Ders almak için veli hesabı gereklidir.</p>
                   ) : (
                     <>
-                      <p className="text-on-primary/80 text-body-md mb-4">Hemen kayıt olun ve rezervasyon yapın.</p>
+                      <p className="text-on-surface-variant text-body-md mb-4 relative">Hemen kayıt olun ve rezervasyon yapın.</p>
                       <Link href="/register"
-                        className="block w-full bg-surface-container-lowest text-primary py-3 rounded-full font-bold text-label-md hover:bg-primary-fixed transition">
+                        className="block w-full bg-primary text-on-primary py-3 rounded-full font-bold text-label-md squishy-btn relative">
                         Ücretsiz Kayıt Ol
                       </Link>
                     </>

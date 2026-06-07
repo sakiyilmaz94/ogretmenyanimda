@@ -196,12 +196,12 @@ export default async function EgitmenlerimizPage({
         </section>
 
         {/* CTA */}
-        <section className="bg-primary py-16 relative overflow-hidden">
-          <div className="blob-bg bg-surface-container-lowest w-80 h-80 rounded-full absolute -top-20 -right-20 opacity-10" />
+        <section className="bg-gradient-to-br from-primary-fixed via-surface-container-lowest to-secondary-container/40 py-16 relative overflow-hidden">
+          <div className="blob-bg bg-primary-fixed-dim w-80 h-80 rounded-full absolute -top-20 -right-20 opacity-40" />
           <div className="max-w-3xl mx-auto px-4 text-center relative">
-            <h2 className="font-display text-headline-lg text-on-primary mb-3">Siz de Öğretmen Olmak İster misiniz?</h2>
-            <p className="text-on-primary/80 text-body-lg mb-6">Binlerce öğrenciye ulaşın, kendi programınızı oluşturun.</p>
-            <Link href="/egitmen-basvurusu" className="inline-flex items-center gap-2 bg-surface-container-lowest text-primary px-7 py-3.5 rounded-full font-bold text-body-md hover:bg-primary-fixed transition-colors cursor-pointer squishy-btn">
+            <h2 className="font-display text-headline-lg text-on-background mb-3">Siz de Öğretmen Olmak İster misiniz?</h2>
+            <p className="text-on-surface-variant text-body-lg mb-6">Binlerce öğrenciye ulaşın, kendi programınızı oluşturun.</p>
+            <Link href="/egitmen-basvurusu" className="inline-flex items-center gap-2 bg-primary text-on-primary px-7 py-3.5 rounded-full font-bold text-body-md squishy-btn cursor-pointer">
               Öğretmen Başvurusu Yap
             </Link>
           </div>
