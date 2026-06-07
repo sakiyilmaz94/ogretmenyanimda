@@ -28,8 +28,11 @@
     --color-on-tertiary-fixed:         #7c3800;
 
     /* Eklenen M3 tokenları (kodda kullanılıp tanımsız kalmış olanlar) */
-    --color-inverse-surface:           #1f2733; /* koyu zemin: dashboard sidebar + koyu hero'lar */
-    --color-inverse-on-surface:        #eef1f7; /* koyu zemin üzeri açık metin */
+    /* AYDINLIK TASARIM: inverse-surface artık AÇIK bir yüzey, inverse-on-surface KOYU metin.
+       Böylece bu tokenları kullanan eski "koyu" bölümler (sidebar, hero'lar, footer) otomatik
+       aydınlık + okunur olur. Koyu alan kullanılmıyor. */
+    --color-inverse-surface:           #eef2fb; /* açık lavanta-mavi yüzey */
+    --color-inverse-on-surface:        #0b1c30; /* açık yüzey üzeri koyu metin */
     --color-on-primary-fixed-variant:  #3730a3; /* açık lavanta üzeri orta-koyu indigo aksan */
     --color-primary-container:         #e1e0ff;
     --color-on-primary-container:      #07006c;

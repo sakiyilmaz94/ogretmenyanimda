@@ -22,6 +22,7 @@ Bu klasör, **Öğretmen Yanımda** için Nano 2 Pro'da üretilecek flat vektör
 | 07 | [07-secenek-ogrenci-koclugu.md](07-secenek-ogrenci-koclugu.md) | Kişiye Özel · Koçluk | `secenek-ogrenci-koclugu.png` | 1:1 |
 | 08 | [08-cta-kayit.md](08-cta-kayit.md) | Alt CTA, indigo zemin (`page.tsx:514`) | `cta-kayit.png` | 16:9 |
 | 09 | [09-koyu-hero-deseni.md](09-koyu-hero-deseni.md) | 6 koyu iç-sayfa hero'su | `koyu-hero-deseni.png` | 16:9 |
+| 10 | [10-dersler-hero.md](10-dersler-hero.md) | Dersler hero (stock foto yerine) | `dersler-hero.png` | 16:9 |
 
 **Toplam: 9 görsel.** (3 Adım ve Kişiye Özel setleri kendi içinde tutarlı üçlü olmalı.)
 

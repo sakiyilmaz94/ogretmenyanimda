@@ -1,7 +1,6 @@
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import Link from "next/link";
-import Image from "next/image";
 
 export const metadata = { title: "Öğretmen Başvurusu — Öğretmen Yanımda" };
 
@@ -20,17 +19,16 @@ export default function EgitmenBasvurusuPage() {
 
         {/* Hero */}
         <section className="bg-inverse-surface py-20 relative overflow-hidden">
-          <Image src="/illustrations/koyu-hero-deseni.png" alt="" fill aria-hidden sizes="100vw" className="object-cover opacity-[0.12] pointer-events-none" />
-          <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full absolute -top-20 -right-20 opacity-10" />
-          <div className="blob-bg bg-primary-fixed w-64 h-64 rounded-full absolute -bottom-10 -left-10 opacity-10" />
+          <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full absolute -top-20 -right-20 opacity-30" />
+          <div className="blob-bg bg-primary-fixed w-64 h-64 rounded-full absolute -bottom-10 -left-10 opacity-30" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <p className="text-primary-fixed font-semibold text-label-md uppercase tracking-widest mb-4">Öğretmen Başvurusu</p>
-                <h1 className="font-display text-headline-xl text-inverse-on-surface mb-4 leading-tight">
+                <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-4">Öğretmen Başvurusu</p>
+                <h1 className="font-display text-headline-xl text-on-background mb-4 leading-tight">
                   Öğretmen Yanımda Ailesine Katılın!
                 </h1>
-                <p className="text-inverse-on-surface/70 text-body-lg leading-relaxed">
+                <p className="text-on-surface-variant text-body-lg leading-relaxed">
                   Platformumuzda ders vermek isteyen deneyimli öğretmenleri bekliyoruz. Başvurunuzu değerlendirip en kısa sürede size dönüş yapacağız.
                 </p>
               </div>
@@ -41,9 +39,9 @@ export default function EgitmenBasvurusuPage() {
                   { n: "Esnek", label: "Çalışma Saati" },
                   { n: "Online", label: "Tamamen Dijital" },
                 ].map((s) => (
-                  <div key={s.label} className="bg-surface-container-lowest/10 rounded-md p-5 border border-inverse-on-surface/20">
-                    <p className="font-display text-headline-lg text-primary-fixed mb-1">{s.n}</p>
-                    <p className="text-inverse-on-surface/60 text-label-md">{s.label}</p>
+                  <div key={s.label} className="bg-surface-container-lowest rounded-md p-5 border border-outline-variant/40">
+                    <p className="font-display text-headline-lg text-primary mb-1">{s.n}</p>
+                    <p className="text-on-surface-variant text-label-md">{s.label}</p>
                   </div>
                 ))}
               </div>

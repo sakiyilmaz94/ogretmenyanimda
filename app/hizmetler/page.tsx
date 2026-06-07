@@ -18,8 +18,8 @@ const services = [
     subtitle: "60 dk · Maks. 6 Öğrenci",
     desc: "Küçük gruplarla sosyal öğrenme ortamı. Akranlarla birlikte problem çözmek hem motivasyonu artırır hem de uygun fiyatlıdır.",
     features: ["Uygun fiyatlı seçenek", "Sosyal beceli gelişimi", "Rekabetçi öğrenme ortamı", "Grup ödevi ve projeler", "Haftalık grup raporu"],
-    color: "bg-inverse-surface",
-    accent: "text-inverse-on-surface/70",
+    color: "bg-secondary",
+    accent: "text-on-primary/70",
   },
   {
     title: "Öğrenci Koçluğu",

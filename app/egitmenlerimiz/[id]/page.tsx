@@ -3,7 +3,6 @@ import { auth } from "@/auth";
 import { notFound } from "next/navigation";
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
-import Image from "next/image";
 import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 
@@ -59,8 +58,7 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
 
         {/* Hero */}
         <section className="bg-inverse-surface py-16 relative overflow-hidden">
-          <Image src="/illustrations/koyu-hero-deseni.png" alt="" fill aria-hidden sizes="100vw" className="object-cover opacity-[0.12] pointer-events-none" />
-          <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full absolute -top-20 -right-20 opacity-10" />
+          <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full absolute -top-20 -right-20 opacity-30" />
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <div className="bg-primary rounded-full w-24 h-24 flex items-center justify-center text-on-primary font-display text-4xl shrink-0 overflow-hidden">
@@ -74,22 +72,22 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
                 )}
               </div>
               <div className="flex-1">
-                <p className="text-primary-fixed text-label-md font-semibold uppercase tracking-widest mb-1">
+                <p className="text-primary text-label-md font-semibold uppercase tracking-widest mb-1">
                   {educator.titleName ?? "Öğretmen"}
                 </p>
-                <h1 className="font-display text-headline-lg text-inverse-on-surface mb-2">{educator.user.name}</h1>
-                <div className="flex flex-wrap items-center gap-4 text-inverse-on-surface/60 text-body-md">
+                <h1 className="font-display text-headline-lg text-on-background mb-2">{educator.user.name}</h1>
+                <div className="flex flex-wrap items-center gap-4 text-on-surface-variant text-body-md">
                   {educator.experience && <span>{educator.experience} yıl deneyim</span>}
                   {avgRating && (
                     <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4 text-tertiary-fixed" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-4 h-4 text-on-tertiary-fixed" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                       {avgRating} ({educator.reviews.length} değerlendirme)
                     </span>
                   )}
                   {educator.hourlyRate && (
-                    <span className="text-primary-fixed font-bold">{formatCurrency(educator.hourlyRate.toNumber())} / saat</span>
+                    <span className="text-primary font-bold">{formatCurrency(educator.hourlyRate.toNumber())} / saat</span>
                   )}
                 </div>
               </div>

@@ -28,7 +28,7 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
   const sidebar = (
     <div className="flex flex-col h-full">
       {/* Logo alanı */}
-      <div className="px-6 py-6 border-b border-white/10">
+      <div className="px-6 py-6 border-b border-outline-variant">
         <Link href="/" className="flex items-center gap-3">
           <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +57,7 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
                 "flex items-center gap-3 px-4 py-2.5 rounded-xl text-label-md transition-colors",
                 active
                   ? "bg-primary text-on-primary font-semibold"
-                  : "text-inverse-on-surface/70 hover:bg-white/10 hover:text-inverse-on-surface"
+                  : "text-on-surface-variant hover:bg-primary-fixed hover:text-on-background"
               )}
             >
               <NavIcon name={item.icon} className="w-5 h-5 shrink-0" />
@@ -68,7 +68,7 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
       </nav>
 
       {/* Alt kullanıcı alanı */}
-      <div className="px-4 py-4 border-t border-white/10">
+      <div className="px-4 py-4 border-t border-outline-variant">
         <div className="flex items-center justify-between px-1 mb-3">
           <div className="min-w-0">
             <p className="text-inverse-on-surface font-medium text-label-md truncate">{session?.user?.name}</p>
@@ -92,7 +92,7 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
   return (
     <div className="min-h-screen bg-surface-container-low flex">
       {/* Desktop sidebar */}
-      <aside className="w-64 bg-inverse-surface flex-col fixed h-full hidden lg:flex z-30">
+      <aside className="w-64 bg-inverse-surface border-r border-outline-variant flex-col fixed h-full hidden lg:flex z-30">
         {sidebar}
       </aside>
 
@@ -106,7 +106,7 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
 
       {/* Mobile sidebar */}
       <aside className={cn(
-        "w-64 bg-inverse-surface flex-col fixed h-full z-50 transition-transform duration-300 lg:hidden",
+        "w-64 bg-inverse-surface border-r border-outline-variant flex-col fixed h-full z-50 transition-transform duration-300 lg:hidden",
         mobileOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {sidebar}

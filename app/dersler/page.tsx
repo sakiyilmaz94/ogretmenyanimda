@@ -1,6 +1,7 @@
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = { title: "Dersler — Öğretmen Yanımda" };
 
@@ -52,12 +53,24 @@ export default function DerslerPage() {
       <PublicNavbar />
       <main className="pt-16">
 
-        <section className="relative overflow-hidden bg-[url('/hero.png')] bg-cover bg-center py-24 text-center">
-          <div className="absolute inset-0 bg-on-background/55" />
-          <div className="max-w-3xl mx-auto px-4 relative z-10">
-            <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Dersler</p>
-            <h1 className="font-display text-headline-xl text-on-primary mb-4">Hangi Derste Destek Arıyorsunuz?</h1>
-            <p className="text-on-primary/80 text-body-lg">Seviye ve ders seçerek o alanda uzman öğretmenlere ulaşın.</p>
+        <section className="relative overflow-hidden bg-surface-container-low py-20">
+          <div className="blob-bg bg-primary-fixed w-72 h-72 rounded-full -top-16 -right-16" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div className="text-center lg:text-left">
+              <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Dersler</p>
+              <h1 className="font-display text-headline-xl text-on-background mb-4">Hangi Derste Destek Arıyorsunuz?</h1>
+              <p className="text-on-surface-variant text-body-lg">Seviye ve ders seçerek o alanda uzman öğretmenlere ulaşın.</p>
+            </div>
+            <div className="relative w-full max-w-md mx-auto aspect-video">
+              <Image
+                src="/illustrations/dersler-hero.png"
+                alt="Farklı derslerden seçim yapan öğrenci"
+                fill
+                priority
+                sizes="(max-width: 1024px) 80vw, 480px"
+                className="object-contain"
+              />
+            </div>
           </div>
         </section>
 

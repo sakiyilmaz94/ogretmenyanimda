@@ -69,15 +69,15 @@ export default async function ParentDashboard() {
       </div>
 
       {/* Ana akış: Öğretmen bul */}
-      <div className="bg-inverse-surface rounded-md p-6 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+      <div className="bg-primary-fixed rounded-md p-6 flex flex-col sm:flex-row items-start sm:items-center gap-5">
         <div className="w-12 h-12 bg-primary rounded-md flex items-center justify-center shrink-0">
           <svg className="w-6 h-6 text-on-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
         <div className="flex-1">
-          <p className="text-on-primary font-display font-semibold text-body-lg">Öğretmen Ara & Randevu Al</p>
-          <p className="text-on-primary/70 text-body-md mt-0.5">Onaylı öğretmenleri inceleyin, profillerini görün ve doğrudan randevu alın.</p>
+          <p className="text-on-primary-fixed font-display font-semibold text-body-lg">Öğretmen Ara &amp; Randevu Al</p>
+          <p className="text-on-primary-fixed/80 text-body-md mt-0.5">Onaylı öğretmenleri inceleyin, profillerini görün ve doğrudan randevu alın.</p>
         </div>
         <Link
           href="/egitmenlerimiz"
