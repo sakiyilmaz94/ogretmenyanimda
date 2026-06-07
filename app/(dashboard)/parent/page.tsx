@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
+import NavIcon from "@/components/layout/NavIcon";
 
 export default async function ParentDashboard() {
   const session = await auth();
@@ -45,20 +46,22 @@ export default async function ParentDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {[
-          { label: "Kayıtlı Öğrenci", value: parent.students.length, icon: "🎒" },
+          { label: "Kayıtlı Öğrenci", value: parent.students.length, icon: "students" as const },
           {
             label: "Toplam Ders",
             value: parent.students.reduce((sum, s) => sum + s.bookings.length, 0),
-            icon: "📋",
+            icon: "bookings" as const,
           },
           {
             label: "Toplam Harcama",
             value: formatCurrency(totalSpent._sum.amount?.toNumber() ?? 0),
-            icon: "💳",
+            icon: "payments" as const,
           },
         ].map((stat) => (
           <div key={stat.label} className="bg-surface-container-lowest rounded-md p-6 soft-card-static border border-outline-variant/20">
-            <div className="text-3xl mb-2">{stat.icon}</div>
+            <div className="w-11 h-11 rounded-full bg-primary-fixed text-primary flex items-center justify-center mb-3">
+              <NavIcon name={stat.icon} className="w-6 h-6" />
+            </div>
             <div className="font-display text-headline-md text-on-background">{stat.value}</div>
             <div className="text-body-md text-on-surface-variant">{stat.label}</div>
           </div>

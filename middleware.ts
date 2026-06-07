@@ -59,5 +59,10 @@ function getDashboardUrl(role: string | undefined): string {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  // Statik dosyalar (görseller, fontlar vb.) ve api/_next hariç tüm rotalarda çalış.
+  // Görsel uzantıları dışlanmazsa /public altındaki görseller (örn. /illustrations/*, /hero.png)
+  // giriş yapmamış ziyaretçilerde login'e yönlendirilir.
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|avif|ico|bmp|woff2?|ttf|otf)).*)",
+  ],
 };

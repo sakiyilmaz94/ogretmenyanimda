@@ -37,7 +37,7 @@ export default function PublicFooter() {
                 Öğretmen<span className="text-inverse-on-surface font-bold">Yanımda</span>
               </span>
             </Link>
-            <p className="text-sm text-outline leading-relaxed mb-6">
+            <p className="text-sm text-inverse-on-surface/70 leading-relaxed mb-6">
               İlkokul ve ortaokul öğrencileri için uzman öğretmenlerle bireysel ve grup dersleri platformu.
             </p>
             <div className="flex gap-3">
@@ -56,7 +56,7 @@ export default function PublicFooter() {
 
           {/* Platform */}
           <div>
-            <h4 className="font-display text-label-md text-on-primary-fixed uppercase tracking-wider mb-5">
+            <h4 className="font-display text-label-md text-inverse-on-surface uppercase tracking-wider mb-5">
               Platform
             </h4>
             <ul className="space-y-3">
@@ -64,7 +64,7 @@ export default function PublicFooter() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-outline hover:text-primary-fixed-dim transition-colors duration-200"
+                    className="text-sm text-inverse-on-surface/70 hover:text-inverse-on-surface transition-colors duration-200"
                   >
                     {l.label}
                   </Link>
@@ -75,7 +75,7 @@ export default function PublicFooter() {
 
           {/* Destek */}
           <div>
-            <h4 className="font-display text-label-md text-on-primary-fixed uppercase tracking-wider mb-5">
+            <h4 className="font-display text-label-md text-inverse-on-surface uppercase tracking-wider mb-5">
               Destek
             </h4>
             <ul className="space-y-3">
@@ -83,7 +83,7 @@ export default function PublicFooter() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-outline hover:text-primary-fixed-dim transition-colors duration-200"
+                    className="text-sm text-inverse-on-surface/70 hover:text-inverse-on-surface transition-colors duration-200"
                   >
                     {l.label}
                   </Link>
@@ -94,7 +94,7 @@ export default function PublicFooter() {
 
           {/* Yasal */}
           <div>
-            <h4 className="font-display text-label-md text-on-primary-fixed uppercase tracking-wider mb-5">
+            <h4 className="font-display text-label-md text-inverse-on-surface uppercase tracking-wider mb-5">
               Yasal
             </h4>
             <ul className="space-y-3">
@@ -102,7 +102,7 @@ export default function PublicFooter() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-outline hover:text-primary-fixed-dim transition-colors duration-200"
+                    className="text-sm text-inverse-on-surface/70 hover:text-inverse-on-surface transition-colors duration-200"
                   >
                     {l.label}
                   </Link>
@@ -113,10 +113,10 @@ export default function PublicFooter() {
         </div>
 
         <div className="border-t border-outline/20 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-outline">
+          <p className="text-xs text-inverse-on-surface/55">
             © {new Date().getFullYear()} Öğretmen Yanımda. Tüm hakları saklıdır.
           </p>
-          <p className="text-xs text-outline">
+          <p className="text-xs text-inverse-on-surface/55">
             Türkiye&apos;nin güvenilir özel ders platformu
           </p>
         </div>

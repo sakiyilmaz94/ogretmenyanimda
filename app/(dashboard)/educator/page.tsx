@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";
 import ReapplyForm from "@/components/dashboard/ReapplyForm";
+import NavIcon from "@/components/layout/NavIcon";
 
 export default async function EducatorDashboard() {
   const session = await auth();
@@ -95,13 +96,15 @@ export default async function EducatorDashboard() {
       {/* Quick links */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
-          { href: "/educator/derslerim", icon: "📚", title: "Derslerim", desc: `${educator.educatorLessons.length} onaylı ders` },
-          { href: "/educator/availability", icon: "📅", title: "Uygunluk Takvimi", desc: `${availableSlots} boş slot` },
-          { href: "/educator/profile", icon: "👤", title: "Profilim", desc: educator.isProfilePublic ? "Profil yayında" : "Profil gizli" },
+          { href: "/educator/derslerim", icon: "lessons" as const, title: "Derslerim", desc: `${educator.educatorLessons.length} onaylı ders` },
+          { href: "/educator/availability", icon: "availability" as const, title: "Uygunluk Takvimi", desc: `${availableSlots} boş slot` },
+          { href: "/educator/profile", icon: "profile" as const, title: "Profilim", desc: educator.isProfilePublic ? "Profil yayında" : "Profil gizli" },
         ].map((item) => (
           <Link key={item.href} href={item.href}
             className="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-5 soft-card hover:border-primary/30 transition group">
-            <div className="text-2xl mb-3">{item.icon}</div>
+            <div className="w-12 h-12 rounded-full bg-primary-fixed text-primary flex items-center justify-center mb-3">
+              <NavIcon name={item.icon} className="w-6 h-6" />
+            </div>
             <h3 className="font-display text-headline-md text-on-background">{item.title}</h3>
             <p className="text-body-md text-on-surface-variant mt-0.5">{item.desc}</p>
           </Link>

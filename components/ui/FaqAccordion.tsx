@@ -29,7 +29,7 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
             </svg>
           </button>
           {open === i && (
-            <p className="mt-3 text-slate-600 text-sm leading-relaxed">
+            <p className="mt-3 text-on-surface-variant text-sm leading-relaxed">
               {item.a}
             </p>
           )}
