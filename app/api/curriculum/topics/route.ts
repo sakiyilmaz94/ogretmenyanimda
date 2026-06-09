@@ -16,6 +16,8 @@ export async function GET(req: Request) {
     where: {
       subject,
       gradeLevel: gradeLevelNum,
+      // Yalnızca soru içeren konular gösterilsin (boş konu seçilirse test çalışmaz).
+      questions: { some: {} },
     },
     select: {
       id: true,

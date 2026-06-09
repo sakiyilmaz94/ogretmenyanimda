@@ -4,6 +4,29 @@ import { notify } from "@/lib/notify";
 import { sendEmail } from "@/lib/email";
 import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 
+// Test sorularını çek. Seçilen konuya (topicId) bağlı soru yoksa,
+// sınıf+ders havuzundan çekerek geri düşer (boş/eski konu seçilse bile test çalışır).
+// GET (gösterim) ve POST (puanlama) aynı sıralamayı kullanır ki index'ler eşleşsin.
+async function fetchAssessmentQuestions(
+  gradeNumber: number,
+  subject: string,
+  topicId: string | null
+) {
+  if (topicId) {
+    const byTopic = await db.levelAssessmentQuestion.findMany({
+      where: { gradeLevel: gradeNumber, subject, topicId },
+      orderBy: { id: "asc" },
+      take: 10,
+    });
+    if (byTopic.length > 0) return byTopic;
+  }
+  return db.levelAssessmentQuestion.findMany({
+    where: { gradeLevel: gradeNumber, subject },
+    orderBy: { id: "asc" },
+    take: 10,
+  });
+}
+
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -34,15 +57,12 @@ export async function GET(
 
     const gradeNumber = gradeMap[assessment.gradeLevel as string] || 2;
 
-    // Database'den soruları çek
-    const questions = await db.levelAssessmentQuestion.findMany({
-      where: {
-        gradeLevel: gradeNumber,
-        subject: assessment.subject,
-        topicId: assessment.topicId || undefined,
-      },
-      take: 10,
-    });
+    // Database'den soruları çek (konuda soru yoksa sınıf+ders havuzuna düşer)
+    const questions = await fetchAssessmentQuestions(
+      gradeNumber,
+      assessment.subject,
+      assessment.topicId
+    );
 
     if (questions.length === 0) {
       return NextResponse.json({ error: "Sorular bulunamadı" }, { status: 404 });
@@ -111,15 +131,12 @@ export async function POST(
 
     const gradeNumber = gradeMap[assessment.gradeLevel as string] || 2;
 
-    // Database'den soruları çek
-    const questions = await db.levelAssessmentQuestion.findMany({
-      where: {
-        gradeLevel: gradeNumber,
-        subject: assessment.subject,
-        topicId: assessment.topicId || undefined,
-      },
-      take: 10,
-    });
+    // Database'den soruları çek (GET ile aynı mantık → index'ler eşleşir)
+    const questions = await fetchAssessmentQuestions(
+      gradeNumber,
+      assessment.subject,
+      assessment.topicId
+    );
 
     if (questions.length === 0) {
       return NextResponse.json({ error: "Sorular bulunamadı" }, { status: 404 });
