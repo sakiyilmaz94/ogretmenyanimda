@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
 import { sendEmail } from "@/lib/email";
@@ -160,6 +161,10 @@ export async function POST(
         data: { status: "COMPLETED", completedAt: new Date() },
       }),
     ]);
+
+    // Test tamamlandı → öğretmen panelinin önbelleğini tazele ki sonuç anında düşsün
+    revalidatePath("/educator/bookings");
+    revalidatePath("/educator");
 
     // Doğru cevapları hesapla
     correct = answers.filter((a) => questions[a.index]?.correctAnswer === a.selected).length;

@@ -6,6 +6,9 @@ import LessonReportButton from "@/components/dashboard/LessonReportButton";
 import AssessmentResultViewer from "@/components/dashboard/AssessmentResultViewer";
 import Link from "next/link";
 
+// Her zaman taze veri: tamamlanan seviye testi sonuçları anında görünsün (eski cache servis edilmesin).
+export const dynamic = "force-dynamic";
+
 export default async function EducatorBookingsPage() {
   const session = await auth();
   const educator = await db.educator.findUnique({ where: { userId: session!.user.id } });
