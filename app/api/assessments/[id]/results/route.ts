@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { getQuestions } from "@/lib/assessment-questions";
+import {
+  fetchAssessmentQuestions,
+  gradeLevelToNumber,
+  questionOptions,
+} from "@/lib/assessment";
 
 export async function GET(
   _req: Request,
@@ -28,15 +32,22 @@ export async function GET(
     return NextResponse.json({ error: "Yetkisiz" }, { status: 403 });
   }
 
-  const questions = getQuestions(assessment.subject, assessment.gradeLevel).slice(0, 7);
+  // Öğrencinin gördüğü/çözdüğü SORULARIN AYNISINI çek (aynı kaynak + aynı sıralama)
+  // ki questionIndex doğru soruya denk gelsin.
+  const gradeNumber = gradeLevelToNumber(assessment.gradeLevel as string);
+  const questions = await fetchAssessmentQuestions(
+    gradeNumber,
+    assessment.subject,
+    assessment.topicId
+  );
 
   const results = questions.map((q, i) => {
     const response = assessment.responses.find((r) => r.questionIndex === i);
     return {
       index: i,
       question: q.question,
-      options: q.options,
-      correct: q.correct,
+      options: questionOptions(q),
+      correct: q.correctAnswer,
       selected: response?.selectedAnswer ?? null,
     };
   });
@@ -47,7 +58,7 @@ export async function GET(
     subject: assessment.subject,
     gradeLevel: assessment.gradeLevel,
     studentName: assessment.booking.student.name,
-    topic: (assessment.booking.topic as any)?.name || null,
+    topic: assessment.booking.topic?.name ?? null,
     completedAt: assessment.completedAt,
     results,
     correctCount,

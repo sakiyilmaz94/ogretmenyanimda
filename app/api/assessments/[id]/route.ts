@@ -4,29 +4,7 @@ import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
 import { sendEmail } from "@/lib/email";
 import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
-
-// Test sorularını çek. Seçilen konuya (topicId) bağlı soru yoksa,
-// sınıf+ders havuzundan çekerek geri düşer (boş/eski konu seçilse bile test çalışır).
-// GET (gösterim) ve POST (puanlama) aynı sıralamayı kullanır ki index'ler eşleşsin.
-async function fetchAssessmentQuestions(
-  gradeNumber: number,
-  subject: string,
-  topicId: string | null
-) {
-  if (topicId) {
-    const byTopic = await db.levelAssessmentQuestion.findMany({
-      where: { gradeLevel: gradeNumber, subject, topicId },
-      orderBy: { id: "asc" },
-      take: 10,
-    });
-    if (byTopic.length > 0) return byTopic;
-  }
-  return db.levelAssessmentQuestion.findMany({
-    where: { gradeLevel: gradeNumber, subject },
-    orderBy: { id: "asc" },
-    take: 10,
-  });
-}
+import { fetchAssessmentQuestions, gradeLevelToNumber, questionOptions } from "@/lib/assessment";
 
 export async function GET(
   _req: Request,
@@ -44,19 +22,7 @@ export async function GET(
   }
 
   try {
-    // Grade level'i sayıya dönüştür
-    const gradeMap: Record<string, number> = {
-      ILKOKUL_1: 1,
-      ILKOKUL_2: 2,
-      ILKOKUL_3: 3,
-      ILKOKUL_4: 4,
-      ORTAOKUL_5: 5,
-      ORTAOKUL_6: 6,
-      ORTAOKUL_7: 7,
-      ORTAOKUL_8: 8,
-    };
-
-    const gradeNumber = gradeMap[assessment.gradeLevel as string] || 2;
+    const gradeNumber = gradeLevelToNumber(assessment.gradeLevel as string);
 
     // Database'den soruları çek (konuda soru yoksa sınıf+ders havuzuna düşer)
     const questions = await fetchAssessmentQuestions(
@@ -76,8 +42,8 @@ export async function GET(
       questions: questions.map((q, i) => ({
         index: i,
         question: q.question,
-        // 4 seçenek - cevap anahtarı server-side gizli
-        options: [q.option1, q.option2, q.option3, q.option4].filter(Boolean),
+        // Şıklar - cevap anahtarı server-side gizli (harf ön eki temizlenir)
+        options: questionOptions(q),
         image: q.imageData ? {
           data: q.imageData,
           format: q.imageFormat || "svg"
@@ -118,19 +84,7 @@ export async function POST(
   const { answers } = await req.json() as { answers: { index: number; selected: number }[] };
 
   try {
-    // Grade level'i sayıya dönüştür
-    const gradeMap: Record<string, number> = {
-      ILKOKUL_1: 1,
-      ILKOKUL_2: 2,
-      ILKOKUL_3: 3,
-      ILKOKUL_4: 4,
-      ORTAOKUL_5: 5,
-      ORTAOKUL_6: 6,
-      ORTAOKUL_7: 7,
-      ORTAOKUL_8: 8,
-    };
-
-    const gradeNumber = gradeMap[assessment.gradeLevel as string] || 2;
+    const gradeNumber = gradeLevelToNumber(assessment.gradeLevel as string);
 
     // Database'den soruları çek (GET ile aynı mantık → index'ler eşleşir)
     const questions = await fetchAssessmentQuestions(
