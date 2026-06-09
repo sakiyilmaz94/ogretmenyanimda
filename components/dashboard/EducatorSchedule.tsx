@@ -34,10 +34,24 @@ function chipStyle(status: BookingItem["status"]) {
 }
 
 function LessonChip({ b, showTime = false }: { b: BookingItem; showTime?: boolean }) {
+  // Tarihi bugünden önce olan ders yapılmış sayılır → "yapıldı" belirteci.
+  const isPast = b.date.slice(0, 10) < ymd(new Date());
   return (
-    <div className={`rounded-lg px-2 py-1 text-[11px] leading-tight ${chipStyle(b.status)}`}>
-      {showTime && <span className="font-bold mr-1">{b.startTime}</span>}
-      <span className="font-semibold">{b.studentName}</span>
+    <div className={`rounded-lg px-2 py-1 text-[11px] leading-tight ${chipStyle(b.status)} ${isPast ? "opacity-90" : ""}`}>
+      <div className="flex items-center gap-1">
+        {showTime && <span className="font-bold">{b.startTime}</span>}
+        <span className="font-semibold truncate">{b.studentName}</span>
+        {isPast && (
+          <span
+            title="Ders yapıldı"
+            className="ml-auto shrink-0 inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#16a34a] text-white"
+          >
+            <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3.5} d="M5 13l4 4L19 7" />
+            </svg>
+          </span>
+        )}
+      </div>
       <span className="block opacity-80">{SUBJECT_LABELS[b.subject] ?? b.subject}</span>
     </div>
   );
