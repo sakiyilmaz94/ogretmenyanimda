@@ -181,6 +181,9 @@ export default async function EducatorBookingsPage() {
                     </td>
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-2 flex-wrap">
+                        {b.assessment?.status === "COMPLETED" && b.assessment.responses.length > 0 && (
+                          <AssessmentResultViewer assessmentId={b.assessment.id} />
+                        )}
                         {b.meetingUrl && (
                           <Link
                             href={b.meetingUrl}
