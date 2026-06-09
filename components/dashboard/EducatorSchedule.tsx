@@ -7,6 +7,13 @@ import type { BookingItem } from "@/components/dashboard/EducatorBookingsView";
 const DAY_LABELS = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
 const MONTHS = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 
+type StatusKey = "CONFIRMED" | "COMPLETED" | "PENDING";
+const STATUS_CHIPS: { key: StatusKey; label: string; dot: string }[] = [
+  { key: "CONFIRMED", label: "Onaylı (ödeme bekleyen)", dot: "bg-primary-fixed" },
+  { key: "COMPLETED", label: "Kesinleşti", dot: "bg-secondary-container" },
+  { key: "PENDING", label: "Onay bekliyor", dot: "border border-dashed border-outline-variant" },
+];
+
 function ymd(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
@@ -38,8 +45,15 @@ function LessonChip({ b, showTime = false }: { b: BookingItem; showTime?: boolea
 
 export default function EducatorSchedule({ bookings }: { bookings: BookingItem[] }) {
   const [view, setView] = useState<"week" | "month">("week");
-  const [includePending, setIncludePending] = useState(false);
+  // Varsayılan: onaylı + kesinleşmiş açık, onay bekleyen kapalı. Öğretmen istediğini seçer.
+  const [statusFilter, setStatusFilter] = useState<Record<StatusKey, boolean>>({
+    CONFIRMED: true,
+    COMPLETED: true,
+    PENDING: false,
+  });
   const [student, setStudent] = useState<string>("all");
+  const toggleStatus = (k: StatusKey) =>
+    setStatusFilter((s) => ({ ...s, [k]: !s[k] }));
   const [anchor, setAnchor] = useState<Date>(() => startOfWeekMonday(new Date()));
 
   const students = useMemo(
@@ -47,16 +61,14 @@ export default function EducatorSchedule({ bookings }: { bookings: BookingItem[]
     [bookings]
   );
 
-  // Kapsam: onaylı (CONFIRMED+COMPLETED) + isteğe bağlı PENDING; öğrenci filtresi.
+  // Kapsam: seçili durumlar + öğrenci filtresi.
   const scoped = useMemo(() => {
     return bookings.filter((b) => {
-      const inScope =
-        b.status === "CONFIRMED" || b.status === "COMPLETED" || (includePending && b.status === "PENDING");
-      if (!inScope) return false;
+      if (!statusFilter[b.status as StatusKey]) return false;
       if (student !== "all" && b.studentName !== student) return false;
       return true;
     });
-  }, [bookings, includePending, student]);
+  }, [bookings, statusFilter, student]);
 
   // Güne göre indeksle (YYYY-MM-DD)
   const byDay = useMemo(() => {
@@ -108,27 +120,29 @@ export default function EducatorSchedule({ bookings }: { bookings: BookingItem[]
           </select>
         </label>
 
-        {/* Bekleyenleri göster */}
-        <button
-          onClick={() => setIncludePending((p) => !p)}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-label-md font-semibold transition ${
-            includePending ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
-          }`}
-        >
-          <span className={`w-3.5 h-3.5 rounded border-2 flex items-center justify-center ${includePending ? "bg-on-primary border-on-primary" : "border-outline-variant"}`}>
-            {includePending && (
-              <svg className="w-2.5 h-2.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-            )}
-          </span>
-          Onay bekleyenleri göster
-        </button>
       </div>
 
-      {/* Renk açıklaması */}
-      <div className="flex flex-wrap gap-4 text-caption text-on-surface-variant">
-        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-primary-fixed inline-block" /> Onaylı (ödeme bekleniyor)</span>
-        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-secondary-container inline-block" /> Kesinleşti</span>
-        {includePending && <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded border border-dashed border-outline-variant inline-block" /> Onay bekliyor</span>}
+      {/* Durum filtresi (seçilebilir çipler) — istediğini göster/gizle */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-label-md text-on-surface-variant mr-1">Göster:</span>
+        {STATUS_CHIPS.map((c) => {
+          const on = statusFilter[c.key];
+          return (
+            <button
+              key={c.key}
+              onClick={() => toggleStatus(c.key)}
+              aria-pressed={on}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-md font-semibold border transition ${
+                on
+                  ? "bg-primary text-on-primary border-primary"
+                  : "bg-surface-container text-on-surface-variant border-outline-variant hover:bg-surface-container-high"
+              }`}
+            >
+              <span className={`w-3 h-3 rounded inline-block ${c.dot}`} />
+              {c.label}
+            </button>
+          );
+        })}
       </div>
 
       {view === "week" ? (
@@ -232,10 +246,14 @@ function WeekView({ anchor, setAnchor, byDay }: { anchor: Date; setAnchor: (d: D
 
 function MonthView({ anchor, setAnchor, byDay }: { anchor: Date; setAnchor: (d: Date) => void; byDay: Map<string, BookingItem[]> }) {
   const monthStart = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-  const gridStart = startOfWeekMonday(monthStart);
-  const cells = Array.from({ length: 42 }, (_, i) => addDays(gridStart, i));
-  const todayKey = ymd(new Date());
   const month = monthStart.getMonth();
+  const todayKey = ymd(new Date());
+  // Sadece bu ay: gereken hafta sayısı kadar satır (sonraki/önceki ay günleri boş bırakılır).
+  const daysInMonth = new Date(monthStart.getFullYear(), month + 1, 0).getDate();
+  const leadOffset = (monthStart.getDay() + 6) % 7; // Pzt-başlangıçlı baştaki boşluk
+  const weeksNeeded = Math.ceil((leadOffset + daysInMonth) / 7);
+  const gridStart = startOfWeekMonday(monthStart);
+  const cells = Array.from({ length: weeksNeeded * 7 }, (_, i) => addDays(gridStart, i));
 
   return (
     <div className="space-y-4">
@@ -254,18 +272,22 @@ function MonthView({ anchor, setAnchor, byDay }: { anchor: Date; setAnchor: (d: 
           </div>
           <div className="grid grid-cols-7 gap-1">
             {cells.map((d, i) => {
-              const key = ymd(d);
               const inMonth = d.getMonth() === month;
+              // Diğer ayın günleri: boş placeholder (gün numarası/ders gösterilmez).
+              if (!inMonth) {
+                return <div key={i} className="min-h-[88px] rounded-lg border border-outline-variant/10 bg-surface-container/20" />;
+              }
+              const key = ymd(d);
               const isToday = key === todayKey;
               const lessons = byDay.get(key) ?? [];
               return (
                 <div
                   key={i}
-                  className={`min-h-[88px] rounded-lg p-1.5 border ${
+                  className={`min-h-[88px] rounded-lg p-1.5 border bg-surface-container-lowest ${
                     isToday ? "border-primary bg-primary-fixed/20" : "border-outline-variant/20"
-                  } ${inMonth ? "bg-surface-container-lowest" : "bg-surface-container/40"}`}
+                  }`}
                 >
-                  <div className={`text-caption font-semibold mb-1 ${inMonth ? (isToday ? "text-primary" : "text-on-background") : "text-on-surface-variant/40"}`}>
+                  <div className={`text-caption font-semibold mb-1 ${isToday ? "text-primary" : "text-on-background"}`}>
                     {d.getDate()}
                   </div>
                   <div className="space-y-1">
