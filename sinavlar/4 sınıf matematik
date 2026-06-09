@@ -1667,14 +1667,14 @@
     "grade": 4,
     "subject": "Fen Bilimleri",
     "unit": "7. Ünite: Basit Elektrik Devreleri",
-    "question": "Pilleri yerleştirirken (+ ve -) kutuplara dikkat etmez ve ters takarsak ne olur?",
-    "option1": "A) Daha çok ışık verir",
-    "option2": "B) Ampul yanmaz (devre çalışmaz)",
-    "option3": "C) Pil yatağı kırılır",
-    "option4": "D) Kablo erir",
-    "correctAnswer": 1,
+    "question": "Bir basit elektrik devresine özdeş (aynı türden) ikinci bir pil daha eklenirse ampulün parlaklığı nasıl değişir?",
+    "option1": "A) Artar (daha parlak yanar)",
+    "option2": "B) Azalır",
+    "option3": "C) Hiç değişmez",
+    "option4": "D) Ampul tamamen söner",
+    "correctAnswer": 0,
     "difficulty": "hard",
-    "explanation": "Pillerin doğru enerji verebilmesi için kutupları (+ ve -) sırayla doğru temas etmelidir."
+    "explanation": "Devreye özdeş ikinci bir pil eklendiğinde ampule sağlanan elektrik enerjisi artar ve ampul daha parlak yanar."
   },
   {
     "grade": 4,

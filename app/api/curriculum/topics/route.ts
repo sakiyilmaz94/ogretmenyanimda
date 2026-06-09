@@ -22,9 +22,21 @@ export async function GET(req: Request) {
     select: {
       id: true,
       name: true,
+      description: true,
+      learningObjects: true, // kapsadığı konular
+      _count: { select: { questions: true } },
     },
     orderBy: { name: "asc" },
   });
 
-  return NextResponse.json(topics);
+  // UI için sadeleştir: kapsadığı konular + soru sayısı
+  const result = topics.map((t) => ({
+    id: t.id,
+    name: t.name,
+    description: t.description,
+    coveredTopics: t.learningObjects ?? [],
+    questionCount: t._count.questions,
+  }));
+
+  return NextResponse.json(result);
 }

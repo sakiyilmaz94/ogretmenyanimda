@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 interface Topic {
   id: string;
   name: string;
-  description?: string;
+  description?: string | null;
+  coveredTopics: string[]; // kapsadığı konular
+  questionCount: number;
 }
 
 interface TopicSelectorProps {
@@ -38,9 +40,7 @@ export default function TopicSelector({
         if (!res.ok) throw new Error("Konular yüklenemedi");
         return res.json();
       })
-      .then((data) => {
-        setTopics(data);
-      })
+      .then((data) => setTopics(data))
       .catch((e) => {
         console.error("Topic fetch error:", e);
         setError("Konular yüklenirken hata oluştu");
@@ -51,49 +51,95 @@ export default function TopicSelector({
   if (!subject || gradeLevel === undefined) return null;
 
   return (
-    <div className="space-y-2">
-      <label className="text-label-sm font-medium text-on-surface-variant">
-        📚 Seçilen Konu *
-      </label>
+    <div className="space-y-3">
+      <div>
+        <label className="text-label-md font-semibold text-on-background flex items-center gap-2">
+          <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.247m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.247" />
+          </svg>
+          Ünite / Tema Seçimi *
+        </label>
+        <p className="text-caption text-on-surface-variant mt-1">
+          Sınav, seçtiğiniz ünitenin sorularından oluşur. Kart üzerinde o ünitede
+          ele alınan konuları görebilirsiniz.
+        </p>
+      </div>
 
       {loading && (
-        <p className="text-caption text-on-surface-variant">Konular yükleniyor...</p>
+        <p className="text-caption text-on-surface-variant">Üniteler yükleniyor...</p>
       )}
 
       {error && <p className="text-caption text-error">{error}</p>}
 
       {topics.length > 0 && (
-        <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            {topics.map((topic) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {topics.map((topic) => {
+            const isSelected = selected === topic.id;
+            return (
               <button
                 key={topic.id}
+                type="button"
                 onClick={() => onSelect(topic.id, topic.name)}
-                title={topic.description || topic.name}
-                className={`px-3 py-2.5 rounded-lg font-medium text-caption transition text-center ${
-                  selected === topic.id
-                    ? "bg-primary text-on-primary shadow-md scale-105"
-                    : "bg-surface-container border border-outline-variant text-on-surface-variant hover:border-primary/50 hover:bg-surface-container-high hover:scale-105"
+                aria-pressed={isSelected}
+                className={`text-left rounded-xl border-2 p-4 transition-all ${
+                  isSelected
+                    ? "border-primary bg-primary-fixed shadow-md"
+                    : "border-outline-variant bg-surface-container-lowest hover:border-primary/50 hover:bg-surface-container"
                 }`}
               >
-                {topic.name}
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <span
+                    className={`font-display font-semibold text-body-md leading-snug ${
+                      isSelected ? "text-on-primary-fixed" : "text-on-background"
+                    }`}
+                  >
+                    {topic.name}
+                  </span>
+                  <span
+                    className={`shrink-0 text-caption font-semibold px-2 py-0.5 rounded-full ${
+                      isSelected
+                        ? "bg-primary text-on-primary"
+                        : "bg-surface-container-high text-on-surface-variant"
+                    }`}
+                  >
+                    {topic.questionCount} soru
+                  </span>
+                </div>
+
+                {topic.coveredTopics.length > 0 && (
+                  <ul className="space-y-1">
+                    {topic.coveredTopics.map((konu, i) => (
+                      <li
+                        key={i}
+                        className={`flex items-start gap-1.5 text-caption ${
+                          isSelected ? "text-on-primary-fixed/80" : "text-on-surface-variant"
+                        }`}
+                      >
+                        <span className={isSelected ? "text-primary" : "text-primary/60"}>•</span>
+                        <span>{konu}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {isSelected && (
+                  <div className="mt-3 flex items-center gap-1.5 text-caption font-semibold text-primary">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Bu ünite seçildi
+                  </div>
+                )}
               </button>
-            ))}
-          </div>
-          {selected && (
-            <div className="mt-3 p-3 bg-primary-fixed rounded-lg text-on-primary-fixed text-body-sm flex items-center gap-2">
-              <span className="text-lg">✓</span>
-              <div>
-                <span className="block font-semibold">Seçilen konu:</span>
-                <span className="block">{topics.find((t) => t.id === selected)?.name}</span>
-              </div>
-            </div>
-          )}
-        </>
+            );
+          })}
+        </div>
       )}
 
       {!loading && topics.length === 0 && !error && (
-        <p className="text-caption text-on-surface-variant">Bu dersin konuları bulunamadı.</p>
+        <p className="text-caption text-on-surface-variant">
+          Bu ders için bu sınıfta henüz ünite/soru tanımlı değil.
+        </p>
       )}
     </div>
   );

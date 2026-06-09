@@ -1,0 +1,1353 @@
+{
+  "aciklama": "Her sınıf, ders ve ünite/tema için kapsanan konular ve soru sayısı. Web sayfasında bir ünite seçildiğinde ilgili soru dosyasından 'gruplamaAlani' değerine eşit olan sorular filtrelenerek sınav oluşturulur.",
+  "siniflar": [
+    {
+      "sinif": 2,
+      "soruDosyasi": "2 sınıf matematik",
+      "gruplamaAlani": "tema",
+      "toplamSoru": 60,
+      "dersler": [
+        {
+          "ders": "Matematik",
+          "uniteSayisi": 6,
+          "uniteler": [
+            {
+              "ad": "1. Tema - Nesnelerin Geometrisi (1)",
+              "soruSayisi": 10,
+              "konular": [
+                "Geometrik cisimler (küp, prizma, silindir, koni, küre)",
+                "Geometrik cisim ve şekil modelleri",
+                "Şekillerin biçimsel özellikleri (kenar, köşe)",
+                "Sıvı ölçme (standart olmayan birimlerle)"
+              ]
+            },
+            {
+              "ad": "2. Tema - Sayılar ve Nicelikler (1)",
+              "soruSayisi": 10,
+              "konular": [
+                "Doğal sayılar ve okunuşları",
+                "Sayılarda çözümleme ve basamak değeri",
+                "Sayı doğrusu",
+                "Ritmik sayma",
+                "Örüntüler",
+                "Tahmin etme"
+              ]
+            },
+            {
+              "ad": "3. Tema - İşlemlerden Cebirsel Düşünmeye",
+              "soruSayisi": 10,
+              "konular": [
+                "Toplama işlemi",
+                "Çıkarma işlemi",
+                "Toplama-çıkarma problemleri",
+                "Çarpma işlemi",
+                "Bölme işlemi",
+                "İşlemler arası ilişki ve eşitlik"
+              ]
+            },
+            {
+              "ad": "4. Tema - Sayılar ve Nicelikler (2)",
+              "soruSayisi": 10,
+              "konular": [
+                "Bütün, yarım ve çeyrek (kesirler)",
+                "Paralarımız (TL ve kuruş)",
+                "Zaman ölçme (saat, gün, hafta, ay, yıl)",
+                "Uzunluk ve kütle ölçme"
+              ]
+            },
+            {
+              "ad": "5. Tema - Nesnelerin Geometrisi (2)",
+              "soruSayisi": 10,
+              "konular": [
+                "Yer ve yön bulma (altında/üstünde/sağ/sol/ileri-geri)",
+                "Krokide yön",
+                "Simetri ve simetri çizgisi",
+                "Eş parçalar ve yansıma"
+              ]
+            },
+            {
+              "ad": "6. Tema - Veriye Dayalı Araştırma",
+              "soruSayisi": 10,
+              "konular": [
+                "Veri toplama (anket)",
+                "Sıklık tablosu",
+                "Şekil ve sütun grafiği okuma",
+                "Araştırma sorusu oluşturma"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sinif": 3,
+      "soruDosyasi": "3 sinif matematik",
+      "gruplamaAlani": "unit",
+      "toplamSoru": 130,
+      "dersler": [
+        {
+          "ders": "Matematik",
+          "uniteSayisi": 6,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Doğal Sayılar ve İşlemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Üç basamaklı doğal sayılar",
+                "Basamak ve sayı değeri",
+                "Sayı örüntüleri",
+                "Toplama ve çıkarma işlemi",
+                "Zihinden işlem ve tahmin"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Veri ve İşlemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Veri toplama",
+                "Sıklık tablosu",
+                "Çetele tablosu",
+                "Şekil ve sütun grafiği"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Çarpma ve Bölme",
+              "soruSayisi": 10,
+              "konular": [
+                "Çarpma işlemi",
+                "Çarpım tablosu",
+                "Bölme işlemi",
+                "Çarpma-bölme problemleri"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Kesirler ve Ölçme",
+              "soruSayisi": 10,
+              "konular": [
+                "Birim kesirler",
+                "Kesirleri karşılaştırma",
+                "Bütün-yarım-çeyrek",
+                "Ölçme uygulamaları"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Geometri",
+              "soruSayisi": 10,
+              "konular": [
+                "Geometrik cisimler",
+                "Geometrik şekiller",
+                "Simetri",
+                "Örüntü ve süslemeler"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Ölçme",
+              "soruSayisi": 10,
+              "konular": [
+                "Uzunluk ölçme (m, cm)",
+                "Çevre",
+                "Zaman ölçme",
+                "Paralarımız",
+                "Tartma (kg, g)",
+                "Sıvı ölçme (L)"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Fen Bilimleri",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Gezegenimizi Tanıyalım",
+              "soruSayisi": 10,
+              "konular": [
+                "Dünya'nın şekli",
+                "Dünya'nın yapısı (kara, su, hava)",
+                "Dünya'nın katmanları"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Beş Duyumuz",
+              "soruSayisi": 10,
+              "konular": [
+                "Duyu organları",
+                "Görme, işitme, koklama, tatma, dokunma",
+                "Duyu organlarının sağlığı"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Kuvveti Tanıyalım",
+              "soruSayisi": 10,
+              "konular": [
+                "İtme ve çekme",
+                "Kuvvetin cisimlere etkisi",
+                "Hareket ve şekil değişimi"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Maddeyi Tanıyalım",
+              "soruSayisi": 10,
+              "konular": [
+                "Maddenin özellikleri",
+                "Maddenin halleri (katı, sıvı, gaz)",
+                "Duyularla maddeyi tanıma"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Çevremizdeki Işık ve Sesler",
+              "soruSayisi": 10,
+              "konular": [
+                "Işık kaynakları",
+                "Ses kaynakları",
+                "İşitilen seslerin özellikleri"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Canlılar Dünyasına Yolculuk",
+              "soruSayisi": 10,
+              "konular": [
+                "Canlı ve cansız varlıklar",
+                "Bitkiler ve hayvanlar",
+                "Canlıların yaşam alanları",
+                "Doğa ve çevre"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Elektrikli Araçlar",
+              "soruSayisi": 10,
+              "konular": [
+                "Elektrikle çalışan araçlar",
+                "Elektrik kaynakları (pil, priz)",
+                "Elektriği güvenli kullanma"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sinif": 4,
+      "soruDosyasi": "4 sınıf matematik",
+      "gruplamaAlani": "unit",
+      "toplamSoru": 200,
+      "dersler": [
+        {
+          "ders": "Matematik",
+          "uniteSayisi": 6,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Doğal Sayılar ve İşlemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Dört ve beş basamaklı sayılar",
+                "Basamak değeri",
+                "Doğal sayılarda toplama ve çıkarma",
+                "Problem çözme"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Çarpma ve Bölme İşlemleri",
+              "soruSayisi": 10,
+              "konular": [
+                "İki/üç basamaklı çarpma",
+                "Bölme işlemi",
+                "Bölme ve çarpma ilişkisi",
+                "Zihinden işlem"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Kesirler",
+              "soruSayisi": 10,
+              "konular": [
+                "Kesir çeşitleri",
+                "Denk kesirler",
+                "Kesirleri karşılaştırma",
+                "Kesirlerle toplama-çıkarma"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Zaman Ölçme ve Veri İşleme",
+              "soruSayisi": 10,
+              "konular": [
+                "Zaman ölçme birimleri",
+                "Süre hesaplama",
+                "Sıklık tablosu",
+                "Sütun grafiği"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Geometri",
+              "soruSayisi": 10,
+              "konular": [
+                "Açılar",
+                "Üçgen, kare, dikdörtgen",
+                "Simetri",
+                "Geometrik cisimler"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Ölçme (Uzunluk, Çevre, Alan, Tartma, Sıvı)",
+              "soruSayisi": 10,
+              "konular": [
+                "Uzunluk ölçme",
+                "Çevre hesaplama",
+                "Alan ölçme",
+                "Tartma (kg, g)",
+                "Sıvı ölçme (L, mL)"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Fen Bilimleri",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Yer Kabuğu ve Dünya'mızın Hareketleri",
+              "soruSayisi": 10,
+              "konular": [
+                "Yer kabuğu ve kayaçlar",
+                "Fosiller",
+                "Dünya'nın dönme ve dolanma hareketi",
+                "Gece-gündüz ve mevsimler"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Besinlerimiz",
+              "soruSayisi": 10,
+              "konular": [
+                "Besin çeşitleri",
+                "Sağlıklı beslenme",
+                "Su ve minerallerin önemi",
+                "Besinlerin korunması"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Kuvvetin Etkileri",
+              "soruSayisi": 10,
+              "konular": [
+                "Kuvvetin cisimlere etkisi",
+                "Hareket ve şekil değişimi",
+                "Mıknatıs ve çekme kuvveti"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Maddenin Özellikleri",
+              "soruSayisi": 10,
+              "konular": [
+                "Maddeyi niteleyen özellikler",
+                "Maddenin halleri",
+                "Maddenin ölçülebilir özellikleri",
+                "Isı ve sıcaklık"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Aydınlatma ve Ses Teknolojileri",
+              "soruSayisi": 10,
+              "konular": [
+                "Geçmişten günümüze aydınlatma",
+                "Işık kirliliği",
+                "Geçmişten günümüze ses teknolojileri",
+                "Ses kirliliği"
+              ]
+            },
+            {
+              "ad": "6. Ünite: İnsan ve Çevre",
+              "soruSayisi": 10,
+              "konular": [
+                "Besin zinciri",
+                "İnsan-çevre etkileşimi",
+                "Çevre kirliliği",
+                "Geri dönüşüm"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Basit Elektrik Devreleri",
+              "soruSayisi": 10,
+              "konular": [
+                "Basit elektrik devresi",
+                "Devre elemanları",
+                "Ampul parlaklığı",
+                "Elektriği güvenli kullanma"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Sosyal Bilgiler",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Birey ve Toplum",
+              "soruSayisi": 10,
+              "konular": [
+                "Bireysel farklılıklar",
+                "Duygular ve düşünceler",
+                "Çocuk hakları",
+                "Kişisel bilgilerin güvenliği"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Kültür ve Miras",
+              "soruSayisi": 10,
+              "konular": [
+                "Millî Mücadele ve Atatürk",
+                "Millî kültür ögeleri",
+                "Geçmişten günümüze değişim",
+                "Atatürk'ün hayatı"
+              ]
+            },
+            {
+              "ad": "3. Ünite: İnsanlar, Yerler ve Çevreler",
+              "soruSayisi": 10,
+              "konular": [
+                "Yaşadığım yer",
+                "Doğal ve beşeri unsurlar",
+                "Harita ve yön",
+                "Doğal afetler"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Bilim, Teknoloji ve Toplum",
+              "soruSayisi": 10,
+              "konular": [
+                "Teknolojik ürünler",
+                "İcatlar ve buluşlar",
+                "Teknolojiyi güvenli kullanma"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Üretim, Dağıtım ve Tüketim",
+              "soruSayisi": 10,
+              "konular": [
+                "İhtiyaçlar ve istekler",
+                "Üretim-tüketim",
+                "Meslekler",
+                "Bilinçli tüketici"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Etkin Vatandaşlık",
+              "soruSayisi": 10,
+              "konular": [
+                "Çocuk hakları",
+                "Sorumluluklar",
+                "Millî egemenlik",
+                "Kurumlar"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Küresel Bağlantılar",
+              "soruSayisi": 10,
+              "konular": [
+                "Diğer ülkeler",
+                "Ortak miras",
+                "Turizm",
+                "Uluslararası ilişkiler"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sinif": 5,
+      "soruDosyasi": "5 sinif matematik",
+      "gruplamaAlani": "unit",
+      "toplamSoru": 210,
+      "dersler": [
+        {
+          "ders": "Matematik",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Doğal Sayılar ve İşlemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Doğal sayılar ve okunuşu",
+                "Dört işlem",
+                "İşlem önceliği",
+                "Problem çözme"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Kesirler",
+              "soruSayisi": 10,
+              "konular": [
+                "Kesir çeşitleri",
+                "Kesirlerle toplama-çıkarma",
+                "Kesirlerle çarpma",
+                "Problem çözme"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Ondalık Gösterim",
+              "soruSayisi": 10,
+              "konular": [
+                "Ondalık gösterim",
+                "Ondalık sayıları karşılaştırma",
+                "Yuvarlama",
+                "Ondalık sayılarla işlemler"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Yüzdeler",
+              "soruSayisi": 10,
+              "konular": [
+                "Yüzde kavramı",
+                "Yüzde-kesir-ondalık ilişkisi",
+                "Yüzde problemleri"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Temel Geometrik Kavramlar ve Çizimler",
+              "soruSayisi": 10,
+              "konular": [
+                "Nokta, doğru, ışın, doğru parçası",
+                "Açılar ve ölçümü",
+                "Açı çizimi"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Veri İşleme ve Zaman Ölçme",
+              "soruSayisi": 10,
+              "konular": [
+                "Veri toplama ve sıklık tablosu",
+                "Sütun grafiği",
+                "Zaman ölçme ve süre"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Uzunluk ve Alan Ölçme, Geometrik Cisimler",
+              "soruSayisi": 10,
+              "konular": [
+                "Uzunluk ölçme",
+                "Çevre",
+                "Alan (dikdörtgen, kare)",
+                "Geometrik cisimler ve yüzeyleri"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Fen Bilimleri",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Güneş, Dünya ve Ay",
+              "soruSayisi": 10,
+              "konular": [
+                "Güneş'in yapısı",
+                "Dünya'nın yapısı",
+                "Ay'ın yapısı ve hareketleri",
+                "Ay'ın evreleri"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Canlılar Dünyası",
+              "soruSayisi": 10,
+              "konular": [
+                "Canlıların sınıflandırılması",
+                "Mikroskobik canlılar",
+                "Mantarlar",
+                "Bitki ve hayvanlar"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Kuvvetin Ölçülmesi ve Sürtünme",
+              "soruSayisi": 10,
+              "konular": [
+                "Kuvvetin ölçülmesi (dinamometre)",
+                "Sürtünme kuvveti",
+                "Sürtünmeyi azaltma-artırma"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Maddenin Hal Değişimi",
+              "soruSayisi": 10,
+              "konular": [
+                "Maddenin halleri",
+                "Hal değişimi (erime, donma, buharlaşma)",
+                "Isı ve sıcaklık farkı",
+                "Genleşme"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Işığın Yayılması",
+              "soruSayisi": 10,
+              "konular": [
+                "Işığın yayılması",
+                "Tam gölge",
+                "Işığın yansıması"
+              ]
+            },
+            {
+              "ad": "6. Ünite: İnsan ve Çevre",
+              "soruSayisi": 10,
+              "konular": [
+                "Biyoçeşitlilik",
+                "İnsan-çevre ilişkisi",
+                "Çevre sorunları",
+                "Geri dönüşüm"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Elektrik Devre Elemanları",
+              "soruSayisi": 10,
+              "konular": [
+                "Devre elemanları ve sembolleri",
+                "Devre şeması çizimi",
+                "Ampul parlaklığını etkileyen faktörler"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Sosyal Bilgiler",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Birey ve Toplum",
+              "soruSayisi": 10,
+              "konular": [
+                "Toplumsal roller",
+                "Haklar ve sorumluluklar",
+                "Çocuk hakları",
+                "Sosyal bilgiler ve etkili iletişim"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Kültür ve Miras",
+              "soruSayisi": 10,
+              "konular": [
+                "Destan ve efsaneler",
+                "Anadolu uygarlıkları",
+                "Kültürel ögeler",
+                "Millî kültür"
+              ]
+            },
+            {
+              "ad": "3. Ünite: İnsanlar, Yerler ve Çevreler",
+              "soruSayisi": 10,
+              "konular": [
+                "Harita ve yön",
+                "İklim ve yeryüzü şekilleri",
+                "Nüfus ve yerleşme",
+                "Doğal afetler"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Bilim, Teknoloji ve Toplum",
+              "soruSayisi": 10,
+              "konular": [
+                "Bilgi ve iletişim teknolojileri",
+                "Buluşlar",
+                "Bilinçli teknoloji kullanımı",
+                "Telif hakları"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Üretim, Dağıtım ve Tüketim",
+              "soruSayisi": 10,
+              "konular": [
+                "Ekonomik faaliyetler",
+                "Üretim-dağıtım-tüketim",
+                "Meslekler",
+                "Bilinçli tüketici"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Etkin Vatandaşlık",
+              "soruSayisi": 10,
+              "konular": [
+                "Yönetim birimleri",
+                "Haklar ve özgürlükler",
+                "Demokrasi",
+                "Çocuk hakları sözleşmesi"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Küresel Bağlantılar",
+              "soruSayisi": 10,
+              "konular": [
+                "Ülkeler arası ilişkiler",
+                "Turizm ve kültür",
+                "Ortak miras",
+                "Uluslararası kuruluşlar"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sinif": 6,
+      "soruDosyasi": "6 sinif matematik",
+      "gruplamaAlani": "unit",
+      "toplamSoru": 210,
+      "dersler": [
+        {
+          "ders": "Matematik",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Doğal Sayılarla İşlemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Üslü ifadeler (doğal sayılarda)",
+                "İşlem önceliği",
+                "Dört işlem problemleri"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Çarpanlar ve Katlar, Kümeler",
+              "soruSayisi": 10,
+              "konular": [
+                "Bölünebilme kuralları",
+                "Asal sayılar",
+                "EBOB-EKOK",
+                "Kümeler"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Tam Sayılar ve Kesirlerle İşlemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Tam sayılar",
+                "Mutlak değer",
+                "Kesirlerle çarpma-bölme",
+                "Problem çözme"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Ondalık Gösterim ve Oran",
+              "soruSayisi": 10,
+              "konular": [
+                "Ondalık gösterimle işlemler",
+                "Oran kavramı",
+                "Birimli-birimsiz oran"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Cebirsel İfadeler ve Veri Analizi",
+              "soruSayisi": 10,
+              "konular": [
+                "Cebirsel ifadeler",
+                "Değişken ve sabit",
+                "Veri toplama ve analizi",
+                "Daire grafiği"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Açılar ve Alan Ölçme",
+              "soruSayisi": 10,
+              "konular": [
+                "Açı çeşitleri",
+                "Açı ilişkileri",
+                "Üçgen ve dörtgenlerde alan"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Çember, Geometrik Cisimler ve Hacim",
+              "soruSayisi": 10,
+              "konular": [
+                "Çember ve daire",
+                "Dikdörtgenler prizması",
+                "Hacim ve sıvı ölçme"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Fen Bilimleri",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Güneş Sistemi ve Tutulmalar",
+              "soruSayisi": 10,
+              "konular": [
+                "Güneş sistemi ve gezegenler",
+                "Güneş ve Ay tutulması",
+                "Gök cisimleri"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Vücudumuzdaki Sistemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Destek ve hareket sistemi",
+                "Sindirim sistemi",
+                "Boşaltım sistemi",
+                "Denetleyici sistemler"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Kuvvet ve Hareket",
+              "soruSayisi": 10,
+              "konular": [
+                "Bileşke kuvvet",
+                "Sabit süratli hareket",
+                "Kuvvetin ölçülmesi"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Madde ve Isı",
+              "soruSayisi": 10,
+              "konular": [
+                "Maddenin tanecikli yapısı",
+                "Isı ve sıcaklık",
+                "Isı yalıtımı",
+                "Yakıtlar"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Ses ve Özellikleri",
+              "soruSayisi": 10,
+              "konular": [
+                "Sesin yayılması",
+                "Sesin şiddeti ve yüksekliği",
+                "Sesin maddeyle etkileşimi"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Vücudumuzdaki Sistemler ve Sağlığı",
+              "soruSayisi": 10,
+              "konular": [
+                "Solunum sistemi",
+                "Dolaşım sistemi",
+                "Sistemlerin sağlığı"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Elektriğin İletimi",
+              "soruSayisi": 10,
+              "konular": [
+                "İletken ve yalıtkan maddeler",
+                "Elektriksel direnç",
+                "Devrede direnç"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Sosyal Bilgiler",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Birey ve Toplum",
+              "soruSayisi": 10,
+              "konular": [
+                "Sosyal roller ve statü",
+                "Toplumsal birliktelik",
+                "İletişim",
+                "Olgu ve görüş"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Kültür ve Miras",
+              "soruSayisi": 10,
+              "konular": [
+                "İlk Türk devletleri",
+                "Türklerde yönetim ve kültür",
+                "Anadolu'nun Türkleşmesi",
+                "Tarihî mekânlar"
+              ]
+            },
+            {
+              "ad": "3. Ünite: İnsanlar, Yerler ve Çevreler",
+              "soruSayisi": 10,
+              "konular": [
+                "Türkiye'nin yeryüzü şekilleri",
+                "İklim ve bitki örtüsü",
+                "Nüfus dağılışı",
+                "Göç"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Bilim, Teknoloji ve Toplum",
+              "soruSayisi": 10,
+              "konular": [
+                "Bilim insanları",
+                "Teknolojik gelişmeler",
+                "Sosyal bilgiler ve bilimsel düşünce",
+                "Telif/patent"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Üretim, Dağıtım ve Tüketim",
+              "soruSayisi": 10,
+              "konular": [
+                "Üretim ve ekonomik faaliyetler",
+                "Nitelikli iş gücü",
+                "Ülke kaynakları",
+                "Vatandaşlık ve ekonomi"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Etkin Vatandaşlık",
+              "soruSayisi": 10,
+              "konular": [
+                "Demokrasi ve yönetim",
+                "Temel haklar",
+                "Sorumluluklar",
+                "Kurumlar ve sivil toplum"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Küresel Bağlantılar",
+              "soruSayisi": 10,
+              "konular": [
+                "Ülkeler arası ekonomik ilişkiler",
+                "Kültürel etkileşim",
+                "Turizm",
+                "Uluslararası kuruluşlar"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sinif": 7,
+      "soruDosyasi": "7 sinif matematik",
+      "gruplamaAlani": "unit",
+      "toplamSoru": 200,
+      "dersler": [
+        {
+          "ders": "Matematik",
+          "uniteSayisi": 6,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Tam Sayılarla İşlemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Tam sayılarla çarpma-bölme",
+                "Tam sayıların kuvveti",
+                "Problem çözme"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Rasyonel Sayılar",
+              "soruSayisi": 10,
+              "konular": [
+                "Rasyonel sayılar",
+                "Rasyonel sayılarla işlemler",
+                "Sıralama ve karşılaştırma"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Cebirsel İfadeler ve Denklemler",
+              "soruSayisi": 10,
+              "konular": [
+                "Cebirsel ifadeler",
+                "Birinci dereceden denklemler",
+                "Denklem kurma ve çözme"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Oran, Orantı ve Yüzdeler",
+              "soruSayisi": 10,
+              "konular": [
+                "Oran ve orantı",
+                "Doğru-ters orantı",
+                "Yüzde problemleri",
+                "Faiz ve indirim"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Çokgenler ve Cisimlerin Görünümleri",
+              "soruSayisi": 10,
+              "konular": [
+                "Çokgenler",
+                "Açıortay ve kenarortay",
+                "Dörtgenler",
+                "Cisimlerin farklı yönlerden görünümü"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Veri Analizi",
+              "soruSayisi": 10,
+              "konular": [
+                "Veri toplama",
+                "Daire grafiği",
+                "Ortalama, ortanca, tepe değer"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Fen Bilimleri",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Güneş Sistemi ve Ötesi",
+              "soruSayisi": 10,
+              "konular": [
+                "Uzay araştırmaları",
+                "Gök cisimleri",
+                "Yıldızlar ve galaksiler"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Hücre ve Bölünmeler",
+              "soruSayisi": 10,
+              "konular": [
+                "Hücre ve yapısı",
+                "Mitoz",
+                "Mayoz",
+                "Üreme"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Kuvvet ve Enerji",
+              "soruSayisi": 10,
+              "konular": [
+                "Kütle ve ağırlık",
+                "Kuvvet ve denge",
+                "Enerji (kinetik-potansiyel)",
+                "Enerji dönüşümleri"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Saf Madde ve Karışımlar",
+              "soruSayisi": 10,
+              "konular": [
+                "Atom ve molekül",
+                "Saf maddeler (element-bileşik)",
+                "Karışımlar",
+                "Karışımları ayırma"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Işığın Madde ile Etkileşimi",
+              "soruSayisi": 10,
+              "konular": [
+                "Işığın soğurulması",
+                "Aynalar ve yansıma",
+                "Işığın kırılması",
+                "Mercekler"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Canlılarda Üreme, Büyüme ve Gelişme",
+              "soruSayisi": 10,
+              "konular": [
+                "İnsanda üreme",
+                "Bitki ve hayvanlarda üreme",
+                "Büyüme ve gelişme"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Elektrik Devreleri",
+              "soruSayisi": 10,
+              "konular": [
+                "Ampullerin bağlanma şekilleri",
+                "Seri ve paralel bağlama",
+                "Devrede gerilim ve akım"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Sosyal Bilgiler",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Birey ve Toplum",
+              "soruSayisi": 10,
+              "konular": [
+                "İletişim ve etkili iletişim",
+                "Bireysel ve toplumsal ilişkiler",
+                "Roller ve sorumluluklar"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Kültür ve Miras",
+              "soruSayisi": 10,
+              "konular": [
+                "Osmanlı Devleti'nin kuruluşu ve yükselişi",
+                "Türk kültür ve medeniyeti",
+                "Mimari ve sanat eserleri"
+              ]
+            },
+            {
+              "ad": "3. Ünite: İnsanlar, Yerler ve Çevreler",
+              "soruSayisi": 10,
+              "konular": [
+                "Nüfus özellikleri",
+                "Göç ve yerleşme",
+                "Yerleşim ve ekonomi"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Bilim, Teknoloji ve Toplum",
+              "soruSayisi": 10,
+              "konular": [
+                "Bilginin tarihsel gelişimi",
+                "Buluşlar ve etkileri",
+                "Özgür düşünce"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Ekonomi ve Yaşam",
+              "soruSayisi": 10,
+              "konular": [
+                "Üretim ve ekonomik faaliyetler",
+                "Kaynaklar ve ticaret",
+                "Vatandaşın ekonomik hakları",
+                "Tasarruf"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Demokrasi ve Vatandaşlık",
+              "soruSayisi": 10,
+              "konular": [
+                "Demokrasinin gelişimi",
+                "Temel hak ve özgürlükler",
+                "Yönetim ve katılım",
+                "Atatürk ve demokrasi"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Dünyadaki Yerimiz",
+              "soruSayisi": 10,
+              "konular": [
+                "Türkiye'nin uluslararası ilişkileri",
+                "Küresel kuruluşlar",
+                "Ülkeler arası iş birliği"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sinif": 8,
+      "soruDosyasi": "8 sinif matematik",
+      "gruplamaAlani": "unit",
+      "toplamSoru": 200,
+      "dersler": [
+        {
+          "ders": "Matematik",
+          "uniteSayisi": 6,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Çarpanlar ve Katlar - Üslü İfadeler",
+              "soruSayisi": 10,
+              "konular": [
+                "Çarpanlar ve katlar, asal çarpanlar",
+                "EBOB ve EKOK",
+                "Üslü ifadeler ve kuralları, negatif üs",
+                "Bilimsel gösterim"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Kareköklü İfadeler - Veri Analizi",
+              "soruSayisi": 10,
+              "konular": [
+                "Tam kare sayılar ve karekök",
+                "Kareköklü ifadelerle işlemler, irrasyonel sayılar",
+                "Veri analizi (çizgi/daire grafiği)",
+                "Ortalama, ortanca, tepe değer, açıklık"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Olasılık - Cebirsel İfadeler ve Özdeşlikler",
+              "soruSayisi": 10,
+              "konular": [
+                "Olası durumlar ve olasılık değeri",
+                "Basit olayların olasılığı",
+                "Cebirsel ifadelerde çarpma ve özdeşlikler",
+                "Çarpanlara ayırma"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Doğrusal Denklemler - Eşitsizlikler",
+              "soruSayisi": 10,
+              "konular": [
+                "Birinci dereceden denklemler",
+                "Koordinat sistemi ve eğim",
+                "Doğrusal ilişkiler ve grafikler",
+                "Birinci dereceden eşitsizlikler"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Üçgenler - Eşlik ve Benzerlik",
+              "soruSayisi": 10,
+              "konular": [
+                "Üçgende yardımcı elemanlar (kenarortay, açıortay, yükseklik)",
+                "Üçgen eşitsizliği ve kenar-açı ilişkisi",
+                "Pisagor bağıntısı",
+                "Eşlik ve benzerlik"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Dönüşüm Geometrisi - Geometrik Cisimler",
+              "soruSayisi": 10,
+              "konular": [
+                "Öteleme ve yansıma",
+                "Koordinat düzleminde dönüşümler",
+                "Dik prizma ve dik dairesel silindir",
+                "Dik piramit ve koni (yüzey alanı, hacim)"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "Fen Bilimleri",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Mevsimler ve İklim",
+              "soruSayisi": 10,
+              "konular": [
+                "Mevsimlerin oluşumu",
+                "Dünya'nın eksen eğikliği",
+                "İklim ve hava olayları"
+              ]
+            },
+            {
+              "ad": "2. Ünite: DNA ve Genetik Kod",
+              "soruSayisi": 10,
+              "konular": [
+                "DNA ve genetik kod",
+                "Kalıtım",
+                "Mutasyon ve modifikasyon",
+                "Adaptasyon ve evrim"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Basınç",
+              "soruSayisi": 10,
+              "konular": [
+                "Katı basıncı",
+                "Sıvı basıncı",
+                "Gaz basıncı",
+                "Günlük yaşamda basınç"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Madde ve Endüstri",
+              "soruSayisi": 10,
+              "konular": [
+                "Periyodik sistem",
+                "Fiziksel ve kimyasal değişim",
+                "Asitler ve bazlar",
+                "Kimya endüstrisi"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Basit Makineler",
+              "soruSayisi": 10,
+              "konular": [
+                "Kaldıraç",
+                "Makara",
+                "Eğik düzlem",
+                "Çıkrık, dişli, kasnak"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Enerji Dönüşümleri ve Çevre Bilimi",
+              "soruSayisi": 10,
+              "konular": [
+                "Besin zinciri ve enerji akışı",
+                "Madde döngüleri",
+                "Fotosentez ve solunum",
+                "Sürdürülebilir kalkınma"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Elektrik Yükleri ve Elektrik Enerjisi",
+              "soruSayisi": 10,
+              "konular": [
+                "Elektrik yükleri",
+                "Elektriklenme",
+                "Elektrik enerjisinin dönüşümü",
+                "Elektriksel direnç ve güç"
+              ]
+            }
+          ]
+        },
+        {
+          "ders": "T.C. İnkılap Tarihi ve Atatürkçülük",
+          "uniteSayisi": 7,
+          "uniteler": [
+            {
+              "ad": "1. Ünite: Bir Kahraman Doğuyor",
+              "soruSayisi": 10,
+              "konular": [
+                "Atatürk'ün çocukluğu ve öğrenim hayatı",
+                "Selanik'in çok kültürlü yapısı",
+                "Atatürk'ün askerlik hayatı",
+                "Fikir akımları"
+              ]
+            },
+            {
+              "ad": "2. Ünite: Millî Uyanış",
+              "soruSayisi": 10,
+              "konular": [
+                "I. Dünya Savaşı ve cepheler",
+                "Mondros Ateşkes Antlaşması",
+                "İşgaller ve cemiyetler",
+                "Mustafa Kemal'in Samsun'a çıkışı",
+                "Kongreler"
+              ]
+            },
+            {
+              "ad": "3. Ünite: Milli Bir Destan",
+              "soruSayisi": 10,
+              "konular": [
+                "TBMM'nin açılışı",
+                "Düzenli ordu ve cepheler",
+                "Sakarya ve Büyük Taarruz",
+                "Mudanya ve Lozan"
+              ]
+            },
+            {
+              "ad": "4. Ünite: Atatürkçülük ve Çağdaşlaşan Türkiye",
+              "soruSayisi": 10,
+              "konular": [
+                "İnkılaplar (siyasi, hukuk, eğitim)",
+                "Atatürk ilkeleri",
+                "Çağdaşlaşma",
+                "Toplumsal alanda değişim"
+              ]
+            },
+            {
+              "ad": "5. Ünite: Demokratikleşme Çabaları",
+              "soruSayisi": 10,
+              "konular": [
+                "Saltanat ve halifeliğin kaldırılması",
+                "Çok partili hayata geçiş denemeleri",
+                "Şeyh Sait ve Menemen olayları",
+                "Cumhuriyetin ilanı"
+              ]
+            },
+            {
+              "ad": "6. Ünite: Atatürk Dönemi Türk Dış Politikası",
+              "soruSayisi": 10,
+              "konular": [
+                "Yurtta sulh cihanda sulh",
+                "Nüfus mübadelesi ve Musul",
+                "Montrö Boğazlar Sözleşmesi",
+                "Balkan ve Sadabat Paktları",
+                "Hatay'ın katılması"
+              ]
+            },
+            {
+              "ad": "7. Ünite: Atatürk'ün Ölümü ve Sonrası",
+              "soruSayisi": 10,
+              "konular": [
+                "Atatürk'ün vefatı ve Anıtkabir",
+                "İsmet İnönü dönemi",
+                "II. Dünya Savaşı ve Türkiye",
+                "Çok partili hayata geçiş"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
