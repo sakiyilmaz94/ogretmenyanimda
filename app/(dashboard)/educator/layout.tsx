@@ -7,8 +7,8 @@ const educatorNav = [
   { href: "/educator/profile", label: "Profilim", icon: "profile" as const },
   { href: "/educator/derslerim", label: "Derslerim", icon: "lessons" as const },
   { href: "/educator/availability", label: "Uygunluk Takvimi", icon: "availability" as const },
+  { href: "/educator/ders-programi", label: "Ders Programı", icon: "schedule" as const },
   { href: "/educator/bookings", label: "Rezervasyonlar", icon: "bookings" as const },
-  { href: "/educator/kaynaklar", label: "Kaynaklarım", icon: "resources" as const },
 ];
 
 export default async function EducatorLayout({ children }: { children: React.ReactNode }) {
