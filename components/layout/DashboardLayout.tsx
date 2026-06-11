@@ -13,6 +13,7 @@ interface NavItem {
   href: string;
   label: string;
   icon: NavIconName;
+  badge?: number; // sağda kırmızı sayı rozeti (0/undefined → gösterilmez)
 }
 
 interface DashboardLayoutProps {
@@ -58,7 +59,12 @@ export default function DashboardLayout({ children, navItems, title }: Dashboard
               )}
             >
               <NavIcon name={item.icon} className="w-5 h-5 shrink-0" />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {item.badge != null && item.badge > 0 && (
+                <span className="shrink-0 min-w-[20px] h-5 px-1.5 inline-flex items-center justify-center rounded-full bg-error text-on-error text-[11px] font-bold">
+                  {item.badge}
+                </span>
+              )}
             </Link>
           );
         })}

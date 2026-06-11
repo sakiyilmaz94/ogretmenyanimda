@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { GRADE_LABELS } from "@/lib/utils";
 import { GradeLevel } from "@prisma/client";
 
@@ -11,6 +12,8 @@ interface Student {
   gradeLevel: GradeLevel;
   birthDate: string | null;
   notes: string | null;
+  lessonCount?: number;
+  teachers?: string[];
 }
 
 export default function StudentManager({
@@ -68,10 +71,37 @@ export default function StudentManager({
                 </p>
               </div>
             </div>
+            {/* Ders sayısı + çalıştığı öğretmenler */}
+            <div className="border-t border-outline-variant/20 pt-3 mt-1 space-y-2">
+              <div className="flex items-center gap-2 text-caption">
+                <span className="bg-primary-fixed text-on-primary-fixed px-2.5 py-1 rounded-full font-semibold">
+                  {student.lessonCount ?? 0} ders
+                </span>
+              </div>
+              <div>
+                <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wide mb-1">Çalıştığı Öğretmenler</p>
+                {student.teachers && student.teachers.length > 0 ? (
+                  <div className="flex flex-wrap gap-1">
+                    {student.teachers.map((t) => (
+                      <span key={t} className="text-[11px] bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full">{t}</span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-caption text-on-surface-variant">Henüz yok</p>
+                )}
+              </div>
+            </div>
+
             {student.notes && (
-              <p className="text-caption text-on-surface-variant mb-3 border-t border-outline-variant/20 pt-2">{student.notes}</p>
+              <p className="text-caption text-on-surface-variant my-3 border-t border-outline-variant/20 pt-2">{student.notes}</p>
             )}
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between gap-2 mt-3">
+              <Link
+                href={`/parent/book?studentId=${student.id}`}
+                className="rounded-full squishy-btn bg-primary text-on-primary px-4 py-1.5 text-caption font-semibold text-center"
+              >
+                Ders Al
+              </Link>
               <button
                 onClick={() => handleDelete(student.id)}
                 className="rounded-full bg-error-container text-on-error-container px-4 py-1.5 text-caption font-semibold hover:opacity-90 transition"
