@@ -1,5 +1,8 @@
 import { db } from "@/lib/db";
 import { formatCurrency, SUBJECT_LABELS } from "@/lib/utils";
+import { getCommissionRate } from "@/lib/finance";
+
+export const dynamic = "force-dynamic";
 
 export default async function RaporlarPage() {
   const [
@@ -40,23 +43,50 @@ export default async function RaporlarPage() {
   });
   const educatorMap = Object.fromEntries(educatorDetails.map((e) => [e.id, e]));
 
-  const stats = [
+  const commissionRate = await getCommissionRate();
+  const grossPaid = totalPayments._sum.amount?.toNumber() ?? 0;
+  const ourIncome = Math.round(grossPaid * (commissionRate / 100) * 100) / 100;
+  const teacherPayout = Math.round((grossPaid - ourIncome) * 100) / 100;
+
+  const operational = [
     { label: "Toplam Rezervasyon", value: totalBookings.toString(), sub: `${confirmedBookings} onaylı` },
-    { label: "Toplam Gelir", value: formatCurrency(totalPayments._sum.amount?.toNumber() ?? 0), sub: `${totalPayments._count} ödeme` },
-    { label: "Aktif Öğretmen", value: totalEducators.toString(), sub: "onaylı öğretmen" },
-    { label: "Toplam Öğrenci", value: totalStudents.toString(), sub: "kayıtlı öğrenci" },
+    { label: "Aktif Öğretmen", value: totalEducators.toString(), sub: "onaylı" },
+    { label: "Toplam Öğrenci", value: totalStudents.toString(), sub: "kayıtlı" },
+    { label: "Tamamlanan Ödeme", value: totalPayments._count.toString(), sub: "adet" },
   ];
 
   return (
     <div className="space-y-8">
-      <div className="mb-6">
+      <div className="mb-2">
         <h1 className="font-display text-headline-md text-on-background">Finansal Raporlar</h1>
-        <p className="text-label-md text-on-surface-variant mt-0.5">Platform geneli istatistikler ve performans verileri</p>
+        <p className="text-label-md text-on-surface-variant mt-0.5">Platform geneli gelir ve performans özeti</p>
       </div>
 
-      {/* KPI Cards */}
+      {/* Finansal özet — bizim gelirimiz vurgulu */}
+      <div>
+        <h2 className="text-label-md font-semibold text-on-surface-variant uppercase tracking-wide mb-3">Finansal Özet (ödenen dersler)</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-5 soft-card-static">
+            <p className="text-caption text-on-surface-variant mb-1">Toplam Tahsilat (brüt)</p>
+            <p className="font-display text-headline-lg font-bold text-on-background">{formatCurrency(grossPaid)}</p>
+            <p className="text-caption text-on-surface-variant mt-1">Velilerden tahsil edilen toplam</p>
+          </div>
+          <div className="bg-primary-fixed/50 rounded-2xl border border-primary/30 p-5 soft-card-static">
+            <p className="text-caption text-on-surface-variant mb-1">Bizim Gelirimiz (komisyon %{commissionRate})</p>
+            <p className="font-display text-headline-lg font-bold text-primary">{formatCurrency(ourIncome)}</p>
+            <p className="text-caption text-on-surface-variant mt-1">Platformun net kazancı</p>
+          </div>
+          <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-5 soft-card-static">
+            <p className="text-caption text-on-surface-variant mb-1">Öğretmene Ödenecek</p>
+            <p className="font-display text-headline-lg font-bold text-on-secondary-container">{formatCurrency(teacherPayout)}</p>
+            <p className="text-caption text-on-surface-variant mt-1">Öğretmen payoutları toplamı</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Operasyonel sayımlar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((s) => (
+        {operational.map((s) => (
           <div key={s.label} className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-5 soft-card-static">
             <p className="text-caption text-on-surface-variant font-medium uppercase tracking-wide mb-1">{s.label}</p>
             <p className="font-display text-headline-md text-on-background">{s.value}</p>
@@ -96,7 +126,7 @@ export default async function RaporlarPage() {
 
         {/* Bookings by Subject */}
         <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">
-          <h2 className="font-display text-headline-md text-on-background mb-4">Konulara Göre Rezervasyon</h2>
+          <h2 className="font-display text-headline-md text-on-background mb-4">Derslere Göre Rezervasyon</h2>
           {bookingsBySubject.length === 0 ? (
             <p className="text-label-md text-on-surface-variant">Henüz veri yok.</p>
           ) : (

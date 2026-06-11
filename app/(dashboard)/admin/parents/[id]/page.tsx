@@ -1,16 +1,11 @@
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { formatCurrency, formatDate, formatDateTime, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
+import { formatCurrency, formatDateTime, GRADE_LABELS } from "@/lib/utils";
+import AdminBookingsView, { type AdminBookingItem } from "@/components/dashboard/AdminBookingsView";
 
 export const dynamic = "force-dynamic";
 
-const bStatus: Record<string, { label: string; cls: string }> = {
-  PENDING: { label: "Onay Bekliyor", cls: "bg-tertiary-fixed text-on-tertiary-fixed" },
-  CONFIRMED: { label: "Onaylandı", cls: "bg-tertiary-fixed text-on-tertiary-fixed" },
-  COMPLETED: { label: "Kesinleşti", cls: "bg-secondary-container text-on-secondary-container" },
-  CANCELLED: { label: "İptal", cls: "bg-error-container text-on-error-container" },
-};
 const pStatus: Record<string, { label: string; cls: string }> = {
   PAID: { label: "Ödendi", cls: "bg-secondary-container text-on-secondary-container" },
   PENDING: { label: "Beklemede", cls: "bg-tertiary-fixed text-on-tertiary-fixed" },
@@ -39,6 +34,18 @@ export default async function AdminParentDetailPage({ params }: { params: Promis
   const allBookings = parent.students.flatMap((s) => s.bookings.map((b) => ({ ...b, studentName: s.name })));
   const payments = allBookings.filter((b) => b.payment).map((b) => ({ ...b.payment!, studentName: b.studentName, educatorName: b.educator.user.name }));
   const totalSpent = payments.filter((p) => p.status === "PAID").reduce((s, p) => s + p.amount.toNumber(), 0);
+
+  const bookingItems: AdminBookingItem[] = allBookings.map((b) => ({
+    id: b.id,
+    studentName: b.studentName,
+    educatorName: b.educator.user.name ?? "—",
+    subject: b.subject,
+    date: b.slot.date.toISOString(),
+    startTime: b.slot.startTime,
+    totalPrice: b.totalPrice.toNumber(),
+    paymentStatus: b.payment?.status ?? null,
+    status: b.status,
+  }));
 
   return (
     <div className="space-y-6 max-w-5xl">
@@ -91,45 +98,15 @@ export default async function AdminParentDetailPage({ params }: { params: Promis
         )}
       </div>
 
-      {/* Rezervasyonlar */}
-      <div className="bg-surface-container-lowest rounded-md soft-card-static overflow-hidden border border-outline-variant/20">
-        <div className="px-5 py-4 border-b border-outline-variant/20">
-          <h2 className="font-display text-headline-md text-on-background">Rezervasyonlar ({allBookings.length})</h2>
-        </div>
+      {/* Rezervasyonlar (filtreli) */}
+      <div>
+        <h2 className="font-display text-headline-md text-on-background mb-3">Rezervasyonlar ({allBookings.length})</h2>
         {allBookings.length === 0 ? (
-          <p className="p-8 text-center text-label-md text-on-surface-variant">Henüz rezervasyon yok.</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-body-md min-w-[680px]">
-              <thead className="bg-surface-container text-on-surface-variant">
-                <tr>
-                  <th className="text-left px-5 py-3 text-label-md font-semibold">Öğrenci</th>
-                  <th className="text-left px-5 py-3 text-label-md font-semibold">Öğretmen / Ders</th>
-                  <th className="text-left px-5 py-3 text-label-md font-semibold">Tarih</th>
-                  <th className="text-left px-5 py-3 text-label-md font-semibold">Tutar</th>
-                  <th className="text-left px-5 py-3 text-label-md font-semibold">Durum</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-outline-variant/20">
-                {allBookings.map((b) => (
-                  <tr key={b.id} className="hover:bg-surface-container-low transition">
-                    <td className="px-5 py-3 font-medium text-on-background">{b.studentName}</td>
-                    <td className="px-5 py-3">
-                      <p className="text-on-background">{b.educator.user.name}</p>
-                      <p className="text-caption text-on-surface-variant">{SUBJECT_LABELS[b.subject] ?? b.subject}</p>
-                    </td>
-                    <td className="px-5 py-3 text-on-surface-variant text-caption">{formatDate(b.slot.date)} {b.slot.startTime}</td>
-                    <td className="px-5 py-3 font-bold text-primary">{formatCurrency(b.totalPrice.toNumber())}</td>
-                    <td className="px-5 py-3">
-                      <span className={`text-caption px-3 py-1 rounded-full font-semibold ${bStatus[b.status]?.cls ?? "bg-surface-container text-on-surface-variant"}`}>
-                        {bStatus[b.status]?.label ?? b.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-8 text-center soft-card-static">
+            <p className="text-label-md text-on-surface-variant">Henüz rezervasyon yok.</p>
           </div>
+        ) : (
+          <AdminBookingsView bookings={bookingItems} />
         )}
       </div>
 
