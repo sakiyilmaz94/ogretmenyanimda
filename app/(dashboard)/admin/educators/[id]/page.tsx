@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import EducatorDetailActions from "@/components/dashboard/EducatorDetailActions";
+import AdminEducatorEditForm from "@/components/dashboard/AdminEducatorEditForm";
+
+export const dynamic = "force-dynamic";
 
 const statusLabel: Record<string, string> = {
   PENDING: "Beklemede", CONFIRMED: "Onaylandı", CANCELLED: "İptal", COMPLETED: "Tamamlandı",
@@ -107,6 +110,22 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
           ))}
         </div>
       </div>
+
+      {/* Admin düzenleme formu */}
+      <AdminEducatorEditForm
+        educatorId={educator.id}
+        initial={{
+          hourlyRate: educator.hourlyRate.toNumber(),
+          bio: educator.bio ?? "",
+          titleName: educator.titleName ?? "",
+          experience: educator.experience?.toString() ?? "",
+          phone: educator.phone ?? "",
+          subjects: educator.subjects,
+          gradeLevels: educator.gradeLevels,
+          status: educator.status,
+          isProfilePublic: educator.isProfilePublic,
+        }}
+      />
 
       {/* Documents */}
       <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">
