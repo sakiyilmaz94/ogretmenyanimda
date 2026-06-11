@@ -10,6 +10,7 @@ const adminNav = [
   { href: "/admin/bookings", label: "Rezervasyonlar", icon: "bookings" as const },
   { href: "/admin/payments", label: "Ödemeler", icon: "payments" as const },
   { href: "/admin/students", label: "Öğrenciler", icon: "students" as const },
+  { href: "/admin/parents", label: "Veliler", icon: "account" as const },
   { href: "/admin/raporlar", label: "Raporlar", icon: "reports" as const },
   { href: "/admin/fiyatlandirma", label: "Fiyatlandırma", icon: "pricing" as const },
   { href: "/admin/settings", label: "Ayarlar", icon: "settings" as const },
