@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import AdminStudentsView, { type AdminStudentItem } from "@/components/dashboard/AdminStudentsView";
+import PrintButton from "@/components/dashboard/PrintButton";
 
 export const dynamic = "force-dynamic";
 
@@ -24,9 +25,12 @@ export default async function AdminStudentsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-headline-md text-on-background">Öğrenci Yönetimi</h1>
-        <p className="text-label-md text-on-surface-variant mt-0.5">Öğrencileri sınıf, öğretmen, kayıt dönemi ve isme göre filtreleyin.</p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="font-display text-headline-md text-on-background">Öğrenci Yönetimi</h1>
+          <p className="text-label-md text-on-surface-variant mt-0.5">Öğrencileri sınıf, öğretmen, kayıt dönemi ve isme göre filtreleyin.</p>
+        </div>
+        <PrintButton type="ogrenciler" label="Öğrenci Listesi PDF" />
       </div>
       <AdminStudentsView students={items} />
     </div>

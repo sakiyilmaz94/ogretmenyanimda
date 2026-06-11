@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import AdminParentsList, { type AdminParentRow } from "@/components/dashboard/AdminParentsList";
+import PrintButton from "@/components/dashboard/PrintButton";
 
 export const dynamic = "force-dynamic";
 
@@ -30,11 +31,14 @@ export default async function AdminParentsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-headline-md text-on-background">Veli Yönetimi</h1>
-        <p className="text-label-md text-on-surface-variant mt-0.5">
-          Tüm velileri arayın, filtreleyin; detayında çocuklarını, rezervasyonlarını ve ödemelerini görün.
-        </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="font-display text-headline-md text-on-background">Veli Yönetimi</h1>
+          <p className="text-label-md text-on-surface-variant mt-0.5">
+            Tüm velileri arayın, filtreleyin; detayında çocuklarını, rezervasyonlarını ve ödemelerini görün.
+          </p>
+        </div>
+        <PrintButton type="veliler" label="Veli Listesi PDF" />
       </div>
       <AdminParentsList parents={rows} />
     </div>

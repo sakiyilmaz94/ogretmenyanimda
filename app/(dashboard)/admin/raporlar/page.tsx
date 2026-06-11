@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { formatCurrency, SUBJECT_LABELS } from "@/lib/utils";
 import { getCommissionRate } from "@/lib/finance";
+import PrintButton from "@/components/dashboard/PrintButton";
 
 export const dynamic = "force-dynamic";
 
@@ -57,9 +58,12 @@ export default async function RaporlarPage() {
 
   return (
     <div className="space-y-8">
-      <div className="mb-2">
-        <h1 className="font-display text-headline-md text-on-background">Finansal Raporlar</h1>
-        <p className="text-label-md text-on-surface-variant mt-0.5">Platform geneli gelir ve performans özeti</p>
+      <div className="mb-2 flex items-start justify-between gap-3">
+        <div>
+          <h1 className="font-display text-headline-md text-on-background">Finansal Raporlar</h1>
+          <p className="text-label-md text-on-surface-variant mt-0.5">Platform geneli gelir ve performans özeti</p>
+        </div>
+        <PrintButton type="finans" label="Finans Raporu PDF" />
       </div>
 
       {/* Finansal özet — bizim gelirimiz vurgulu */}

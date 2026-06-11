@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
 import AdminToolbar, { AdminSelect, rangeCutoff, type DateRange } from "@/components/dashboard/AdminToolbar";
+import PrintButton from "@/components/dashboard/PrintButton";
 
 export interface AdminPaymentItem {
   id: string;
@@ -60,11 +61,17 @@ export default function AdminPaymentsView({ payments, commissionRate }: { paymen
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-headline-md text-on-background">Ödeme & Gelir Yönetimi</h1>
-        <p className="text-label-md text-on-surface-variant mt-0.5">
-          Filtreleyin; her dersten bize kalan komisyon (%{commissionRate}) ve öğretmene ödenecek tutar aşağıda.
-        </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="font-display text-headline-md text-on-background">Ödeme & Gelir Yönetimi</h1>
+          <p className="text-label-md text-on-surface-variant mt-0.5">
+            Filtreleyin; her dersten bize kalan komisyon (%{commissionRate}) ve öğretmene ödenecek tutar aşağıda.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2 shrink-0">
+          <PrintButton type="odemeler" range={range} label="Ödeme Dökümü PDF" />
+          <PrintButton type="finans" range={range} label="Finans Raporu PDF" />
+        </div>
       </div>
 
       {/* Özet kartlar */}
