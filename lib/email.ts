@@ -29,28 +29,57 @@ export async function sendEmail({ to, subject, html }: EmailPayload) {
 
 export function emailWelcome({ name, role }: { name: string; role: "EDUCATOR" | "PARENT" }) {
   const isEducator = role === "EDUCATOR";
+  const firstName = (name ?? "").trim().split(" ")[0] || name;
+
+  // Role göre içerik bloğu
+  const body = isEducator
+    ? `
+      <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
+        Ailemize katıldığınız için çok mutluyuz! 🌟 Bilginizi paylaşarak birçok öğrencinin
+        hayatına dokunacaksınız. Öğretmen başvurunuz bize <strong>başarıyla ulaştı</strong>.
+      </p>
+      <div style="background:#f4f5ff;border:1px solid #e0e2ff;border-radius:12px;padding:18px 20px;margin:0 0 20px">
+        <p style="color:#0b1c30;font-weight:700;margin:0 0 10px;font-size:15px">Sırada ne var?</p>
+        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">✅ Ekibimiz diploma ve kimlik bilgilerinizi inceleyecek</p>
+        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">📩 <strong>1–3 iş günü</strong> içinde sonuç e-posta ile bildirilecek</p>
+        <p style="color:#475569;line-height:1.7;margin:0;font-size:14px">🚀 Onaylanınca profilinizi ve uygunluk saatlerinizi oluşturup ders vermeye başlayacaksınız</p>
+      </div>
+      <p style="color:#334155;line-height:1.7;margin:0;font-size:15px">
+        Süreç boyunca yanınızdayız. Aramıza hoş geldiniz! 💙
+      </p>`
+    : `
+      <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
+        Çocuğunuzun eğitim yolculuğunda yanınızda olmaktan büyük mutluluk duyuyoruz! 🎈
+        Hesabınız <strong>başarıyla oluşturuldu</strong> ve her şey hazır.
+      </p>
+      <div style="background:#f4f5ff;border:1px solid #e0e2ff;border-radius:12px;padding:18px 20px;margin:0 0 22px">
+        <p style="color:#0b1c30;font-weight:700;margin:0 0 10px;font-size:15px">Şimdi neler yapabilirsiniz?</p>
+        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">👩‍🏫 Onaylı öğretmenler arasından çocuğunuza en uygun olanı seçin</p>
+        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">📅 Uygun gün ve saate kolayca randevu alın</p>
+        <p style="color:#475569;line-height:1.7;margin:0;font-size:14px">📈 Seviye testi ve ders raporlarıyla gelişimi takip edin</p>
+      </div>
+      <div style="text-align:center;margin:0 0 4px">
+        <a href="https://ogretmenyanimda.com.tr/egitmenlerimiz" style="display:inline-block;background:#4648D4;color:#ffffff;padding:14px 32px;border-radius:50px;text-decoration:none;font-weight:700;font-size:15px">Öğretmenleri Keşfet →</a>
+      </div>`;
+
   return `
-    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:16px">
-      <div style="text-align:center;margin-bottom:24px">
-        <div style="display:inline-block;background:#0f172a;border-radius:12px;padding:12px 20px">
-          <span style="color:white;font-weight:700;font-size:18px">Öğretmen Yanımda</span>
-        </div>
+    <div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:580px;margin:0 auto;padding:24px;background:#eef0ff">
+      <!-- Marka başlığı -->
+      <div style="background:linear-gradient(135deg,#4648D4,#5a5cf0);border-radius:18px 18px 0 0;padding:28px 32px;text-align:center">
+        <span style="color:#ffffff;font-weight:800;font-size:20px;letter-spacing:-0.3px">Öğretmen Yanımda</span>
+        <span style="display:inline-block;margin-left:6px;color:#6CF8BB;font-size:18px">✦</span>
       </div>
-      <div style="background:white;border-radius:12px;padding:32px;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
-        <h2 style="color:#0f172a;margin:0 0 8px">Aramıza Hoş Geldiniz! 🎉</h2>
-        <p style="color:#475569;margin:0 0 20px">Merhaba <strong>${name}</strong>,</p>
-        ${isEducator ? `
-          <p style="color:#475569;line-height:1.6">Öğretmen başvurunuz başarıyla alındı. Yöneticilerimiz diplomanızı ve kimlik bilgilerinizi inceleyecek; <strong>1–3 iş günü</strong> içinde onay/red durumunuz e-posta ile bildirilecektir.</p>
-          <p style="color:#475569;line-height:1.6">Onaylandıktan sonra profilinizi oluşturabilir, uygunluk saatlerinizi belirleyebilir ve ders vermeye başlayabilirsiniz.</p>
-        ` : `
-          <p style="color:#475569;line-height:1.6">Hesabınız başarıyla oluşturuldu. Artık onaylı öğretmenlerimiz arasından çocuğunuza en uygun olanı seçebilir, randevu alabilir ve ders ilerlemesini takip edebilirsiniz.</p>
-          <div style="margin:24px 0;text-align:center">
-            <a href="https://ogretmenyanimda.com.tr/egitmenlerimiz" style="display:inline-block;background:#0f172a;color:white;padding:12px 28px;border-radius:50px;text-decoration:none;font-weight:600">Öğretmenleri Keşfet →</a>
-          </div>
-        `}
-        <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0"/>
-        <p style="color:#94a3b8;font-size:13px;margin:0">Sorularınız için <a href="mailto:destek@ogretmenyanimda.com.tr" style="color:#0f172a">destek@ogretmenyanimda.com.tr</a> adresine yazabilirsiniz.</p>
+      <!-- İçerik -->
+      <div style="background:#ffffff;border-radius:0 0 18px 18px;padding:34px 32px;box-shadow:0 4px 24px rgba(70,72,212,0.08)">
+        <h1 style="color:#0b1c30;margin:0 0 6px;font-size:24px;font-weight:800">Aramıza hoş geldin, ${firstName}! 🎉</h1>
+        <p style="color:#94a3b8;margin:0 0 22px;font-size:14px">${isEducator ? "Öğretmen başvurun alındı" : "Hesabın hazır"}</p>
+        ${body}
+        <hr style="border:none;border-top:1px solid #eef2f7;margin:26px 0 18px"/>
+        <p style="color:#94a3b8;font-size:13px;line-height:1.6;margin:0">
+          Her türlü soru için bize <a href="mailto:destek@ogretmenyanimda.com.tr" style="color:#4648D4;font-weight:600">destek@ogretmenyanimda.com.tr</a> adresinden ulaşabilirsin.
+        </p>
       </div>
+      <p style="color:#9aa3c0;font-size:12px;text-align:center;margin:16px 0 0">© ${new Date().getFullYear()} Öğretmen Yanımda · Türkiye'nin güvenilir özel ders platformu</p>
     </div>`;
 }
 
