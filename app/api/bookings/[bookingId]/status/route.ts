@@ -42,9 +42,15 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
       // Google Meet linki oluştur
       const meetingUrl = await createMeetingSpace();
 
+      // Onay anı + 24 saatlik ödeme penceresi (son ödeme tarihi)
+      const confirmedAt = new Date();
+      const deadlineStr = new Date(confirmedAt.getTime() + 24 * 3600 * 1000).toLocaleString("tr-TR", {
+        day: "numeric", month: "long", hour: "2-digit", minute: "2-digit",
+      });
+
       await db.booking.update({
         where: { id: bookingId },
-        data: { status: "CONFIRMED", ...(meetingUrl ? { meetingUrl } : {}) },
+        data: { status: "CONFIRMED", confirmedAt, paymentReminderSentAt: null, ...(meetingUrl ? { meetingUrl } : {}) },
       });
       // Ödeme kaydını şimdi oluştur
       await db.payment.upsert({
@@ -74,6 +80,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
           time: timeStr,
           amount,
           meetingUrl: meetingUrl ?? undefined,
+          deadline: deadlineStr,
         }),
       });
 
