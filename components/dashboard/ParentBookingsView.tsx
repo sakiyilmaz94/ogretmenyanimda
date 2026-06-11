@@ -53,8 +53,10 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
     let list = bookings.filter((b) => {
       if (cutoff !== null && +new Date(b.date) < cutoff) return false;
       if (student !== "all" && b.studentName !== student) return false;
-      if (pay === "paid" && b.paymentStatus !== "PAID") return false;
-      if (pay === "unpaid" && b.paymentStatus === "PAID") return false;
+      // "Ödendi" = ekranda görünen durum kesinleşmiş (COMPLETED). Ödeme kaydı PAID
+      // olsa bile booking hâlâ "Ödeme Bekleniyor" (CONFIRMED) ise ödenmiş sayılmaz.
+      if (pay === "paid" && b.status !== "COMPLETED") return false;
+      if (pay === "unpaid" && b.status === "COMPLETED") return false;
       return true;
     });
     list = [...list].sort((a, b) => {
