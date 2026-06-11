@@ -27,52 +27,17 @@ export async function sendEmail({ to, subject, html }: EmailPayload) {
 
 // --- Şablonlar ---
 
-export function emailWelcome({ name, role }: { name: string; role: "EDUCATOR" | "PARENT" }) {
-  const isEducator = role === "EDUCATOR";
-  const firstName = (name ?? "").trim().split(" ")[0] || name;
-
-  // Role göre içerik bloğu
-  const body = isEducator
-    ? `
-      <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
-        Ailemize katıldığınız için çok mutluyuz! 🌟 Bilginizi paylaşarak birçok öğrencinin
-        hayatına dokunacaksınız. Öğretmen başvurunuz bize <strong>başarıyla ulaştı</strong>.
-      </p>
-      <div style="background:#f4f5ff;border:1px solid #e0e2ff;border-radius:12px;padding:18px 20px;margin:0 0 20px">
-        <p style="color:#0b1c30;font-weight:700;margin:0 0 10px;font-size:15px">Sırada ne var?</p>
-        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">✅ Ekibimiz diploma ve kimlik bilgilerinizi inceleyecek</p>
-        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">📩 <strong>1–3 iş günü</strong> içinde sonuç e-posta ile bildirilecek</p>
-        <p style="color:#475569;line-height:1.7;margin:0;font-size:14px">🚀 Onaylanınca profilinizi ve uygunluk saatlerinizi oluşturup ders vermeye başlayacaksınız</p>
-      </div>
-      <p style="color:#334155;line-height:1.7;margin:0;font-size:15px">
-        Süreç boyunca yanınızdayız. Aramıza hoş geldiniz! 💙
-      </p>`
-    : `
-      <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
-        Çocuğunuzun eğitim yolculuğunda yanınızda olmaktan büyük mutluluk duyuyoruz! 🎈
-        Hesabınız <strong>başarıyla oluşturuldu</strong> ve her şey hazır.
-      </p>
-      <div style="background:#f4f5ff;border:1px solid #e0e2ff;border-radius:12px;padding:18px 20px;margin:0 0 22px">
-        <p style="color:#0b1c30;font-weight:700;margin:0 0 10px;font-size:15px">Şimdi neler yapabilirsiniz?</p>
-        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">👩‍🏫 Onaylı öğretmenler arasından çocuğunuza en uygun olanı seçin</p>
-        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">📅 Uygun gün ve saate kolayca randevu alın</p>
-        <p style="color:#475569;line-height:1.7;margin:0;font-size:14px">📈 Seviye testi ve ders raporlarıyla gelişimi takip edin</p>
-      </div>
-      <div style="text-align:center;margin:0 0 4px">
-        <a href="https://ogretmenyanimda.com.tr/egitmenlerimiz" style="display:inline-block;background:#4648D4;color:#ffffff;padding:14px 32px;border-radius:50px;text-decoration:none;font-weight:700;font-size:15px">Öğretmenleri Keşfet →</a>
-      </div>`;
-
+// Ortak marka kabuğu — tüm karşılama/bilgilendirme e-postaları bunu kullanır.
+function welcomeShell({ heading, subtitle, body }: { heading: string; subtitle: string; body: string }) {
   return `
     <div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:580px;margin:0 auto;padding:24px;background:#eef0ff">
-      <!-- Marka başlığı -->
       <div style="background:linear-gradient(135deg,#4648D4,#5a5cf0);border-radius:18px 18px 0 0;padding:28px 32px;text-align:center">
         <span style="color:#ffffff;font-weight:800;font-size:20px;letter-spacing:-0.3px">Öğretmen Yanımda</span>
         <span style="display:inline-block;margin-left:6px;color:#6CF8BB;font-size:18px">✦</span>
       </div>
-      <!-- İçerik -->
       <div style="background:#ffffff;border-radius:0 0 18px 18px;padding:34px 32px;box-shadow:0 4px 24px rgba(70,72,212,0.08)">
-        <h1 style="color:#0b1c30;margin:0 0 6px;font-size:24px;font-weight:800">Aramıza hoş geldin, ${firstName}! 🎉</h1>
-        <p style="color:#94a3b8;margin:0 0 22px;font-size:14px">${isEducator ? "Öğretmen başvurun alındı" : "Hesabın hazır"}</p>
+        <h1 style="color:#0b1c30;margin:0 0 6px;font-size:24px;font-weight:800">${heading}</h1>
+        <p style="color:#94a3b8;margin:0 0 22px;font-size:14px">${subtitle}</p>
         ${body}
         <hr style="border:none;border-top:1px solid #eef2f7;margin:26px 0 18px"/>
         <p style="color:#94a3b8;font-size:13px;line-height:1.6;margin:0">
@@ -81,6 +46,76 @@ export function emailWelcome({ name, role }: { name: string; role: "EDUCATOR" | 
       </div>
       <p style="color:#9aa3c0;font-size:12px;text-align:center;margin:16px 0 0">© ${new Date().getFullYear()} Öğretmen Yanımda · Türkiye'nin güvenilir özel ders platformu</p>
     </div>`;
+}
+
+// Kayıt sonrası: VELİ → hoş geldin, ÖĞRETMEN → başvuru alındı (teşekkür)
+export function emailWelcome({ name, role }: { name: string; role: "EDUCATOR" | "PARENT" }) {
+  const firstName = (name ?? "").trim().split(" ")[0] || name;
+
+  if (role === "EDUCATOR") {
+    return welcomeShell({
+      heading: `Başvurun bize ulaştı, ${firstName}! 🙌`,
+      subtitle: "Öğretmen başvurun alındı",
+      body: `
+        <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
+          Öğretmen başvurun bize <strong>başarıyla ulaştı</strong> — bize zaman ayırıp aramıza
+          katılmak istediğin için teşekkür ederiz. 🙏 Bilgini paylaşarak birçok öğrencinin
+          gelişimine katkı sağlayacağına yürekten inanıyoruz.
+        </p>
+        <div style="background:#f4f5ff;border:1px solid #e0e2ff;border-radius:12px;padding:18px 20px;margin:0 0 20px">
+          <p style="color:#0b1c30;font-weight:700;margin:0 0 10px;font-size:15px">Sırada ne var?</p>
+          <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">✅ Ekibimiz diploma ve kimlik bilgilerini titizlikle inceleyecek</p>
+          <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">📩 <strong>1–3 iş günü</strong> içinde sonucu e-posta ile bildireceğiz</p>
+          <p style="color:#475569;line-height:1.7;margin:0;font-size:14px">🎉 Onaylandığında seni "aramıza hoş geldin" mailiyle karşılayacağız — ardından hemen başlayabilirsin</p>
+        </div>
+        <p style="color:#334155;line-height:1.7;margin:0;font-size:15px">
+          Sürecin her adımında yanındayız. Çok yakında görüşmek dileğiyle! 💙
+        </p>`,
+    });
+  }
+
+  // PARENT
+  return welcomeShell({
+    heading: `Aramıza hoş geldin, ${firstName}! 🎉`,
+    subtitle: "Hesabın hazır",
+    body: `
+      <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
+        Çocuğunun eğitim yolculuğunda yanında olmaktan büyük mutluluk duyuyoruz! 🎈
+        Hesabın <strong>başarıyla oluşturuldu</strong> ve her şey hazır.
+      </p>
+      <div style="background:#f4f5ff;border:1px solid #e0e2ff;border-radius:12px;padding:18px 20px;margin:0 0 22px">
+        <p style="color:#0b1c30;font-weight:700;margin:0 0 10px;font-size:15px">Şimdi neler yapabilirsin?</p>
+        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">👩‍🏫 Onaylı öğretmenler arasından çocuğuna en uygun olanı seç</p>
+        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">📅 Uygun gün ve saate kolayca randevu al</p>
+        <p style="color:#475569;line-height:1.7;margin:0;font-size:14px">📈 Seviye testi ve ders raporlarıyla gelişimi takip et</p>
+      </div>
+      <div style="text-align:center;margin:0 0 4px">
+        <a href="https://ogretmenyanimda.com.tr/egitmenlerimiz" style="display:inline-block;background:#4648D4;color:#ffffff;padding:14px 32px;border-radius:50px;text-decoration:none;font-weight:700;font-size:15px">Öğretmenleri Keşfet →</a>
+      </div>`,
+  });
+}
+
+// Öğretmen başvurusu ONAYLANDIĞINDA gönderilen asıl "aramıza hoş geldin" maili
+export function emailEducatorApproved({ name }: { name: string }) {
+  const firstName = (name ?? "").trim().split(" ")[0] || name;
+  return welcomeShell({
+    heading: `Aramıza hoş geldin, ${firstName}! 🎉`,
+    subtitle: "Başvurun onaylandı",
+    body: `
+      <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
+        Harika haber! Başvurun incelendi ve <strong>onaylandı</strong>. Ailemize katıldığın için
+        çok mutluyuz 💙 — artık Öğretmen Yanımda topluluğunun bir parçasısın.
+      </p>
+      <div style="background:#f4f5ff;border:1px solid #e0e2ff;border-radius:12px;padding:18px 20px;margin:0 0 22px">
+        <p style="color:#0b1c30;font-weight:700;margin:0 0 10px;font-size:15px">Hemen başlamak için</p>
+        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">📝 Profilini oluştur — branşların, sınıf seviyelerin ve ders ücretin</p>
+        <p style="color:#475569;line-height:1.7;margin:0 0 6px;font-size:14px">🗓️ Uygunluk takvimini doldur ki veliler seni seçebilsin</p>
+        <p style="color:#475569;line-height:1.7;margin:0;font-size:14px">🎓 İlk randevularını al ve ders vermeye başla</p>
+      </div>
+      <div style="text-align:center;margin:0 0 4px">
+        <a href="https://ogretmenyanimda.com.tr/educator/profile" style="display:inline-block;background:#4648D4;color:#ffffff;padding:14px 32px;border-radius:50px;text-decoration:none;font-weight:700;font-size:15px">Profilimi Oluştur →</a>
+      </div>`,
+  });
 }
 
 export function emailLessonReportRequest({

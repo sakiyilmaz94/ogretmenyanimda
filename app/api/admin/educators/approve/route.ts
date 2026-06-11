@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
+import { sendEmail, emailEducatorApproved } from "@/lib/email";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
 
   const { educatorId, action, rejectionNote } = await req.json();
 
-  const educator = await db.educator.findUnique({ where: { id: educatorId } });
+  const educator = await db.educator.findUnique({ where: { id: educatorId }, include: { user: true } });
   if (!educator) return NextResponse.json({ error: "Öğretmen bulunamadı" }, { status: 404 });
 
   if (action === "approve") {
@@ -32,6 +33,12 @@ export async function POST(req: Request) {
       message: "Tebrikler! Öğretmen başvurunuz onaylandı. Artık profilinizi oluşturabilir ve ders verebilirsiniz.",
       link: "/educator/profile",
     });
+    // Onay sonrası "aramıza hoş geldin" maili
+    sendEmail({
+      to: educator.user.email,
+      subject: "Aramıza Hoş Geldiniz! Başvurunuz Onaylandı 🎉",
+      html: emailEducatorApproved({ name: educator.user.name ?? "Öğretmenim" }),
+    }).catch(console.error);
   } else if (action === "reject") {
     await db.educator.update({
       where: { id: educatorId },
