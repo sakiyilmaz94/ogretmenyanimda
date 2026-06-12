@@ -77,21 +77,23 @@ export default function BookingWizard({
       setSelectedGrade(preselectedStudent.gradeLevel);
       setStep(3);
     } else if (preselectedStudent) {
+      setSelectedGrade(preselectedStudent.gradeLevel);
       setStep(2);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Seçilen sınıfa göre, müfredatı olan dersleri çek
+  // Öğrencinin (sabit) sınıfına göre, müfredatı olan dersleri çek
   useEffect(() => {
-    if (!selectedGrade) { setAvailableSubjects(null); return; }
-    const g = parseInt(selectedGrade.match(/\d+$/)?.[0] || "1", 10);
+    const grade = selectedStudent?.gradeLevel ?? selectedGrade;
+    if (!grade) { setAvailableSubjects(null); return; }
+    const g = parseInt(grade.match(/\d+$/)?.[0] || "1", 10);
     setAvailableSubjects(null);
     fetch(`/api/curriculum/subjects?gradeLevel=${g}`)
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => setAvailableSubjects(Array.isArray(data) ? data : []))
       .catch(() => setAvailableSubjects([]));
-  }, [selectedGrade]);
+  }, [selectedStudent, selectedGrade]);
 
   // Öğrencinin sınıfına ders veren öğretmenler
   const visibleEducators = selectedStudent
