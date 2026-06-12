@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
-import { sendEmail, emailPaymentReminder, emailBookingAutoCancelled, emailMeetingLink } from "@/lib/email";
+import { sendEmail, emailPaymentReminder, emailBookingAutoCancelled, emailMeetingLink, emailLessonReportRequest } from "@/lib/email";
 import { formatCurrency, SUBJECT_LABELS } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -184,5 +184,36 @@ export async function GET(req: Request) {
     meetLinksSent++;
   }
 
-  return NextResponse.json({ ok: true, remindersSent, cancelled, meetLinksSent, checkedAt: new Date().toISOString() });
+  // 4) Ders bitti, rapor yok → öğretmene "rapor bekliyor" hatırlatması (bir kez)
+  let reportReminders = 0;
+  const reportPending = await db.booking.findMany({
+    where: {
+      status: "COMPLETED",
+      lessonReport: { is: null },
+      reportReminderSentAt: null,
+      slot: { date: { gte: new Date(nowMs - 7 * 864e5), lte: new Date(nowMs + 864e5) } },
+    },
+    include: { student: true, educator: { include: { user: true } }, slot: true },
+  });
+  for (const b of reportPending) {
+    const ymd = new Date(b.slot.date).toISOString().slice(0, 10);
+    const lessonEnd = new Date(`${ymd}T${b.slot.endTime}:00+03:00`).getTime();
+    if (Number.isNaN(lessonEnd) || nowMs < lessonEnd + 2 * 3600 * 1000) continue; // ders bitiminden ~2s sonra
+    const { date } = fmt(b.slot.date, b.slot.startTime, b.slot.endTime);
+    await notify({
+      userId: b.educator.userId,
+      title: "Ders Raporu Bekliyor 📝",
+      message: `${b.student.name} dersi tamamlandı. Veliye ders dönüt raporunu göndermeyi unutmayın.`,
+      link: "/educator/bookings",
+    });
+    await sendEmail({
+      to: b.educator.user.email,
+      subject: `Ders raporu bekliyor — ${b.student.name}`,
+      html: emailLessonReportRequest({ educatorName: b.educator.user.name ?? "Öğretmen", studentName: b.student.name, date }),
+    }).catch((e) => console.error("Rapor hatırlatma e-postası gönderilemedi:", e));
+    await db.booking.update({ where: { id: b.id }, data: { reportReminderSentAt: new Date() } });
+    reportReminders++;
+  }
+
+  return NextResponse.json({ ok: true, remindersSent, cancelled, meetLinksSent, reportReminders, checkedAt: new Date().toISOString() });
 }

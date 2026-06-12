@@ -159,6 +159,114 @@ export function emailLessonReportReady({
     </div>`;
 }
 
+// Zengin "Ders Dönüt Raporu" — veliye gönderilen (tablo tabanlı, inline CSS)
+const MASTERY_LABELS = ["", "Henüz başlıyor", "Gelişiyor", "İyi düzeyde", "Tam hakim"];
+export function emailLessonReport({
+  studentName, educatorName, educatorBranch, subjectLabel, date, time,
+  topics, participation, comprehension, confidence, mastery, highlight, homework, parentTip,
+}: {
+  studentName: string; educatorName: string; educatorBranch: string; subjectLabel: string;
+  date: string; time: string;
+  topics: string[]; participation: number; comprehension: number; confidence: number; mastery: number;
+  highlight?: string | null; homework?: { title: string; source?: string }[] | null; parentTip?: string | null;
+}) {
+  const stars = (n: number) => {
+    let s = "";
+    for (let i = 1; i <= 5; i++) s += `<span style="color:${i <= n ? "#EF9F27" : "#cbd5e1"};font-size:17px">${i <= n ? "★" : "☆"}</span>`;
+    return s;
+  };
+  const criterion = (label: string, n: number) =>
+    `<tr><td style="padding:7px 0;color:#334155;font-size:14px">${label}</td><td style="padding:7px 0;text-align:right;white-space:nowrap">${stars(n)}</td></tr>`;
+  const masteryBar = () => {
+    let cells = "";
+    for (let i = 1; i <= 4; i++) cells += `<td style="height:8px;background:${i <= mastery ? "#534AB7" : "#e2e1f5"};border-radius:4px"></td>${i < 4 ? '<td style="width:4px"></td>' : ""}`;
+    return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:6px"><tr>${cells}</tr></table>`;
+  };
+  const initials = (educatorName || "Ö").trim().split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toLocaleUpperCase("tr");
+
+  const topicsHtml = topics.length
+    ? topics.map((t) => `<span style="display:inline-block;background:#EEEDFE;color:#26215C;font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px;margin:0 6px 6px 0">${t}</span>`).join("")
+    : `<span style="color:#94a3b8;font-size:13px">—</span>`;
+
+  const homeworkHtml = homework && homework.length
+    ? `<div style="background:#f1f5f9;border-radius:8px;padding:16px 20px;margin:0">
+        <p style="margin:0 0 8px;font-weight:700;color:#0f172a;font-size:14px">📚 Eve Ödev</p>
+        <ul style="margin:0;padding-left:18px;color:#334155;font-size:14px;line-height:1.7">
+          ${homework.map((h) => `<li>${h.title}${h.source ? ` <span style="color:#64748b">(${h.source})</span>` : ""}</li>`).join("")}
+        </ul>
+      </div>`
+    : "";
+
+  const highlightHtml = highlight
+    ? `<div style="background:#EEEDFE;border-left:3px solid #534AB7;border-radius:6px;padding:14px 18px;margin:0">
+        <p style="margin:0 0 4px;font-weight:700;color:#26215C;font-size:13px">✨ Bugünün en güzel anı</p>
+        <p style="margin:0;color:#3a3560;font-size:14px;font-style:italic;line-height:1.6">${highlight}</p>
+      </div>`
+    : "";
+
+  const tipHtml = parentTip
+    ? `<div style="background:#FAEEDA;border-radius:8px;padding:14px 18px;margin:0">
+        <p style="margin:0 0 4px;font-weight:700;color:#92651b;font-size:13px">💡 Veliye tavsiye</p>
+        <p style="margin:0;color:#6b4e16;font-size:14px;font-style:italic;line-height:1.6">${parentTip}</p>
+      </div>`
+    : "";
+
+  return `
+  <div style="background:#f1f5f9;padding:24px 12px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:8px;overflow:hidden">
+    <!-- HEADER -->
+    <tr><td style="background:#4F46E5;padding:20px 24px">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td style="color:#ffffff;font-size:14px;font-weight:700">ÖğretmenYanımda</td>
+        <td style="text-align:right"><span style="background:rgba(255,255,255,0.18);color:#fff;font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px">Ders Dönüt Raporu</span></td>
+      </tr></table>
+      <p style="margin:14px 0 2px;color:#ffffff;font-size:19px;font-weight:800">${studentName}'nın bugünkü dersi tamamlandı</p>
+      <p style="margin:0 0 8px;color:#dcdafc;font-size:14px">${educatorName}'dan derse ait notlar aşağıda</p>
+      <p style="margin:0;color:#c3c0fb;font-size:12px">${subjectLabel} · ${time} · ${date}</p>
+    </td></tr>
+
+    <!-- BÖLÜM 1: Konular -->
+    <tr><td style="padding:20px 24px">
+      <p style="margin:0 0 10px;font-weight:700;color:#0f172a;font-size:14px">Bu ders ne işledik?</p>
+      <div>${topicsHtml}</div>
+    </td></tr>
+
+    <!-- BÖLÜM 2: Bugün nasıldı -->
+    <tr><td style="padding:4px 24px 16px">
+      <p style="margin:0 0 6px;font-weight:700;color:#0f172a;font-size:14px">${studentName} bugün nasıldı?</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        ${criterion("Derse katılım", participation)}
+        ${criterion("Konuyu anlama hızı", comprehension)}
+        ${criterion("Özgüven & isteklilik", confidence)}
+      </table>
+      <div style="margin-top:10px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td style="color:#334155;font-size:14px">Konu hakimiyeti</td>
+          <td style="text-align:right;color:#534AB7;font-weight:700;font-size:13px">${MASTERY_LABELS[mastery] ?? ""}</td>
+        </tr></table>
+        ${masteryBar()}
+      </div>
+    </td></tr>
+
+    ${highlightHtml ? `<tr><td style="padding:4px 24px 16px">${highlightHtml}</td></tr>` : ""}
+    ${homeworkHtml ? `<tr><td style="padding:4px 24px 16px">${homeworkHtml}</td></tr>` : ""}
+    ${tipHtml ? `<tr><td style="padding:4px 24px 16px">${tipHtml}</td></tr>` : ""}
+
+    <!-- FOOTER -->
+    <tr><td style="padding:18px 24px;border-top:1px solid #eef2f7">
+      <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+        <td style="width:40px"><div style="width:40px;height:40px;border-radius:50%;background:#4F46E5;color:#fff;text-align:center;line-height:40px;font-weight:700;font-size:15px">${initials}</div></td>
+        <td style="padding-left:12px"><p style="margin:0;font-weight:700;color:#0f172a;font-size:14px">${educatorName}</p><p style="margin:0;color:#64748b;font-size:12px">${educatorBranch}</p></td>
+      </tr></table>
+      <div style="text-align:center;margin-top:16px">
+        <a href="https://ogretmenyanimda.com.tr/parent/book" style="display:inline-block;background:#4F46E5;color:#fff;padding:11px 26px;border-radius:999px;text-decoration:none;font-weight:700;font-size:14px">Yeni Ders Rezervasyonu →</a>
+      </div>
+      <p style="margin:14px 0 0;text-align:center;color:#94a3b8;font-size:11px">ogretmenyanimda.com.tr · Türkiye'nin güvenilir özel ders platformu</p>
+    </td></tr>
+  </table>
+  </div>`;
+}
+
 export function emailBookingRequest({
   educatorName,
   studentName,

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import BookingStatusActions from "@/components/dashboard/BookingStatusActions";
 import LessonReportButton from "@/components/dashboard/LessonReportButton";
+import { type LessonReportData } from "@/components/dashboard/LessonReportViewer";
 import AssessmentResultViewer from "@/components/dashboard/AssessmentResultViewer";
 
 export interface BookingItem {
@@ -20,7 +21,7 @@ export interface BookingItem {
   notes: string | null;
   totalPrice: number;
   meetingUrl: string | null;
-  hasReport: boolean;
+  report: LessonReportData | null;
   assessment: { id: string; status: string; responseCount: number } | null;
   createdAt: string;
 }
@@ -226,7 +227,7 @@ function BookingCard({ b }: { b: BookingItem }) {
                   </svg>
                 </Link>
               )}
-              {b.status === "COMPLETED" && <LessonReportButton bookingId={b.id} hasReport={b.hasReport} />}
+              {b.status === "COMPLETED" && <LessonReportButton bookingId={b.id} studentName={b.studentName} report={b.report} />}
             </div>
           )}
 

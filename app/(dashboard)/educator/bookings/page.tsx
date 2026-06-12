@@ -35,7 +35,20 @@ export default async function EducatorBookingsPage() {
     notes: b.notes,
     totalPrice: b.totalPrice.toNumber(),
     meetingUrl: b.meetingUrl,
-    hasReport: !!b.lessonReport,
+    report: b.lessonReport
+      ? {
+          topics: b.lessonReport.topics,
+          participation: b.lessonReport.participation,
+          comprehension: b.lessonReport.comprehension,
+          confidence: b.lessonReport.confidence,
+          mastery: b.lessonReport.mastery,
+          highlight: b.lessonReport.highlight,
+          homework: (b.lessonReport.homework as { title: string; source?: string }[] | null) ?? null,
+          parentTip: b.lessonReport.parentTip,
+          createdAt: b.lessonReport.createdAt.toISOString(),
+          studentName: b.student.name,
+        }
+      : null,
     assessment: b.assessment
       ? { id: b.assessment.id, status: b.assessment.status, responseCount: b.assessment.responses.length }
       : null,

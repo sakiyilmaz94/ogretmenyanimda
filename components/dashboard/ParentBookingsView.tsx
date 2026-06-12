@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { formatCurrency, formatDate, SUBJECT_LABELS } from "@/lib/utils";
-import LessonReportViewer from "@/components/dashboard/LessonReportViewer";
+import LessonReportViewer, { type LessonReportData } from "@/components/dashboard/LessonReportViewer";
 
 export interface ParentBookingItem {
   id: string;
@@ -16,7 +16,7 @@ export interface ParentBookingItem {
   totalPrice: number;
   paymentStatus: string | null;
   meetingUrl: string | null;
-  report: { topicsCovered: string; nextSteps: string; homework: string | null; notes: string | null; createdAt: string } | null;
+  report: LessonReportData | null;
 }
 
 const statusLabel: Record<string, string> = {

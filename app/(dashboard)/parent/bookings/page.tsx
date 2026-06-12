@@ -48,11 +48,17 @@ export default async function ParentBookingsPage({
       meetingUrl: b.meetingUrl,
       report: b.lessonReport
         ? {
-            topicsCovered: b.lessonReport.topicsCovered,
-            nextSteps: b.lessonReport.nextSteps,
-            homework: b.lessonReport.homework,
-            notes: b.lessonReport.notes,
+            topics: b.lessonReport.topics,
+            participation: b.lessonReport.participation,
+            comprehension: b.lessonReport.comprehension,
+            confidence: b.lessonReport.confidence,
+            mastery: b.lessonReport.mastery,
+            highlight: b.lessonReport.highlight,
+            homework: (b.lessonReport.homework as { title: string; source?: string }[] | null) ?? null,
+            parentTip: b.lessonReport.parentTip,
             createdAt: b.lessonReport.createdAt.toISOString(),
+            educatorName: b.educator.user.name ?? undefined,
+            studentName: s.name,
           }
         : null,
     }))

@@ -226,6 +226,7 @@ model Booking {
   confirmedAt           DateTime? // öğretmen onayı anı — 24s ödeme penceresi referansı
   paymentReminderSentAt DateTime? // 12s ödeme hatırlatma e-postası gönderildi mi
   meetLinkSentAt        DateTime? // derse ~1s kala Meet linki gönderildi mi
+  reportReminderSentAt  DateTime? // öğretmene "rapor bekliyor" hatırlatması gönderildi mi
 
   meetingUrl     String?
 
@@ -383,10 +384,15 @@ model LessonReport {
   id            String   @id @default(cuid())
   bookingId     String   @unique
   educatorId    String
-  topicsCovered String   @db.Text
-  nextSteps     String   @db.Text
-  homework      String?  @db.Text
-  notes         String?  @db.Text
+  topics        String[] // bu derste işlenen konular (max 5)
+  participation Int      // derse katılım (1-5)
+  comprehension Int      // konuyu anlama hızı (1-5)
+  confidence    Int      // özgüven & isteklilik (1-5)
+  mastery       Int      // konu hakimiyeti (1-4 aşama)
+  highlight     String?  @db.Text // bugünün en güzel anı
+  homework      Json?    // [{ title, source }] (max 3)
+  parentTip     String?  @db.Text // veliye tavsiye
+  sentAt        DateTime? // veliye gönderildiği an
   createdAt     DateTime @default(now())
 
   booking  Booking  @relation(fields: [bookingId], references: [id])
