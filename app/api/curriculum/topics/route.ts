@@ -12,13 +12,8 @@ export async function GET(req: Request) {
 
   const gradeLevelNum = parseInt(gradeLevel, 10);
 
-  const topics = await db.curriculumTopic.findMany({
-    where: {
-      subject,
-      gradeLevel: gradeLevelNum,
-      // Yalnızca soru içeren konular gösterilsin (boş konu seçilirse test çalışmaz).
-      questions: { some: {} },
-    },
+  const all = await db.curriculumTopic.findMany({
+    where: { subject, gradeLevel: gradeLevelNum },
     select: {
       id: true,
       name: true,
@@ -28,6 +23,11 @@ export async function GET(req: Request) {
     },
     orderBy: { name: "asc" },
   });
+
+  // Soru içeren konu varsa yalnızca onları göster (sınav doğru çalışsın).
+  // Hiçbirinde soru yoksa (ör. 1. sınıf — sınav yok) tüm konuları göster ki ders seçilebilsin.
+  const withQuestions = all.filter((t) => t._count.questions > 0);
+  const topics = withQuestions.length > 0 ? withQuestions : all;
 
   // UI için sadeleştir: kapsadığı konular + soru sayısı
   const result = topics.map((t) => ({

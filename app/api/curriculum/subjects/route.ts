@@ -10,8 +10,9 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "gradeLevel gerekli" }, { status: 400 });
   }
 
+  // O sınıfta tanımlı konusu olan tüm dersler (soru zorunlu değil — ör. 1. sınıfta soru yok)
   const rows = await db.curriculumTopic.findMany({
-    where: { gradeLevel: parseInt(gradeLevel, 10), questions: { some: {} } },
+    where: { gradeLevel: parseInt(gradeLevel, 10) },
     select: { subject: true },
     distinct: ["subject"],
   });

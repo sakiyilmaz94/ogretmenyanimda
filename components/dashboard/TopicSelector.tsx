@@ -50,6 +50,9 @@ export default function TopicSelector({
 
   if (!subject || gradeLevel === undefined) return null;
 
+  // Bu sınıf/derste sınav var mı (soru içeren ünite var mı)
+  const hasExam = topics.some((t) => t.questionCount > 0);
+
   return (
     <div className="space-y-3">
       <div>
@@ -60,8 +63,9 @@ export default function TopicSelector({
           Ünite / Tema Seçimi *
         </label>
         <p className="text-caption text-on-surface-variant mt-1">
-          Sınav, seçtiğiniz ünitenin sorularından oluşur. Kart üzerinde o ünitede
-          ele alınan konuları görebilirsiniz.
+          {hasExam
+            ? "Sınav, seçtiğiniz ünitenin sorularından oluşur. Kart üzerinde o ünitede ele alınan konuları görebilirsiniz."
+            : "Çocuğunuzun çalışacağı üniteyi seçin. Kart üzerinde o ünitede ele alınan konuları görebilirsiniz."}
         </p>
       </div>
 
@@ -95,15 +99,17 @@ export default function TopicSelector({
                   >
                     {topic.name}
                   </span>
-                  <span
-                    className={`shrink-0 text-caption font-semibold px-2 py-0.5 rounded-full ${
-                      isSelected
-                        ? "bg-primary text-on-primary"
-                        : "bg-surface-container-high text-on-surface-variant"
-                    }`}
-                  >
-                    {topic.questionCount} soru
-                  </span>
+                  {topic.questionCount > 0 && (
+                    <span
+                      className={`shrink-0 text-caption font-semibold px-2 py-0.5 rounded-full ${
+                        isSelected
+                          ? "bg-primary text-on-primary"
+                          : "bg-surface-container-high text-on-surface-variant"
+                      }`}
+                    >
+                      {topic.questionCount} soru
+                    </span>
+                  )}
                 </div>
 
                 {topic.coveredTopics.length > 0 && (

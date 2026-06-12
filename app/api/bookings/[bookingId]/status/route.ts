@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
 import { sendEmail, emailBookingConfirmed, emailPaymentReceived, emailLessonReportRequest } from "@/lib/email";
 import { createMeetingSpace } from "@/lib/google-meet";
+import { gradeLevelToNumber } from "@/lib/assessment";
 import { NextResponse } from "next/server";
 import { SUBJECT_LABELS, formatCurrency, formatDate } from "@/lib/utils";
 
@@ -83,8 +84,12 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
         }),
       });
 
-      // Seviye belirleme testi oluştur
-      if (booking.gradeLevel) {
+      // Seviye belirleme testi — yalnızca o sınıf+derste soru varsa (ör. 1. sınıfta soru yok)
+      const gradeNumber = gradeLevelToNumber(booking.gradeLevel as string);
+      const questionCount = await db.levelAssessmentQuestion.count({
+        where: { gradeLevel: gradeNumber, subject: booking.subject },
+      });
+      if (booking.gradeLevel && questionCount > 0) {
         const assessmentData: any = {
           bookingId,
           studentId: booking.studentId,
