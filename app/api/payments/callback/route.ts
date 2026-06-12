@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { retrieveCheckoutForm } from "@/lib/iyzico";
 import { notify } from "@/lib/notify";
-import { sendEmail, emailPaymentReceived } from "@/lib/email";
+import { sendEmail, emailPaymentReceived, emailPaymentSuccessParent } from "@/lib/email";
 import { SUBJECT_LABELS, formatCurrency } from "@/lib/utils";
 
 // iyzico POST callback ile token gönderir
@@ -84,9 +84,23 @@ export async function POST(req: Request) {
     await notify({
       userId: booking.student.parent.user.id,
       title: "Ödeme Tamamlandı — Randevu Kesinleşti ✓",
-      message: `${subjectLabel} dersi için ödemeniz alındı. Randevunuz kesinleşmiştir.`,
+      message: `${subjectLabel} dersi için ödemeniz alındı. Google Meet bağlantınız dersten ~1 saat önce gönderilecek.`,
       link: "/parent/bookings",
     });
+
+    // Veliye ödeme başarı e-postası (Meet linkinin 1 saat kala geleceği bilgisiyle)
+    sendEmail({
+      to: booking.student.parent.user.email,
+      subject: "Ödemeniz Alındı — Randevunuz Kesinleşti ✓",
+      html: emailPaymentSuccessParent({
+        parentName: booking.student.parent.user.name ?? "Veli",
+        studentName: booking.student.name,
+        educatorName: booking.educator.user.name ?? "Öğretmen",
+        date: dateStr,
+        time: timeStr,
+        amount,
+      }),
+    }).catch((e) => console.error("Veli ödeme emaili gönderilemedi:", e));
   } catch {
     return NextResponse.redirect(new URL("/parent/bookings?payment=failed", req.url));
   }

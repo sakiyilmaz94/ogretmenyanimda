@@ -79,7 +79,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
           date: dateStr,
           time: timeStr,
           amount,
-          meetingUrl: meetingUrl ?? undefined,
           deadline: deadlineStr,
         }),
       });

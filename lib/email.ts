@@ -288,6 +288,44 @@ export function emailBookingAutoCancelled({
     </div>`;
 }
 
+// Veliye ödeme başarı maili — Meet linkinin dersten ~1 saat önce geleceğini bildirir
+export function emailPaymentSuccessParent({
+  parentName, studentName, educatorName, date, time, amount,
+}: {
+  parentName: string; studentName: string; educatorName: string; date: string; time: string; amount: string;
+}) {
+  return `
+    <div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px">
+      <h2 style="color:#15803d">Ödemeniz Alındı — Randevu Kesinleşti ✓</h2>
+      <p>Merhaba <strong>${parentName}</strong>,</p>
+      <p><strong>${studentName}</strong> için <strong>${educatorName}</strong> ile <strong>${date} · ${time}</strong> dersinizin ödemesi (${amount}) başarıyla alındı. Randevunuz kesinleşti. 🎉</p>
+      <div style="background:#eef0ff;border:1px solid #d6d9ff;border-radius:10px;padding:14px 16px;margin:16px 0;color:#3a3ca8">
+        <strong>📹 Canlı ders bağlantısı (Google Meet)</strong><br/>
+        Ders bağlantınız, <strong>dersten yaklaşık 1 saat önce</strong> e-posta ile ve veli panelinizde paylaşılacaktır. Şimdiden bir şey yapmanıza gerek yok — zamanı gelince hatırlatacağız.
+      </div>
+      <a href="https://ogretmenyanimda.com.tr/parent/bookings" style="display:inline-block;background:#4648D4;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Rezervasyonlarım →</a>
+    </div>`;
+}
+
+// Dersten ~1 saat önce gönderilen Google Meet bağlantısı (veli + öğretmen)
+export function emailMeetingLink({
+  recipientName, educatorName, studentName, date, time, meetingUrl,
+}: {
+  recipientName: string; educatorName: string; studentName: string; date: string; time: string; meetingUrl: string;
+}) {
+  return `
+    <div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px">
+      <h2 style="color:#4648D4">Dersiniz Birazdan Başlıyor 📹</h2>
+      <p>Merhaba <strong>${recipientName}</strong>,</p>
+      <p><strong>${studentName}</strong> · <strong>${educatorName}</strong> ile <strong>${date} · ${time}</strong> dersiniz yaklaşıyor. Aşağıdaki bağlantıdan canlı derse katılabilirsiniz:</p>
+      <div style="text-align:center;margin:22px 0">
+        <a href="${meetingUrl}" style="display:inline-block;background:#1a73e8;color:white;padding:14px 32px;border-radius:50px;text-decoration:none;font-weight:700;font-size:15px">Google Meet'e Katıl →</a>
+      </div>
+      <p style="color:#64748b;font-size:13px">Bağlantı: <a href="${meetingUrl}" style="color:#1a73e8">${meetingUrl}</a></p>
+      <p style="color:#64748b;font-size:13px">İpucu: Derse birkaç dakika önceden katılarak kamera ve mikrofonunuzu kontrol edebilirsiniz.</p>
+    </div>`;
+}
+
 export function emailPaymentReceived({
   educatorName,
   studentName,

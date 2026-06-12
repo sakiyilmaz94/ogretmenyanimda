@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
-import { sendEmail, emailPaymentReminder, emailBookingAutoCancelled } from "@/lib/email";
+import { sendEmail, emailPaymentReminder, emailBookingAutoCancelled, emailMeetingLink } from "@/lib/email";
 import { formatCurrency, SUBJECT_LABELS } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -138,5 +138,51 @@ export async function GET(req: Request) {
     cancelled++;
   }
 
-  return NextResponse.json({ ok: true, remindersSent, cancelled, checkedAt: new Date().toISOString() });
+  // 3) Dersten ~1 saat kala: ödenmiş + Meet linkli derslere bağlantıyı gönder (veli + öğretmen)
+  let meetLinksSent = 0;
+  const nowMs = Date.now();
+  const meetCandidates = await db.booking.findMany({
+    where: {
+      status: { in: ["CONFIRMED", "COMPLETED"] },
+      payment: { status: "PAID" },
+      meetingUrl: { not: null },
+      meetLinkSentAt: null,
+      // Yalnızca yakın tarihli dersler (sorguyu daraltmak için)
+      slot: { date: { gte: new Date(nowMs - 36 * 3600 * 1000), lte: new Date(nowMs + 3 * 864e5) } },
+    },
+    include,
+  });
+
+  for (const b of meetCandidates) {
+    // Ders başlangıç anı (Türkiye sabit UTC+3): "YYYY-MM-DDTHH:MM:00+03:00"
+    const ymd = new Date(b.slot.date).toISOString().slice(0, 10);
+    const lessonStart = new Date(`${ymd}T${b.slot.startTime}:00+03:00`).getTime();
+    if (Number.isNaN(lessonStart)) continue;
+    const minsToStart = (lessonStart - nowMs) / 60000;
+    // Dersten ~90 dk öncesi ile 30 dk sonrası arasında bir kez gönder
+    if (minsToStart > 90 || minsToStart < -30) continue;
+
+    const parentUser = b.student.parent.user;
+    const { date, time } = fmt(b.slot.date, b.slot.startTime, b.slot.endTime);
+    const url = b.meetingUrl!;
+
+    await sendEmail({
+      to: parentUser.email,
+      subject: "📹 Dersiniz Yaklaşıyor — Google Meet Bağlantınız",
+      html: emailMeetingLink({ recipientName: parentUser.name ?? "Veli", educatorName: b.educator.user.name ?? "Öğretmen", studentName: b.student.name, date, time, meetingUrl: url }),
+    }).catch((e) => console.error("Meet linki (veli) gönderilemedi:", e));
+    await notify({ userId: parentUser.id, title: "Dersiniz Yaklaşıyor 📹", message: `${b.student.name} dersi birazdan başlıyor. Google Meet bağlantısına tıklayın.`, link: url });
+
+    await sendEmail({
+      to: b.educator.user.email,
+      subject: "📹 Dersiniz Yaklaşıyor — Google Meet Bağlantısı",
+      html: emailMeetingLink({ recipientName: b.educator.user.name ?? "Öğretmen", educatorName: b.educator.user.name ?? "Öğretmen", studentName: b.student.name, date, time, meetingUrl: url }),
+    }).catch((e) => console.error("Meet linki (öğretmen) gönderilemedi:", e));
+    await notify({ userId: b.educator.userId, title: "Dersiniz Yaklaşıyor 📹", message: `${b.student.name} ile dersiniz birazdan başlıyor.`, link: url });
+
+    await db.booking.update({ where: { id: b.id }, data: { meetLinkSentAt: new Date() } });
+    meetLinksSent++;
+  }
+
+  return NextResponse.json({ ok: true, remindersSent, cancelled, meetLinksSent, checkedAt: new Date().toISOString() });
 }

@@ -225,6 +225,7 @@ model Booking {
 
   confirmedAt           DateTime? // öğretmen onayı anı — 24s ödeme penceresi referansı
   paymentReminderSentAt DateTime? // 12s ödeme hatırlatma e-postası gönderildi mi
+  meetLinkSentAt        DateTime? // derse ~1s kala Meet linki gönderildi mi
 
   meetingUrl     String?
 
