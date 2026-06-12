@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { sendEmail, emailLessonReport } from "@/lib/email";
-import { SUBJECT_LABELS } from "@/lib/utils";
+import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 
 const clampInt = (v: unknown, min: number, max: number) => {
@@ -64,6 +64,9 @@ export async function POST(req: Request) {
   const subjectLabel = SUBJECT_LABELS[booking.subject] ?? booking.subject;
   const date = booking.slot.date.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
   const time = `${booking.slot.startTime}–${booking.slot.endTime}`;
+  const grade = booking.gradeLevel ? (GRADE_LABELS[booking.gradeLevel] ?? null) : null;
+  const toMin = (t: string) => { const [h, m] = t.split(":").map(Number); return h * 60 + (m || 0); };
+  const durationMin = (() => { const d = toMin(booking.slot.endTime) - toMin(booking.slot.startTime); return d > 0 ? d : null; })();
 
   sendEmail({
     to: parentUser.email,
@@ -72,7 +75,7 @@ export async function POST(req: Request) {
       studentName: booking.student.name,
       educatorName: educator.user.name ?? "Öğretmen",
       educatorBranch: subjectLabel,
-      subjectLabel,
+      subjectLabel, grade, durationMin,
       date, time,
       topics, participation, comprehension, confidence, mastery, highlight, homework, parentTip,
     }),

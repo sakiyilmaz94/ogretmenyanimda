@@ -162,14 +162,25 @@ export function emailLessonReportReady({
 // Zengin "Ders Dönüt Raporu" — veliye gönderilen (tablo tabanlı, inline CSS)
 const MASTERY_LABELS = ["", "Henüz başlıyor", "Gelişiyor", "İyi düzeyde", "Tam hakim"];
 export function emailLessonReport({
-  studentName, educatorName, educatorBranch, subjectLabel, date, time,
+  studentName, educatorName, educatorBranch, subjectLabel, grade, durationMin, date, time,
   topics, participation, comprehension, confidence, mastery, highlight, homework, parentTip,
 }: {
   studentName: string; educatorName: string; educatorBranch: string; subjectLabel: string;
+  grade?: string | null; durationMin?: number | null;
   date: string; time: string;
   topics: string[]; participation: number; comprehension: number; confidence: number; mastery: number;
   highlight?: string | null; homework?: { title: string; source?: string }[] | null; parentTip?: string | null;
 }) {
+  // Türkçe tamlayan eki (Zeynep → Zeynep'in, Ayşe → Ayşe'nin)
+  const trGenitive = (name: string) => {
+    const w = (name ?? "").trim(); if (!w) return w;
+    const lower = w.toLocaleLowerCase("tr"); const vowels = "aeıioöuü";
+    let lv = ""; for (let i = lower.length - 1; i >= 0; i--) if (vowels.includes(lower[i])) { lv = lower[i]; break; }
+    const back = "aıou".includes(lv); const rounded = "ouöü".includes(lv);
+    const v = back ? (rounded ? "u" : "ı") : (rounded ? "ü" : "i");
+    return `${w}'${vowels.includes(lower[lower.length - 1]) ? "n" : ""}${v}`;
+  };
+  const firstName = (educatorName || "Öğretmen").trim().split(/\s+/)[0];
   const stars = (n: number) => {
     let s = "";
     for (let i = 1; i <= 5; i++) s += `<span style="color:${i <= n ? "#EF9F27" : "#cbd5e1"};font-size:17px">${i <= n ? "★" : "☆"}</span>`;
@@ -220,9 +231,9 @@ export function emailLessonReport({
         <td style="color:#ffffff;font-size:14px;font-weight:700">ÖğretmenYanımda</td>
         <td style="text-align:right"><span style="background:rgba(255,255,255,0.18);color:#fff;font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px">Ders Dönüt Raporu</span></td>
       </tr></table>
-      <p style="margin:14px 0 2px;color:#ffffff;font-size:19px;font-weight:800">${studentName}'nın bugünkü dersi tamamlandı</p>
-      <p style="margin:0 0 8px;color:#dcdafc;font-size:14px">${educatorName}'dan derse ait notlar aşağıda</p>
-      <p style="margin:0;color:#c3c0fb;font-size:12px">${subjectLabel} · ${time} · ${date}</p>
+      <p style="margin:14px 0 2px;color:#ffffff;font-size:19px;font-weight:800">${trGenitive(studentName)} bugünkü dersi tamamlandı 🎉</p>
+      <p style="margin:0 0 10px;color:#dcdafc;font-size:14px">${firstName} Öğretmen'den derse ait notlar aşağıda</p>
+      <p style="margin:0;color:#c3c0fb;font-size:12px">📖 ${subjectLabel}${grade ? ` · ${grade}` : ""}&nbsp;&nbsp;·&nbsp;&nbsp;🕐 ${durationMin ? `${durationMin} dakika` : time}&nbsp;&nbsp;·&nbsp;&nbsp;📅 ${date}</p>
     </td></tr>
 
     <!-- BÖLÜM 1: Konular -->
