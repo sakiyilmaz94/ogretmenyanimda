@@ -159,8 +159,8 @@ export async function GET(req: Request) {
     const lessonStart = new Date(`${ymd}T${b.slot.startTime}:00+03:00`).getTime();
     if (Number.isNaN(lessonStart)) continue;
     const minsToStart = (lessonStart - nowMs) / 60000;
-    // Dersten ~90 dk öncesi ile 30 dk sonrası arasında bir kez gönder
-    if (minsToStart > 90 || minsToStart < -30) continue;
+    // Dersten ~60 dk öncesi ile 30 dk sonrası arasında bir kez gönder (~1 saat kala)
+    if (minsToStart > 60 || minsToStart < -30) continue;
 
     const parentUser = b.student.parent.user;
     const { date, time } = fmt(b.slot.date, b.slot.startTime, b.slot.endTime);
