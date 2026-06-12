@@ -12,6 +12,7 @@ const PUBLIC_ROUTES = [
   "/admin-giris",
   "/api/payments/callback",
   "/api/curriculum/topics",
+  "/api/curriculum/subjects",
 ];
 const AUTH_ROUTES = ["/login", "/register"];
 

@@ -60,6 +60,8 @@ export default function BookingWizard({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+  // O sınıf için müfredatı olan dersler (öğretmen branşlarıyla kesiştirilir)
+  const [availableSubjects, setAvailableSubjects] = useState<string[] | null>(null);
 
   // Inline new student form
   const [showNewStudentForm, setShowNewStudentForm] = useState(students.length === 0);
@@ -79,6 +81,27 @@ export default function BookingWizard({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Seçilen sınıfa göre, müfredatı olan dersleri çek
+  useEffect(() => {
+    if (!selectedGrade) { setAvailableSubjects(null); return; }
+    const g = parseInt(selectedGrade.match(/\d+$/)?.[0] || "1", 10);
+    setAvailableSubjects(null);
+    fetch(`/api/curriculum/subjects?gradeLevel=${g}`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setAvailableSubjects(Array.isArray(data) ? data : []))
+      .catch(() => setAvailableSubjects([]));
+  }, [selectedGrade]);
+
+  // Öğrencinin sınıfına ders veren öğretmenler
+  const visibleEducators = selectedStudent
+    ? educators.filter((e) => e.gradeLevels.includes(selectedStudent.gradeLevel))
+    : educators;
+
+  // Öğretmenin branşları ∩ bu sınıfta müfredatı olan dersler
+  const subjectsForStudent = selectedEducator
+    ? selectedEducator.subjects.filter((s) => !availableSubjects || availableSubjects.includes(s))
+    : [];
 
   async function loadSlots(educator: Educator) {
     setLoadingSlots(true);
@@ -290,11 +313,13 @@ export default function BookingWizard({
             </div>
           )}
           <h2 className="font-display font-semibold text-on-background text-headline-md mb-5">Öğretmen seçin</h2>
-          {educators.length === 0 ? (
-            <p className="text-body-md text-on-surface-variant">Şu anda onaylı öğretmen bulunmuyor.</p>
+          {visibleEducators.length === 0 ? (
+            <p className="text-body-md text-on-surface-variant">
+              {selectedStudent ? `${GRADE_LABELS[selectedStudent.gradeLevel]} seviyesine ders veren onaylı öğretmen bulunmuyor.` : "Şu anda onaylı öğretmen bulunmuyor."}
+            </p>
           ) : (
             <div className="space-y-3">
-              {educators.map((e) => (
+              {visibleEducators.map((e) => (
                 <button key={e.id} onClick={() => { setSelectedEducator(e); loadSlots(e); setStep(3); }}
                   className={`w-full border-2 rounded-md p-4 text-left transition-all ${
                     selectedEducator?.id === e.id ? "border-primary bg-primary-fixed" : "border-outline-variant hover:border-primary bg-surface-container-low hover:bg-surface-container"
@@ -329,38 +354,36 @@ export default function BookingWizard({
             <p className="text-body-md text-on-surface-variant mt-0.5">{selectedEducator.name} · {formatCurrency(selectedEducator.hourlyRate)}/saat</p>
           </div>
 
-          {/* Dersler */}
-          <div>
-            <label className="block text-label-md font-semibold text-on-background mb-2">Dersler</label>
-            <div className="flex flex-wrap gap-2">
-              {selectedEducator.subjects.map((s) => (
-                <button key={s} onClick={() => { setSelectedSubject(s); setSelectedTopic(null); }}
-                  className={`px-4 py-2 rounded-full text-label-md font-semibold border-2 transition-all ${
-                    selectedSubject === s
-                      ? "border-primary bg-primary text-on-primary"
-                      : "border-outline-variant text-on-surface-variant hover:border-primary bg-surface-container"
-                  }`}>
-                  {SUBJECT_LABELS[s] ?? s}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sınıf seçimi */}
+          {/* Sınıf — öğrenciye sabit (sadece bilgi) */}
           <div>
             <label className="block text-label-md font-semibold text-on-background mb-2">Sınıf</label>
-            <div className="flex flex-wrap gap-2">
-              {Object.entries(GRADE_LABELS).map(([key, label]) => (
-                <button key={key} onClick={() => setSelectedGrade(key as GradeLevel)}
-                  className={`px-4 py-2 rounded-full text-label-md font-semibold border-2 transition-all ${
-                    selectedGrade === key
-                      ? "border-primary bg-primary text-on-primary"
-                      : "border-outline-variant text-on-surface-variant hover:border-primary bg-surface-container"
-                  }`}>
-                  {label}
-                </button>
-              ))}
-            </div>
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-fixed text-on-primary-fixed text-label-md font-semibold">
+              {selectedStudent ? GRADE_LABELS[selectedStudent.gradeLevel] : (selectedGrade ? GRADE_LABELS[selectedGrade] : "—")}
+              {selectedStudent && <span className="text-on-primary-fixed/70 font-normal">· {selectedStudent.name}</span>}
+            </span>
+          </div>
+
+          {/* Dersler — öğretmenin branşları ∩ bu sınıfın müfredatı */}
+          <div>
+            <label className="block text-label-md font-semibold text-on-background mb-2">Dersler</label>
+            {availableSubjects === null ? (
+              <p className="text-caption text-on-surface-variant">Dersler yükleniyor…</p>
+            ) : subjectsForStudent.length === 0 ? (
+              <p className="text-caption text-on-surface-variant">Bu öğretmenin bu sınıf seviyesinde verdiği ders bulunmuyor.</p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {subjectsForStudent.map((s) => (
+                  <button key={s} onClick={() => { setSelectedSubject(s as Subject); setSelectedTopic(null); }}
+                    className={`px-4 py-2 rounded-full text-label-md font-semibold border-2 transition-all ${
+                      selectedSubject === s
+                        ? "border-primary bg-primary text-on-primary"
+                        : "border-outline-variant text-on-surface-variant hover:border-primary bg-surface-container"
+                    }`}>
+                    {SUBJECT_LABELS[s] ?? s}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Konu Seçimi */}
