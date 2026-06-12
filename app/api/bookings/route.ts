@@ -11,15 +11,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
   }
 
-  const { studentId, educatorId, slotId, subject, gradeLevel, totalPrice, notes, topicId } = await req.json();
+  const { studentId, educatorId, slotId, subject, gradeLevel, notes, topicId } = await req.json();
 
-  if (!studentId || !educatorId || !slotId || !subject || !totalPrice) {
+  if (!studentId || !educatorId || !slotId || !subject) {
     return NextResponse.json({ error: "Eksik alan." }, { status: 400 });
   }
 
   const slot = await db.availabilitySlot.findUnique({ where: { id: slotId } });
   if (!slot || slot.isBooked) {
     return NextResponse.json({ error: "Bu slot müsait değil." }, { status: 400 });
+  }
+  // Slot gerçekten bu öğretmene mi ait?
+  if (slot.educatorId !== educatorId) {
+    return NextResponse.json({ error: "Geçersiz slot." }, { status: 400 });
   }
 
   const parent = await db.parent.findUnique({ where: { userId: session.user.id } });
@@ -29,6 +33,16 @@ export async function POST(req: Request) {
   if (!student || student.parentId !== parent.id) {
     return NextResponse.json({ error: "Öğrenci bulunamadı." }, { status: 404 });
   }
+
+  // Öğretmen onaylı olmalı; FİYAT SUNUCUDA belirlenir (istemciye güvenilmez)
+  const educator = await db.educator.findUnique({
+    where: { id: educatorId },
+    include: { user: true },
+  });
+  if (!educator || educator.status !== "APPROVED") {
+    return NextResponse.json({ error: "Geçersiz öğretmen." }, { status: 400 });
+  }
+  const totalPrice = educator.hourlyRate;
 
   const booking = await db.booking.create({
     data: { studentId, educatorId, slotId, subject, gradeLevel: gradeLevel ?? null, topicId: topicId || null, totalPrice, notes: notes || null, status: "PENDING" },
@@ -46,11 +60,7 @@ export async function POST(req: Request) {
   });
 
   // Öğretmene: yeni talep
-  const educator = await db.educator.findUnique({
-    where: { id: educatorId },
-    include: { user: true },
-  });
-  if (educator) {
+  {
     await notify({
       userId: educator.userId,
       title: "Yeni Ders Talebi",
