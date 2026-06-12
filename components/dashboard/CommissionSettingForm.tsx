@@ -40,7 +40,7 @@ export default function CommissionSettingForm({ initialRate }: { initialRate: nu
       </div>
       {error && <p className="text-caption text-on-error-container bg-error-container rounded-lg px-3 py-2 inline-block">{error}</p>}
       <div className="bg-primary-fixed/40 rounded-lg p-4 text-body-md text-on-background">
-        <p className="text-caption text-on-surface-variant mb-1">Örnek hesap (1.000 ₺'lik ders):</p>
+        <p className="text-caption text-on-surface-variant mb-1">Örnek hesap (1.000 ₺&apos;lik ders):</p>
         <p>Bizim gelirimiz (%{r}): <strong className="text-primary">{(1000 * r / 100).toLocaleString("tr-TR")} ₺</strong> · Öğretmene ödenecek: <strong>{(1000 - 1000 * r / 100).toLocaleString("tr-TR")} ₺</strong></p>
       </div>
     </div>

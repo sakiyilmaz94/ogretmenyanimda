@@ -35,6 +35,7 @@ export default async function EducatorBookingsPage() {
     notes: b.notes,
     totalPrice: b.totalPrice.toNumber(),
     meetingUrl: b.meetingUrl,
+    paymentStatus: b.payment?.status ?? null,
     report: b.lessonReport
       ? {
           topics: b.lessonReport.topics,

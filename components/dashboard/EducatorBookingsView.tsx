@@ -21,6 +21,7 @@ export interface BookingItem {
   notes: string | null;
   totalPrice: number;
   meetingUrl: string | null;
+  paymentStatus: string | null;
   report: LessonReportData | null;
   assessment: { id: string; status: string; responseCount: number } | null;
   createdAt: string;
@@ -214,19 +215,23 @@ function BookingCard({ b }: { b: BookingItem }) {
               {b.assessment?.status === "COMPLETED" && b.assessment.responseCount > 0 && (
                 <AssessmentResultViewer assessmentId={b.assessment.id} />
               )}
-              {b.meetingUrl && (
-                <Link
-                  href={b.meetingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-caption text-primary hover:underline font-medium"
-                >
-                  Meet
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </Link>
-              )}
+              {/* Meet linki: yalnızca ödeme yapıldıysa ve ders ~2 saat içindeyse */}
+              {b.paymentStatus === "PAID" && b.meetingUrl && (() => {
+                const start = +new Date(`${b.date.slice(0, 10)}T${b.startTime}:00+03:00`);
+                const now = Date.now();
+                if (now >= start - 2 * 3600 * 1000 && now <= start + 2 * 3600 * 1000) {
+                  return (
+                    <Link href={b.meetingUrl!} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-caption text-primary hover:underline font-medium">
+                      Meet
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </Link>
+                  );
+                }
+                return null;
+              })()}
               {b.status === "COMPLETED" && <LessonReportButton bookingId={b.id} studentName={b.studentName} report={b.report} />}
             </div>
           )}

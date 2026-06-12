@@ -90,15 +90,13 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
         where: { gradeLevel: gradeNumber, subject: booking.subject },
       });
       if (booking.gradeLevel && questionCount > 0) {
-        const assessmentData: any = {
+        const assessmentData = {
           bookingId,
           studentId: booking.studentId,
           subject: booking.subject,
           gradeLevel: booking.gradeLevel,
+          ...(booking.topic ? { topicId: booking.topic.id } : {}),
         };
-        if (booking.topic) {
-          assessmentData.topicId = (booking.topic as any).id;
-        }
         const assessment = await db.levelAssessment.create({ data: assessmentData });
         const baseUrl = process.env.NEXTAUTH_URL ?? "https://ogretmenyanimda.com.tr";
         sendEmail({

@@ -138,26 +138,6 @@ export function emailLessonReportRequest({
     </div>`;
 }
 
-export function emailLessonReportReady({
-  parentName,
-  educatorName,
-  studentName,
-  date,
-}: {
-  parentName: string;
-  educatorName: string;
-  studentName: string;
-  date: string;
-}) {
-  return `
-    <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px">
-      <h2 style="color:#15803d">Ders Raporu Hazır ✅</h2>
-      <p>Merhaba <strong>${parentName}</strong>,</p>
-      <p><strong>${educatorName}</strong>, <strong>${studentName}</strong> için ${date} tarihli ders raporunu doldurdu.</p>
-      <p>Raporunuzu görüntülemek için panele gidiniz.</p>
-      <a href="https://ogretmenyanimda.com.tr/parent/bookings" style="display:inline-block;background:#15803d;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Raporu Görüntüle →</a>
-    </div>`;
-}
 
 // Zengin "Ders Dönüt Raporu" — veliye gönderilen (tablo tabanlı, inline CSS)
 const MASTERY_LABELS = ["", "Henüz başlıyor", "Gelişiyor", "İyi düzeyde", "Tam hakim"];

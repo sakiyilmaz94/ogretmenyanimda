@@ -28,6 +28,7 @@ export default async function EducatorSchedulePage() {
     notes: null,
     totalPrice: 0,
     meetingUrl: null,
+    paymentStatus: null,
     report: null,
     assessment: null,
     createdAt: b.createdAt.toISOString(),
