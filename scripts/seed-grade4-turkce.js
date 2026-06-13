@@ -42,7 +42,7 @@ const db = new PrismaClient();
           option2: q.option2,
           option3: q.option3,
           option4: q.option4,
-          correctAnswer: q.correctAnswer,
+          correctAnswer: q.correctAnswer - 1, // kaynak 1-based -> 0-based index
           difficulty: q.difficulty,
         },
       });
