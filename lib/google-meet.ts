@@ -1,25 +1,24 @@
 import { google } from "googleapis";
 
-const MEET_ENABLED =
-  !!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
-  !!process.env.GOOGLE_PRIVATE_KEY;
+// Yol B: OAuth2 + refresh token. Tek bir Google hesabı adına, her ders için
+// benzersiz Meet odası açar. (Servis hesabı Meet odası açamadığı için bu yöntem.)
+const CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID;
+const CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+const REFRESH_TOKEN = process.env.GOOGLE_OAUTH_REFRESH_TOKEN;
+
+const MEET_ENABLED = !!CLIENT_ID && !!CLIENT_SECRET && !!REFRESH_TOKEN;
 
 export async function createMeetingSpace(): Promise<string | null> {
   if (!MEET_ENABLED) {
-    console.warn("Google Meet API ayarlanmamış, meetingUrl atlandı.");
+    console.warn("Google Meet OAuth ayarlanmamış (CLIENT_ID/SECRET/REFRESH_TOKEN), meetingUrl atlandı.");
     return null;
   }
 
   try {
-    const auth = new google.auth.GoogleAuth({
-      credentials: {
-        client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        private_key: process.env.GOOGLE_PRIVATE_KEY!.replace(/\\n/g, "\n"),
-      },
-      scopes: ["https://www.googleapis.com/auth/meetings.space.created"],
-    });
+    const oauth2 = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET);
+    oauth2.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-    const meet = google.meet({ version: "v2", auth });
+    const meet = google.meet({ version: "v2", auth: oauth2 });
     const res = await meet.spaces.create({ requestBody: {} });
 
     return res.data.meetingUri ?? null;
