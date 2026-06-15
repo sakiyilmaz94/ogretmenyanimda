@@ -32,11 +32,16 @@ export default async function EducatorPublicProfilePage({ params }: { params: Pr
   const now = new Date();
   const future = new Date(now);
   future.setDate(future.getDate() + 30);
-  const availableSlots = educator ? await db.availabilitySlot.findMany({
+  const rawSlots = educator ? await db.availabilitySlot.findMany({
     where: { educatorId: educator.id, isBooked: false, date: { gte: now, lte: future } },
     orderBy: [{ date: "asc" }, { startTime: "asc" }],
     take: 50,
   }) : [];
+  // Geçmiş saatleri ele (Türkiye saati, UTC+3)
+  const nowMs = now.getTime();
+  const availableSlots = rawSlots.filter(
+    (s) => new Date(`${s.date.toISOString().split("T")[0]}T${s.startTime}:00+03:00`).getTime() > nowMs
+  );
 
   const slotsByDate = availableSlots.reduce<Record<string, typeof availableSlots>>((acc, s) => {
     const key = s.date.toISOString().split("T")[0];

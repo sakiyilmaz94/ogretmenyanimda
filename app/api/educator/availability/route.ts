@@ -14,14 +14,21 @@ export async function GET(req: Request) {
   const slots = await db.availabilitySlot.findMany({
     where: {
       educatorId,
-      date: { gte: new Date() },
+      date: { gte: new Date(Date.now() - 24 * 3600 * 1000) },
       ...(available ? { isBooked: false } : {}),
     },
     orderBy: [{ date: "asc" }, { startTime: "asc" }],
   });
 
+  // Geçmiş saatleri ele: slot başlangıcı (Türkiye saati, UTC+3) şu andan önceyse gösterme
+  const nowMs = Date.now();
+  const upcoming = slots.filter((s) => {
+    const dateStr = s.date.toISOString().split("T")[0];
+    return new Date(`${dateStr}T${s.startTime}:00+03:00`).getTime() > nowMs;
+  });
+
   return NextResponse.json(
-    slots.map((s) => ({ ...s, date: s.date.toISOString().split("T")[0] }))
+    upcoming.map((s) => ({ ...s, date: s.date.toISOString().split("T")[0] }))
   );
 }
 

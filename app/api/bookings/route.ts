@@ -25,6 +25,11 @@ export async function POST(req: Request) {
   if (slot.educatorId !== educatorId) {
     return NextResponse.json({ error: "Geçersiz slot." }, { status: 400 });
   }
+  // Geçmiş saate randevu alınamaz (slot başlangıcı Türkiye saati, UTC+3)
+  const slotStartMs = new Date(`${slot.date.toISOString().split("T")[0]}T${slot.startTime}:00+03:00`).getTime();
+  if (slotStartMs <= Date.now()) {
+    return NextResponse.json({ error: "Bu ders saati geçti, randevu alınamaz." }, { status: 400 });
+  }
 
   const parent = await db.parent.findUnique({ where: { userId: session.user.id } });
   if (!parent) return NextResponse.json({ error: "Veli bulunamadı." }, { status: 404 });
