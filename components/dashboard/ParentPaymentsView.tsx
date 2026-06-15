@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { formatCurrency, formatDateTime, SUBJECT_LABELS } from "@/lib/utils";
-import { FilterBar, type Range, type SortKey } from "@/components/dashboard/ParentBookingsView";
+import RecordFilterBar from "@/components/dashboard/RecordFilterBar";
+import { applyRecordFilters, type RecordFilterState } from "@/lib/recordFilter";
 
 export interface ParentPaymentItem {
   id: string;
@@ -29,30 +30,21 @@ const statusBadge: Record<string, string> = {
 };
 
 export default function ParentPaymentsView({ payments }: { payments: ParentPaymentItem[] }) {
-  const [range, setRange] = useState<Range>("all");
-  const [student, setStudent] = useState("all");
-  const [sort, setSort] = useState<SortKey>("dateDesc");
+  const [filter, setFilter] = useState<RecordFilterState>({ sort: "dateDesc", payment: "all", subject: "all" });
 
-  const students = useMemo(
-    () => Array.from(new Set(payments.map((p) => p.studentName))).sort((a, b) => a.localeCompare(b, "tr")),
+  const subjects = useMemo(
+    () => Array.from(new Set(payments.map((p) => p.subject))),
     [payments]
   );
 
-  const visible = useMemo(() => {
-    const now = Date.now();
-    const cutoff = range === "week" ? now - 7 * 864e5 : range === "month" ? now - 30 * 864e5 : null;
-    let list = payments.filter((p) => {
-      if (cutoff !== null && +new Date(p.createdAt) < cutoff) return false;
-      if (student !== "all" && p.studentName !== student) return false;
-      return true;
-    });
-    list = [...list].sort((a, b) => {
-      if (sort === "student") return a.studentName.localeCompare(b.studentName, "tr");
-      const cmp = +new Date(a.createdAt) - +new Date(b.createdAt);
-      return sort === "dateAsc" ? cmp : -cmp;
-    });
-    return list;
-  }, [payments, range, student, sort]);
+  const visible = useMemo(
+    () =>
+      applyRecordFilters(
+        payments.map((p) => ({ ...p, date: p.createdAt, paymentStatus: p.status })),
+        filter
+      ),
+    [payments, filter]
+  );
 
   const totalPaid = useMemo(
     () => visible.filter((p) => p.status === "PAID").reduce((s, p) => s + p.amount, 0),
@@ -61,11 +53,7 @@ export default function ParentPaymentsView({ payments }: { payments: ParentPayme
 
   return (
     <div className="space-y-4">
-      <FilterBar
-        range={range} setRange={setRange}
-        student={student} setStudent={setStudent} students={students}
-        sort={sort} setSort={setSort}
-      />
+      <RecordFilterBar value={filter} onChange={setFilter} subjects={subjects} showPayment />
 
       <div className="flex items-center justify-between">
         <p className="text-caption text-on-surface-variant">{visible.length} ödeme gösteriliyor</p>
