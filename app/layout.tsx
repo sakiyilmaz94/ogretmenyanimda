@@ -24,6 +24,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Öğretmen Yanımda",
   description: "Bireysel ve grup dersleriyle kişiye özel eğitim platformu",
+  verification: {
+    google: "GZb3CphLVXhOSnqGjozvd-8f8L9pL85x3Puzampw1Vs",
+  },
 };
 
 export default async function RootLayout({
