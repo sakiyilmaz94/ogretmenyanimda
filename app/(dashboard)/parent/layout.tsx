@@ -23,6 +23,7 @@ export default async function ParentLayout({ children }: { children: React.React
     { href: "/parent/students", label: "Çocuklarım", icon: "students" as const },
     { href: "/parent/book", label: "Ders Al", icon: "calendarPlus" as const },
     { href: "/parent/bookings", label: "Rezervasyonlarım", icon: "list" as const, badge: pendingPayments },
+    { href: "/parent/egitim", label: "Eğitim", icon: "egitim" as const },
     { href: "/parent/payments", label: "Ödemelerim", icon: "payments" as const },
     { href: "/parent/account", label: "Hesabım", icon: "account" as const },
   ];
