@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 
 interface Question {
@@ -86,7 +87,13 @@ export default function TestPage() {
         <div className="bg-surface-container-lowest rounded-md p-8 soft-card-static max-w-sm w-full text-center">
           <p className="text-4xl mb-4">✅</p>
           <h2 className="font-display text-headline-md text-on-background mb-2">Test Tamamlandı</h2>
-          <p className="text-on-surface-variant text-body-md">Bu test daha önce yanıtlanmış. Teşekkürler!</p>
+          <p className="text-on-surface-variant text-body-md mb-6">Bu test daha önce yanıtlanmış. Teşekkürler!</p>
+          <Link
+            href="/parent/egitim"
+            className="inline-flex items-center justify-center gap-1.5 bg-primary text-on-primary px-5 py-2.5 rounded-full font-semibold text-label-md hover:opacity-90 transition w-full"
+          >
+            ← Panele Dön
+          </Link>
         </div>
       </div>
     );
@@ -149,6 +156,12 @@ export default function TestPage() {
           <p className="text-on-surface-variant text-xs border-t border-outline-variant/30 pt-4">
             Sonuçların öğretmenine iletildi. İlk derste seninle çalışmak için hazırlanıyor.
           </p>
+          <Link
+            href="/parent/egitim"
+            className="mt-4 inline-flex items-center justify-center gap-1.5 bg-primary text-on-primary px-5 py-2.5 rounded-full font-semibold text-label-md hover:opacity-90 transition w-full"
+          >
+            ← Panele Dön
+          </Link>
         </div>
       </div>
     );
