@@ -18,6 +18,8 @@ export interface AppointmentRecord {
   paymentStatus: string | null;
   meetingUrl: string | null;
   counterpartName: string;
+  // Bu derse bağlı tamamlanmamış seviye testi varsa onun id'si; yoksa null
+  pendingTestId: string | null;
 }
 
 export interface TestRecord {
@@ -147,14 +149,20 @@ export default function StudentEducationDetail({
                         {paymentLabel[a.paymentStatus] ?? a.paymentStatus}
                       </span>
                     )}
-                    {upcoming && a.meetingUrl && (
+                    {upcoming && canTakeTest && a.pendingTestId ? (
+                      <Link
+                        href={`/test/${a.pendingTestId}`}
+                        className="text-caption bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1.5 rounded-full font-semibold hover:opacity-90 transition"
+                      >
+                        Önce Seviye Testini Çöz →
+                      </Link>
+                    ) : upcoming && a.meetingUrl ? (
                       <a href={a.meetingUrl} target="_blank" rel="noopener noreferrer" className="text-caption bg-primary text-on-primary px-3 py-1.5 rounded-full font-semibold hover:opacity-90 transition">
                         Derse Katıl
                       </a>
-                    )}
-                    {upcoming && !a.meetingUrl && (
+                    ) : upcoming && !a.meetingUrl ? (
                       <span className="text-caption text-on-surface-variant">Bağlantı ders saatine yakın aktifleşecek</span>
-                    )}
+                    ) : null}
                   </div>
                 </div>
               </div>

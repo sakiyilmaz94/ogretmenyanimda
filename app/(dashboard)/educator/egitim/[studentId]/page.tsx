@@ -50,6 +50,7 @@ export default async function EducatorStudentEgitimPage({
       paymentStatus: b.payment?.status ?? null,
       meetingUrl: b.meetingUrl,
       counterpartName: parentName,
+      pendingTestId: b.assessment && b.assessment.status !== "COMPLETED" ? b.assessment.id : null,
     }));
 
   const tests: TestRecord[] = student.bookings
