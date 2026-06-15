@@ -93,6 +93,7 @@ export default async function EducatorStudentEgitimPage({
       tests={tests}
       history={history}
       canViewTestResults={true}
+      canTakeTest={false}
     />
   );
 }

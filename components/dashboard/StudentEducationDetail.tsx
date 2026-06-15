@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { formatDate, GRADE_LABELS, SUBJECT_LABELS } from "@/lib/utils";
 import { applyRecordFilters, type RecordFilterState } from "@/lib/recordFilter";
@@ -41,6 +42,7 @@ export interface StudentEducationDetailProps {
   tests: TestRecord[];
   history: HistoryRecord[];
   canViewTestResults: boolean;
+  canTakeTest: boolean;
 }
 
 type Tab = "appointments" | "tests" | "history";
@@ -64,6 +66,7 @@ export default function StudentEducationDetail({
   tests,
   history,
   canViewTestResults,
+  canTakeTest,
 }: StudentEducationDetailProps) {
   const [tab, setTab] = useState<Tab>("appointments");
   const [filter, setFilter] = useState<RecordFilterState>({ sort: "dateDesc", payment: "all", subject: "all" });
@@ -169,6 +172,13 @@ export default function StudentEducationDetail({
                 <AssessmentResultViewer assessmentId={t.id} />
               ) : t.status === "COMPLETED" ? (
                 <span className="text-caption bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-medium">Tamamlandı</span>
+              ) : canTakeTest ? (
+                <Link
+                  href={`/test/${t.id}`}
+                  className="text-caption bg-primary text-on-primary px-3 py-1.5 rounded-full font-semibold hover:opacity-90 transition"
+                >
+                  Sınava Başla →
+                </Link>
               ) : (
                 <span className="text-caption bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full font-medium">Bekliyor</span>
               )}

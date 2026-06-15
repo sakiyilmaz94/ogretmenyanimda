@@ -92,6 +92,7 @@ export default async function ParentStudentEgitimPage({
       tests={tests}
       history={history}
       canViewTestResults={true}
+      canTakeTest={true}
     />
   );
 }
