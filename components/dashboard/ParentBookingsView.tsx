@@ -37,9 +37,6 @@ type SortKey = "dateDesc" | "dateAsc" | "student";
 type StatusChip = "all" | "pendingPay" | "upcoming" | "completed";
 
 const isPendingPay = (b: ParentBookingItem) => b.status === "CONFIRMED" && b.paymentStatus !== "PAID";
-// Ders başlangıç anı (Türkiye sabit UTC+3)
-const lessonStartMs = (b: ParentBookingItem) => new Date(`${b.date.slice(0, 10)}T${b.startTime}:00+03:00`).getTime();
-const NEAR_MS = 2 * 3600 * 1000;
 
 export default function ParentBookingsView({ bookings }: { bookings: ParentBookingItem[] }) {
   const [chip, setChip] = useState<StatusChip>("all");
@@ -194,30 +191,6 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
                           </Link>
                         )}
                         {b.status === "COMPLETED" && b.report && <LessonReportViewer report={b.report} />}
-                        {/* Google Meet: yalnızca ödeme yapıldıysa; bağlantı dersten ~1 saat önce aktifleşir */}
-                        {b.paymentStatus === "PAID" && b.meetingUrl && (() => {
-                          const start = lessonStartMs(b);
-                          const now = Date.now();
-                          if (now >= start - NEAR_MS && now <= start + NEAR_MS) {
-                            return (
-                              <Link href={b.meetingUrl!} target="_blank" rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-1.5 text-caption bg-[#1a73e8] text-white px-3 py-1.5 rounded-full hover:bg-[#1558b0] font-semibold transition">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                  <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
-                                </svg>
-                                Google Meet&apos;e Katıl
-                              </Link>
-                            );
-                          }
-                          if (start > now) {
-                            return (
-                              <span className="text-[11px] text-on-surface-variant leading-snug">
-                                🔗 Ders bağlantısı dersten ~1 saat önce burada ve e-postanızda olacak
-                              </span>
-                            );
-                          }
-                          return null;
-                        })()}
                       </div>
                     </td>
                   </tr>
