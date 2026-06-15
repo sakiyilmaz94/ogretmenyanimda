@@ -25,8 +25,8 @@ export default async function EducatorEgitimPage() {
   const students: StudentCard[] = Array.from(byStudent.values()).map((list) => {
     const s = list[0].student;
     const tests = list.map((b) => b.assessment).filter((a): a is NonNullable<typeof a> => !!a);
+    // list zaten CONFIRMED||COMPLETED (onaylı/ödenmiş); gelecekteki en yakını "sonraki ders"
     const upcoming = list
-      .filter((b) => b.status === "CONFIRMED")
       .map((b) => b.slot.date.getTime())
       .filter((t) => t >= now)
       .sort((a, b) => a - b);

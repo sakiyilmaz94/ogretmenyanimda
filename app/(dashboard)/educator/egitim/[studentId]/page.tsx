@@ -62,8 +62,13 @@ export default async function EducatorStudentEgitimPage({
       status: a.status,
     }));
 
+  const now = Date.now();
   const history: HistoryRecord[] = student.bookings
-    .filter((b) => b.status === "COMPLETED")
+    .filter(
+      (b) =>
+        b.status === "COMPLETED" &&
+        new Date(`${b.slot.date.toISOString().slice(0, 10)}T${b.slot.startTime}:00+03:00`).getTime() < now
+    )
     .map((b) => ({
       bookingId: b.id,
       date: b.slot.date.toISOString(),

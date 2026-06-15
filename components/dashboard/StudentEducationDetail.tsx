@@ -127,7 +127,11 @@ export default function StudentEducationDetail({
         <div className="space-y-3">
           {visibleAppointments.length === 0 && <Empty label="Bu filtreyle randevu yok." />}
           {visibleAppointments.map((a) => {
-            const upcoming = a.status === "CONFIRMED" && lessonStartMs(a.date, a.startTime) + NEAR_PAST_MS > now;
+            // Ödenmiş (status ödeme sonrası COMPLETED olur), iptal edilmemiş ve henüz bitmemiş ders → Meet'e katılınabilir
+            const upcoming =
+              a.paymentStatus === "PAID" &&
+              a.status !== "CANCELLED" &&
+              lessonStartMs(a.date, a.startTime) + NEAR_PAST_MS > now;
             return (
               <div key={a.id} className="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-4 soft-card-static">
                 <div className="flex items-center justify-between flex-wrap gap-2">

@@ -27,8 +27,8 @@ export default async function ParentEgitimPage() {
   const students: StudentCard[] = parent.students.map((s) => {
     const lessons = s.bookings.filter((b) => b.status === "CONFIRMED" || b.status === "COMPLETED");
     const tests = s.bookings.map((b) => b.assessment).filter((a): a is NonNullable<typeof a> => !!a);
+    // lessons zaten CONFIRMED||COMPLETED (onaylı/ödenmiş); gelecekteki en yakını "sonraki ders"
     const upcoming = lessons
-      .filter((b) => b.status === "CONFIRMED")
       .map((b) => b.slot.date.getTime())
       .filter((t) => t >= now)
       .sort((a, b) => a - b);
