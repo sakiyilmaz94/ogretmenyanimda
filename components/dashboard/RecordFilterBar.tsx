@@ -52,7 +52,8 @@ export default function RecordFilterBar({ value, onChange, subjects, showPayment
           <option value="all">Tüm ödemeler</option>
           <option value="PAID">Ödendi</option>
           <option value="PENDING">Bekliyor</option>
-          <option value="CANCELLED">İptal</option>
+          <option value="FAILED">Başarısız</option>
+          <option value="REFUNDED">İade edildi</option>
         </select>
       )}
     </div>

@@ -12,7 +12,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth();
-  if (!session || session.user.role !== "EDUCATOR") {
+  if (!session || (session.user.role !== "EDUCATOR" && session.user.role !== "PARENT")) {
     return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
   }
 
@@ -21,14 +21,18 @@ export async function GET(
     where: { id },
     include: {
       responses: { orderBy: { questionIndex: "asc" } },
-      booking: { include: { educator: true, student: true, topic: true } },
+      booking: { include: { educator: true, student: { include: { parent: true } }, topic: true } },
     },
   });
 
   if (!assessment) return NextResponse.json({ error: "Test bulunamadı" }, { status: 404 });
 
-  // Sadece ilgili öğretmen görebilir
-  if (assessment.booking.educator.userId !== session.user.id) {
+  // Yalnızca dersi veren öğretmen veya öğrencinin velisi görebilir
+  const isOwningEducator =
+    session.user.role === "EDUCATOR" && assessment.booking.educator.userId === session.user.id;
+  const isOwningParent =
+    session.user.role === "PARENT" && assessment.booking.student.parent.userId === session.user.id;
+  if (!isOwningEducator && !isOwningParent) {
     return NextResponse.json({ error: "Yetkisiz" }, { status: 403 });
   }
 

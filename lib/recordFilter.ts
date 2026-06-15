@@ -2,7 +2,7 @@ export type RecordSort = "dateDesc" | "dateAsc";
 
 export interface RecordFilterState {
   sort: RecordSort;
-  payment: "all" | "PAID" | "PENDING" | "CANCELLED";
+  payment: "all" | "PAID" | "PENDING" | "FAILED" | "REFUNDED";
   subject: "all" | string;
 }
 
