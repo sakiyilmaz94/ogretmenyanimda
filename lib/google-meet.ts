@@ -19,7 +19,11 @@ export async function createMeetingSpace(): Promise<string | null> {
     oauth2.setCredentials({ refresh_token: REFRESH_TOKEN });
 
     const meet = google.meet({ version: "v2", auth: oauth2 });
-    const res = await meet.spaces.create({ requestBody: {} });
+    // accessType OPEN: linki olan herkes (öğretmen/veli) düzenleyen onayı beklemeden girer.
+    // (Varsayılan TRUSTED, oda sahibi hesap toplantıda olmadığı için katılımcıları "kapıda" bırakıyordu.)
+    const res = await meet.spaces.create({
+      requestBody: { config: { accessType: "OPEN", entryPointAccess: "ALL" } },
+    });
 
     return res.data.meetingUri ?? null;
   } catch (err) {
