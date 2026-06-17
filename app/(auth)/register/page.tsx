@@ -11,6 +11,7 @@ export default function RegisterPage() {
   const [diploma, setDiploma] = useState<File | null>(null);
   const [idCard, setIdCard] = useState<File | null>(null);
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
+  const [sozlesmeAccepted, setSozlesmeAccepted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -28,6 +29,10 @@ export default function RegisterPage() {
     e.preventDefault();
     if (form.role === "EDUCATOR" && !kvkkAccepted) {
       setError("Devam edebilmek için gizlilik metnini onaylamanız gerekir.");
+      return;
+    }
+    if (form.role === "EDUCATOR" && !sozlesmeAccepted) {
+      setError("Devam edebilmek için Eğitmen Hizmet Sözleşmesi'ni onaylamanız gerekir.");
       return;
     }
     setLoading(true);
@@ -326,6 +331,17 @@ export default function RegisterPage() {
                         />
                         <span className="text-caption text-on-surface-variant font-semibold">
                           Belge bilgilerimin yalnızca kimlik doğrulama amacıyla kullanılacağını, üçüncü taraflarla paylaşılmayacağını okudum ve onaylıyorum.
+                        </span>
+                      </label>
+                      <label className="flex items-start gap-2 cursor-pointer mt-3">
+                        <input
+                          type="checkbox"
+                          checked={sozlesmeAccepted}
+                          onChange={(e) => setSozlesmeAccepted(e.target.checked)}
+                          className="mt-0.5 rounded accent-primary"
+                        />
+                        <span className="text-caption text-on-surface-variant font-semibold">
+                          <Link href="/egitmen-sozlesmesi" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Eğitmen Hizmet Sözleşmesi</Link>&apos;ni okudum, kabul ediyorum.
                         </span>
                       </label>
                     </div>

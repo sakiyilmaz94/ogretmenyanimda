@@ -16,6 +16,7 @@ const footerLinks = {
   yasal: [
     { href: "/gizlilik-politikasi",       label: "Gizlilik Politikası" },
     { href: "/mesafeli-satis-sozlesmesi", label: "Mesafeli Satış Sözleşmesi" },
+    { href: "/egitmen-sozlesmesi",        label: "Eğitmen Hizmet Sözleşmesi" },
     { href: "/iptal-ve-iade-kosullar",    label: "İptal ve İade" },
   ],
 };
