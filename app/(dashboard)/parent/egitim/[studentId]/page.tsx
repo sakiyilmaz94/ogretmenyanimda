@@ -99,6 +99,7 @@ export default async function ParentStudentEgitimPage({
       history={history}
       canViewTestResults={true}
       canTakeTest={true}
+      showJoinReminder={false}
     />
   );
 }

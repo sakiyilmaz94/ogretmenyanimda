@@ -45,6 +45,8 @@ export interface StudentEducationDetailProps {
   history: HistoryRecord[];
   canViewTestResults: boolean;
   canTakeTest: boolean;
+  // Derse katılmadan önce "platform dışına taşıma" hatırlatması göster (öğretmen görünümü)
+  showJoinReminder: boolean;
 }
 
 type Tab = "appointments" | "tests" | "history";
@@ -69,9 +71,12 @@ export default function StudentEducationDetail({
   history,
   canViewTestResults,
   canTakeTest,
+  showJoinReminder,
 }: StudentEducationDetailProps) {
   const [tab, setTab] = useState<Tab>("appointments");
   const [filter, setFilter] = useState<RecordFilterState>({ sort: "dateDesc", payment: "all", subject: "all" });
+  // Hatırlatma penceresi için: onaylanınca açılacak Meet linki
+  const [joinUrl, setJoinUrl] = useState<string | null>(null);
 
   const subjects = useMemo(() => {
     const src = tab === "appointments" ? appointments : tab === "tests" ? tests : history;
@@ -156,6 +161,13 @@ export default function StudentEducationDetail({
                       >
                         Önce Seviye Testini Çöz →
                       </Link>
+                    ) : upcoming && a.meetingUrl && showJoinReminder ? (
+                      <button
+                        onClick={() => setJoinUrl(a.meetingUrl)}
+                        className="text-caption bg-primary text-on-primary px-3 py-1.5 rounded-full font-semibold hover:opacity-90 transition"
+                      >
+                        Derse Katıl
+                      </button>
                     ) : upcoming && a.meetingUrl ? (
                       <a href={a.meetingUrl} target="_blank" rel="noopener noreferrer" className="text-caption bg-primary text-on-primary px-3 py-1.5 rounded-full font-semibold hover:opacity-90 transition">
                         Derse Katıl
@@ -215,6 +227,41 @@ export default function StudentEducationDetail({
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {joinUrl && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+          onClick={() => setJoinUrl(null)}
+        >
+          <div
+            className="bg-surface-container-lowest rounded-2xl p-6 max-w-md w-full soft-card-static"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="font-display text-title-lg text-on-background mb-2">Derse Katılmadan Önce</h3>
+            <p className="text-body-sm text-on-surface-variant leading-relaxed mb-5">
+              Bu dersi ve veli/öğrenci ile iletişiminizi platform dışına taşımayacağınızı hatırlatırız.
+              Aksi hâlde Eğitmen Hizmet Sözleşmesi&apos;ndeki cezai şart uygulanır. Onaylayarak derse katılabilirsiniz.
+            </p>
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => setJoinUrl(null)}
+                className="text-label-md px-4 py-2 rounded-full text-on-surface-variant hover:bg-surface-container transition"
+              >
+                Vazgeç
+              </button>
+              <button
+                onClick={() => {
+                  window.open(joinUrl, "_blank", "noopener,noreferrer");
+                  setJoinUrl(null);
+                }}
+                className="text-label-md bg-primary text-on-primary px-4 py-2 rounded-full font-semibold hover:opacity-90 transition"
+              >
+                Okudum, Derse Katıl
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
