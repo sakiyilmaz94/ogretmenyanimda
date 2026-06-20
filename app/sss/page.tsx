@@ -29,7 +29,7 @@ const faqCategories = [
     items: [
       { q: "Ödemeler nasıl yapılmaktadır?", a: "Kredi kartı, banka kartı ve dijital cüzdan seçenekleriyle iyzico güvenceli ödeme yapabilirsiniz. Kartınız otomatik olarak kaydedilmez." },
       { q: "Ödeme güvenli mi?", a: "Ödemeler iyzico altyapısıyla 256-bit SSL şifrelemeli olarak işlenmektedir. Kart bilgileriniz hiçbir şekilde sistemimizde saklanmaz." },
-      { q: "Ders iptali durumunda ne olur?", a: "En az 24 saat öncesinde bildirilen iptallerде tam ücret iadesi veya ders erteleme yapılır. 24 saat içinde yapılan iptallerde ücret iadesi yapılmaz." },
+      { q: "Ders iptali durumunda ne olur?", a: "En az 24 saat öncesinde bildirilen iptallerde tam ücret iadesi veya ders erteleme yapılır. 24 saat içinde yapılan iptallerde ücret iadesi yapılmaz." },
       { q: "İade süreci ne kadar sürer?", a: "Onaylanan iade talepleri 3–5 iş günü içinde kart hesabınıza yansıtılır." },
     ],
   },

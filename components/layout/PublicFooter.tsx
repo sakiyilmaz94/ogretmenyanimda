@@ -3,7 +3,6 @@ import { LogoMark } from "@/components/layout/Logo";
 
 const footerLinks = {
   platform: [
-    { href: "/hizmetler",      label: "Hizmetler" },
     { href: "/egitmenlerimiz", label: "Öğretmenlerimiz" },
     { href: "/fiyatlandirma",  label: "Fiyatlandırma" },
     { href: "/hakkimizda",     label: "Hakkımızda" },

@@ -12,7 +12,7 @@ const faqItems = [
   { q: "Özel dersler nasıl işliyor?", a: "Veliler platformdan onaylı öğretmeni seçer, uygun saat dilimini rezerve eder ve ödeme yapar. Dersler tamamen online, interaktif ortamda gerçekleşir." },
   { q: "Dersler hangi seviyeleri kapsıyor?", a: "İlkokul (1–4. sınıf) ve ortaokul (5–8. sınıf) öğrencilerine yönelik kapsamlı dersler sunmaktayız." },
   { q: "Ders süresi ne kadardır?", a: "Derslerimiz 1 saattir. Bireysel birebir ders formatında gerçekleşmektedir." },
-  { q: "Ders iptali durumunda ne olur?", a: "En az 24 saat öncesinden bildirilen iptallerде tam ücret iadesi veya ders erteleme yapılmaktadır." },
+  { q: "Ders iptali durumunda ne olur?", a: "En az 24 saat öncesinden bildirilen iptallerde tam ücret iadesi veya ders erteleme yapılmaktadır." },
   { q: "Öğretmenler nasıl seçiliyor?", a: "Tüm öğretmenlerimiz özgeçmiş, belge ve referans incelemesinden geçer; yönetici onayıyla platforma kabul edilir." },
   { q: "Ödeme güvenli mi?", a: "Ödemeler iyzico altyapısıyla 256-bit SSL şifrelemeli olarak işlenmektedir. Kart bilgileriniz sistemimizde saklanmaz." },
 ];
@@ -216,7 +216,7 @@ export default async function HomePage() {
                 },
                 {
                   step: "02",
-                  title: "Saat Reserv Et",
+                  title: "Rezervasyon Yap",
                   desc: "Öğrencine en uygun saat dilimine tıkla, hızlıca rezervasyon yap.",
                   img: "/illustrations/adim-randevu-ode.png",
                   icon: (
@@ -322,17 +322,6 @@ export default async function HomePage() {
                   </ul>
                 </div>
               ))}
-            </div>
-            <div className="text-center mt-10">
-              <Link
-                href="/hizmetler"
-                className="inline-flex items-center gap-2 text-primary font-semibold hover:opacity-70 transition-opacity cursor-pointer"
-              >
-                Tüm hizmetleri incele
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
-              </Link>
             </div>
           </div>
         </section>
