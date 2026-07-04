@@ -65,10 +65,10 @@ export default function EducatorBookingsView({ bookings }: { bookings: BookingIt
     list = [...list].sort((a, b) => {
       if (sort === "studentName") return a.studentName.localeCompare(b.studentName, "tr");
       if (sort === "requestDate") return +new Date(b.createdAt) < +new Date(a.createdAt) ? -1 : 1;
-      // lessonDate (kronolojik: tarih + saat)
+      // lessonDate (kronolojik: tarih + saat) — yakından uzağa: en güncel/yakın tarih üstte
       const da = a.date + "T" + a.startTime;
       const db = b.date + "T" + b.startTime;
-      return da < db ? -1 : da > db ? 1 : 0;
+      return da > db ? -1 : da < db ? 1 : 0;
     });
     return list;
   }, [bookings, tab, sort, day]);
