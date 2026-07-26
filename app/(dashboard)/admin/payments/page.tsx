@@ -20,6 +20,7 @@ export default async function AdminPaymentsPage() {
     amount: p.amount.toNumber(),
     status: p.status as AdminPaymentItem["status"],
     createdAt: p.createdAt.toISOString(),
+    referenceCode: p.referenceCode ?? null,
   }));
 
   return <AdminPaymentsView payments={items} commissionRate={commissionRate} />;
