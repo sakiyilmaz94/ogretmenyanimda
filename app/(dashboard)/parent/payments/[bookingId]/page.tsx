@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { getBankInfo } from "@/lib/payment-config";
 import PaymentPage from "@/components/dashboard/PaymentPage";
 
 export default async function BookingPaymentPage({
@@ -31,6 +32,8 @@ export default async function BookingPaymentPage({
     redirect("/parent/bookings?payment=already_paid");
   }
 
+  const bank = await getBankInfo();
+
   const data = {
     bookingId: booking.id,
     studentName: booking.student.name,
@@ -40,6 +43,8 @@ export default async function BookingPaymentPage({
     slotStartTime: booking.slot.startTime,
     slotEndTime: booking.slot.endTime,
     totalPrice: Number(booking.totalPrice),
+    referenceCode: booking.payment?.referenceCode ?? "",
+    bank,
   };
 
   return <PaymentPage booking={data} />;
