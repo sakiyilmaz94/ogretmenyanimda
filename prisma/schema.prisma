@@ -245,6 +245,7 @@ model Payment {
   bookingId       String        @unique
   iyzicoPaymentId String?
   iyzicoToken     String?
+  referenceCode   String?
   amount          Decimal       @db.Decimal(10, 2)
   currency        String        @default("TRY")
   status          PaymentStatus @default(PENDING)
