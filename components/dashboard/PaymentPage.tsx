@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SUBJECT_LABELS, formatCurrency } from "@/lib/utils";
 import { Subject } from "@prisma/client";
 
@@ -13,35 +13,46 @@ interface BookingData {
   slotStartTime: string;
   slotEndTime: string;
   totalPrice: number;
+  referenceCode: string;
+  bank: { iban: string; accountName: string; bankName: string };
+}
+
+function CopyButton({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false);
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* kopyalama desteklenmiyor */
+    }
+  }
+  return (
+    <button
+      onClick={copy}
+      className="shrink-0 rounded-full squishy-btn bg-secondary-container text-on-secondary-container px-4 py-2 text-label-md font-semibold"
+    >
+      {copied ? "Kopyalandı ✓" : "Kopyala"}
+    </button>
+  );
+}
+
+function CopyRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3 py-2">
+      <div className="min-w-0">
+        <p className="text-label-md text-on-surface-variant">{label}</p>
+        <p className="font-semibold text-on-surface break-all">{value}</p>
+      </div>
+      <CopyButton value={value} />
+    </div>
+  );
 }
 
 export default function PaymentPage({ booking }: { booking: BookingData }) {
-  const [checkoutHtml, setCheckoutHtml] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    async function loadCheckout() {
-      try {
-        const res = await fetch("/api/payments/checkout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ bookingId: booking.bookingId }),
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          setError(data.error ?? "Ödeme formu yüklenemedi.");
-          return;
-        }
-        setCheckoutHtml(data.checkoutFormContent);
-      } catch {
-        setError("Bağlantı hatası. Lütfen tekrar deneyin.");
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadCheckout();
-  }, [booking.bookingId]);
+  const { bank } = booking;
+  const hasBank = bank.iban.trim().length > 0;
 
   const formattedDate = new Date(booking.slotDate + "T00:00:00").toLocaleDateString("tr-TR", {
     weekday: "long",
@@ -53,9 +64,11 @@ export default function PaymentPage({ booking }: { booking: BookingData }) {
   return (
     <div className="max-w-2xl mx-auto py-8 px-4">
       <h1 className="font-display text-headline-lg text-on-background mb-2">Ödeme</h1>
-      <p className="text-body-md text-on-surface-variant mb-6">Rezervasyonunuzu tamamlamak için ödeme yapın.</p>
+      <p className="text-body-md text-on-surface-variant mb-6">
+        Rezervasyonunuzu kesinleştirmek için aşağıdaki IBAN&apos;a havale/EFT yapın.
+      </p>
 
-      {/* Ödeme Özeti */}
+      {/* Rezervasyon Özeti */}
       <div className="bg-primary-fixed rounded-md p-5 mb-6 border border-primary/20">
         <h2 className="font-display text-headline-md text-on-primary-fixed mb-3">Rezervasyon Özeti</h2>
         <div className="space-y-2">
@@ -80,27 +93,54 @@ export default function PaymentPage({ booking }: { booking: BookingData }) {
             <span className="font-semibold text-on-primary-fixed">{booking.slotStartTime} – {booking.slotEndTime}</span>
           </div>
           <div className="border-t border-primary/20 pt-3 mt-3 flex justify-between items-center">
-            <span className="font-display font-semibold text-on-primary-fixed">Toplam</span>
+            <span className="font-display font-semibold text-on-primary-fixed">Ödenecek Tutar</span>
             <span className="font-display text-headline-md text-on-primary-fixed">{formatCurrency(booking.totalPrice)}</span>
           </div>
         </div>
       </div>
 
-      {/* iyzico / Mock form */}
-      <div className="bg-surface-container-lowest rounded-md soft-card-static border border-outline-variant/20 p-5">
-        {loading && (
-          <div className="flex items-center justify-center py-12">
-            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-            <span className="ml-3 text-body-md text-on-surface-variant">Ödeme formu yükleniyor...</span>
+      {/* Havale Bilgileri */}
+      {hasBank ? (
+        <div className="bg-surface-container-lowest rounded-md soft-card-static border border-outline-variant/20 p-5">
+          <h2 className="font-display text-headline-md text-on-surface mb-1">Havale / EFT Bilgileri</h2>
+          <p className="text-body-md text-on-surface-variant mb-4">
+            Aşağıdaki bilgilerle ödemeyi yapın ve <strong>açıklama kısmına referans kodunuzu</strong> mutlaka yazın.
+          </p>
+
+          <div className="divide-y divide-outline-variant/20">
+            <CopyRow label="Alıcı Adı" value={bank.accountName} />
+            {bank.bankName && <CopyRow label="Banka" value={bank.bankName} />}
+            <CopyRow label="IBAN" value={bank.iban} />
+            <CopyRow label="Tutar" value={formatCurrency(booking.totalPrice)} />
           </div>
-        )}
-        {error && (
-          <div className="text-on-error-container bg-error-container rounded-md p-4 text-body-md">{error}</div>
-        )}
-        {checkoutHtml && (
-          <div dangerouslySetInnerHTML={{ __html: checkoutHtml }} />
-        )}
-      </div>
+
+          {/* Referans kodu vurgulu */}
+          <div className="mt-5 bg-tertiary-fixed rounded-md p-4 border border-primary/20">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-label-md text-on-tertiary-fixed/80">Açıklamaya yazılacak Referans Kodu</p>
+                <p className="font-display text-headline-md text-on-tertiary-fixed tracking-wide">
+                  {booking.referenceCode || "—"}
+                </p>
+              </div>
+              {booking.referenceCode && <CopyButton value={booking.referenceCode} />}
+            </div>
+          </div>
+
+          <div className="mt-5 bg-surface-container rounded-md p-4 text-body-md text-on-surface-variant">
+            <p className="font-semibold text-on-surface mb-1">Ödemeniz nasıl onaylanır?</p>
+            <p>
+              Havaleyi yaptıktan sonra ekstra bir işlem yapmanıza gerek yok. Ödemeniz kontrol edilip
+              onaylandığında randevunuz otomatik olarak kesinleşecek ve size bildirim gelecektir.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-error-container text-on-error-container rounded-md p-5">
+          <p className="font-display font-semibold mb-1">IBAN bilgisi henüz tanımlanmadı.</p>
+          <p className="text-body-md">Lütfen yöneticiyle iletişime geçin. Ödeme bilgileri en kısa sürede tanımlanacaktır.</p>
+        </div>
+      )}
     </div>
   );
 }

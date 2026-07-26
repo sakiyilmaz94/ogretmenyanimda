@@ -12,6 +12,20 @@ export interface AdminPaymentItem {
   amount: number;
   status: "PAID" | "PENDING" | "FAILED" | "REFUNDED";
   createdAt: string;
+  referenceCode: string | null;
+}
+
+async function markPaid(id: string) {
+  const res = await fetch(`/api/admin/payments/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "approve" }),
+  });
+  if (res.ok) window.location.reload();
+  else {
+    const d = await res.json().catch(() => ({}));
+    alert(d.error ?? "İşlem başarısız.");
+  }
 }
 
 const statusLabel: Record<string, string> = { PAID: "Ödendi", PENDING: "Beklemede", FAILED: "Başarısız", REFUNDED: "İade Edildi" };
@@ -104,15 +118,17 @@ export default function AdminPaymentsView({ payments, commissionRate }: { paymen
               <th className="text-left px-5 py-3 text-label-md font-semibold">Tarih</th>
               <th className="text-left px-5 py-3 text-label-md font-semibold">Öğrenci</th>
               <th className="text-left px-5 py-3 text-label-md font-semibold">Öğretmen</th>
+              <th className="text-left px-5 py-3 text-label-md font-semibold">Referans</th>
               <th className="text-right px-5 py-3 text-label-md font-semibold">Tutar (brüt)</th>
               <th className="text-right px-5 py-3 text-label-md font-semibold">Bizim (%{commissionRate})</th>
               <th className="text-right px-5 py-3 text-label-md font-semibold">Öğretmene</th>
               <th className="text-left px-5 py-3 text-label-md font-semibold">Durum</th>
+              <th className="text-right px-5 py-3 text-label-md font-semibold">İşlem</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-outline-variant/20">
             {visible.length === 0 ? (
-              <tr><td colSpan={7} className="text-center py-12 text-on-surface-variant text-label-md">Eşleşen ödeme yok.</td></tr>
+              <tr><td colSpan={9} className="text-center py-12 text-on-surface-variant text-label-md">Eşleşen ödeme yok.</td></tr>
             ) : visible.map((p) => {
               const com = Math.round(p.amount * (commissionRate / 100) * 100) / 100;
               const dim = p.status !== "PAID";
@@ -121,11 +137,24 @@ export default function AdminPaymentsView({ payments, commissionRate }: { paymen
                   <td className="px-5 py-3 text-on-surface-variant text-caption">{formatDateTime(p.createdAt)}</td>
                   <td className="px-5 py-3 text-on-background font-medium">{p.studentName}</td>
                   <td className="px-5 py-3 text-on-surface-variant">{p.educatorName}</td>
+                  <td className="px-5 py-3 font-mono text-caption text-on-background">{p.referenceCode ?? "—"}</td>
                   <td className="px-5 py-3 text-right font-semibold text-on-background">{formatCurrency(p.amount)}</td>
                   <td className={`px-5 py-3 text-right font-bold ${dim ? "text-on-surface-variant/50" : "text-primary"}`}>{formatCurrency(com)}</td>
                   <td className={`px-5 py-3 text-right ${dim ? "text-on-surface-variant/50" : "text-on-secondary-container font-semibold"}`}>{formatCurrency(p.amount - com)}</td>
                   <td className="px-5 py-3">
                     <span className={`text-caption px-3 py-1 rounded-full font-semibold ${statusColor[p.status]}`}>{statusLabel[p.status] ?? p.status}</span>
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    {p.status === "PENDING" ? (
+                      <button
+                        onClick={() => markPaid(p.id)}
+                        className="rounded-full squishy-btn bg-primary text-on-primary px-4 py-2 text-label-md font-semibold whitespace-nowrap"
+                      >
+                        Ödendi işaretle
+                      </button>
+                    ) : (
+                      <span className="text-on-surface-variant/50 text-caption">—</span>
+                    )}
                   </td>
                 </tr>
               );

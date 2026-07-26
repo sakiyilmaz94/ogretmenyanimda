@@ -20,6 +20,10 @@ function authorized(req: Request) {
 const PAYMENT_WINDOW_H = 24; // ödeme penceresi
 const REMINDER_AFTER_H = 12; // onaydan kaç saat sonra hatırlatma
 
+// IBAN modunda ödeme admin tarafından manuel onaylandığı için otomatik iptal/hatırlatma KAPALI.
+// iyzico'ya geri dönülürse true yapılması yeterli.
+const AUTO_CANCEL_ENABLED = false;
+
 // Ödenmemiş onaylı rezervasyon filtresi
 const unpaidConfirmed = {
   status: "CONFIRMED" as const,
@@ -52,14 +56,14 @@ export async function GET(req: Request) {
   let cancelled = 0;
 
   // 1) 12 saat geçmiş, henüz hatırlatılmamış (ve 24 saat dolmamış) → hatırlatma
-  const toRemind = await db.booking.findMany({
+  const toRemind = AUTO_CANCEL_ENABLED ? await db.booking.findMany({
     where: {
       ...unpaidConfirmed,
       paymentReminderSentAt: null,
       confirmedAt: { lte: reminderCutoff, gt: cancelCutoff },
     },
     include,
-  });
+  }) : [];
 
   for (const b of toRemind) {
     const parentUser = b.student.parent.user;
@@ -94,10 +98,10 @@ export async function GET(req: Request) {
   }
 
   // 2) 24 saat dolmuş, hâlâ ödenmemiş → otomatik iptal + slotu yeniden aç
-  const toCancel = await db.booking.findMany({
+  const toCancel = AUTO_CANCEL_ENABLED ? await db.booking.findMany({
     where: { ...unpaidConfirmed, confirmedAt: { lte: cancelCutoff } },
     include,
-  });
+  }) : [];
 
   for (const b of toCancel) {
     const parentUser = b.student.parent.user;

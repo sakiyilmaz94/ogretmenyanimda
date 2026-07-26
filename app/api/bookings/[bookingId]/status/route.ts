@@ -1,11 +1,12 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
-import { sendEmail, emailBookingConfirmed, emailPaymentReceived, emailLessonReportRequest } from "@/lib/email";
+import { sendEmail, emailBookingConfirmed } from "@/lib/email";
 import { createMeetingSpace } from "@/lib/google-meet";
 import { gradeLevelToNumber } from "@/lib/assessment";
+import { generateUniqueReferenceCode } from "@/lib/payment-config";
 import { NextResponse } from "next/server";
-import { SUBJECT_LABELS, formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ bookingId: string }> }) {
   const session = await auth();
@@ -29,7 +30,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
     weekday: "long", day: "numeric", month: "long",
   });
   const timeStr = `${booking.slot.startTime}–${booking.slot.endTime}`;
-  const subjectLabel = SUBJECT_LABELS[booking.subject] ?? booking.subject;
 
   if (session.user.role === "EDUCATOR") {
     if (booking.educator.userId !== session.user.id) {
@@ -53,11 +53,12 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
         where: { id: bookingId },
         data: { status: "CONFIRMED", confirmedAt, paymentReminderSentAt: null, ...(meetingUrl ? { meetingUrl } : {}) },
       });
-      // Ödeme kaydını şimdi oluştur
+      // Ödeme kaydını şimdi oluştur (IBAN eşleştirmesi için benzersiz referans kodu ile)
+      const referenceCode = await generateUniqueReferenceCode();
       await db.payment.upsert({
         where: { bookingId },
         update: {},
-        create: { bookingId, amount: booking.totalPrice, currency: "TRY", status: "PENDING" },
+        create: { bookingId, amount: booking.totalPrice, currency: "TRY", status: "PENDING", referenceCode },
       });
 
       const parentUser = booking.student.parent.user;
@@ -128,64 +129,10 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
     return NextResponse.json({ success: true });
   }
 
-  // Veli: ödeme tamamlandı
+  // Veli ödeme durumunu DEĞİŞTİREMEZ. IBAN havalesi admin tarafından
+  // /admin/payments üzerinden onaylanır (eski payment_complete güvenlik açığı kaldırıldı).
   if (session.user.role === "PARENT") {
-    const parent = await db.parent.findUnique({ where: { userId: session.user.id } });
-    if (!parent || booking.student.parentId !== parent.id) {
-      return NextResponse.json({ error: "Yetkisiz" }, { status: 403 });
-    }
-    if (action !== "payment_complete") {
-      return NextResponse.json({ error: "Geçersiz işlem" }, { status: 400 });
-    }
-    if (booking.status !== "CONFIRMED") {
-      return NextResponse.json({ error: "Ödeme için önce öğretmen onayı gerekli." }, { status: 400 });
-    }
-
-    await db.payment.update({ where: { bookingId }, data: { status: "PAID" } });
-    await db.booking.update({ where: { id: bookingId }, data: { status: "COMPLETED" } });
-
-    // Öğretmene bildirim + email
-    const amount = formatCurrency(booking.totalPrice.toNumber());
-    await notify({
-      userId: booking.educator.userId,
-      title: "Ödeme Alındı — Randevu Kesinleşti",
-      message: `${booking.student.name} için ödeme tamamlandı. Randevu kesinleşmiştir.`,
-      link: "/educator/bookings",
-    });
-    try {
-      await sendEmail({
-        to: booking.educator.user.email,
-        subject: `Ödeme Alındı — ${booking.student.name}`,
-        html: emailPaymentReceived({
-          educatorName: booking.educator.user.name ?? "Öğretmen",
-          studentName: booking.student.name,
-          date: dateStr,
-          time: timeStr,
-          amount,
-        }),
-      });
-    } catch (e) { console.error("Ödeme emaili gönderilemedi:", e); }
-
-    // Ders sonu rapor hatırlatıcısı — ders günü için planlanmış (şimdilik aynı anda gönderilir)
-    sendEmail({
-      to: booking.educator.user.email,
-      subject: `Ders Raporu — ${booking.student.name} (${formatDate(booking.slot.date)})`,
-      html: emailLessonReportRequest({
-        educatorName: booking.educator.user.name ?? "Öğretmen",
-        studentName: booking.student.name,
-        date: formatDate(booking.slot.date),
-      }),
-    }).catch(console.error);
-
-    // Veliye bildirim
-    await notify({
-      userId: session.user.id,
-      title: "Ödeme Tamamlandı — Randevu Kesinleşti ✓",
-      message: `${subjectLabel} dersi için ödemeniz alındı. Randevunuz kesinleşmiştir.`,
-      link: "/parent/bookings",
-    });
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ error: "Bu işlem için yetkiniz yok." }, { status: 403 });
   }
 
   // Admin
