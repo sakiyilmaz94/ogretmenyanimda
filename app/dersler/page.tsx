@@ -16,6 +16,7 @@ const dersler = {
       { ad: "Hayat Bilgisi", slug: "hayat-bilgisi" },
       { ad: "Fen Bilimleri", slug: "fen-bilimleri" },
       { ad: "Sosyal Bilgiler", slug: "sosyal-bilgiler" },
+      { ad: "İngilizce", slug: "ingilizce" },
     ],
   },
   ortaokul: {
@@ -26,6 +27,7 @@ const dersler = {
       { ad: "Matematik", slug: "matematik" },
       { ad: "Fen Bilimleri", slug: "fen-bilimleri" },
       { ad: "Sosyal Bilgiler", slug: "sosyal-bilgiler" },
+      { ad: "İngilizce", slug: "ingilizce" },
       { ad: "İnkılap Tarihi", slug: "inkilap-tarihi" },
     ],
   },
@@ -40,6 +42,7 @@ const SUBJECT_ICONS: Record<string, React.ReactNode> = {
   "fen-bilimleri": <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />,
   "sosyal-bilgiler": <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />,
   "inkilap-tarihi": <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5" />,
+  ingilizce: <path strokeLinecap="round" strokeLinejoin="round" d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802" />,
 };
 
 const LEVEL_ICONS: Record<string, React.ReactNode> = {

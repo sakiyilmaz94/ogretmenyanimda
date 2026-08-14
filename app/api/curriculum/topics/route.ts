@@ -38,5 +38,9 @@ export async function GET(req: Request) {
     questionCount: t._count.questions,
   }));
 
+  // Doğal (numerik) sıralama: "10. Ünite" düz alfabetik sıralamada "2. Ünite"nin
+  // önüne düşmesin diye — "1, 2, ... 10" doğru sırada gelsin.
+  result.sort((a, b) => a.name.localeCompare(b.name, "tr", { numeric: true }));
+
   return NextResponse.json(result);
 }

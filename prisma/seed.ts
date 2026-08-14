@@ -91,8 +91,16 @@ const curriculumData = [
   { subject: "INGILIZCE", grade: 6, name: "Reading Comprehension", description: "Metin okuma ve anlama" },
   { subject: "INGILIZCE", grade: 7, name: "Modal Verbs", description: "Can, could, will, would gibi yardımcı fiiller" },
   { subject: "INGILIZCE", grade: 7, name: "Complex Sentences", description: "Karmaşık cümle yapıları" },
-  { subject: "INGILIZCE", grade: 8, name: "Advanced Grammar", description: "İleri seviye dilbilgisi" },
-  { subject: "INGILIZCE", grade: 8, name: "Writing Skills", description: "Yazılı anlatım becerisi" },
+  { subject: "INGILIZCE", grade: 8, name: "1. Ünite: Friendship (Arkadaşlık)", description: "Arkadaşlık" },
+  { subject: "INGILIZCE", grade: 8, name: "2. Ünite: Teen Life (Genç Yaşamı)", description: "Genç yaşamı" },
+  { subject: "INGILIZCE", grade: 8, name: "3. Ünite: In the Kitchen (Mutfakta)", description: "Mutfakta" },
+  { subject: "INGILIZCE", grade: 8, name: "4. Ünite: On the Phone (Telefonda)", description: "Telefonda" },
+  { subject: "INGILIZCE", grade: 8, name: "5. Ünite: The Internet (İnternet)", description: "İnternet" },
+  { subject: "INGILIZCE", grade: 8, name: "6. Ünite: Adventures (Maceralar)", description: "Maceralar" },
+  { subject: "INGILIZCE", grade: 8, name: "7. Ünite: Tourism (Turizm)", description: "Turizm" },
+  { subject: "INGILIZCE", grade: 8, name: "8. Ünite: Chores (Ev İşleri)", description: "Ev işleri" },
+  { subject: "INGILIZCE", grade: 8, name: "9. Ünite: Science (Bilim)", description: "Bilim" },
+  { subject: "INGILIZCE", grade: 8, name: "10. Ünite: Natural Forces (Doğal Afetler)", description: "Doğal afetler" },
 ];
 
 async function seedCurriculum() {
