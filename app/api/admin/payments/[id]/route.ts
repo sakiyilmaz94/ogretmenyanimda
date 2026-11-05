@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
+import { sendEmail, emailPaymentReceived, emailPaymentSuccessParent } from "@/lib/email";
+import { formatCurrency } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 
 // Admin bir IBAN havalesini onaylar (PAID) — velinin havalesini bankadan görüp işaretler.
@@ -21,6 +23,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         include: {
           student: { include: { parent: { include: { user: true } } } },
           educator: { include: { user: true } },
+          slot: true,
         },
       },
     },
@@ -50,6 +53,44 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     message: `${payment.booking.student.name} için ödeme onaylandı. Randevu kesinleşmiştir.`,
     link: "/educator/bookings",
   });
+
+  // E-postalar: hata ödeme onayını geri almasın, ama serverless'ta yarıda kesilmesin diye await
+  const { booking } = payment;
+  const parentUser = booking.student.parent.user;
+  const dateStr = new Date(booking.slot.date).toLocaleDateString("tr-TR", {
+    weekday: "long", day: "numeric", month: "long",
+  });
+  const timeStr = `${booking.slot.startTime}–${booking.slot.endTime}`;
+  const amount = formatCurrency(booking.totalPrice.toNumber());
+
+  try {
+    await sendEmail({
+      to: parentUser.email,
+      subject: "Ödemeniz Alındı — Randevunuz Kesinleşti ✓",
+      html: emailPaymentSuccessParent({
+        parentName: parentUser.name ?? "Veli",
+        studentName: booking.student.name,
+        educatorName: booking.educator.user.name ?? "Öğretmen",
+        date: dateStr,
+        time: timeStr,
+        amount,
+      }),
+    });
+  } catch (e) { console.error("Veli ödeme emaili gönderilemedi:", e); }
+
+  try {
+    await sendEmail({
+      to: booking.educator.user.email,
+      subject: `Ödeme Alındı — ${booking.student.name}`,
+      html: emailPaymentReceived({
+        educatorName: booking.educator.user.name ?? "Öğretmen",
+        studentName: booking.student.name,
+        date: dateStr,
+        time: timeStr,
+        amount,
+      }),
+    });
+  } catch (e) { console.error("Öğretmen ödeme emaili gönderilemedi:", e); }
 
   revalidatePath("/admin/payments");
   return NextResponse.json({ ok: true });
