@@ -333,6 +333,9 @@ export function emailBookingConfirmed({
         </table>
         <p style="margin:10px 0 0;font-size:13px">Havale açıklamasına <strong>${referenceCode}</strong> kodunu yazmayı unutmayın; ödemeniz bu kodla eşleştirilir.</p>
       </div>` : ""}
+      <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:14px 16px;margin:16px 0;color:#9a3412">
+        <strong>⏳ Önemli:</strong> Ödemeniz onaylanana kadar dersiniz <strong>kesinleşmiş sayılmaz</strong>. Dersin yapılabilmesi için ödemeyi <strong>ders saatinden önce</strong> tamamlayın.
+      </div>
       <a href="https://ogretmenyanimda.com.tr/parent/bookings" style="display:inline-block;background:#d97706;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Ödeme Yap →</a>
       ${meetingUrl ? `<a href="${meetingUrl}" style="display:inline-block;margin-left:12px;background:#1a73e8;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Google Meet'e Katıl →</a>` : ""}
     </div>`;
