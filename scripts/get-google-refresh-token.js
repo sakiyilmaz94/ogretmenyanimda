@@ -16,7 +16,12 @@ const { google } = require("googleapis");
 const CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
 const REDIRECT = "http://localhost:5555";
-const SCOPE = ["https://www.googleapis.com/auth/meetings.space.created"];
+const SCOPE = [
+  "https://www.googleapis.com/auth/meetings.space.created",
+  "https://www.googleapis.com/auth/calendar.events", // Meet API çalışmazsa Takvim yedeği
+  "openid",
+  "email", // hangi hesapla onay verildiğini göstermek için
+];
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error("GOOGLE_OAUTH_CLIENT_ID ve GOOGLE_OAUTH_CLIENT_SECRET tanımlı değil (.env.local).");
@@ -36,6 +41,10 @@ const server = http.createServer(async (req, res) => {
     if (!code) { res.statusCode = 400; res.end("Kod bulunamadı."); return; }
     const { tokens } = await oauth2.getToken(code);
     res.end("Tamam! Terminale dönebilirsin. Bu sekmeyi kapat.");
+    if (tokens.id_token) {
+      const email = JSON.parse(Buffer.from(tokens.id_token.split(".")[1], "base64url").toString()).email;
+      console.log("\nOnay veren hesap: " + email);
+    }
     if (tokens.refresh_token) {
       console.log("\n✅ REFRESH TOKEN (bunu Vercel + .env.local'e GOOGLE_OAUTH_REFRESH_TOKEN olarak ekle):\n");
       console.log(tokens.refresh_token + "\n");

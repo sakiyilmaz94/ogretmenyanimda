@@ -1,10 +1,10 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import { notify } from "@/lib/notify";
+import { notify, notifyAdmins } from "@/lib/notify";
 import { sendEmail, emailBookingConfirmed } from "@/lib/email";
 import { createMeetingSpace } from "@/lib/google-meet";
 import { gradeLevelToNumber } from "@/lib/assessment";
-import { generateUniqueReferenceCode } from "@/lib/payment-config";
+import { generateUniqueReferenceCode, getBankInfo } from "@/lib/payment-config";
 import { NextResponse } from "next/server";
 import { formatCurrency } from "@/lib/utils";
 
@@ -41,13 +41,24 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
 
     if (action === "approve") {
       // Google Meet linki oluştur
-      const meetingUrl = await createMeetingSpace();
-
-      // Onay anı + 24 saatlik ödeme penceresi (son ödeme tarihi)
-      const confirmedAt = new Date();
-      const deadlineStr = new Date(confirmedAt.getTime() + 24 * 3600 * 1000).toLocaleString("tr-TR", {
-        day: "numeric", month: "long", hour: "2-digit", minute: "2-digit",
+      const meetingUrl = await createMeetingSpace({
+        date: new Date(booking.slot.date).toISOString().slice(0, 10),
+        startTime: booking.slot.startTime,
+        endTime: booking.slot.endTime,
+        summary: `Ders: ${booking.student.name} — ${booking.educator.user.name ?? "Öğretmen"}`,
+        attendeeEmails: [booking.student.parent.user.email, booking.educator.user.email],
       });
+
+      if (!meetingUrl) {
+        // Sessizce linksiz kalmasın: yöneticiye haber ver (cron dersten önce yeniden deneyecek)
+        await notifyAdmins({
+          title: "Meet linki üretilemedi ⚠️",
+          message: `${booking.student.name} dersi (${dateStr} ${timeStr}) için Meet linki oluşturulamadı. Dersten önce otomatik yeniden denenecek; Google bağlantısını kontrol edin.`,
+          link: "/admin/bookings",
+        });
+      }
+
+      const confirmedAt = new Date();
 
       await db.booking.update({
         where: { id: bookingId },
@@ -81,7 +92,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ bookin
           date: dateStr,
           time: timeStr,
           amount,
-          deadline: deadlineStr,
+          bank: await getBankInfo(),
+          referenceCode,
         }),
       });
 

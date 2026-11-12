@@ -19,3 +19,9 @@ export async function notify({ userId, title, message, link }: NotifyPayload) {
     payload: { title, message, link },
   });
 }
+
+// Tüm yöneticilere uygulama içi bildirim (ör. Meet linki üretilemedi)
+export async function notifyAdmins(payload: Omit<NotifyPayload, "userId">) {
+  const admins = await db.user.findMany({ where: { role: "ADMIN" }, select: { id: true } });
+  await Promise.all(admins.map((a) => notify({ userId: a.id, ...payload }).catch((e) => console.error("Admin bildirimi gönderilemedi:", e))));
+}

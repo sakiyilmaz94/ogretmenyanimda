@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
+import { createMeetingSpace } from "@/lib/google-meet";
 import { sendEmail, emailPaymentReminder, emailBookingAutoCancelled, emailMeetingLink, emailLessonReportRequest } from "@/lib/email";
 import { formatCurrency, SUBJECT_LABELS } from "@/lib/utils";
 
@@ -149,7 +150,6 @@ export async function GET(req: Request) {
     where: {
       status: { in: ["CONFIRMED", "COMPLETED"] },
       payment: { status: "PAID" },
-      meetingUrl: { not: null },
       meetLinkSentAt: null,
       // Yalnızca yakın tarihli dersler (sorguyu daraltmak için)
       slot: { date: { gte: new Date(nowMs - 36 * 3600 * 1000), lte: new Date(nowMs + 3 * 864e5) } },
@@ -168,7 +168,23 @@ export async function GET(req: Request) {
 
     const parentUser = b.student.parent.user;
     const { date, time } = fmt(b.slot.date, b.slot.startTime, b.slot.endTime);
-    const url = b.meetingUrl!;
+
+    // Onay anında link üretilemediyse şimdi yeniden dene
+    let url = b.meetingUrl;
+    if (!url) {
+      url = await createMeetingSpace({
+        date: ymd,
+        startTime: b.slot.startTime,
+        endTime: b.slot.endTime,
+        summary: `Ders: ${b.student.name} — ${b.educator.user.name ?? "Öğretmen"}`,
+        attendeeEmails: [parentUser.email, b.educator.user.email],
+      });
+      if (!url) {
+        console.error(`Meet linki yeniden üretilemedi (booking ${b.id})`);
+        continue;
+      }
+      await db.booking.update({ where: { id: b.id }, data: { meetingUrl: url } });
+    }
 
     await sendEmail({
       to: parentUser.email,

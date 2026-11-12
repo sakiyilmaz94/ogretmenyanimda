@@ -297,7 +297,8 @@ export function emailBookingConfirmed({
   time,
   amount,
   meetingUrl,
-  deadline,
+  bank,
+  referenceCode,
 }: {
   parentName: string;
   educatorName: string;
@@ -306,7 +307,8 @@ export function emailBookingConfirmed({
   time: string;
   amount: string;
   meetingUrl?: string;
-  deadline?: string; // son ödeme tarih/saati (ör. "12 Haziran 14:00")
+  bank?: { iban: string; accountName: string; bankName: string };
+  referenceCode?: string; // havale açıklamasına yazılacak benzersiz kod
 }) {
   return `
     <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:24px">
@@ -321,9 +323,16 @@ export function emailBookingConfirmed({
         <tr><td style="padding:8px;${meetingUrl ? "border-bottom:1px solid #e2e8f0;" : ""}color:#64748b">Ödeme Tutarı</td><td style="padding:8px;${meetingUrl ? "border-bottom:1px solid #e2e8f0;" : ""}font-weight:600;color:#d97706">${amount}</td></tr>
         ${meetingUrl ? `<tr><td style="padding:8px;color:#64748b">Google Meet</td><td style="padding:8px;font-weight:600"><a href="${meetingUrl}" style="color:#1a73e8">${meetingUrl}</a></td></tr>` : ""}
       </table>
-      <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:14px 16px;margin:16px 0;color:#9a3412">
-        <strong>⏳ Önemli:</strong> Lütfen <strong>24 saat içinde</strong>${deadline ? ` (son ödeme: <strong>${deadline}</strong>)` : ""} ödemeyi tamamlayın. Aksi halde randevunuz <strong>otomatik olarak iptal edilecek</strong> ve bu saat diğer veliler için yeniden açılacaktır.
-      </div>
+      ${bank && referenceCode ? `<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 16px;margin:16px 0;color:#14532d">
+        <strong>Ödeme bilgileri (havale / EFT)</strong>
+        <table style="width:100%;border-collapse:collapse;margin-top:8px">
+          <tr><td style="padding:4px 0;color:#166534">Banka</td><td style="padding:4px 0;font-weight:600">${bank.bankName}</td></tr>
+          <tr><td style="padding:4px 0;color:#166534">Alıcı</td><td style="padding:4px 0;font-weight:600">${bank.accountName}</td></tr>
+          <tr><td style="padding:4px 0;color:#166534">IBAN</td><td style="padding:4px 0;font-weight:600;font-family:monospace">${bank.iban}</td></tr>
+          <tr><td style="padding:4px 0;color:#166534">Açıklama (referans kodu)</td><td style="padding:4px 0;font-weight:700;font-family:monospace;color:#b45309">${referenceCode}</td></tr>
+        </table>
+        <p style="margin:10px 0 0;font-size:13px">Havale açıklamasına <strong>${referenceCode}</strong> kodunu yazmayı unutmayın; ödemeniz bu kodla eşleştirilir.</p>
+      </div>` : ""}
       <a href="https://ogretmenyanimda.com.tr/parent/bookings" style="display:inline-block;background:#d97706;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Ödeme Yap →</a>
       ${meetingUrl ? `<a href="${meetingUrl}" style="display:inline-block;margin-left:12px;background:#1a73e8;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Google Meet'e Katıl →</a>` : ""}
     </div>`;
