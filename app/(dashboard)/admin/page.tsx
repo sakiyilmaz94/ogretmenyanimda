@@ -12,6 +12,8 @@ export default async function AdminDashboard() {
     totalStudents,
     totalBookings,
     recentPayments,
+    totalRevenue,
+    rate,
   ] = await Promise.all([
     db.educator.count(),
     db.educator.count({ where: { status: "PENDING" } }),
@@ -30,14 +32,14 @@ export default async function AdminDashboard() {
         },
       },
     }),
+    db.payment.aggregate({
+      where: { status: "PAID" },
+      _sum: { amount: true },
+    }),
+    getCommissionRate(),
   ]);
 
-  const totalRevenue = await db.payment.aggregate({
-    where: { status: "PAID" },
-    _sum: { amount: true },
-  });
   const gross = totalRevenue._sum.amount?.toNumber() ?? 0;
-  const rate = await getCommissionRate();
   const commission = Math.round(gross * (rate / 100) * 100) / 100; // platform geliri
 
   const stats = [
