@@ -76,7 +76,7 @@ export default function EgitmenBasvurusuPage() {
                 <li>Vereceğiniz dersin <strong>alan öğretmeni</strong> olmanız veya o alanda yetkin olmanız (başvuruda yalnızca platformdaki derslerden seçim yapılır).</li>
                 <li>Diploma ve kimlik belgenizi yüklemeniz. Branş öğretmenleri ortaokul seviyesinde, sınıf öğretmenleri tüm ilkokul ve ortaokul seviyelerinde ders verebilir.</li>
                 <li><strong>Öğrenci koçluğu</strong> dersi için koçluk sertifikası ve deneyim zorunludur.</li>
-                <li>Telefonla ulaşılabilir olmanız; başvurunuzu gerektiğinde sizi arayarak değerlendiriyoruz.</li>
+                <li>Telefonla ulaşılabilir olmanız; gerekli görürsek sizi arayabiliriz.</li>
                 <li>Verdiğiniz dersler, sınıf seviyeleri, deneyiminiz ve <strong>saatlik ücretiniz</strong> başvuruda eksiksiz yazılmalıdır. Eksik başvurular onaylanamaz.</li>
               </ul>
               <p className="mt-5 text-body-md text-on-surface-variant bg-primary-fixed/40 rounded-md p-4 leading-relaxed">

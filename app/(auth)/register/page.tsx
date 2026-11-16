@@ -336,8 +336,8 @@ export default function RegisterPage() {
                       <p className="font-semibold text-on-background mb-1">Aradığımız öğretmen özellikleri</p>
                       <ul className="list-disc pl-5 space-y-0.5">
                         <li>Vereceğiniz dersin <b>alan öğretmeni</b> veya o alanda yetkin olmak</li>
-                        <li>Yeni mezun ya da deneyimli, ancak ders vermeye istekli ve düzenli</li>
-                        <li>Telefonla ulaşılabilir olmak (başvurunuzu sizi arayarak değerlendiriyoruz)</li>
+                        <li>Deneyimli, ders vermeye istekli ve düzenli olmak</li>
+                        <li>Telefonla ulaşılabilir olmak (gerekli görürsek sizi arayabiliriz)</li>
                       </ul>
                       <p className="mt-2 text-caption">Aşağıdaki tüm alanlar zorunludur; eksik başvuru onaylanamaz.</p>
                     </div>
