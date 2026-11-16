@@ -3,6 +3,7 @@ import { Inter, DM_Serif_Display, Quicksand, Plus_Jakarta_Sans } from "next/font
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const dmSerif = DM_Serif_Display({
@@ -40,6 +41,7 @@ export default async function RootLayout({
     <html lang="tr">
       <body className={`${inter.variable} ${dmSerif.variable} ${quicksand.variable} ${plusJakarta.variable} font-sans`}>
         <SessionProvider session={session}>{children}</SessionProvider>
+        <Analytics />
       </body>
     </html>
   );
