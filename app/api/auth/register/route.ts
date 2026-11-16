@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { Role, Subject, GradeLevel } from "@prisma/client";
 import { sendEmail, emailWelcome } from "@/lib/email";
-import { APPLICABLE_SUBJECTS, ALL_GRADE_LEVELS, BRANCHES, branchMismatch, gradeMismatch, missingEducatorFields } from "@/lib/educator-requirements";
+import { APPLICABLE_SUBJECTS, ALL_GRADE_LEVELS, BRANCHES, branchMismatch, gradeMismatch, MIN_EXPERIENCE_YEARS, missingEducatorFields } from "@/lib/educator-requirements";
 
 export async function POST(req: Request) {
   const { name, email, password, role, diplomaUrl, idCardUrl, coachingCertUrl, phone, subjects, gradeLevels, hourlyRate, experience, branch } = await req.json();
@@ -32,6 +32,9 @@ export async function POST(req: Request) {
     });
     if (missing.length > 0) {
       return NextResponse.json({ error: `Zorunlu alanlar eksik: ${missing.join(", ")}.` }, { status: 400 });
+    }
+    if (exp < MIN_EXPERIENCE_YEARS) {
+      return NextResponse.json({ error: `Platformumuzda en az ${MIN_EXPERIENCE_YEARS} yıl deneyimli öğretmenlerle çalışıyoruz.` }, { status: 400 });
     }
     if (!branch || !BRANCHES[branch]) {
       return NextResponse.json({ error: "Branşınızı (mezuniyet alanınızı) seçin." }, { status: 400 });

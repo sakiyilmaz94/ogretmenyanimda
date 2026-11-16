@@ -4,6 +4,9 @@ import { Subject, GradeLevel } from "@prisma/client";
 export const APPLICABLE_SUBJECTS = Object.values(Subject).filter((s) => s !== "DIGER");
 export const ALL_GRADE_LEVELS = Object.values(GradeLevel);
 
+/** Başvuruda kabul edilen en düşük deneyim (yıl). Admin onayında esnek bırakılır, kayıtta zorunludur. */
+export const MIN_EXPERIENCE_YEARS = 5;
+
 export interface EducatorRequirementInput {
   phone?: string | null;
   subjects?: string[] | null;

@@ -74,6 +74,7 @@ export default function EgitmenBasvurusuPage() {
               <h2 className="font-display text-headline-md text-on-background mb-4">Aradığımız Öğretmen Özellikleri</h2>
               <ul className="space-y-2 text-body-md text-on-surface-variant list-disc pl-5">
                 <li>Vereceğiniz dersin <strong>alan öğretmeni</strong> olmanız veya o alanda yetkin olmanız (başvuruda yalnızca platformdaki derslerden seçim yapılır).</li>
+                <li><strong>En az 5 yıl</strong> öğretmenlik deneyimine sahip olmanız.</li>
                 <li>Diploma ve kimlik belgenizi yüklemeniz. Branş öğretmenleri ortaokul seviyesinde, sınıf öğretmenleri tüm ilkokul ve ortaokul seviyelerinde ders verebilir.</li>
                 <li><strong>Öğrenci koçluğu</strong> dersi için koçluk sertifikası ve deneyim zorunludur.</li>
                 <li>Telefonla ulaşılabilir olmanız; gerekli görürsek sizi arayabiliriz.</li>

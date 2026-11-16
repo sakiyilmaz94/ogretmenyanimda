@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
-import { BRANCHES, branchMismatch, gradeMismatch } from "@/lib/educator-requirements";
+import { BRANCHES, branchMismatch, gradeMismatch, MIN_EXPERIENCE_YEARS } from "@/lib/educator-requirements";
 
 const APPLY_SUBJECTS = Object.keys(SUBJECT_LABELS).filter((k) => k !== "DIGER");
 const APPLY_GRADES = Object.keys(GRADE_LABELS);
@@ -64,6 +64,12 @@ export default function RegisterPage() {
       if (missing.length > 0) {
         setBadFields(keys);
         setError(`Başvurunuz gönderilmedi. Lütfen zorunlu alanları doldurun: ${missing.join(", ")}.`);
+        setTimeout(() => document.getElementById("register-error")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+        return;
+      }
+      if (ed.experience !== "" && Number(ed.experience) < MIN_EXPERIENCE_YEARS) {
+        setBadFields(["experience"]);
+        setError(`Platformumuzda en az ${MIN_EXPERIENCE_YEARS} yıl deneyimli öğretmenlerle çalışıyoruz. Deneyim yılınız bu şartın altında olduğu için başvurunuzu şu an alamıyoruz.`);
         setTimeout(() => document.getElementById("register-error")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
         return;
       }
@@ -336,7 +342,7 @@ export default function RegisterPage() {
                       <p className="font-semibold text-on-background mb-1">Aradığımız öğretmen özellikleri</p>
                       <ul className="list-disc pl-5 space-y-0.5">
                         <li>Vereceğiniz dersin <b>alan öğretmeni</b> veya o alanda yetkin olmak</li>
-                        <li>Deneyimli, ders vermeye istekli ve düzenli olmak</li>
+                        <li>En az 5 yıl deneyimli, ders vermeye istekli ve düzenli olmak</li>
                         <li>Telefonla ulaşılabilir olmak (gerekli görürsek sizi arayabiliriz)</li>
                       </ul>
                       <p className="mt-2 text-caption">Aşağıdaki tüm alanlar zorunludur; eksik başvuru onaylanamaz.</p>
