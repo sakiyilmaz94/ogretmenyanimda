@@ -35,7 +35,7 @@ export default function EgitmenBasvurusuPage() {
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { n: "Hızla", label: "Büyüyen Komunite" },
-                  { n: "₺", label: "Düzenli Gelir" },
+                  { n: "₺", label: "Kendi Ücretinizi Belirleyin" },
                   { n: "Esnek", label: "Çalışma Saati" },
                   { n: "Online", label: "Tamamen Dijital" },
                 ].map((s) => (
@@ -80,8 +80,7 @@ export default function EgitmenBasvurusuPage() {
                 <li>Verdiğiniz dersler, sınıf seviyeleri, deneyiminiz ve <strong>saatlik ücretiniz</strong> başvuruda eksiksiz yazılmalıdır. Eksik başvurular onaylanamaz.</li>
               </ul>
               <p className="mt-5 text-body-md text-on-surface-variant bg-primary-fixed/40 rounded-md p-4 leading-relaxed">
-                💛 Ders vermek emek, birikim ve yılların karşılığıdır. Ücretinizi belirlerken kendi değerinizi ve tecrübenizi yansıtın;
-                biz de ailelere kaliteli ve güvenilir bir ders ortamı sunmaya çalışıyoruz.
+                💛 Ders vermek emek, birikim ve yılların karşılığıdır. Ücretinizi belirlerken kendi değerinizi ve tecrübenizi yansıtın.
               </p>
             </div>
           </div>

@@ -149,7 +149,7 @@ export default function RegisterPage() {
       title: "Öğretmen Başvurusu",
       subtitle: "Platformda ders verin, gelir elde edin",
       desc: "Başvurunuz yöneticilerimiz tarafından incelenir. Onaylandıktan sonra profilinizi oluşturup ders verebilirsiniz.",
-      features: ["Esnek çalışma saati", "Düzenli gelir", "Profil sayfası", "Randevu yönetimi"],
+      features: ["Esnek çalışma saati", "Kendi ücretini belirle", "Profil sayfası", "Randevu yönetimi"],
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -344,7 +344,7 @@ export default function RegisterPage() {
 
                     <div>
                       <label className="block text-label-md text-on-surface-variant mb-1.5">Branşınız (mezuniyet alanı) <span className="text-on-error-container">*</span></label>
-                      <select value={ed.branch} onChange={(e) => setEd({ ...ed, branch: e.target.value })} className={`${inputBase} ${bd("branch")}`}>
+                      <select value={ed.branch} onChange={(e) => { const b = e.target.value; setEd((p) => ({ ...p, branch: b, subjects: p.subjects.filter((x) => BRANCHES[b]?.subjects.includes(x)), gradeLevels: BRANCHES[b]?.ortaokulOnly ? p.gradeLevels.filter((g) => g.startsWith("ORTAOKUL_")) : p.gradeLevels })); }} className={`${inputBase} ${bd("branch")}`}>
                         <option value="">Seçin…</option>
                         {Object.entries(BRANCHES).map(([k, b]) => <option key={k} value={k}>{b.label}</option>)}
                       </select>
@@ -359,19 +359,20 @@ export default function RegisterPage() {
                     <div>
                       <label className="block text-label-md text-on-surface-variant mb-1.5">Vereceğiniz Dersler <span className="text-on-error-container">*</span></label>
                       <div className={`flex flex-wrap gap-2 rounded-md ${bad("subjects") ? "p-2 border border-error" : ""}`}>
-                        {APPLY_SUBJECTS.map((k) => (
+                        {(ed.branch ? APPLY_SUBJECTS.filter((k) => BRANCHES[ed.branch]?.subjects.includes(k)) : []).map((k) => (
                           <button type="button" key={k} onClick={() => toggle("subjects", k)}
                             className={`px-3 py-1.5 rounded-full text-caption font-semibold transition ${ed.subjects.includes(k) ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
                             {SUBJECT_LABELS[k]}
                           </button>
                         ))}
+                        {!ed.branch && <p className="text-caption text-on-surface-variant">Önce branşınızı seçin; verebileceğiniz dersler burada görünecek.</p>}
                       </div>
                     </div>
 
                     <div>
                       <label className="block text-label-md text-on-surface-variant mb-1.5">Sınıf Seviyeleri <span className="text-on-error-container">*</span></label>
                       <div className={`flex flex-wrap gap-2 rounded-md ${bad("grades") ? "p-2 border border-error" : ""}`}>
-                        {APPLY_GRADES.map((k) => (
+                        {(ed.branch && BRANCHES[ed.branch]?.ortaokulOnly ? APPLY_GRADES.filter((k) => k.startsWith("ORTAOKUL_")) : ed.branch ? APPLY_GRADES : []).map((k) => (
                           <button type="button" key={k} onClick={() => toggle("gradeLevels", k)}
                             className={`px-3 py-1.5 rounded-full text-caption font-semibold transition ${ed.gradeLevels.includes(k) ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
                             {GRADE_LABELS[k]}
@@ -388,12 +389,12 @@ export default function RegisterPage() {
                       </div>
                       <div>
                         <label className="block text-label-md text-on-surface-variant mb-1.5">Saatlik Ücret (₺) <span className="text-on-error-container">*</span></label>
-                        <input type="number" min={1} step={10} value={ed.hourlyRate} onChange={(e) => setEd({ ...ed, hourlyRate: e.target.value })}
+                        <input type="number" min={1} step={1} value={ed.hourlyRate} onChange={(e) => setEd({ ...ed, hourlyRate: e.target.value })}
                           className={`${inputBase} ${bd("rate")}`} />
                       </div>
                     </div>
                     <p className="text-caption text-on-surface-variant -mt-2 leading-relaxed">
-                      💛 Verdiğiniz ders emek, birikim ve yılların karşılığı. Ücretinizi belirlerken kendi değerinizi ve tecrübenizi yansıtın; öğrencilere kaliteli bir ders ortamı sunduğunuzu unutmayın.
+                      💛 Verdiğiniz ders emek, birikim ve yılların karşılığı. Ücretinizi belirlerken kendi değerinizi ve tecrübenizi yansıtın.
                     </p>
 
                     <div>
