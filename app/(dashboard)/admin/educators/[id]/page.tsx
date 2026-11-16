@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import EducatorDetailActions from "@/components/dashboard/EducatorDetailActions";
+import { missingEducatorFields, BRANCHES } from "@/lib/educator-requirements";
 import AdminEducatorEditForm from "@/components/dashboard/AdminEducatorEditForm";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +58,10 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
         <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 lg:col-span-2 space-y-4 soft-card-static">
           <h2 className="font-display text-headline-md text-on-background">Profil Bilgileri</h2>
           <div className="grid grid-cols-2 gap-y-3 gap-x-6">
+            <div><p className="text-caption text-on-surface-variant">Branş</p><p className="text-body-md font-medium text-on-background">{educator.branch ? (BRANCHES[educator.branch]?.label ?? educator.branch) : "—"}</p></div>
+            {educator.coachingCertUrl && (
+              <div><p className="text-caption text-on-surface-variant">Koçluk Sertifikası</p><a href={educator.coachingCertUrl} target="_blank" rel="noopener noreferrer" className="text-body-md font-medium text-primary hover:underline">Görüntüle →</a></div>
+            )}
             <div><p className="text-caption text-on-surface-variant">Telefon</p><p className="text-body-md font-medium text-on-background">{educator.phone ?? "—"}</p></div>
             <div><p className="text-caption text-on-surface-variant">Saatlik Ücret</p><p className="text-body-md font-medium text-on-background">{formatCurrency(educator.hourlyRate.toNumber())}</p></div>
             <div><p className="text-caption text-on-surface-variant">Unvan</p><p className="text-body-md font-medium text-on-background">{educator.titleName ?? "—"}</p></div>
@@ -200,7 +205,17 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
 
       {/* Approve/Reject actions — only for PENDING */}
       {educator.status === "PENDING" && (
-        <EducatorDetailActions educatorId={educator.id} />
+        <EducatorDetailActions
+          educatorId={educator.id}
+          missing={missingEducatorFields({
+            phone: educator.phone,
+            subjects: educator.subjects,
+            gradeLevels: educator.gradeLevels,
+            hourlyRate: educator.hourlyRate.toNumber(),
+            experience: educator.experience,
+            coachingCertUrl: educator.coachingCertUrl,
+          })}
+        />
       )}
 
       {/* Rejection note if rejected */}

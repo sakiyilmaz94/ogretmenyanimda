@@ -3,17 +3,30 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
+import { BRANCHES, branchMismatch, gradeMismatch } from "@/lib/educator-requirements";
+
+const APPLY_SUBJECTS = Object.keys(SUBJECT_LABELS).filter((k) => k !== "DIGER");
+const APPLY_GRADES = Object.keys(GRADE_LABELS);
 
 export default function RegisterPage() {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [form, setForm] = useState({ name: "", email: "", password: "", role: "" });
+  const [ed, setEd] = useState({ branch: "", phone: "", hourlyRate: "", experience: "", subjects: [] as string[], gradeLevels: [] as string[] });
+  const toggle = (key: "subjects" | "gradeLevels", v: string) =>
+    setEd((p) => ({ ...p, [key]: p[key].includes(v) ? p[key].filter((x) => x !== v) : [...p[key], v] }));
   const [diploma, setDiploma] = useState<File | null>(null);
   const [idCard, setIdCard] = useState<File | null>(null);
+  const [coachCert, setCoachCert] = useState<File | null>(null);
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [sozlesmeAccepted, setSozlesmeAccepted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [badFields, setBadFields] = useState<string[]>([]);
+  const bad = (k: string) => badFields.includes(k);
+  const inputBase = "w-full bg-surface-container-low border rounded-md px-4 py-3 text-body-md focus:outline-none focus:ring-2 focus:ring-primary/30";
+  const bd = (k: string) => (bad(k) ? "border-error ring-1 ring-error" : "border-outline-variant");
 
   async function uploadFile(file: File, type: string): Promise<string> {
     const fd = new FormData();
@@ -35,11 +48,52 @@ export default function RegisterPage() {
       setError("Devam edebilmek için Eğitmen Hizmet Sözleşmesi'ni onaylamanız gerekir.");
       return;
     }
+    setBadFields([]);
+    if (form.role === "EDUCATOR") {
+      const missing: string[] = [];
+      const keys: string[] = [];
+      if (!ed.branch) { missing.push("Branş (mezuniyet alanı)"); keys.push("branch"); }
+      if (ed.phone.replace(/\D/g, "").length < 10) { missing.push("Telefon numarası"); keys.push("phone"); }
+      if (ed.subjects.length === 0) { missing.push("Vereceğiniz ders(ler)"); keys.push("subjects"); }
+      if (ed.gradeLevels.length === 0) { missing.push("Sınıf seviyeleri"); keys.push("grades"); }
+      if (ed.experience === "" || Number(ed.experience) < 0) { missing.push("Deneyim (yıl)"); keys.push("experience"); }
+      if (!ed.hourlyRate || Number(ed.hourlyRate) <= 0) { missing.push("Saatlik ücret"); keys.push("rate"); }
+      if (!diploma) { missing.push("Diploma belgesi"); keys.push("diploma"); }
+      if (!idCard) { missing.push("Kimlik fotoğrafı"); keys.push("idcard"); }
+      if (ed.subjects.includes("OGRENCI_KOCLUGU") && !coachCert) { missing.push("Koçluk sertifikası"); keys.push("coach"); }
+      if (missing.length > 0) {
+        setBadFields(keys);
+        setError(`Başvurunuz gönderilmedi. Lütfen zorunlu alanları doldurun: ${missing.join(", ")}.`);
+        setTimeout(() => document.getElementById("register-error")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+        return;
+      }
+      if (ed.branch === "DIGER") {
+        setBadFields(["branch"]);
+        setError("Şu an platformumuzda bu branşa ait ders bulunmuyor, bu nedenle başvurunuzu alamıyoruz. İleride yeni dersler açıldığında tekrar başvurabilirsiniz.");
+        setTimeout(() => document.getElementById("register-error")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+        return;
+      }
+      const gm = gradeMismatch(ed.branch, ed.gradeLevels);
+      if (gm.length > 0) {
+        setBadFields(["grades"]);
+        setError(`${BRANCHES[ed.branch].label} için yalnızca ortaokul (5-8. sınıf) seviyeleri seçilebilir. İlkokul seviyesini kaldırın.`);
+        setTimeout(() => document.getElementById("register-error")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+        return;
+      }
+      const mism = branchMismatch(ed.branch, ed.subjects);
+      if (mism.length > 0) {
+        setBadFields(["subjects"]);
+        setError(`Branşınız (${BRANCHES[ed.branch].label}) ile şu dersler uyuşmuyor: ${mism.map((m) => SUBJECT_LABELS[m]).join(", ")}. Başvuru yalnızca kendi branşınızdaki derslerle yapılabilir; lütfen seçiminizi düzeltin.`);
+        setTimeout(() => document.getElementById("register-error")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+        return;
+      }
+    }
     setLoading(true);
     setError("");
 
     let diplomaUrl: string | undefined;
     let idCardUrl: string | undefined;
+    let coachingCertUrl: string | undefined;
 
     if (form.role === "EDUCATOR") {
       if (!diploma || !idCard) {
@@ -48,9 +102,10 @@ export default function RegisterPage() {
         return;
       }
       try {
-        [diplomaUrl, idCardUrl] = await Promise.all([
+        [diplomaUrl, idCardUrl, coachingCertUrl] = await Promise.all([
           uploadFile(diploma, "diploma"),
           uploadFile(idCard, "idcard"),
+          coachCert && ed.subjects.includes("OGRENCI_KOCLUGU") ? uploadFile(coachCert, "coaching") : Promise.resolve(undefined as unknown as string),
         ]);
       } catch {
         setError("Dosya yükleme sırasında hata oluştu. Tekrar deneyin.");
@@ -62,7 +117,7 @@ export default function RegisterPage() {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, diplomaUrl, idCardUrl }),
+      body: JSON.stringify({ ...form, diplomaUrl, idCardUrl, coachingCertUrl, ...(form.role === "EDUCATOR" ? { phone: ed.phone, hourlyRate: Number(ed.hourlyRate), experience: Number(ed.experience), subjects: ed.subjects, gradeLevels: ed.gradeLevels, branch: ed.branch } : {}) }),
     });
 
     const data = await res.json();
@@ -276,6 +331,71 @@ export default function RegisterPage() {
                       Başvurunuz 1–3 iş günü içinde incelenir. Onay sonrası platforma erişim sağlarsınız.
                     </div>
 
+
+                    <div className="bg-surface-container rounded-md p-4 border border-outline-variant text-label-md text-on-surface-variant leading-relaxed">
+                      <p className="font-semibold text-on-background mb-1">Aradığımız öğretmen özellikleri</p>
+                      <ul className="list-disc pl-5 space-y-0.5">
+                        <li>Vereceğiniz dersin <b>alan öğretmeni</b> veya o alanda yetkin olmak</li>
+                        <li>Yeni mezun ya da deneyimli, ancak ders vermeye istekli ve düzenli</li>
+                        <li>Telefonla ulaşılabilir olmak (başvurunuzu sizi arayarak değerlendiriyoruz)</li>
+                      </ul>
+                      <p className="mt-2 text-caption">Aşağıdaki tüm alanlar zorunludur; eksik başvuru onaylanamaz.</p>
+                    </div>
+
+                    <div>
+                      <label className="block text-label-md text-on-surface-variant mb-1.5">Branşınız (mezuniyet alanı) <span className="text-on-error-container">*</span></label>
+                      <select value={ed.branch} onChange={(e) => setEd({ ...ed, branch: e.target.value })} className={`${inputBase} ${bd("branch")}`}>
+                        <option value="">Seçin…</option>
+                        {Object.entries(BRANCHES).map(([k, b]) => <option key={k} value={k}>{b.label}</option>)}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-label-md text-on-surface-variant mb-1.5">Telefon <span className="text-on-error-container">*</span></label>
+                      <input type="tel" value={ed.phone} onChange={(e) => setEd({ ...ed, phone: e.target.value })} placeholder="05XX XXX XX XX"
+                        className={`${inputBase} ${bd("phone")}`} />
+                    </div>
+
+                    <div>
+                      <label className="block text-label-md text-on-surface-variant mb-1.5">Vereceğiniz Dersler <span className="text-on-error-container">*</span></label>
+                      <div className={`flex flex-wrap gap-2 rounded-md ${bad("subjects") ? "p-2 border border-error" : ""}`}>
+                        {APPLY_SUBJECTS.map((k) => (
+                          <button type="button" key={k} onClick={() => toggle("subjects", k)}
+                            className={`px-3 py-1.5 rounded-full text-caption font-semibold transition ${ed.subjects.includes(k) ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
+                            {SUBJECT_LABELS[k]}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-label-md text-on-surface-variant mb-1.5">Sınıf Seviyeleri <span className="text-on-error-container">*</span></label>
+                      <div className={`flex flex-wrap gap-2 rounded-md ${bad("grades") ? "p-2 border border-error" : ""}`}>
+                        {APPLY_GRADES.map((k) => (
+                          <button type="button" key={k} onClick={() => toggle("gradeLevels", k)}
+                            className={`px-3 py-1.5 rounded-full text-caption font-semibold transition ${ed.gradeLevels.includes(k) ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"}`}>
+                            {GRADE_LABELS[k]}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-label-md text-on-surface-variant mb-1.5">Deneyim (yıl) <span className="text-on-error-container">*</span></label>
+                        <input type="number" min={0} value={ed.experience} onChange={(e) => setEd({ ...ed, experience: e.target.value })}
+                          className={`${inputBase} ${bd("experience")}`} />
+                      </div>
+                      <div>
+                        <label className="block text-label-md text-on-surface-variant mb-1.5">Saatlik Ücret (₺) <span className="text-on-error-container">*</span></label>
+                        <input type="number" min={1} step={10} value={ed.hourlyRate} onChange={(e) => setEd({ ...ed, hourlyRate: e.target.value })}
+                          className={`${inputBase} ${bd("rate")}`} />
+                      </div>
+                    </div>
+                    <p className="text-caption text-on-surface-variant -mt-2 leading-relaxed">
+                      💛 Verdiğiniz ders emek, birikim ve yılların karşılığı. Ücretinizi belirlerken kendi değerinizi ve tecrübenizi yansıtın; öğrencilere kaliteli bir ders ortamı sunduğunuzu unutmayın.
+                    </p>
+
                     <div>
                       <label className="block text-label-md text-on-surface-variant mb-1.5">
                         Diploma / Mezuniyet Belgesi{" "}
@@ -318,6 +438,19 @@ export default function RegisterPage() {
                       </label>
                     </div>
 
+                    {ed.subjects.includes("OGRENCI_KOCLUGU") && (
+                      <div>
+                        <label className="block text-label-md text-on-surface-variant mb-1.5">
+                          Öğrenci Koçluğu Sertifikası <span className="text-on-error-container">*</span>
+                        </label>
+                        <label className={`flex items-center gap-3 w-full border-2 border-dashed rounded-md px-4 py-3 cursor-pointer hover:border-primary transition-colors ${bad("coach") ? "border-error" : "border-outline-variant"}`}>
+                          <span className="text-label-md text-on-surface-variant truncate">{coachCert ? coachCert.name : "PDF dosyası seçin (maks. 5MB)"}</span>
+                          <input type="file" accept=".pdf" className="hidden" onChange={(e) => setCoachCert(e.target.files?.[0] || null)} />
+                        </label>
+                        <p className="text-caption text-on-surface-variant mt-1">Koçluk dersi için sertifika ve deneyim yılı zorunludur.</p>
+                      </div>
+                    )}
+
                     <div className="bg-surface-container rounded-md p-4 border border-outline-variant">
                       <p className="text-caption text-on-surface-variant leading-relaxed mb-3">
                         Yüklediğiniz diploma ve kimlik kartı bilgileri yalnızca kimlik doğrulama amacıyla kullanılır. Bu bilgiler hiçbir üçüncü tarafla paylaşılmaz, öğrencilere veya velilere gösterilmez. Onay sürecinin ardından belgeler güvenli şekilde saklanır. 6698 sayılı KVKK kapsamında haklarınız saklıdır.
@@ -349,8 +482,8 @@ export default function RegisterPage() {
                 )}
 
                 {error && (
-                  <div className="bg-error-container text-on-error-container rounded-md px-4 py-3 text-label-md">
-                    {error}
+                  <div id="register-error" className="bg-error text-on-error rounded-md px-4 py-3 text-label-md font-semibold">
+                    ⚠️ {error}
                   </div>
                 )}
 

@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { touchLastSeen } from "@/lib/last-seen";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function ParentLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session || session.user.role !== "PARENT") redirect("/login");
+  await touchLastSeen(session.user.id);
 
   // Ödeme bekleyen ders sayısı: onaylandı ama ödenmedi
   const pendingPayments = await db.booking.count({

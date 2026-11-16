@@ -86,6 +86,7 @@ model User {
   password      String?
   image         String?
   role          Role      @default(PARENT)
+  lastSeenAt    DateTime? // panelde son görülme (en fazla saatte bir güncellenir)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -148,6 +149,8 @@ model Educator {
   diplomaUrl      String?
   idCardUrl       String?
   titleName       String?
+  branch          String? // mezuniyet branşı (BRANCHES anahtarı)
+  coachingCertUrl String? // öğrenci koçluğu sertifikası (gizli, yalnızca admin görür)
   experience      Int?
   skills          String[]
   certificates    String[]

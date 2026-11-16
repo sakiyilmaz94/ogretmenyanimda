@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { touchLastSeen } from "@/lib/last-seen";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 const educatorNav = [
@@ -15,6 +16,7 @@ const educatorNav = [
 export default async function EducatorLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session || session.user.role !== "EDUCATOR") redirect("/login");
+  await touchLastSeen(session.user.id);
 
   return (
     <DashboardLayout navItems={educatorNav} title="Öğretmen Paneli">

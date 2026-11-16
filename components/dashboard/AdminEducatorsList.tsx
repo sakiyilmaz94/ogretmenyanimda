@@ -22,9 +22,9 @@ const STATUS = {
 
 type Filter = "all" | "APPROVED" | "PENDING" | "REJECTED";
 
-export default function AdminEducatorsList({ educators }: { educators: AdminEducatorRow[] }) {
+export default function AdminEducatorsList({ educators, initialFilter = "all" }: { educators: AdminEducatorRow[]; initialFilter?: Filter }) {
   const [q, setQ] = useState("");
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter, setFilter] = useState<Filter>(initialFilter);
 
   const counts = useMemo(() => ({
     all: educators.length,
@@ -84,6 +84,7 @@ export default function AdminEducatorsList({ educators }: { educators: AdminEduc
                 <th className="text-left px-5 py-3 text-label-md font-semibold">Öğretmen</th>
                 <th className="text-left px-5 py-3 text-label-md font-semibold">Branşlar</th>
                 <th className="text-left px-5 py-3 text-label-md font-semibold">Saatlik Ücret</th>
+                <th className="text-left px-5 py-3 text-label-md font-semibold">Kayıt Tarihi</th>
                 <th className="text-left px-5 py-3 text-label-md font-semibold">Durum</th>
                 <th className="text-left px-5 py-3 text-label-md font-semibold"></th>
               </tr>
@@ -104,6 +105,7 @@ export default function AdminEducatorsList({ educators }: { educators: AdminEduc
                     </div>
                   </td>
                   <td className="px-5 py-3.5 font-bold text-primary">{formatCurrency(e.hourlyRate)}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant whitespace-nowrap">{new Date(e.createdAt).toLocaleDateString("tr-TR")}</td>
                   <td className="px-5 py-3.5">
                     <span className={`text-caption px-3 py-1 rounded-full font-semibold ${STATUS[e.status].cls}`}>{STATUS[e.status].label}</span>
                   </td>

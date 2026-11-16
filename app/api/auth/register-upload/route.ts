@@ -12,15 +12,15 @@ export async function POST(req: Request) {
   const type = formData.get("type") as string | null;
 
   if (!file) return NextResponse.json({ error: "Dosya bulunamadı" }, { status: 400 });
-  if (!["diploma", "idcard"].includes(type ?? ""))
+  if (!["diploma", "idcard", "coaching"].includes(type ?? ""))
     return NextResponse.json({ error: "Geçersiz tür" }, { status: 400 });
   if (file.size > MAX_SIZE)
     return NextResponse.json({ error: "Dosya 5MB'dan büyük olamaz" }, { status: 400 });
 
-  const allowed = type === "diploma" ? ALLOWED_DIPLOMA : ALLOWED_IDCARD;
+  const allowed = type === "idcard" ? ALLOWED_IDCARD : ALLOWED_DIPLOMA;
   if (!allowed.includes(file.type))
     return NextResponse.json(
-      { error: type === "diploma" ? "Yalnızca PDF kabul edilir" : "JPG veya PNG yükleyin" },
+      { error: type === "idcard" ? "JPG veya PNG yükleyin" : "Yalnızca PDF kabul edilir" },
       { status: 400 }
     );
 

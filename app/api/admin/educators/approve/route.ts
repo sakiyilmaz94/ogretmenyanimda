@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
 import { sendEmail, emailEducatorApproved } from "@/lib/email";
+import { missingEducatorFields } from "@/lib/educator-requirements";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -16,15 +17,26 @@ export async function POST(req: Request) {
   if (!educator) return NextResponse.json({ error: "Öğretmen bulunamadı" }, { status: 404 });
 
   if (action === "approve") {
+    const missing = missingEducatorFields({
+      phone: educator.phone,
+      subjects: educator.subjects,
+      gradeLevels: educator.gradeLevels,
+      hourlyRate: educator.hourlyRate.toNumber(),
+      experience: educator.experience,
+      coachingCertUrl: educator.coachingCertUrl,
+    });
+    if (missing.length > 0) {
+      return NextResponse.json(
+        { error: `Eksik bilgi var, onaylanamaz: ${missing.join(", ")}.` },
+        { status: 400 }
+      );
+    }
     await db.educator.update({
       where: { id: educatorId },
       data: {
         status: "APPROVED",
         approvedAt: new Date(),
         isProfilePublic: true,
-        // Subjects/gradeLevels set edilmemişse, default values
-        ...(educator.subjects.length === 0 && { subjects: ["MATEMATIK"] }),
-        ...(educator.gradeLevels.length === 0 && { gradeLevels: ["ILKOKUL_1", "ILKOKUL_2", "ILKOKUL_3", "ILKOKUL_4", "ORTAOKUL_5", "ORTAOKUL_6", "ORTAOKUL_7", "ORTAOKUL_8"] }),
       },
     });
     await notify({

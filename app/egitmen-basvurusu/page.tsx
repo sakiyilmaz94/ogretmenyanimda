@@ -67,6 +67,26 @@ export default function EgitmenBasvurusuPage() {
           </div>
         </section>
 
+        {/* Aradığımız özellikler */}
+        <section className="bg-background pt-16">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-surface-container-lowest rounded-md p-8 soft-card-static border border-outline-variant/20">
+              <h2 className="font-display text-headline-md text-on-background mb-4">Aradığımız Öğretmen Özellikleri</h2>
+              <ul className="space-y-2 text-body-md text-on-surface-variant list-disc pl-5">
+                <li>Vereceğiniz dersin <strong>alan öğretmeni</strong> olmanız veya o alanda yetkin olmanız (başvuruda yalnızca platformdaki derslerden seçim yapılır).</li>
+                <li>Diploma ve kimlik belgenizi yüklemeniz. Branş öğretmenleri ortaokul seviyesinde, sınıf öğretmenleri tüm ilkokul ve ortaokul seviyelerinde ders verebilir.</li>
+                <li><strong>Öğrenci koçluğu</strong> dersi için koçluk sertifikası ve deneyim zorunludur.</li>
+                <li>Telefonla ulaşılabilir olmanız; başvurunuzu gerektiğinde sizi arayarak değerlendiriyoruz.</li>
+                <li>Verdiğiniz dersler, sınıf seviyeleri, deneyiminiz ve <strong>saatlik ücretiniz</strong> başvuruda eksiksiz yazılmalıdır. Eksik başvurular onaylanamaz.</li>
+              </ul>
+              <p className="mt-5 text-body-md text-on-surface-variant bg-primary-fixed/40 rounded-md p-4 leading-relaxed">
+                💛 Ders vermek emek, birikim ve yılların karşılığıdır. Ücretinizi belirlerken kendi değerinizi ve tecrübenizi yansıtın;
+                biz de ailelere kaliteli ve güvenilir bir ders ortamı sunmaya çalışıyoruz.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Form / Register CTA */}
         <section className="bg-background py-16">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">

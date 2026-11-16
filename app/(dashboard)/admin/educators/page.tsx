@@ -4,7 +4,9 @@ import PrintButton from "@/components/dashboard/PrintButton";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminEducatorsPage() {
+export default async function AdminEducatorsPage({ searchParams }: { searchParams: Promise<{ durum?: string }> }) {
+  const { durum } = await searchParams;
+  const initialFilter = durum === "PENDING" || durum === "APPROVED" || durum === "REJECTED" ? durum : "all";
   const raw = await db.educator.findMany({
     include: { user: true },
     orderBy: { createdAt: "desc" },
@@ -31,7 +33,7 @@ export default async function AdminEducatorsPage() {
         </div>
         <PrintButton type="ogretmenler" label="Öğretmen Listesi PDF" />
       </div>
-      <AdminEducatorsList educators={educators} />
+      <AdminEducatorsList educators={educators} initialFilter={initialFilter} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
 import { getCommissionRate } from "@/lib/finance";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,7 @@ export default async function AdminDashboard() {
   const stats = [
     {
       label: "Toplam Öğretmen",
+      href: "/admin/educators",
       value: totalEducators,
       icon: (
         <svg className="w-5 h-5 text-on-primary-fixed-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,6 +56,7 @@ export default async function AdminDashboard() {
     },
     {
       label: "Onay Bekleyen",
+      href: "/admin/educators?durum=PENDING",
       value: pendingEducators,
       icon: (
         <svg className="w-5 h-5 text-on-primary-fixed-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,6 +66,7 @@ export default async function AdminDashboard() {
     },
     {
       label: "Toplam Veli",
+      href: "/admin/parents",
       value: totalParents,
       icon: (
         <svg className="w-5 h-5 text-on-primary-fixed-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,6 +76,7 @@ export default async function AdminDashboard() {
     },
     {
       label: "Toplam Öğrenci",
+      href: "/admin/students",
       value: totalStudents,
       icon: (
         <svg className="w-5 h-5 text-on-primary-fixed-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,6 +87,7 @@ export default async function AdminDashboard() {
     },
     {
       label: "Toplam Rezervasyon",
+      href: "/admin/bookings",
       value: totalBookings,
       icon: (
         <svg className="w-5 h-5 text-on-primary-fixed-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,6 +97,7 @@ export default async function AdminDashboard() {
     },
     {
       label: "Toplam Tahsilat (brüt)",
+      href: "/admin/payments",
       value: formatCurrency(gross),
       icon: (
         <svg className="w-5 h-5 text-on-primary-fixed-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,6 +107,7 @@ export default async function AdminDashboard() {
     },
     {
       label: `Platform Geliri (komisyon %${rate})`,
+      href: "/admin/raporlar",
       value: formatCurrency(commission),
       icon: (
         <svg className="w-5 h-5 text-on-primary-fixed-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +126,7 @@ export default async function AdminDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {stats.map((stat) => (
-          <div key={stat.label} className="bg-surface-container-lowest rounded-md p-5 soft-card-static border border-outline-variant/20">
+          <Link key={stat.label} href={stat.href} className="block bg-surface-container-lowest rounded-md p-5 soft-card-static border border-outline-variant/20 hover:border-primary/50 hover:shadow-md transition cursor-pointer">
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-primary-fixed rounded-xl p-2.5 w-10 h-10 flex items-center justify-center">
                 {stat.icon}
@@ -126,7 +134,7 @@ export default async function AdminDashboard() {
               <span className="text-label-md text-on-surface-variant">{stat.label}</span>
             </div>
             <p className="text-headline-md font-display text-on-background">{stat.value}</p>
-          </div>
+          </Link>
         ))}
       </div>
 

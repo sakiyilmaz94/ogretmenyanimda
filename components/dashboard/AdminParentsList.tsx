@@ -67,6 +67,7 @@ export default function AdminParentsList({ parents }: { parents: AdminParentRow[
                 <th className="text-left px-5 py-3 text-label-md font-semibold">Telefon</th>
                 <th className="text-left px-5 py-3 text-label-md font-semibold">Çocuk</th>
                 <th className="text-left px-5 py-3 text-label-md font-semibold">Toplam Harcama</th>
+                <th className="text-left px-5 py-3 text-label-md font-semibold">Kayıt Tarihi</th>
                 <th className="text-left px-5 py-3 text-label-md font-semibold"></th>
               </tr>
             </thead>
@@ -82,6 +83,7 @@ export default function AdminParentsList({ parents }: { parents: AdminParentRow[
                     <span className="text-caption bg-primary-fixed text-on-primary-fixed px-2.5 py-1 rounded-full font-semibold">{p.childCount}</span>
                   </td>
                   <td className="px-5 py-3.5 font-bold text-on-secondary-container">{formatCurrency(p.totalSpent)}</td>
+                  <td className="px-5 py-3.5 text-on-surface-variant whitespace-nowrap">{new Date(p.createdAt).toLocaleDateString("tr-TR")}</td>
                   <td className="px-5 py-3.5 text-right">
                     <Link href={`/admin/parents/${p.id}`} className="text-caption text-primary font-semibold hover:underline whitespace-nowrap">
                       Detay →
