@@ -5,6 +5,7 @@ const footerLinks = {
   platform: [
     { href: "/egitmenlerimiz", label: "Öğretmenlerimiz" },
     { href: "/fiyatlandirma",  label: "Fiyatlandırma" },
+    { href: "/kaynaklar",      label: "Ücretsiz Kaynaklar" },
     { href: "/oyunlar",        label: "Ücretsiz Oyunlar" },
     { href: "/hakkimizda",     label: "Hakkımızda" },
   ],

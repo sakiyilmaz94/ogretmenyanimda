@@ -439,3 +439,14 @@ model PricingPlan {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// Sitedeki herkese açık "Kaynaklar" sayfası: sınıfa göre ücretsiz fasikül/etkinlik linkleri (Google Drive)
+model FreeResource {
+  id        String     @id @default(cuid())
+  grade     GradeLevel
+  title     String
+  url       String
+  createdAt DateTime   @default(now())
+
+  @@index([grade])
+}

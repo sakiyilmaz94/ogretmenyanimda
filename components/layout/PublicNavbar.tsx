@@ -8,6 +8,7 @@ import { LogoMark } from "@/components/layout/Logo";
 const navLinks = [
   { href: "/dersler",        label: "Dersler" },
   { href: "/egitmenlerimiz", label: "Öğretmenlerimiz" },
+  { href: "/kaynaklar",      label: "Kaynaklar" },
   { href: "/oyunlar",        label: "Oyunlar" },
   { href: "/hakkimizda",     label: "Hakkımızda" },
   { href: "/iletisim",       label: "İletişim" },
