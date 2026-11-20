@@ -53,9 +53,8 @@ export default function ParentBookingsView({ bookings, initial }: { bookings: Pa
     return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
   }, []);
 
-  // Açılışta yalnızca yaklaşan dersler görünür (kalabalık olmasın); yaklaşan yoksa tümü
-  const hasUpcoming = useMemo(() => bookings.some((b) => isUpcoming(b, todayStart)), [bookings, todayStart]);
-  const startChip: StatusChip = initial?.chip ?? (hasUpcoming ? "upcoming" : "all");
+  // Açılışta her zaman yaklaşan dersler (kalabalık olmasın); yaklaşan yoksa boş durum + "Tüm derslerimi göster"
+  const startChip: StatusChip = initial?.chip ?? "upcoming";
   const [chip, setChip] = useState<StatusChip>(startChip);
   const [scope, setScope] = useState<"week" | "month" | null>(initial?.scope ?? null);
   const [range, setRange] = useState<Range>("all");
