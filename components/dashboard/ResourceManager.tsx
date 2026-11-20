@@ -10,7 +10,7 @@ const GRADES = [
   { key: "ILKOKUL_2", label: "2. Sınıf" },
   { key: "ILKOKUL_3", label: "3. Sınıf" },
   { key: "ILKOKUL_4", label: "4. Sınıf" },
-  { key: "ALL", label: "Tüm Sınıflar" },
+  { key: "ALL", label: "İlkokul Matematik (tüm sınıflar)" },
 ];
 
 export default function ResourceManager({ resources }: { resources: ResourceRow[] }) {

@@ -16,7 +16,7 @@ const GRADES = [
   { n: "2", key: "ILKOKUL_2", label: "2. Sınıf" },
   { n: "3", key: "ILKOKUL_3", label: "3. Sınıf" },
   { n: "4", key: "ILKOKUL_4", label: "4. Sınıf" },
-  { n: "tum", key: "ALL", label: "Tüm Sınıflar" },
+  { n: "matematik", key: "ALL", label: "İlkokul Matematik" },
 ];
 
 export default async function KaynaklarPage({ searchParams }: { searchParams: Promise<{ sinif?: string }> }) {
@@ -67,7 +67,7 @@ export default async function KaynaklarPage({ searchParams }: { searchParams: Pr
             {resources.length === 0 ? (
               <div className="bg-surface-container-lowest rounded-md p-10 text-center soft-card-static">
                 <p className="text-body-md text-on-surface-variant">
-                  {active.key === "ALL" ? "Tüm sınıflara uygun kaynaklar" : active.label + " kaynakları"} çok yakında burada olacak.
+                  {active.key === "ALL" ? "İlkokul matematik kaynakları" : active.label + " kaynakları"} çok yakında burada olacak.
                 </p>
               </div>
             ) : (
