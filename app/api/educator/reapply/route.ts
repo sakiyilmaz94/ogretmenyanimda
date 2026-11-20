@@ -1,12 +1,15 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
+import { toPrivatePath } from "@/lib/private-docs";
 
 export async function POST(req: Request) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
 
-  const { diplomaUrl, idCardUrl } = await req.json();
+  const body = await req.json();
+  const diplomaUrl = toPrivatePath(body.diplomaUrl);
+  const idCardUrl = toPrivatePath(body.idCardUrl);
 
   if (!diplomaUrl || !idCardUrl)
     return NextResponse.json({ error: "Her iki belgeyi de yükleyin." }, { status: 400 });

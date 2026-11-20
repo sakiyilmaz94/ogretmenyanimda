@@ -1,7 +1,7 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { NextResponse } from "next/server";
 
-const BUCKET = "uploads";
+const BUCKET = "private-docs"; // gizli klasör: yalnızca sunucu/admin erişir
 const MAX_SIZE = 5 * 1024 * 1024;
 const ALLOWED_DIPLOMA = ["application/pdf"];
 const ALLOWED_IDCARD = ["image/jpeg", "image/png", "image/webp"];
@@ -34,6 +34,6 @@ export async function POST(req: Request) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  const { data } = supabaseAdmin.storage.from(BUCKET).getPublicUrl(path);
-  return NextResponse.json({ url: data.publicUrl });
+  // Herkese açık adres DEĞİL, depolama yolu döner (belge yalnızca admin tarafından imzalı bağlantıyla açılır)
+  return NextResponse.json({ url: path });
 }

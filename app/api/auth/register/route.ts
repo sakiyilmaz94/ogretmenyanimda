@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { Role, Subject, GradeLevel } from "@prisma/client";
 import { sendEmail, emailWelcome } from "@/lib/email";
+import { toPrivatePath } from "@/lib/private-docs";
 import { APPLICABLE_SUBJECTS, ALL_GRADE_LEVELS, BRANCHES, branchMismatch, gradeMismatch, MIN_EXPERIENCE_YEARS, missingEducatorFields } from "@/lib/educator-requirements";
 
 export async function POST(req: Request) {
@@ -49,6 +50,14 @@ export async function POST(req: Request) {
     educatorData = { branch, phone: phone.trim(), subjects: subj, gradeLevels: grades, hourlyRate: rate, experience: Math.round(exp) };
   }
 
+  // Belgeler yalnızca gizli klasördeki yollar olarak kabul edilir (başka adres yerleştirilemez)
+  const diplomaPath = toPrivatePath(diplomaUrl);
+  const idCardPath = toPrivatePath(idCardUrl);
+  const coachingPath = toPrivatePath(coachingCertUrl);
+  if (role === "EDUCATOR" && (!diplomaPath || !idCardPath)) {
+    return NextResponse.json({ error: "Diploma ve kimlik belgesi yüklemek zorunludur." }, { status: 400 });
+  }
+
   const existing = await db.user.findUnique({ where: { email } });
   if (existing) {
     return NextResponse.json({ error: "Bu e-posta adresi zaten kullanımda." }, { status: 400 });
@@ -75,13 +84,13 @@ export async function POST(req: Request) {
         hourlyRate: educatorData?.hourlyRate ?? 0,
         phone: educatorData?.phone ?? null,
         branch: educatorData?.branch ?? null,
-        coachingCertUrl: subjects?.includes?.("OGRENCI_KOCLUGU") ? coachingCertUrl || null : null,
+        coachingCertUrl: subjects?.includes?.("OGRENCI_KOCLUGU") ? coachingPath : null,
         subjects: educatorData?.subjects ?? [],
         gradeLevels: educatorData?.gradeLevels ?? [],
         experience: educatorData?.experience ?? null,
         status: "PENDING",
-        diplomaUrl: diplomaUrl || null,
-        idCardUrl: idCardUrl || null,
+        diplomaUrl: diplomaPath,
+        idCardUrl: idCardPath,
       },
     });
   }

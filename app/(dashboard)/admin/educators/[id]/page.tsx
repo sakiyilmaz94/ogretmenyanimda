@@ -60,7 +60,7 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
           <div className="grid grid-cols-2 gap-y-3 gap-x-6">
             <div><p className="text-caption text-on-surface-variant">Branş</p><p className="text-body-md font-medium text-on-background">{educator.branch ? (BRANCHES[educator.branch]?.label ?? educator.branch) : "—"}</p></div>
             {educator.coachingCertUrl && (
-              <div><p className="text-caption text-on-surface-variant">Koçluk Sertifikası</p><a href={educator.coachingCertUrl} target="_blank" rel="noopener noreferrer" className="text-body-md font-medium text-primary hover:underline">Görüntüle →</a></div>
+              <div><p className="text-caption text-on-surface-variant">Koçluk Sertifikası</p><a href={`/api/admin/educators/${educator.id}/document?type=coaching`} target="_blank" rel="noopener noreferrer" className="text-body-md font-medium text-primary hover:underline">Görüntüle →</a></div>
             )}
             <div><p className="text-caption text-on-surface-variant">Telefon</p><p className="text-body-md font-medium text-on-background">{educator.phone ?? "—"}</p></div>
             <div><p className="text-caption text-on-surface-variant">Saatlik Ücret</p><p className="text-body-md font-medium text-on-background">{formatCurrency(educator.hourlyRate.toNumber())}</p></div>
@@ -147,13 +147,13 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
               {educator.diplomaUrl ? (
                 <div className="border border-outline-variant/20 rounded-xl overflow-hidden">
                   <iframe
-                    src={educator.diplomaUrl}
+                    src={`/api/admin/educators/${educator.id}/document?type=diploma`}
                     className="w-full h-64"
                     title="Diploma"
                   />
                   <div className="p-3 bg-surface-container-low border-t border-outline-variant/20">
                     <a
-                      href={educator.diplomaUrl}
+                      href={`/api/admin/educators/${educator.id}/document?type=diploma`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-body-md text-primary hover:underline font-medium flex items-center gap-1"
@@ -177,13 +177,13 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
                 <div className="border border-outline-variant/20 rounded-xl overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={educator.idCardUrl}
+                    src={`/api/admin/educators/${educator.id}/document?type=idcard`}
                     alt="Kimlik belgesi"
                     className="w-full h-64 object-contain bg-surface-container-low"
                   />
                   <div className="p-3 bg-surface-container-low border-t border-outline-variant/20">
                     <a
-                      href={educator.idCardUrl}
+                      href={`/api/admin/educators/${educator.id}/document?type=idcard`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-body-md text-primary hover:underline font-medium flex items-center gap-1"

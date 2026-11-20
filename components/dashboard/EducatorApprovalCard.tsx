@@ -97,13 +97,13 @@ export default function EducatorApprovalCard({ educator }: { educator: EducatorW
           {(educator.diplomaUrl || educator.idCardUrl) && (
             <div className="flex gap-3 mt-2">
               {educator.diplomaUrl && (
-                <a href={educator.diplomaUrl} target="_blank" rel="noopener noreferrer"
+                <a href={`/api/admin/educators/${educator.id}/document?type=diploma`} target="_blank" rel="noopener noreferrer"
                   className="text-caption text-primary hover:underline flex items-center gap-1 font-medium">
                   📄 Diploma
                 </a>
               )}
               {educator.idCardUrl && (
-                <a href={educator.idCardUrl} target="_blank" rel="noopener noreferrer"
+                <a href={`/api/admin/educators/${educator.id}/document?type=idcard`} target="_blank" rel="noopener noreferrer"
                   className="text-caption text-primary hover:underline flex items-center gap-1 font-medium">
                   🪪 Kimlik
                 </a>
