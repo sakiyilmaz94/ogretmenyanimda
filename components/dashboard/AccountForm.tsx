@@ -140,7 +140,7 @@ export default function AccountForm({ initial }: { initial: AccountData }) {
       <div className="lg:col-span-2 bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-6 soft-card-static">
         <h2 className="font-display font-semibold text-on-background text-headline-md mb-1">İade Bilgileri</h2>
         <p className="text-body-md text-on-surface-variant mb-4">
-          Olası bir ders iptalinde ücretin size geri gönderilebilmesi için IBAN bilginizi ekleyebilirsiniz. Şimdi eklemeniz zorunlu değil, daha sonra da ekleyebilirsiniz.
+          Olası bir ders iptalinde ücretin size geri gönderilebilmesi için IBAN bilginizi ekleyebilirsiniz.
         </p>
 
         {!editingIban && initial.ibanMasked ? (

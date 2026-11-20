@@ -37,17 +37,28 @@ type SortKey = "dateDesc" | "dateAsc" | "student";
 type StatusChip = "all" | "pendingPay" | "upcoming" | "completed";
 
 const isPendingPay = (b: ParentBookingItem) => b.status === "CONFIRMED" && b.paymentStatus !== "PAID";
+// Yaklaşan: onay bekleyen veya onaylı, bugün ve sonrası
+const isUpcoming = (b: ParentBookingItem, todayStart: number) =>
+  (b.status === "PENDING" || b.status === "CONFIRMED") && +new Date(b.date) >= todayStart;
 
 export default function ParentBookingsView({ bookings }: { bookings: ParentBookingItem[] }) {
-  const [chip, setChip] = useState<StatusChip>("all");
-  const [range, setRange] = useState<Range>("all");
-  const [student, setStudent] = useState("all");
-  const [sort, setSort] = useState<SortKey>("dateDesc");
-
   const todayStart = useMemo(() => {
     const d = new Date();
     return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
   }, []);
+
+  // Açılışta yalnızca yaklaşan dersler görünür (kalabalık olmasın); yaklaşan yoksa tümü
+  const hasUpcoming = useMemo(() => bookings.some((b) => isUpcoming(b, todayStart)), [bookings, todayStart]);
+  const [chip, setChip] = useState<StatusChip>(hasUpcoming ? "upcoming" : "all");
+  const [range, setRange] = useState<Range>("all");
+  const [student, setStudent] = useState("all");
+  const [sort, setSort] = useState<SortKey>(hasUpcoming ? "dateAsc" : "dateDesc");
+
+  function pickChip(c: StatusChip) {
+    setChip(c);
+    // Yaklaşanlar en yakın tarih önce; diğerleri en yeni önce
+    setSort(c === "upcoming" ? "dateAsc" : "dateDesc");
+  }
 
   const students = useMemo(
     () => Array.from(new Set(bookings.map((b) => b.studentName))).sort((a, b) => a.localeCompare(b, "tr")),
@@ -58,7 +69,7 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
 
   const counts = useMemo(() => ({
     pendingPay: pendingPayList.length,
-    upcoming: bookings.filter((b) => b.status === "CONFIRMED" && +new Date(b.date) >= todayStart).length,
+    upcoming: bookings.filter((b) => isUpcoming(b, todayStart)).length,
     completed: bookings.filter((b) => b.status === "COMPLETED").length,
   }), [bookings, pendingPayList, todayStart]);
 
@@ -68,7 +79,7 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
     let list = bookings.filter((b) => {
       // Durum çipi
       if (chip === "pendingPay" && !isPendingPay(b)) return false;
-      if (chip === "upcoming" && !(b.status === "CONFIRMED" && +new Date(b.date) >= todayStart)) return false;
+      if (chip === "upcoming" && !isUpcoming(b, todayStart)) return false;
       if (chip === "completed" && b.status !== "COMPLETED") return false;
       // Dönem + öğrenci
       if (cutoff !== null && +new Date(b.date) < cutoff) return false;
@@ -85,10 +96,10 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
   }, [bookings, chip, range, student, sort, todayStart]);
 
   const CHIPS: { key: StatusChip; label: string; badge?: number }[] = [
-    { key: "all", label: "Tümü" },
+    { key: "upcoming", label: "Yaklaşan Dersler" },
     { key: "pendingPay", label: "Ödeme Bekleyen", badge: counts.pendingPay },
-    { key: "upcoming", label: "Yaklaşan" },
     { key: "completed", label: "Tamamlanan" },
+    { key: "all", label: "Tümü" },
   ];
 
   return (
@@ -111,7 +122,7 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
         {CHIPS.map((c) => {
           const active = chip === c.key;
           return (
-            <button key={c.key} onClick={() => setChip(c.key)}
+            <button key={c.key} onClick={() => pickChip(c.key)}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-label-md font-semibold border transition ${
                 active ? "bg-primary text-on-primary border-primary" : "bg-surface-container text-on-surface-variant border-outline-variant hover:bg-surface-container-high"
               }`}>
@@ -126,14 +137,26 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
         })}
       </div>
 
-      {/* Dönem / öğrenci / sıralama */}
-      <FilterBar range={range} setRange={setRange} student={student} setStudent={setStudent} students={students} sort={sort} setSort={setSort} />
+      {/* Dönem / öğrenci / sıralama: yalnızca "Tümü" görünümünde (ilk ekran sade kalsın) */}
+      {chip === "all" && (
+        <FilterBar range={range} setRange={setRange} student={student} setStudent={setStudent} students={students} sort={sort} setSort={setSort} />
+      )}
 
-      <p className="text-caption text-on-surface-variant">{visible.length} rezervasyon gösteriliyor</p>
+      <p className="text-caption text-on-surface-variant">
+        {chip === "upcoming" ? `${visible.length} yaklaşan ders` : `${visible.length} ders gösteriliyor`}
+      </p>
 
       {visible.length === 0 ? (
-        <div className="bg-surface-container rounded-md p-10 text-center soft-card-static">
-          <p className="text-body-md text-on-surface-variant">Seçilen filtrelere uygun rezervasyon yok.</p>
+        <div className="bg-surface-container rounded-md p-10 text-center soft-card-static space-y-3">
+          <p className="text-body-md text-on-surface-variant">
+            {chip === "upcoming" ? "Yaklaşan dersiniz yok." : "Bu görünüme uygun ders yok."}
+          </p>
+          {chip !== "all" && (
+            <button onClick={() => pickChip("all")}
+              className="rounded-full bg-primary text-on-primary px-5 py-2 text-label-md font-semibold hover:opacity-90 transition">
+              Tüm derslerimi göster
+            </button>
+          )}
         </div>
       ) : (
         <div className="bg-surface-container-lowest rounded-md soft-card-static border border-outline-variant/20 overflow-x-auto">
