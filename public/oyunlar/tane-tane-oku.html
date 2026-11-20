@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tane Tane Oku</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;800&display=swap">
+<style>
+/* Layout: tek sütun, iki ekran: grup listesi / grup sayfası (adımlar) ve tam ekran akış okuma sahnesi */
+:root{
+  --bg:#F5F8FF; --surface:#FFFFFF; --ink:#1B2A4A; --muted:#566690; --line:#D5E0F4;
+  --blue:#2969E8; --blue-soft:#E3ECFD; --teal:#1CADA3; --teal-soft:#DDF4F2;
+  --orange:#F89504; --orange-soft:#FEEBCC; --on-blue:#FFFFFF;
+  --f-display:'Baloo 2','Comic Sans MS',system-ui,sans-serif;
+  --f-body:'Andika','Trebuchet MS',system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1731; --surface:#17254A; --ink:#EAF0FF; --muted:#A3B3D8; --line:#2B3C69;
+  --blue:#6B9BFF; --blue-soft:#1F3466; --teal:#3CCFC4; --teal-soft:#14423F;
+  --orange:#FFAE3D; --orange-soft:#4A3510; --on-blue:#0E1731; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1731; --surface:#17254A; --ink:#EAF0FF; --muted:#A3B3D8; --line:#2B3C69;
+  --blue:#6B9BFF; --blue-soft:#1F3466; --teal:#3CCFC4; --teal-soft:#14423F;
+  --orange:#FFAE3D; --orange-soft:#4A3510; --on-blue:#0E1731; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.5;
+  padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.1;text-wrap:balance}
+h1{font-size:clamp(2.6rem,9vw,3.6rem);font-weight:800;color:var(--blue)}
+h2{font-size:1.6rem;font-weight:800}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible{outline:4px solid var(--orange);outline-offset:3px}
+.brand{font-size:.85rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.stripe{display:flex;height:8px;border-radius:99px;overflow:hidden;width:120px;margin:10px 0 12px}
+.stripe i{flex:1}.stripe i:nth-child(1){background:var(--blue)}.stripe i:nth-child(2){background:var(--teal)}.stripe i:nth-child(3){background:var(--orange)}
+.lead{color:var(--muted);max-width:38ch}
+.note{color:var(--muted);font-size:.95rem}
+.back{align-self:flex-start;background:var(--surface);border:3px solid var(--line);border-radius:14px;padding:6px 14px;font-weight:700}
+
+/* grup listesi */
+.groups{display:grid;gap:12px}
+.grp{display:flex;align-items:center;gap:16px;background:var(--surface);border:3px solid var(--line);border-radius:22px;padding:14px 18px;text-align:left;width:100%;transition:transform .12s,border-color .12s}
+.grp:hover{border-color:var(--blue);transform:translateY(-2px)}
+.grp .no{flex:none;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.8rem}
+.grp:nth-child(3n+1) .no{background:var(--blue-soft);color:var(--blue)}
+.grp:nth-child(3n+2) .no{background:var(--teal-soft);color:var(--teal)}
+.grp:nth-child(3n) .no{background:var(--orange-soft);color:var(--orange)}
+.grp .ls{font-family:var(--f-display);font-weight:800;font-size:1.7rem;letter-spacing:.12em;line-height:1.1}
+.grp .meta{display:flex;align-items:center;gap:10px;margin-top:6px}
+.pips{display:flex;gap:5px}
+.pips i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.pips i.on{background:var(--teal)}
+.tag{font-size:.78rem;font-weight:700;color:var(--teal)}
+
+/* grup sayfası */
+.letters{display:flex;flex-wrap:wrap;gap:10px}
+.lt{background:var(--surface);border:3px solid var(--line);border-radius:18px;padding:4px 16px;font-family:var(--f-display);font-weight:800;font-size:2.4rem;line-height:1.3}
+.lt small{font-size:1.4rem;color:var(--muted);margin-left:6px}
+.steps{display:grid;gap:12px}
+.step{display:flex;align-items:center;gap:16px;background:var(--surface);border:3px solid var(--line);border-radius:22px;padding:14px 18px;text-align:left;width:100%}
+.step:hover:not(:disabled){border-color:var(--blue)}
+.step:disabled{opacity:.55;cursor:not-allowed}
+.step .ic{flex:none;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.5rem;background:var(--blue-soft);color:var(--blue)}
+.step.done .ic{background:var(--teal-soft);color:var(--teal)}
+.step h3{font-size:1.3rem}
+.step p{color:var(--muted);font-size:.93rem}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button{border:3px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 18px;font-weight:700}
+.seg button[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.row-label{font-family:var(--f-display);font-weight:800;font-size:1.15rem;margin-bottom:8px}
+
+/* okuma sahnesi */
+.stage{background:var(--surface);border:3px solid var(--line);border-radius:28px;min-height:min(56vh,420px);padding:24px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;gap:10px}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal);width:0;transition:width .3s}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ctrls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{border-radius:99px;padding:12px 28px;font-weight:700;border:3px solid var(--blue);background:var(--blue);color:var(--on-blue);font-size:1.1rem}
+.btn.alt{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.btn.good{background:var(--teal);border-color:var(--teal);color:var(--bg)}
+.syl{display:flex;justify-content:center;align-items:center;gap:clamp(2rem,16vw,6rem);font-family:var(--f-display);font-weight:800;font-size:clamp(5rem,28vw,9rem);line-height:1.1;color:var(--blue);transition:gap .7s ease}
+.syl.joined{gap:0;color:var(--teal)}
+.syl span:nth-child(2){color:var(--orange)}
+.syl.joined span:nth-child(2){color:var(--teal)}
+.big{font-family:var(--f-display);font-weight:800;font-size:clamp(3rem,15vw,5.5rem);line-height:1.15;letter-spacing:.02em;word-break:break-word}
+.big b{font-weight:800}.big b:nth-child(odd){color:var(--blue)}.big b:nth-child(even){color:var(--orange)}
+.sent{font-family:var(--f-display);font-weight:600;font-size:clamp(2rem,9vw,3.4rem);line-height:1.35}
+.sent .w{display:inline-block;margin:0 .22em;animation:pop .35s ease}
+.sent .w.cur{color:var(--orange)}
+.para{display:flex;flex-direction:column;gap:6px;width:100%}
+.para .done{font-family:var(--f-display);font-weight:600;font-size:clamp(1.5rem,6vw,2.2rem);color:var(--muted)}
+.para .sent{font-size:clamp(1.8rem,7.5vw,2.8rem)}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.fin{display:flex;flex-direction:column;gap:14px;align-items:center}
+.fin .t{font-family:var(--f-display);font-weight:800;font-size:2.4rem;color:var(--teal)}
+.hint{color:var(--muted);font-size:.9rem;text-align:center}
+</style>
+</head>
+<body>
+<main id="app"></main>
+
+<script>
+/* Maarif Modeli ilkokul Türkçe programı: 5 ses grubu. Her metin yalnızca o gruba kadar öğrenilen harfleri kullanır. */
+const DATA=[
+ {letters:'anetil',
+  syl:'na ne ni ta te ti la le li an en in at et it al el il'.split(' '),
+  words:['at','el','ana','ata','an-ne','ni-ne','la-le','na-ne','ta-ne','tel','ten','net','alt','a-let','i-lan','a-i-le','ta-til','an-ten','A-ti-la'],
+  sents:['Anne, nane al.','Ali, lale al.','Tane tane nane al.','Ela ile Ali atla.','Ali anlat, Ela anla.','Aile ile tatil.'],
+  text:['Aile ile tatil.','Ali, nine ile lale al.','Ela, anne ile nane al.','Ali anlat, Ela anla.','Tane tane nane, tane tane lale.']},
+ {letters:'okurım',
+  syl:'ka ke ki ko ku kı ra re ri ro ru rı ma me mi mo mu mı no to lo nu tu lu nı tı lı ok ak ek or ar ur om am um'.split(' '),
+  words:['ok','o-ku','kır','ır-mak','kol','kar','ka-le','ku-le','ku-tu','kum','kurt','mum','mor','o-kul','or-man','ar-mut','ka-lem','ka-me-ra','man-tar','ma-kar-na','li-mon','el-ma','ta-rak','mo-tor','ro-man','mut-lu','Mu-rat','Ke-rim','Mi-ne','Ra-na','O-kan'],
+  sents:['Murat okula mor kalem alır.','Kerim armut alır.','Mine elma alır.','Okan kamera tutar.','Rana kule kurar.','Okan okur, Mine anlar.'],
+  text:['Murat okula mor kalem alır.','Kerim armut alır, Mine elma alır.','Okan kamera tutar.','Rana kule kurar.','Anne ile nine mutlu.']},
+ {letters:'üsöydz',
+  syl:'sa se si so su sı ya ye yı yo yu da de di do du za ze zi zu sü sö yü yö dü dö zü zö ür ör üz öz kü mü kö mö'.split(' '),
+  words:['süt','se-ra','sa-at','ma-sa','ma-sal','de-de','dal','dil','yıl','yol','yaz','ya-zı','ya-tak','ye-lek','ye-mek','yu-mur-ta','yıl-dız','ör-dek','ü-züm','u-zak','sa-rı','san-dal-ye','de-niz','ke-di','dün-ya','yü-zük','a-yı','ya-rın','zil','zey-tin','ö-dül','ö-küz'],
+  sents:['Dede süt alır.','Yıldız yumurta alır.','Ördek yüzer.','Kedi süt ister.','Dede masal anlatır.','Sude okula yürür.'],
+  text:['Dede masal anlatır.','Sude ile Deniz dinler.','Ördek yüzer, kedi süt ister.','Yıldız sarı yumurta alır.','Dede mutlu olur.']},
+ {letters:'çbgcş',
+  syl:'ça çe çi ço çu ba be bi bo bu ga ge gı go gu gü ca ce ci co cu şa şe şi şo şu aş eş iş oş uş'.split(' '),
+  words:['çi-çek','çan-ta','ça-tal','çay','ço-cuk','bal','ba-lık','bu-lut','be-bek','bay-rak','bi-sik-let','gül','göz','ge-mi','gü-neş','ge-ce','gün','kuş','cam','ce-ket','el-bi-se','şe-ker','şar-kı','şem-si-ye','taş','baş','buz','bar-dak'],
+  sents:['Bu bir çiçek.','Güneş çıkar.','Bulut gelir.','Çocuk bisiklet sürer.','Kuş şarkı söyler.','Ben bal alırım.'],
+  text:['Bugün güneş çıkar.','Çocuk bisiklet sürer.','Kuş şarkı söyler.','Bebek çiçek alır.','Gece olur, yıldız çıkar.']},
+ {letters:'phvğfj',
+  syl:'pa pe pi po pu ha he hi ho hu va ve vi vo vu fa fe fi fo fu ja je jo ağ eğ ığ oğ uğ'.split(' '),
+  words:['pas-ta','pa-ta-tes','pey-nir','pa-pat-ya','por-ta-kal','ha-vuç','ho-roz','ha-va','ha-mur','kah-ve','va-pur','va-zo','fil','fa-re','fın-dık','ka-fa','a-ğaç','dağ','bağ','yağ-mur','yağ','jö-le','ji-let','ka-pı','ki-tap','pen-ce-re','fo-toğ-raf'],
+  sents:['Yağmur yağar.','Hava güzel.','Dağda kar var.','Vapur denize girer.','Horoz öter.','Papatya açar.','Ali jöle alır.'],
+  text:['Hava güzel, güneş parlar.','Dağda papatya açar.','Fil, ağaç altında durur.','Horoz öter, fare kaçar.','Vapur denize girer.']}
+];
+/*END DATA*/
+
+const U=l=>l.toLocaleUpperCase('tr-TR');
+const STEPS=[
+  {id:'hece',name:'Heceler',ic:'ka',desc:'İki harf birleşir, hece olur.'},
+  {id:'kelime',name:'Kelimeler',ic:'ta·ne',desc:'Kelimeler tane tane akar.'},
+  {id:'cumle',name:'Cümleler',ic:'. . .',desc:'Cümle kelime kelime oluşur.'},
+  {id:'metin',name:'Metin',ic:'Aa',desc:'Kısa bir metin okursun.'}
+];
+const SPEEDS={yavas:['Yavaş',1.6],orta:['Orta',1],hizli:['Hızlı',.65]};
+const KEY='taneoku.v1';
+let S={done:{},speed:'yavas'};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const isDone=(g,id)=>!!S.done[(g+1)+'-'+id];
+const unlocked=(g,id)=>id!=='metin'||['hece','kelime','cumle'].every(x=>isDone(g,x));
+const app=document.getElementById('app');
+let P=null; /* oynatıcı durumu */
+const clearT=()=>{if(P){P.timers.forEach(clearTimeout);P.timers=[]}};
+
+/* ---------- ekranlar ---------- */
+function groupsView(){
+  P&&clearT();P=null;
+  app.innerHTML=`
+  <header>
+    <div class="brand">Öğretmen Yanımda</div>
+    <h1>Tane Tane Oku</h1>
+    <div class="stripe"><i></i><i></i><i></i></div>
+    <p class="lead">Okul hangi ses grubundaysa onu seç. Harfler birleşir, kelimeler ve cümleler tane tane akar. Sonunda küçük bir metin okursun.</p>
+  </header>
+  <div class="groups">${DATA.map((d,g)=>{
+    const n=STEPS.filter(s=>isDone(g,s.id)).length;
+    return `<button class="grp" data-a="grp" data-g="${g}"><span class="no">${g+1}</span><span><span class="ls">${[...d.letters].join(' ')}</span>
+      <span class="meta"><span class="pips">${STEPS.map(s=>`<i class="${isDone(g,s.id)?'on':''}"></i>`).join('')}</span>${n===4?'<span class="tag">Tamamlandı</span>':''}</span></span></button>`}).join('')}
+  </div>
+  <p class="note">Çocuk yazıyı yüksek sesle okur. Aile yanında dinler, takıldığı yerde "Baştan" ile tekrar ettirir.</p>`;
+}
+function groupView(g){
+  P&&clearT();P=null;
+  const d=DATA[g];
+  app.innerHTML=`
+  <button class="back" data-a="home">← Gruplar</button>
+  <header><h2>${g+1}. grup</h2></header>
+  <div class="letters">${[...d.letters].map(l=>`<span class="lt">${U(l)}<small>${l}</small></span>`).join('')}</div>
+  <div>
+    <div class="row-label">Hız</div>
+    <div class="seg">${Object.entries(SPEEDS).map(([k,v])=>`<button data-a="speed" data-k="${k}" aria-pressed="${S.speed===k}">${v[0]}</button>`).join('')}</div>
+  </div>
+  <div class="steps">${STEPS.map(s=>{
+    const ok=unlocked(g,s.id);
+    return `<button class="step ${isDone(g,s.id)?'done':''}" data-a="step" data-g="${g}" data-s="${s.id}" ${ok?'':'disabled'}><span class="ic">${isDone(g,s.id)?'✓':s.ic}</span><span><h3>${s.name}</h3><p>${ok?s.desc:'Önce heceleri, kelimeleri ve cümleleri bitir.'}</p></span></button>`}).join('')}
+  </div>`;
+}
+
+/* ---------- akış ---------- */
+function frames(g,id){
+  const d=DATA[g];
+  if(id==='hece')return d.syl.map(t=>({k:'syl',t}));
+  if(id==='kelime')return d.words.map(w=>({k:'word',syl:w.split('-')}));
+  const lines=id==='cumle'?d.sents:d.text, out=[];
+  lines.forEach((ln,li)=>{
+    const ws=ln.split(' ');
+    ws.forEach((_,wi)=>out.push({k:'build',id,li,wi,ws,lines,last:wi===ws.length-1}));
+  });
+  return out;
+}
+function readView(g,id){
+  const st=STEPS.find(s=>s.id===id);
+  P={g,id,i:0,fr:frames(g,id),playing:false,timers:[],finished:false};
+  app.innerHTML=`
+  <div class="topbar"><button class="back" data-a="grp" data-g="${g}">← ${g+1}. grup</button><div class="seg" id="spd">${Object.entries(SPEEDS).map(([k,v])=>`<button data-a="speed2" data-k="${k}" aria-pressed="${S.speed===k}">${v[0]}</button>`).join('')}</div></div>
+  <div class="bar"><i id="prog"></i></div>
+  <div class="stage" id="stage" data-a="toggle" role="button" tabindex="0" aria-label="Durdur veya devam et"></div>
+  <div class="ctrls">
+    <button class="btn" id="pp" data-a="toggle">Durdur</button>
+    <button class="btn alt" data-a="restart">Baştan</button>
+  </div>
+  <p class="hint">${st.name}. Ekrana dokunarak da durdurabilirsin.</p>`;
+  play();
+}
+function dur(f){
+  const m=SPEEDS[S.speed][1];
+  if(f.k==='syl')return 2600*m;
+  if(f.k==='word')return (2000+450*f.syl.length)*m;
+  if(f.last)return (f.id==='cumle'?2800:1900)*m;
+  return 1300*m;
+}
+function show(f){
+  const stage=document.getElementById('stage');
+  document.getElementById('prog').style.width=(P.i/P.fr.length*100)+'%';
+  if(f.k==='syl'){
+    const ch=[...f.t];
+    stage.innerHTML=`<div class="syl" id="sy">${ch.map(c=>`<span>${c}</span>`).join('')}</div>`;
+    P.timers.push(setTimeout(()=>{const e=document.getElementById('sy');e&&e.classList.add('joined')},dur(f)*.38));
+  }else if(f.k==='word'){
+    stage.innerHTML=`<div class="big">${f.syl.map(s=>`<b>${s}</b>`).join('')}</div>`;
+  }else{
+    const cur=f.ws.slice(0,f.wi+1).map((w,i)=>`<span class="w ${i===f.wi?'cur':''}">${w}</span>`).join('');
+    if(f.id==='cumle')stage.innerHTML=`<div class="sent">${cur}</div>`;
+    else stage.innerHTML=`<div class="para">${f.lines.slice(0,f.li).map(l=>`<div class="done">${l}</div>`).join('')}<div class="sent">${cur}</div></div>`;
+  }
+}
+function play(){
+  clearT();
+  P.playing=true;
+  const pp=document.getElementById('pp');if(pp)pp.textContent='Durdur';
+  if(P.i>=P.fr.length)return finish();
+  const f=P.fr[P.i];
+  show(f);
+  P.timers.push(setTimeout(()=>{P.i++;play()},dur(f)));
+}
+function pause(){
+  clearT();P.playing=false;
+  const pp=document.getElementById('pp');if(pp)pp.textContent='Devam';
+}
+function finish(){
+  const {g,id}=P;
+  S.done[(g+1)+'-'+id]=true;save();
+  const idx=STEPS.findIndex(s=>s.id===id), next=STEPS[idx+1];
+  const canNext=next&&unlocked(g,next.id);
+  document.getElementById('prog').style.width='100%';
+  document.getElementById('stage').innerHTML=`<div class="fin"><div class="t">${id==='metin'?'Grubu bitirdin!':'Bitti!'}</div>
+    <div class="ctrls"><button class="btn alt" data-a="restart">Tekrar oku</button>
+    ${canNext?`<button class="btn good" data-a="step" data-g="${g}" data-s="${next.id}">Sonraki: ${next.name}</button>`
+      :`<button class="btn good" data-a="grp" data-g="${g}">${id==='metin'?'Gruba dön':'Adımlara dön'}</button>`}</div></div>`;
+  const pp=document.getElementById('pp');if(pp)pp.hidden=true;
+}
+
+/* ---------- olaylar ---------- */
+app.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const a=b.dataset.a;
+  if(a==='home')go('');
+  else if(a==='grp')go('grup-'+(+b.dataset.g+1));
+  else if(a==='step')readView(+b.dataset.g,b.dataset.s);
+  else if(a==='speed'){S.speed=b.dataset.k;save();groupView(+location.hash.replace('#grup-','')-1)}
+  else if(a==='speed2'){S.speed=b.dataset.k;save();document.querySelectorAll('#spd button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.k===S.speed));if(P&&P.playing&&!P.finished)play()}
+  else if(a==='toggle'){if(!P||P.i>=P.fr.length)return;P.playing?pause():play()}
+  else if(a==='restart'){const {g,id}=P;readView(g,id)}
+});
+app.addEventListener('keydown',e=>{if(e.target.id==='stage'&&(e.key===' '||e.key==='Enter')){e.preventDefault();e.target.click()}});
+function go(h){if(location.hash.slice(1)===h)route();else location.hash=h}
+function route(){
+  const m=/^#grup-([1-5])$/.exec(location.hash);
+  m?groupView(+m[1]-1):groupsView();
+}
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!doctype html><html lang="tr"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Öğretmen Yanımda Hız Okuma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700;6..12,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: branded hero (logo chip + title) over a soft tri-color glow field, then a two-tab utility
+   below. The RSVP word shows on a dark "spotlight" stage (fixed tokens, theme-independent) so the
+   brand's blue/teal/amber reads as a tiny stage light regardless of page theme, with a fullscreen
+   toggle for presentation use. A preset dropdown seeds the textarea from a small story library;
+   a session-history strip turns single runs into a visible trend. Schulte grid mirrors the same
+   card language and gains a Sayılar/Harfler mode toggle. Single column, max 680px, centered. */
+:root{
+  --blue:#2969E8; --blue-dark:#1C4FC0; --blue-bg:#E8EFFD; --blue-line:#C7D7FA;
+  --teal:#1CADA3; --teal-dark:#0E7E77; --teal-bg:#E3F6F4; --teal-line:#B7E8E3;
+  --amber:#F89504; --amber-dark:#8A5A00; --amber-bg:#FFF1DB; --amber-line:#F3D49B;
+  --alarm:#D1453B; --alarm-bg:#FBE8E6;
+  --paper:#F7F8FC; --surface:#FFFFFF; --surface-2:#EEF1FA; --surface-3:#E3E8F6;
+  --line:#E2E6F2; --line-strong:#C7CEE3;
+  --ink:#171E33; --ink-2:#5A6478; --ink-3:#8890A3;
+  --stage-1:#15245A; --stage-2:#0A1430; --stage-text:#F3F6FF; --stage-pivot:#FFC35C; --stage-glow:rgba(66,122,255,.38);
+  --f-disp:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-body:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --blue:#7FA4FF; --blue-dark:#3D63D6; --blue-bg:#182B5C; --blue-line:#2E4480;
+    --teal:#3DD9C9; --teal-dark:#1B9389; --teal-bg:#0F3733; --teal-line:#1F5750;
+    --amber:#FFC35C; --amber-dark:#FFD98A; --amber-bg:#3A2A10; --amber-line:#5C441A;
+    --alarm:#FF9385; --alarm-bg:#3B1C18;
+    --paper:#0D1324; --surface:#161D34; --surface-2:#1E2740; --surface-3:#2A3454;
+    --line:#2B3454; --line-strong:#3C4770;
+    --ink:#EDEFF8; --ink-2:#AAB1C8; --ink-3:#7A8199;
+    --stage-glow:rgba(127,164,255,.5);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --blue:#7FA4FF; --blue-dark:#3D63D6; --blue-bg:#182B5C; --blue-line:#2E4480;
+  --teal:#3DD9C9; --teal-dark:#1B9389; --teal-bg:#0F3733; --teal-line:#1F5750;
+  --amber:#FFC35C; --amber-dark:#FFD98A; --amber-bg:#3A2A10; --amber-line:#5C441A;
+  --alarm:#FF9385; --alarm-bg:#3B1C18;
+  --paper:#0D1324; --surface:#161D34; --surface-2:#1E2740; --surface-3:#2A3454;
+  --line:#2B3454; --line-strong:#3C4770;
+  --ink:#EDEFF8; --ink-2:#AAB1C8; --ink-3:#7A8199;
+  --stage-glow:rgba(127,164,255,.5);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);margin:0;padding:0 18px 60px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto}
+h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(26px,5.5vw,36px);letter-spacing:-.01em;margin:0;text-wrap:balance;color:var(--ink)}
+a{color:var(--blue)}
+
+.hero{position:relative;margin:0 -18px;padding:34px 18px 26px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(420px 220px at 12% 0%, color-mix(in srgb, var(--blue) 20%, transparent), transparent 70%),
+    radial-gradient(380px 220px at 95% 15%, color-mix(in srgb, var(--teal) 20%, transparent), transparent 70%),
+    radial-gradient(260px 180px at 60% 95%, color-mix(in srgb, var(--amber) 16%, transparent), transparent 70%);
+  pointer-events:none}
+.hero-in{position:relative;z-index:1;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo-chip{background:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 1px 2px rgba(20,30,60,.06),0 8px 22px -10px rgba(20,30,60,.22);flex:none;
+  animation:chipIn .5s ease both}
+.logo-chip img{display:block;height:46px;width:auto}
+.hero-text{flex:1;min-width:220px;animation:textIn .55s ease .05s both}
+.lede{color:var(--ink-2);font-size:14.5px;margin:7px 0 0;max-width:62ch;line-height:1.55}
+@keyframes chipIn{from{opacity:0;transform:translateY(-6px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes textIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.logo-chip,.hero-text{animation:none}}
+
+.tabs{display:flex;gap:6px;margin:22px 0 18px;border-bottom:1px solid var(--line);position:relative;z-index:1}
+.tabbtn{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.04em;background:none;border:none;color:var(--ink-3);padding:9px 4px 11px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s}
+.tabbtn.on{color:var(--ink);border-bottom-color:var(--blue);font-weight:700}
+.tabbtn:hover:not(.on){color:var(--ink-2)}
+.tabbtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;box-shadow:0 1px 2px rgba(20,30,60,.04)}
+.card+.card{margin-top:14px}
+label{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+select{font-family:var(--f-body);font-weight:600;font-size:13.5px;border:1px solid var(--line-strong);border-radius:10px;padding:8px 11px;background:var(--surface);color:var(--ink)}
+#rsvpPreset{width:100%;margin-bottom:14px}
+textarea{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line-strong);border-radius:10px;background:var(--surface-2);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.55;padding:11px 13px}
+textarea:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+textarea:disabled{opacity:.6}
+
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.wpmrow{display:flex;align-items:center;gap:10px;flex:1;min-width:180px}
+.wpmrow input[type=range]{flex:1;accent-color:var(--blue)}
+.wpmval{font-family:var(--f-mono);font-size:13px;color:var(--ink-2);white-space:nowrap;min-width:84px;text-align:right}
+
+button.btn{font-family:var(--f-body);font-weight:700;font-size:13.5px;border-radius:999px;padding:9px 18px;cursor:pointer;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);transition:transform .1s,background .15s}
+button.btn:hover{background:var(--surface-2)}
+button.btn:active{transform:scale(.97)}
+button.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 4px 14px -6px color-mix(in srgb, var(--blue) 70%, transparent)}
+button.btn.primary:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
+button.btn.teal{background:var(--teal);border-color:var(--teal);color:#042F2B}
+button.btn.teal:hover{background:var(--teal-dark);color:#fff}
+button.btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.stagebox{position:relative;margin-top:16px;border-radius:14px;min-height:122px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:radial-gradient(130% 160% at 50% 0%, var(--stage-glow), transparent 60%), linear-gradient(160deg, var(--stage-1), var(--stage-2))}
+.stagebox::before,.stagebox::after{content:"";position:absolute;left:50%;width:1.5px;background:color-mix(in srgb, var(--amber) 70%, transparent);transform:translateX(-50%);border-radius:2px}
+.stagebox::before{top:12px;height:13px}
+.stagebox::after{bottom:12px;height:13px}
+.stage{display:flex;align-items:baseline;width:100%;padding:0 12px;font-family:var(--f-disp);font-weight:700;font-size:clamp(27px,7vw,44px);color:var(--stage-text)}
+.pre{flex:1 1 0;min-width:0;text-align:right;white-space:nowrap;overflow:hidden}
+.post{flex:1 1 0;min-width:0;text-align:left;white-space:nowrap;overflow:hidden}
+.pivot{color:var(--stage-pivot);white-space:nowrap;text-shadow:0 0 18px color-mix(in srgb, var(--stage-pivot) 55%, transparent)}
+.fsbtn{position:absolute;top:9px;right:9px;z-index:2;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;line-height:1}
+.fsbtn:hover{background:rgba(255,255,255,.24)}
+.fsbtn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.stagebox:fullscreen{min-height:100vh;border-radius:0}
+.stagebox:fullscreen .stage{font-size:clamp(48px,9vw,120px)}
+.stagebox:-webkit-full-screen .stage{font-size:clamp(48px,9vw,120px)}
+
+.progwrap{margin-top:12px;display:flex;align-items:center;gap:10px}
+.progbar{flex:1;height:5px;border-radius:3px;background:var(--surface-3);overflow:hidden}
+.progfill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));width:0%;transition:width .08s linear}
+.progtext{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+
+.stats{margin-top:12px;font-size:13.5px;background:var(--teal-bg);color:var(--teal-dark);border:1px solid var(--teal-line);border-radius:10px;padding:10px 14px;font-weight:600}
+.stats[hidden]{display:none}
+
+.tierfeedback{margin-top:14px;font-size:13.5px;border-radius:10px;padding:10px 14px;font-weight:600;border:1px solid}
+.tierfeedback[hidden]{display:none}
+.tierfeedback.tier-fast{background:var(--teal-bg);color:var(--teal-dark);border-color:var(--teal-line)}
+.tierfeedback.tier-mid{background:var(--blue-bg);color:var(--blue-dark);border-color:var(--blue-line)}
+.tierfeedback.tier-slow{background:var(--amber-bg);color:var(--amber-dark);border-color:var(--amber-line)}
+
+.errorask{margin-top:12px}
+.errorask[hidden]{display:none}
+.err-label{font-size:12.5px;color:var(--ink-2);margin-bottom:7px;display:block}
+.err-btns{display:flex;gap:7px;flex-wrap:wrap}
+.errbtn{font-family:var(--f-mono);font-weight:700;font-size:13px;min-width:42px;padding:8px 10px;border-radius:9px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);cursor:pointer}
+.errbtn:hover{background:var(--surface-2)}
+.errbtn.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+.errbtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.history{margin-top:12px}
+.history[hidden]{display:none}
+.hist-title{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.hist-list{display:flex;flex-direction:column;gap:4px}
+.hist-row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink-2);padding:6px 10px;background:var(--surface-2);border-radius:7px}
+.hist-row b{color:var(--ink);font-family:var(--f-mono);font-weight:600}
+
+.schtop{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.segtoggle{display:inline-flex;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden}
+.segbtn{font-family:var(--f-body);font-weight:700;font-size:12.5px;padding:8px 13px;border:none;background:var(--surface);color:var(--ink-2);cursor:pointer}
+.segbtn.on{background:var(--blue);color:#fff}
+.segbtn:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.timerbox{margin-left:auto;display:flex;align-items:center;gap:16px;font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2)}
+.timerbox b{color:var(--ink);font-size:14px}
+
+.target-wrap{display:flex;align-items:center;justify-content:center;gap:11px;margin-top:18px}
+.target-label{font-family:var(--f-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.target-badge{font-family:var(--f-disp);font-weight:800;font-size:26px;color:var(--stage-text);background:linear-gradient(160deg,var(--stage-1),var(--stage-2));min-width:54px;height:54px;padding:0 8px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--amber) 55%, transparent),0 6px 18px -8px rgba(20,30,60,.4);
+  animation:targetPulse 1.8s ease-in-out infinite}
+@keyframes targetPulse{
+  0%,100%{box-shadow:0 0 0 3px color-mix(in srgb, var(--amber) 55%, transparent),0 6px 18px -8px rgba(20,30,60,.4)}
+  50%{box-shadow:0 0 0 8px color-mix(in srgb, var(--amber) 28%, transparent),0 6px 18px -8px rgba(20,30,60,.4)}
+}
+@media (prefers-reduced-motion:reduce){.target-badge{animation:none}}
+
+.grid{display:grid;gap:7px;margin-top:16px;max-width:380px;margin-left:auto;margin-right:auto}
+.scell{aspect-ratio:1;border:1.5px solid var(--line-strong);border-radius:9px;background:var(--surface);color:var(--ink);font-family:var(--f-mono);font-weight:700;font-size:clamp(14px,4vw,19px);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:transform .08s,background .12s}
+.scell:hover:not(:disabled){background:var(--surface-2);transform:translateY(-1px)}
+.scell.found{background:var(--teal-bg);border-color:var(--teal);color:var(--teal-dark);cursor:default;transform:none}
+.scell.wrong{background:var(--alarm-bg);border-color:var(--alarm)}
+.scell:disabled{cursor:default}
+.scell:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.note{font-size:12.5px;color:var(--ink-3);margin-top:12px;line-height:1.5}
+.footer{margin-top:40px;padding:20px 0 4px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px;color:var(--ink-3);font-size:12.5px}
+.footer img{height:20px;width:auto;border-radius:5px}
+
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:480px){
+  .row{flex-direction:column;align-items:stretch}
+  .wpmrow{min-width:0;width:100%}
+  .row button.btn{width:100%}
+  .schtop{flex-direction:column;align-items:stretch}
+  .timerbox{margin-left:0;justify-content:space-between}
+}
+</style>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-in">
+      <div class="logo-chip"><img src="/Logo/favico.png" alt="Öğretmen Yanımda"></div>
+      <div class="hero-text">
+        <h1>Hız Okuma Antrenmanı</h1>
+        <p class="lede">İki alıştırma: kelimeler ekrandan tek tek akıyor, göz kelime kelime değil tek bakışta okumaya alışıyor. Göz taraması ise çevreyi tarama hızını güçlendiriyor.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tabbtn on" data-tab="rsvp" type="button">Kelime Akışı</button>
+    <button class="tabbtn" data-tab="schulte" type="button">Göz Taraması</button>
+  </div>
+
+  <section id="panelRsvp">
+    <div class="card">
+      <label for="rsvpPreset">Hazır metin seç</label>
+      <select id="rsvpPreset">
+        <option value="">— Hazır metinlerden biri, ya da aşağıya kendi metnini yapıştır —</option>
+      </select>
+      <label for="rsvpText">Metin</label>
+      <textarea id="rsvpText">Bu kutuya istediğin metni yapıştırabilirsin — bir hikâye, bir ders kitabı paragrafı ya da öğrencinin kendi yazdığı bir yazı. Kelimeler tek tek, ortadaki renkli harfe odaklanarak akacak; göz kelimeyi harf harf değil, bir bütün olarak görmeye alışacak.
+
+Düşük bir hızla başla, öğrenci rahatladıkça yavaş yavaş hızı artır. Önemli olan anlamı kaybetmeden hızlanmak — bu yüzden her alıştırmanın ardından öğrenciye okuduğunu kısaca anlattırmak iyi bir alışkanlıktır.</textarea>
+      <div class="row">
+        <div class="wpmrow">
+          <span style="font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)">Hız</span>
+          <input type="range" id="rsvpWpm" min="60" max="320" step="10" value="140">
+          <span class="wpmval"><b id="rsvpWpmLabel">140</b> kelime/dk</span>
+        </div>
+        <button class="btn primary" id="rsvpStart" type="button">Başlat</button>
+        <button class="btn" id="rsvpReset" type="button">Baştan Başla</button>
+      </div>
+
+      <div class="stagebox" id="rsvpStageBox">
+        <button class="fsbtn" id="rsvpFsBtn" type="button" title="Tam ekran" aria-label="Tam ekran">⛶</button>
+        <div class="stage" id="rsvpStageText">
+          <span class="pre" id="rsvpPre"></span><span class="pivot" id="rsvpPivot">•</span><span class="post" id="rsvpPost"></span>
+        </div>
+      </div>
+      <div class="progwrap">
+        <div class="progbar"><div class="progfill" id="rsvpFill"></div></div>
+        <div class="progtext" id="rsvpProg">0 / 0</div>
+      </div>
+      <div class="stats" id="rsvpStats" hidden></div>
+      <div class="errorask" id="rsvpErrorAsk" hidden>
+        <span class="err-label">Kaç kelimede hata/duraksama oldu?</span>
+        <div class="err-btns" id="rsvpErrBtns">
+          <button class="errbtn" type="button" data-err="0">0</button>
+          <button class="errbtn" type="button" data-err="1">1</button>
+          <button class="errbtn" type="button" data-err="2">2</button>
+          <button class="errbtn" type="button" data-err="3">3</button>
+          <button class="errbtn" type="button" data-err="4">4+</button>
+        </div>
+      </div>
+      <div class="tierfeedback" id="rsvpAdjStats" hidden></div>
+      <div class="history" id="rsvpHistory" hidden>
+        <div class="hist-title">Son denemeler</div>
+        <div class="hist-list" id="rsvpHistList"></div>
+      </div>
+      <p class="note">Öğrenci gözünü ortadaki renkli harfe sabitlesin, kelimeyi sesli söylemeye çalışmasın — sadece göz okusun. 140 kelime/dk'dan başla, rahatladıkça hızı yükselt.</p>
+    </div>
+  </section>
+
+  <section id="panelSchulte" hidden>
+    <div class="card">
+      <div class="schtop">
+        <div>
+          <label for="schulteSize" style="margin-bottom:4px">Tablo boyutu</label>
+          <select id="schulteSize">
+            <option value="3">3×3 — kolay</option>
+            <option value="4" selected>4×4 — orta</option>
+            <option value="5">5×5 — zor</option>
+          </select>
+        </div>
+        <div>
+          <label style="margin-bottom:4px">Mod</label>
+          <div class="segtoggle" id="schulteMode">
+            <button type="button" class="segbtn on" data-mode="num">Sayılar</button>
+            <button type="button" class="segbtn" data-mode="letter">Harfler</button>
+          </div>
+        </div>
+        <button class="btn teal" id="schulteNew" type="button">Yeni Tablo</button>
+        <div class="timerbox">
+          <span>Süre: <b id="schulteTimer">0.0 sn</b></span>
+          <span>En iyi: <b id="schulteBest">—</b></span>
+        </div>
+      </div>
+      <div class="target-wrap">
+        <span class="target-label">Sırada</span>
+        <div class="target-badge" id="schulteTargetBadge">1</div>
+      </div>
+      <div class="grid" id="schulteGrid"></div>
+      <div class="tierfeedback" id="schulteStats" hidden></div>
+      <p class="note">Yukarıdaki rozette sırada hangi sayı/harf olduğu görünür. Öğrenci onu tabloda bulup dokunsun, gözünü ortadan ayırmadan çevresini taramaya çalışsın. Süre ilk doğru dokunuşta başlar, tablo bitince otomatik durur.</p>
+    </div>
+  </section>
+
+  <div class="footer">
+    <img src="/Logo/favico.png" alt="">
+    <span>Öğretmen Yanımda — okuma ve odak antrenmanları</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  var tabBtns = document.querySelectorAll('.tabbtn');
+  var panels = { rsvp: document.getElementById('panelRsvp'), schulte: document.getElementById('panelSchulte') };
+  function showTab(key){
+    tabBtns.forEach(function(b){ b.classList.toggle('on', b.dataset.tab===key); });
+    Object.keys(panels).forEach(function(k){ panels[k].hidden = (k!==key); });
+  }
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){ showTab(btn.dataset.tab); });
+  });
+  var initial = (location.hash||'').replace('#','');
+  if(initial==='schulte' || initial==='rsvp'){ showTab(initial); }
+})();
+
+(function(){
+  var PRESETS = [
+    { title:"Efe'nin Uzay Günü", n:380, text:`Efe, dokuz yaşında meraklı bir çocuktu. Küçüklüğünden beri gece gökyüzünü seyretmeyi, yıldızları saymayı ve gezegenler hakkında kitaplar okumayı çok severdi. Odasının tavanına ışıldayan yıldız çıkartmaları yapıştırmıştı; geceleri onlara bakarak uyurdu.
+
+Bir sabah öğretmeni sınıfa heyecanlı bir haber verdi: önümüzdeki cumartesi Ankara'daki Uzay Bilim Merkezi'ne gezi düzenlenecekti. Efe bu haberi duyunca yerinde duramadı, eve koşarak gitti ve annesine haberi ilk ağzından anlattı.
+
+Cumartesi sabahı okul otobüsü erkenden yola çıktı. Yol boyunca Efe camdan dışarıyı izledi, aklında sürekli aynı soru vardı: Acaba gerçek bir astronotla tanışabilecek miydi?
+
+Merkeze varınca büyük bir sürpriz onu bekliyordu. Girişte dev bir roket maketi duruyordu; tavandan sarkan gezegen modelleri renk renk parlıyordu. Tam o sırada gerçek bir astronot olan Kaptan Deniz Yıldız, öğrencilerin yanına geldi.
+
+Kaptan Deniz, uzay istasyonunda geçirdiği altı ayı anlatmaya başladı. Uzayda bırakılan bir suyun yere düşmediğini, bunun yerine küçük bir top gibi havada yüzdüğünü söyledi. Bunun sebebi "ağırlıksızlık" denen özel bir durumdu. Ayrıca astronotların uzayda yemek yerken kaşık kullanamadığını, yiyeceklerin özel torbalardan emilerek yendiğini anlattı. Efe bu bilgiye hem şaşırdı hem de çok güldü.
+
+Sonra herkes sırayla ağırlıksızlık simülatörünü denedi. Sıra Efe'ye gelince önce biraz korktu; ayakları yerden kesilince dengesini kaybedeceğini sandı. Ama birkaç saniye sonra korkusu yerini büyük bir sevince bıraktı. Özel koltukta havada süzülürken kahkahalar attı, sanki gerçekten uzaydaymış gibi hissetti.
+
+Gezi bitmeden önce Kaptan Deniz, çocuklara son bir öğüt verdi: "Ay'a gitmek istiyorsan önce matematiği ve fen bilgisini çok iyi öğrenmelisin. Astronot olmak, çok çalışmayı gerektirir." Efe bu sözleri hiç unutmadı.
+
+Eve dönerken otobüste pencereden gökyüzüne baktı. O gün kararını çoktan vermişti: büyüyünce astronot olacak ve bir gün gerçekten uzaya çıkacaktı.` },
+
+    { title:"Efe'nin Dinozor Keşfi", n:330, text:`Efe, dokuz yaşında meraklı bir çocuktu. Dinozorlarla ilgili elindeki bütün kitapları defalarca okumuş, odasının rafına küçük plastik dinozor heykelcikleri sıra sıra dizmişti. En sevdiği dinozor, uzun boynuyla ağaçların tepesindeki yaprakları yiyen Brakiyozor'du.
+
+Bir sabah öğretmeni sınıfa heyecanlı bir haber verdi: bu hafta sonu Doğa Tarihi Müzesi'ne gezi düzenlenecekti. Efe bu haberi duyunca sevincinden yerinde duramadı, eve koşarak gitti ve haberi ilk ağzından annesine anlattı.
+
+Cumartesi sabahı okul otobüsü erkenden yola çıktı. Müzenin girişine varınca Efe'yi büyük bir sürpriz karşıladı: tavana kadar uzanan devasa bir dinozor iskeleti tam karşısında duruyordu. Efe başını kaldırıp uzun boyunlu iskelete hayretle baktı. Yanındaki camekânda dev dinozor yumurtası fosilleri ve taşlaşmış ayak izleri sergileniyordu; Efe kendi ayağının koca bir ayak izinin yanında ne kadar küçük kaldığını görünce gülümsedi.
+
+İçeride gerçek bir paleontolog olan Dr. Ela Kaya onlarla buluştu. Bazı dinozorların tüylerle kaplı olduğunu, bazılarının et yediğini, bazılarının ise yalnızca bitki yediğini anlattı. En büyük dinozorlardan birinin boyunun bir apartman kadar uzun olabileceğini söyleyince bütün sınıf şaşkınlıkla birbirine baktı. Ayrıca dinozorların günümüzdeki kuşların uzak akrabaları olduğunu söyleyince Efe'nin gözleri iyice büyüdü.
+
+Sonra herkes küçük bir kazı alanına götürüldü. Kumun içine küçük plastik kemik parçaları gömülmüştü. Efe eline aldığı fırça ve küçük kürekle dikkatle kazmaya başladı. Birkaç dakika sonra kumun içinden küçük bir kemik parçası çıkardı; sanki gerçek bir fosil bulmuş gibi heyecanla bağırdı.
+
+Gezi bitmeden önce Dr. Ela, çocuklara son bir öğüt verdi: "Bilim insanı olmak istiyorsanız meraklı olmaya devam edin ve sorular sormaktan hiç çekinmeyin." Efe bu sözleri hiç unutmadı.
+
+Eve dönerken otobüste pencereden dışarıya baktı. O gün kararını çoktan vermişti: büyüyünce bir paleontolog olacak ve gerçek bir dinozor fosili bulacaktı.` },
+
+    { title:"Kerem'in İkinci Fırsatı", n:220, text:`Kerem, dört senedir okulunun futbol takımında oynayan on yaşında bir çocuktu. Odasının duvarında favori futbolcusunun posteri asılıydı; bir gün onun gibi büyük bir maçta gol atmayı hayal ederdi.
+
+Bu hafta okullar arası turnuvanın finali oynanacaktı. Kerem'in takımı bütün sezon boyunca hiç kaybetmemişti.
+
+Final günü tribünler hınca hınç doluydu. Maçın ilk yarısında Kerem'e harika bir pas geldi, kaleciyle karşı karşıya kaldı. Ama topa çok sert vurdu, top auta gitti. Kerem hayal kırıklığıyla başını eğdi.
+
+Devre arasında antrenörü yanına oturdu. "Bir fırsatı kaçırmak, bütün maçı kaybettiğin anlamına gelmez," dedi. "Önemli olan, bir sonraki fırsat geldiğinde hazır olmaktır."
+
+İkinci yarının son dakikalarında arkadaşı topu Kerem'e uzattı. Kerem derin bir nefes aldı, topu kontrol etti ve topu ağlara gönderdi. Tribünler ayağa kalktı, takım arkadaşları ona sarıldı.
+
+Maç bittiğinde antrenör gülümsedi: "Gördün mü? İkinci fırsat her zaman gelir, yeter ki pes etmeyesin." Kerem bu sözü hiç unutmayacaktı.` },
+
+    { title:"Elif'in İlk Konseri", n:180, text:`Elif, altı yaşından beri keman çalan on yaşında bir kızdı. Her gün okuldan sonra bir saat çalışırdı, ama şimdiye kadar hiç başkalarının önünde çalmamıştı.
+
+Müzik öğretmeni bu dönem sonunda küçük bir konser düzenleneceğini duyurdu. Elif'in adı, en sevdiği parçayı çalacak öğrenciler listesine yazıldı. Bunu duyunca hem heyecanlandı hem de midesi kasıldı.
+
+Konser gecesi geldiğinde Elif sahnenin arkasında bekliyordu. Elleri terlemişti, kemanının tellerini tutmakta zorlanıyordu. Annesi yanına gelip elini tuttu. "Herkes ilk sahnede korkar," dedi. "Önemli olan, çaldığın parçayı sevmen. Gerisi kendiliğinden gelir."
+
+Elif sahneye çıktığında bir an donup kaldı, ama derin bir nefes aldıktan sonra yayı tellere değdirdi. İlk notalar titrek çıktı, ama kısa sürede kendini müziğe bıraktı. Parça bitince salon alkışlarla doldu. Elif gülümseyerek annesini aradı gözleriyle; artık sahne korkusunun onu durduramayacağını biliyordu.` },
+
+    { title:"Deniz'in Bilim Fuarı Projesi", n:170, text:`Deniz, dokuz yaşında, her şeyin nasıl çalıştığını merak eden bir çocuktu. Bu yıl okulun bilim fuarı için bir proje hazırlamaya karar verdi: limon ve bakır telle küçük bir pil yapmak.
+
+İlk denemesinde devre hiç çalışmadı; ampul yanmadı. Telleri değiştirdi, yine olmadı. Üç kez daha denedi, hepsi başarısız oldu. Pes etmek üzereyken babası yanına geldi.
+
+"Bilim insanları da hep ilk seferde başaramaz," dedi babası. "Her başarısız deneme, neyin işe yaramadığını öğretir." Deniz bu sözden sonra projesine not defterinde neyi denediğini yazmaya başladı.
+
+Beşinci denemesinde, tellerin ucunu daha sıkı sardığında küçük ampul zayıf bir ışıkla yandı. Deniz sevinçten yerinde zıpladı. Fuar günü standını gururla hazırladı ve başarısız denemelerini de ziyaretçilere anlattı — çünkü asıl hikâye oradaydı.` },
+
+    { title:"Ada'nın Kütüphane Kartı", n:160, text:`Ada, sekiz yaşında, eline geçen her şeyi okuyan bir kızdı. Ama evdeki kitapları çoktan bitirmişti ve yenilerini almak için her zaman para yoktu.
+
+Bir gün öğretmeni sınıfa şehir kütüphanesinden bahsetti: orada herkes ücretsiz üye olabilir, istediği kadar kitap ödünç alabilirdi. Ada bunu duyunca hafta sonu annesinden kütüphaneye gitmeyi istedi.
+
+Kütüphaneye girdiğinde Ada'nın gözleri faltaşı gibi açıldı; raflar tavana kadar kitaplarla doluydu. Görevli ona bir kart çıkardı ve "Bu kart senin anahtarın," dedi, "istediğin dünyaya girebilirsin."
+
+Ada o gün beş kitap seçti, eve koşarak döndü. O haftadan sonra her cumartesi kütüphaneye gitmek onun en sevdiği alışkanlığı oldu. Artık hiçbir zaman okuyacak kitabı kalmıyordu.` },
+
+    { title:"Mert'in Küçük Bahçesi", n:150, text:`Mert, yedi yaşında, balkonda küçük bir saksıya fasulye tohumu ekmişti. Her sabah uyanır uyanmaz saksıya koşar, bir şey büyüyüp büyümediğine bakardı.
+
+İlk üç gün hiçbir şey olmadı. Mert sabırsızlanıp toprağı eşeleyerek tohuma baktı, ama dedesi onu durdurdu. "Tohum toprağın altında çalışıyor," dedi, "onu rahatsız edersen işi daha da uzar."
+
+Mert bundan sonra sadece sulamakla yetindi, kazmadı. Beşinci gün toprakta küçük yeşil bir filiz belirdi. Mert sevinçle dedesini çağırdı. Filiz her gün biraz daha uzadı; iki hafta sonra küçük yapraklar açtı.
+
+Dedesi gülümseyerek, "Gördün mü, bazı şeyler kendi hızında olur," dedi. Mert artık her canlının kendi zamanı olduğunu biliyordu.` },
+
+    { title:"Aslı'nın Suya Güveni", n:170, text:`Aslı, dokuz yaşında, havuza her gittiğinde kenarda oturup arkadaşlarını izlerdi. Suya girmekten değil, başını suyun altına sokmaktan korkuyordu.
+
+Bu yaz annesi onu yüzme kursuna yazdırdı. İlk derste Aslı sadece ayaklarını suya değdirebildi. Eğitmen onu zorlamadı. "Bugün sadece suya alışacağız," dedi, "her şeyin bir sırası var."
+
+Hafta hafta Aslı biraz daha ilerledi: önce dizlerine kadar girdi, sonra omuzlarına kadar. Beşinci hafta eğitmen ona gözlük taktırdı, "Sadece üç saniye bak," dedi. Aslı derin bir nefes aldı, başını suya soktu ve gözlerini açtı; su içinde her şey mavi ve sessizdi.
+
+Yüzeye çıktığında gülümsüyordu. O gün eve dönerken annesine, "Korktuğum şey hiç de korkunç değilmiş," dedi.` },
+
+    { title:"Zeynep'in Küçük Dostu", n:150, text:`Zeynep, dokuz yaşında, hayvanları çok seven bir kızdı. Bir cumartesi sabahı bahçede oynarken çalıların arasından ince bir miyavlama sesi duydu. Yaklaşınca küçük, turuncu tüylü bir kedi yavrusu gördü; kedicik korkmuş gözlerle ona bakıyordu.
+
+Zeynep yavaşça yaklaştı ama kedi yavrusu hemen çalıların derinine kaçtı. Eve koşup bir kap süt getirdi, sessizce yere bıraktı ve biraz uzağa oturup bekledi. Uzun süre hiçbir şey olmadı; Zeynep neredeyse pes edecekti.
+
+Tam o sırada annesi yanına geldi. "Hayvanlar güven duymayı zaman alır," dedi. "Acele etme, ona alışması için vakit tanı." Zeynep bu sözleri dinleyip sabırla beklemeye devam etti.
+
+Birkaç dakika sonra kedi yavrusu yavaşça çalılardan çıktı, sütü koklayıp içmeye başladı. Zeynep sevinçle gülümsedi, hiç kıpırdamadan izledi. O akşam kedicik bahçede uyudu; ertesi gün Zeynep onu evine, ailesinin yanına götürmeye karar verdi.` },
+
+    { title:"Can'ın İlk Pedalı", n:150, text:`Can, sekiz yaşında bir çocuktu. Arkadaşlarının çoğu yardımcı tekerleksiz bisiklete binebiliyordu, ama Can hâlâ korkuyordu; düşüp yere kapaklanmaktan çekiniyordu.
+
+Bir pazar öğleden sonra babası bisikletin yardımcı tekerleklerini çıkardı. Can'ı parka götürdü. "Bugün sadece dengeyi hissetmeye çalışacağız," dedi, "düşersen de önemli değil."
+
+Can bisiklete bindi, babası arkadan hafifçe tutuyordu. İlk birkaç denemede dengesini kaybedip yana devrildi, dizini sıyırdı. Ağlamak üzereydi ama babası gülümseyerek, "Herkes böyle öğrenir, sen de öğreniyorsun," dedi.
+
+Can tekrar bindi. Bu kez babası elini biraz daha erken çekti; Can bunu fark etmeden birkaç metre kendi başına pedal çevirdi. Dengesini hissetti, gülümsedi ve park boyunca sürmeye devam etti.` },
+
+    { title:"Arda'nın Uçurtması", n:60, mini:true, text:`Arda, yedi yaşında, bahçede rüzgârlı bir günde kendi yaptığı uçurtmayı uçurmaya çalışıyordu. İlk denemesinde uçurtma hemen yere çakıldı. İkinci denemesinde biraz yükseldi ama rüzgâr kesilince düştü. Babası ona ipi daha yavaş salmasını söyledi. Arda bu kez sabırla denedi; uçurtma yavaşça yükseldi, sonra göğe doğru süzülmeye başladı. Arda sevinçle gülerek ipi biraz daha saldı. Uçurtma artık gökyüzünde özgürce dans ediyordu.` }
+  ];
+
+  var presetSel = document.getElementById('rsvpPreset');
+  PRESETS.forEach(function(p, i){
+    var opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = p.title + ' · ' + p.n + ' kelime' + (p.mini ? ' (1 dakikalık)' : '');
+    presetSel.appendChild(opt);
+  });
+
+  var ta = document.getElementById('rsvpText');
+  var pre = document.getElementById('rsvpPre');
+  var pivot = document.getElementById('rsvpPivot');
+  var post = document.getElementById('rsvpPost');
+  var startBtn = document.getElementById('rsvpStart');
+  var resetBtn = document.getElementById('rsvpReset');
+  var wpmSlider = document.getElementById('rsvpWpm');
+  var wpmLabel = document.getElementById('rsvpWpmLabel');
+  var progText = document.getElementById('rsvpProg');
+  var progFill = document.getElementById('rsvpFill');
+  var statsEl = document.getElementById('rsvpStats');
+  var errorAskEl = document.getElementById('rsvpErrorAsk');
+  var errBtnsWrap = document.getElementById('rsvpErrBtns');
+  var adjStatsEl = document.getElementById('rsvpAdjStats');
+  var histEl = document.getElementById('rsvpHistory');
+  var histList = document.getElementById('rsvpHistList');
+  var stageBox = document.getElementById('rsvpStageBox');
+  var fsBtn = document.getElementById('rsvpFsBtn');
+
+  var words = [];
+  var idx = 0;
+  var timer = null;
+  var state = 'idle';
+  var startTime = null;
+
+  function getPivotIndex(len){
+    if(len<=1) return 0;
+    if(len<=5) return 1;
+    if(len<=9) return 2;
+    if(len<=13) return 3;
+    return 4;
+  }
+  function renderWord(w){
+    var p = getPivotIndex(w.length);
+    pre.textContent = w.slice(0,p);
+    pivot.textContent = w.charAt(p) || '';
+    post.textContent = w.slice(p+1);
+  }
+  function updateProgress(){
+    progText.textContent = idx + ' / ' + words.length;
+    progFill.style.width = words.length ? (idx/words.length*100)+'%' : '0%';
+  }
+  function setState(s){
+    state = s;
+    if(s==='idle'){ startBtn.textContent='Başlat'; ta.disabled=false; }
+    else if(s==='running'){ startBtn.textContent='Duraklat'; ta.disabled=true; }
+    else if(s==='paused'){ startBtn.textContent='Devam Et'; }
+    else if(s==='finished'){ startBtn.textContent='Baştan Oku'; ta.disabled=false; }
+  }
+  function loadHistory(){
+    try{ return JSON.parse(localStorage.getItem('oyRsvpHistory')||'[]'); }catch(e){ return []; }
+  }
+  function renderHistory(h){
+    h = h || loadHistory();
+    if(!h.length){ histEl.hidden = true; return; }
+    histEl.hidden = false;
+    histList.innerHTML = '';
+    h.forEach(function(e){
+      var d = new Date(e.t);
+      var ds = d.toLocaleDateString('tr-TR',{day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+      var row = document.createElement('div');
+      row.className = 'hist-row';
+      var dsSpan = document.createElement('span');
+      dsSpan.textContent = ds;
+      var wpmB = document.createElement('b');
+      wpmB.textContent = e.wpm + ' kelime/dk';
+      row.appendChild(dsSpan);
+      row.appendChild(wpmB);
+      histList.appendChild(row);
+    });
+  }
+  function saveHistoryEntry(wpm){
+    try{
+      var h = loadHistory();
+      h.unshift({ t: Date.now(), wpm: wpm });
+      h = h.slice(0,6);
+      localStorage.setItem('oyRsvpHistory', JSON.stringify(h));
+      renderHistory(h);
+    }catch(e){}
+  }
+  function tick(){
+    if(idx >= words.length){ finish(); return; }
+    renderWord(words[idx]);
+    idx++;
+    updateProgress();
+    var wpm = parseInt(wpmSlider.value,10) || 140;
+    timer = setTimeout(tick, 60000/wpm);
+  }
+  var lastElapsedMin = 0;
+  var lastWordCount = 0;
+
+  function finish(){
+    clearTimeout(timer);
+    setState('finished');
+    pre.textContent=''; post.textContent=''; pivot.textContent='✓';
+    var elapsed = (Date.now()-startTime)/1000;
+    var avg = elapsed>0 ? Math.round(words.length/elapsed*60) : 0;
+    statsEl.hidden = false;
+    statsEl.textContent = words.length+' kelime, '+elapsed.toFixed(1)+' saniyede okundu — ortalama '+avg+' kelime/dk.';
+    saveHistoryEntry(avg);
+    lastElapsedMin = elapsed/60;
+    lastWordCount = words.length;
+    adjStatsEl.hidden = true;
+    errBtnsWrap.querySelectorAll('.errbtn').forEach(function(b){ b.classList.remove('sel'); });
+    errorAskEl.hidden = (words.length===0 || lastElapsedMin<=0);
+  }
+  function showAdjusted(errCount){
+    if(lastElapsedMin<=0) return;
+    var correct = Math.max(0, lastWordCount - errCount);
+    var adj = Math.round(correct/lastElapsedMin);
+    var tier, msg;
+    if(errCount===0){
+      tier='tier-fast'; msg='Mükemmel! Hiç hata yapmadan ~'+adj+' kelime/dk okudu.';
+    } else if(errCount===1){
+      tier='tier-fast'; msg='Çok iyi! 1 kelimede duraksama oldu — doğru hız ~'+adj+' kelime/dk.';
+    } else if(errCount===2){
+      tier='tier-mid'; msg='Fena değil, 2 kelimede duraksama oldu — doğru hız ~'+adj+' kelime/dk.';
+    } else if(errCount===3){
+      tier='tier-mid'; msg='3 kelimede duraksama oldu — doğru hız ~'+adj+' kelime/dk. Bu hızda biraz daha pratik iyi olur.';
+    } else {
+      tier='tier-slow'; msg='4 ve üzeri kelimede duraksama/hata oldu — bu hız şu an fazla. Lütfen okuma hızını düşürün.';
+    }
+    adjStatsEl.className = 'tierfeedback ' + tier;
+    adjStatsEl.textContent = msg;
+    adjStatsEl.hidden = false;
+  }
+  errBtnsWrap.querySelectorAll('.errbtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      errBtnsWrap.querySelectorAll('.errbtn').forEach(function(b){ b.classList.toggle('sel', b===btn); });
+      showAdjusted(parseInt(btn.dataset.err,10));
+    });
+  });
+  function start(){
+    words = ta.value.trim().split(/\s+/).filter(Boolean);
+    if(words.length===0) return;
+    idx = 0;
+    startTime = Date.now();
+    statsEl.hidden = true;
+    errorAskEl.hidden = true;
+    adjStatsEl.hidden = true;
+    setState('running');
+    updateProgress();
+    tick();
+  }
+  function pause(){ clearTimeout(timer); setState('paused'); }
+  function resume(){ setState('running'); tick(); }
+  function resetAll(){
+    clearTimeout(timer);
+    idx = 0; words = [];
+    setState('idle');
+    pre.textContent=''; pivot.textContent='•'; post.textContent='';
+    progText.textContent = '0 / 0';
+    progFill.style.width = '0%';
+    statsEl.hidden = true;
+    errorAskEl.hidden = true;
+    adjStatsEl.hidden = true;
+  }
+
+  startBtn.addEventListener('click', function(){
+    if(state==='idle' || state==='finished'){ start(); }
+    else if(state==='running'){ pause(); }
+    else if(state==='paused'){ resume(); }
+  });
+  resetBtn.addEventListener('click', resetAll);
+  presetSel.addEventListener('change', function(){
+    if(presetSel.value===''){ return; }
+    var p = PRESETS[parseInt(presetSel.value,10)];
+    if(p){ ta.value = p.text; resetAll(); }
+  });
+  wpmSlider.addEventListener('input', function(){
+    wpmLabel.textContent = wpmSlider.value;
+    try{ localStorage.setItem('oyRsvpWpm', wpmSlider.value); }catch(e){}
+  });
+  try{
+    var saved = localStorage.getItem('oyRsvpWpm');
+    if(saved){ wpmSlider.value = saved; wpmLabel.textContent = saved; }
+  }catch(e){}
+
+  if(!document.fullscreenEnabled){ fsBtn.hidden = true; }
+  fsBtn.addEventListener('click', function(){
+    if(document.fullscreenElement){ document.exitFullscreen().catch(function(){}); }
+    else { stageBox.requestFullscreen().catch(function(){}); }
+  });
+
+  renderHistory();
+})();
+
+(function(){
+  var sizeSel = document.getElementById('schulteSize');
+  var modeWrap = document.getElementById('schulteMode');
+  var grid = document.getElementById('schulteGrid');
+  var timerEl = document.getElementById('schulteTimer');
+  var bestEl = document.getElementById('schulteBest');
+  var newBtn = document.getElementById('schulteNew');
+  var targetBadge = document.getElementById('schulteTargetBadge');
+  var statsEl = document.getElementById('schulteStats');
+
+  var TR_ALPHABET = ['A','B','C','Ç','D','E','F','G','Ğ','H','I','İ','J','K','L','M','N','O','Ö','P','R','S','Ş','T','U'];
+  var mode = 'num';
+  var size = 4, order = [], targetIdx = 0, startTime = null, timerInt = null, finished = false, started = false;
+
+  function updateTargetBadge(){
+    targetBadge.textContent = (targetIdx < order.length) ? order[targetIdx] : '✓';
+  }
+  function showFeedback(elapsed, total){
+    var perItem = elapsed / total;
+    var tier, msg;
+    if(perItem <= 1.2){
+      tier = 'tier-fast';
+      msg = 'Harika! Gerçekten hızlıydın — ' + elapsed.toFixed(1) + ' saniyede bitirdin.';
+    } else if(perItem <= 2.2){
+      tier = 'tier-mid';
+      msg = 'Gayet iyi! ' + elapsed.toFixed(1) + ' saniyede bitirdin — pratikle daha da hızlanacaksın.';
+    } else {
+      tier = 'tier-slow';
+      msg = 'Tamamladın, bu da önemli! ' + elapsed.toFixed(1) + ' saniye sürdü — tekrar tekrar denedikçe hızın artacak.';
+    }
+    statsEl.className = 'tierfeedback ' + tier;
+    statsEl.textContent = msg;
+    statsEl.hidden = false;
+  }
+
+  function shuffle(arr){
+    for(var i=arr.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t = arr[i]; arr[i]=arr[j]; arr[j]=t;
+    }
+    return arr;
+  }
+  function bestKey(){ return 'oySchulteBest_'+mode+'_'+size; }
+  function loadBest(){
+    try{
+      var v = localStorage.getItem(bestKey());
+      bestEl.textContent = v ? (parseFloat(v).toFixed(1)+' sn') : '—';
+    }catch(e){ bestEl.textContent = '—'; }
+  }
+  function saveBestIfBetter(t){
+    try{
+      var v = localStorage.getItem(bestKey());
+      if(!v || t < parseFloat(v)){ localStorage.setItem(bestKey(), String(t)); }
+    }catch(e){}
+    loadBest();
+  }
+  function buildGrid(){
+    size = parseInt(sizeSel.value,10) || 4;
+    var total = size*size;
+    targetIdx = 0;
+    finished = false;
+    started = false;
+    clearInterval(timerInt);
+    startTime = null;
+    timerEl.textContent = '0.0 sn';
+    statsEl.hidden = true;
+    order = (mode==='letter') ? TR_ALPHABET.slice(0,total) : Array.from({length: total}, function(_,i){ return String(i+1); });
+    updateTargetBadge();
+    var shuffled = shuffle(order.slice());
+    grid.style.gridTemplateColumns = 'repeat('+size+', 1fr)';
+    grid.innerHTML = '';
+    shuffled.forEach(function(val){
+      var cell = document.createElement('button');
+      cell.type = 'button';
+      cell.className = 'scell';
+      cell.textContent = val;
+      cell.addEventListener('click', function(){ onCellClick(val, cell); });
+      grid.appendChild(cell);
+    });
+    loadBest();
+  }
+  function onCellClick(val, cell){
+    if(finished) return;
+    if(val === order[targetIdx]){
+      if(!started){
+        started = true;
+        startTime = Date.now();
+        timerInt = setInterval(function(){
+          timerEl.textContent = ((Date.now()-startTime)/1000).toFixed(1)+' sn';
+        }, 100);
+      }
+      cell.classList.add('found');
+      cell.disabled = true;
+      targetIdx++;
+      updateTargetBadge();
+      if(targetIdx >= order.length){
+        finished = true;
+        clearInterval(timerInt);
+        var elapsed = (Date.now()-startTime)/1000;
+        timerEl.textContent = elapsed.toFixed(1)+' sn — bitti!';
+        saveBestIfBetter(elapsed);
+        showFeedback(elapsed, order.length);
+      }
+    } else {
+      cell.classList.add('wrong');
+      setTimeout(function(){ cell.classList.remove('wrong'); }, 300);
+    }
+  }
+  newBtn.addEventListener('click', buildGrid);
+  sizeSel.addEventListener('change', buildGrid);
+  modeWrap.querySelectorAll('.segbtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      mode = btn.dataset.mode;
+      modeWrap.querySelectorAll('.segbtn').forEach(function(b){ b.classList.toggle('on', b===btn); });
+      buildGrid();
+    });
+  });
+  buildGrid();
+})();
+</script>
+
+</body></html>

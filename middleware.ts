@@ -7,7 +7,7 @@ const { auth } = NextAuth(authConfig);
 const PUBLIC_ROUTES = [
   "/", "/login", "/register",
   "/fiyatlandirma", "/hakkimizda", "/sss", "/iletisim",
-  "/egitmenlerimiz", "/egitmen-basvurusu", "/dersler",
+  "/egitmenlerimiz", "/egitmen-basvurusu", "/dersler", "/oyunlar",
   "/gizlilik-politikasi", "/mesafeli-satis-sozlesmesi", "/iptal-ve-iade-kosullar", "/egitmen-sozlesmesi",
   "/admin-giris",
   "/api/payments/callback",

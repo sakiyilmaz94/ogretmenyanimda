@@ -1,0 +1,480 @@
+<!doctype html><html lang="tr"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Çarpım Tablosu Hız Testi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Layout: single full-height screen, centered phone-width card, three states (start/quiz/result) toggled via [hidden] */
+  :root{
+    --bg:#F8F9FF; --surface:#FFFFFF; --surface-2:#EEF0FF;
+    --text:#0B1C30; --text-soft:#5B6485;
+    --accent:#4648D4; --accent-soft:#E4E4FB;
+    --correct:#1C9A6C; --correct-bg:#D8FBEA;
+    --wrong:#D8463A; --wrong-bg:#FFE4E1;
+    --gold:#C9901E; --gold-soft:#FBF0D9;
+    --ring: rgba(70,72,212,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B0F1F; --surface:#141A33; --surface-2:#1C2444;
+      --text:#EDEFFC; --text-soft:#9AA3C7;
+      --accent:#8DA0FF; --accent-soft:#232B55;
+      --correct:#4ADE94; --correct-bg:#103826;
+      --wrong:#FF8A7E; --wrong-bg:#3A1716;
+      --gold:#F5C96A; --gold-soft:#332A12;
+      --ring: rgba(141,160,255,.22);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B0F1F; --surface:#141A33; --surface-2:#1C2444;
+    --text:#EDEFFC; --text-soft:#9AA3C7;
+    --accent:#8DA0FF; --accent-soft:#232B55;
+    --correct:#4ADE94; --correct-bg:#103826;
+    --wrong:#FF8A7E; --wrong-bg:#3A1716;
+    --gold:#F5C96A; --gold-soft:#332A12;
+    --ring: rgba(141,160,255,.22);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+    display:flex; justify-content:center;
+    padding-left:max(16px, env(safe-area-inset-left,0px));
+    padding-right:max(16px, env(safe-area-inset-right,0px));
+    padding-block:20px;
+  }
+  .app{
+    width:100%; max-width:440px;
+    display:flex; flex-direction:column; min-height:100%;
+  }
+  .brand{
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    font-size:.78rem; font-weight:800; color:var(--accent);
+    letter-spacing:.02em; margin-bottom:14px;
+  }
+  .brand .spark{color:var(--gold)}
+
+  .card{
+    background:var(--surface); border-radius:22px;
+    padding:26px 22px; flex:1;
+    display:flex; flex-direction:column;
+    box-shadow:0 1px 2px rgba(11,28,48,.04);
+  }
+
+  h1{
+    font-family:"Nunito",sans-serif; font-weight:900;
+    font-size:clamp(1.5rem,6vw,1.9rem); line-height:1.15;
+    margin:0 0 6px; text-wrap:balance;
+  }
+  .lede{color:var(--text-soft); font-size:.95rem; margin:0 0 22px; line-height:1.5}
+
+  .block-label{
+    font-weight:800; font-size:.78rem; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--text-soft); margin:0 0 10px;
+  }
+
+  .chip-grid{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px}
+  .chip{
+    appearance:none; border:2px solid var(--surface-2); background:var(--surface-2);
+    color:var(--text); font-family:inherit; font-weight:800; font-size:1rem;
+    width:46px; height:46px; border-radius:13px; cursor:pointer;
+    font-variant-numeric:tabular-nums; transition:transform .12s ease;
+  }
+  .chip:active{transform:scale(.94)}
+  .chip[aria-pressed="true"]{
+    background:var(--accent-soft); border-color:var(--accent); color:var(--accent);
+  }
+  .chip-all{
+    width:auto; padding:0 16px; border-radius:13px; height:40px;
+    font-size:.85rem; margin-bottom:12px; border:2px solid var(--surface-2);
+    background:transparent; color:var(--text-soft); font-weight:800; cursor:pointer;
+  }
+
+  .seg{display:flex; gap:8px; margin-bottom:28px}
+  .seg button{
+    flex:1; appearance:none; border:2px solid var(--surface-2); background:var(--surface-2);
+    color:var(--text); font-family:inherit; font-weight:800; font-size:.95rem;
+    padding:12px 0; border-radius:13px; cursor:pointer;
+  }
+  .seg button[aria-pressed="true"]{
+    background:var(--accent-soft); border-color:var(--accent); color:var(--accent);
+  }
+
+  .primary-btn{
+    appearance:none; border:none; cursor:pointer; font-family:inherit;
+    background:var(--accent); color:#fff; font-weight:900; font-size:1.05rem;
+    padding:16px; border-radius:15px; width:100%; margin-top:auto;
+    box-shadow:0 10px 24px -10px var(--ring);
+  }
+  .primary-btn:active{transform:translateY(1px)}
+  .primary-btn:disabled{opacity:.45; cursor:not-allowed; box-shadow:none}
+  .ghost-btn{
+    appearance:none; border:2px solid var(--surface-2); background:transparent; color:var(--text);
+    font-family:inherit; font-weight:800; font-size:.95rem; padding:13px; border-radius:13px;
+    cursor:pointer; width:100%; margin-top:10px;
+  }
+
+  /* quiz screen */
+  .quiz-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:22px}
+  .progress-wrap{flex:1; margin-right:14px}
+  .progress-track{height:7px; background:var(--surface-2); border-radius:99px; overflow:hidden}
+  .progress-fill{height:100%; background:var(--accent); border-radius:99px; transition:width .25s ease}
+  .progress-text{font-size:.75rem; color:var(--text-soft); font-weight:800; margin-top:6px; font-variant-numeric:tabular-nums}
+  .timer{
+    font-variant-numeric:tabular-nums; font-weight:900; font-size:1rem;
+    background:var(--surface-2); padding:8px 12px; border-radius:11px; white-space:nowrap;
+  }
+
+  .streak{
+    display:inline-flex; align-items:center; gap:5px; align-self:center;
+    background:var(--gold-soft); color:var(--gold); font-weight:800; font-size:.8rem;
+    padding:5px 12px; border-radius:99px; margin-bottom:18px; opacity:0; transition:opacity .2s;
+  }
+  .streak.show{opacity:1}
+
+  .question-wrap{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center}
+  .q-eyebrow{font-weight:800; font-size:.8rem; color:var(--text-soft); letter-spacing:.04em; margin-bottom:8px}
+  .question{
+    font-weight:900; font-size:clamp(2.6rem,13vw,3.4rem); font-variant-numeric:tabular-nums;
+    line-height:1; margin:0 0 30px;
+  }
+  .answers{display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%}
+  .answer{
+    appearance:none; border:2px solid var(--surface-2); background:var(--surface-2);
+    color:var(--text); font-family:inherit; font-weight:900; font-size:1.4rem;
+    font-variant-numeric:tabular-nums; padding:18px 0; border-radius:16px; cursor:pointer;
+  }
+  .answer:active{transform:scale(.97)}
+  .answer[data-state="correct"]{background:var(--correct-bg); border-color:var(--correct); color:var(--correct)}
+  .answer[data-state="wrong"]{background:var(--wrong-bg); border-color:var(--wrong); color:var(--wrong)}
+  .answer[disabled]{cursor:default}
+
+  /* result screen */
+  .result-hero{text-align:center; margin-bottom:26px}
+  .result-hero .big{
+    font-weight:900; font-size:3.4rem; color:var(--accent); font-variant-numeric:tabular-nums; line-height:1;
+  }
+  .result-hero .cap{color:var(--text-soft); font-weight:800; margin-top:6px}
+  .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px}
+  .stat{background:var(--surface-2); border-radius:14px; padding:14px; text-align:center}
+  .stat b{display:block; font-size:1.3rem; font-variant-numeric:tabular-nums}
+  .stat span{font-size:.72rem; color:var(--text-soft); font-weight:800; text-transform:uppercase; letter-spacing:.04em}
+  .insight{
+    background:var(--accent-soft); color:var(--accent); border-radius:14px; padding:14px 16px;
+    font-weight:700; font-size:.92rem; line-height:1.45; margin-bottom:8px;
+  }
+
+  [hidden]{display:none!important}
+
+  @media (prefers-reduced-motion: no-preference){
+    .screen-enter{animation:rise .32s ease both}
+  }
+  @keyframes rise{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+</style>
+
+<div class="app">
+  <div class="brand"><span class="spark">✦</span> Öğretmen Yanımda</div>
+
+  <!-- START -->
+  <section id="screen-start" class="card screen-enter">
+    <h1>Çarpım Tablosu Hız Testi</h1>
+    <p class="lede">Hangi tabloları çalışalım, kaç soru çözelim? Süreyi tutuyoruz — hazır olduğunda başla.</p>
+
+    <p class="block-label">Tablolar <span style="text-transform:none; font-weight:700; letter-spacing:0">— istediğin kadar seç, sadece seçtiklerin sorulur</span></p>
+    <button class="chip-all" id="toggleAllChip" type="button">Tümünü seç</button>
+    <div class="chip-grid" id="tableGrid" role="group" aria-label="Çalışılacak çarpım tabloları"></div>
+
+    <p class="block-label">Soru sayısı</p>
+    <div class="seg" id="countSeg" role="group" aria-label="Soru sayısı"></div>
+
+    <button class="primary-btn" id="startBtn" type="button">Başla</button>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="screen-quiz" class="card screen-enter" hidden>
+    <div class="quiz-top">
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">1 / 20</div>
+      </div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+
+    <div class="streak" id="streak">🔥 <span id="streakCount">0</span> doğru üst üste</div>
+
+    <div class="question-wrap">
+      <div class="q-eyebrow">Sonucu seç</div>
+      <div class="question" id="questionText">7 × 8</div>
+      <div class="answers" id="answers"></div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="screen-result" class="card screen-enter" hidden>
+    <div class="result-hero">
+      <div class="big" id="resultScore">18/20</div>
+      <div class="cap" id="resultCaption">Harika gidiyorsun!</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat"><b id="statAccuracy">90%</b><span>Doğruluk</span></div>
+      <div class="stat"><b id="statTime">01:24</b><span>Süre</span></div>
+    </div>
+    <div class="insight" id="insightBox">En çok 7'li tabloda zorlandın. Birkaç dakika ona ayır.</div>
+    <button class="primary-btn" id="retryBtn" type="button" style="margin-top:18px">Tekrar Dene</button>
+    <button class="ghost-btn" id="changeBtn" type="button">Ayarları Değiştir</button>
+  </section>
+</div>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+
+<script>
+(function(){
+  "use strict";
+
+  var screens = {
+    start: document.getElementById('screen-start'),
+    quiz: document.getElementById('screen-quiz'),
+    result: document.getElementById('screen-result')
+  };
+  function showScreen(name){
+    Object.keys(screens).forEach(function(k){ screens[k].hidden = (k !== name); });
+    screens[name].classList.remove('screen-enter');
+    void screens[name].offsetWidth;
+    screens[name].classList.add('screen-enter');
+  }
+
+  // ---- persisted preferences (per-viewer convenience only) ----
+  // Nothing pre-selected: a table only ever appears because the viewer chose it.
+  var prefs = { tables: [], count: 20 };
+  try{
+    var saved = JSON.parse(localStorage.getItem('ctht_prefs_v2') || 'null');
+    if (saved && Array.isArray(saved.tables) && [10,20,30].indexOf(saved.count) !== -1){
+      prefs = saved;
+    }
+  }catch(e){}
+
+  function savePrefs(){
+    try{ localStorage.setItem('ctht_prefs_v2', JSON.stringify(prefs)); }catch(e){}
+  }
+
+  // ---- build table chips 1..10 ----
+  var tableGrid = document.getElementById('tableGrid');
+  var chips = {};
+  for (var n=1; n<=10; n++){
+    (function(n){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.textContent = n;
+      b.setAttribute('aria-pressed', prefs.tables.indexOf(n) !== -1 ? 'true' : 'false');
+      b.addEventListener('click', function(){
+        var pressed = b.getAttribute('aria-pressed') === 'true';
+        b.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+        syncTablesFromChips();
+      });
+      tableGrid.appendChild(b);
+      chips[n] = b;
+    })(n);
+  }
+  function syncTablesFromChips(){
+    prefs.tables = Object.keys(chips).map(Number).filter(function(n){
+      return chips[n].getAttribute('aria-pressed') === 'true';
+    });
+    updateStartBtn();
+    savePrefs();
+  }
+  document.getElementById('toggleAllChip').addEventListener('click', function(){
+    var allOn = prefs.tables.length === 10;
+    for (var n=1; n<=10; n++){ chips[n].setAttribute('aria-pressed', allOn ? 'false' : 'true'); }
+    syncTablesFromChips();
+  });
+
+  // ---- question count segmented control ----
+  var countSeg = document.getElementById('countSeg');
+  [10,20,30].forEach(function(c){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = c + ' soru';
+    b.setAttribute('aria-pressed', prefs.count === c ? 'true' : 'false');
+    b.addEventListener('click', function(){
+      prefs.count = c;
+      Array.prototype.forEach.call(countSeg.children, function(el){ el.setAttribute('aria-pressed','false'); });
+      b.setAttribute('aria-pressed','true');
+      savePrefs();
+    });
+    countSeg.appendChild(b);
+  });
+
+  var startBtn = document.getElementById('startBtn');
+  function updateStartBtn(){ startBtn.disabled = prefs.tables.length === 0; }
+  updateStartBtn();
+
+  // ---- distractor generation (pure, testable) ----
+  function makeDistractors(a, b, correct){
+    var candidates = [];
+    function maybeAdd(v){
+      if (v > 0 && v !== correct && candidates.indexOf(v) === -1) candidates.push(v);
+    }
+    maybeAdd(a * (b - 1));
+    maybeAdd(a * (b + 1));
+    maybeAdd((a - 1) * b);
+    maybeAdd((a + 1) * b);
+    maybeAdd(correct + a);
+    maybeAdd(correct - a);
+    maybeAdd(correct + b);
+    maybeAdd(correct - b);
+    var guard = 0;
+    while (candidates.length < 3 && guard < 60){
+      guard++;
+      var offset = Math.floor(Math.random()*11) - 5;
+      if (offset !== 0) maybeAdd(correct + offset);
+    }
+    // shuffle
+    for (var i = candidates.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i+1));
+      var t = candidates[i]; candidates[i] = candidates[j]; candidates[j] = t;
+    }
+    return candidates.slice(0,3);
+  }
+
+  function makeQuestion(tables, lastKey){
+    var a, b, key;
+    var guard = 0;
+    do {
+      a = tables[Math.floor(Math.random()*tables.length)];
+      b = 1 + Math.floor(Math.random()*10);
+      key = a + 'x' + b;
+      guard++;
+    } while (key === lastKey && guard < 10);
+    var correct = a*b;
+    var options = makeDistractors(a,b,correct);
+    var insertAt = Math.floor(Math.random()*(options.length+1));
+    options.splice(insertAt, 0, correct);
+    return { a:a, b:b, correct:correct, options:options, key:key };
+  }
+
+  // ---- quiz state ----
+  var state = null;
+
+  document.getElementById('startBtn').addEventListener('click', function(){
+    if (prefs.tables.length === 0) return;
+    state = {
+      total: prefs.count,
+      index: 0,
+      correctCount: 0,
+      streak: 0,
+      wrongByTable: {},
+      startTime: Date.now(),
+      lastKey: null,
+      current: null,
+      locked: false
+    };
+    document.getElementById('progressText').textContent = '1 / ' + state.total;
+    document.getElementById('progressFill').style.width = '0%';
+    startTimer();
+    showScreen('quiz');
+    nextQuestion();
+  });
+
+  var timerEl = document.getElementById('timer');
+  var timerInt = null;
+  function startTimer(){
+    clearInterval(timerInt);
+    timerInt = setInterval(function(){
+      if (!state) return;
+      var s = Math.floor((Date.now() - state.startTime)/1000);
+      var mm = String(Math.floor(s/60)).padStart(2,'0');
+      var ss = String(s%60).padStart(2,'0');
+      timerEl.textContent = mm + ':' + ss;
+    }, 250);
+  }
+  function stopTimer(){ clearInterval(timerInt); }
+
+  var answersEl = document.getElementById('answers');
+  var questionText = document.getElementById('questionText');
+  var streakEl = document.getElementById('streak');
+  var streakCount = document.getElementById('streakCount');
+
+  function nextQuestion(){
+    if (state.index >= state.total){ finishQuiz(); return; }
+    state.current = makeQuestion(prefs.tables, state.lastKey);
+    state.lastKey = state.current.key;
+    state.locked = false;
+
+    questionText.textContent = state.current.a + ' × ' + state.current.b;
+    document.getElementById('progressText').textContent = (state.index+1) + ' / ' + state.total;
+    document.getElementById('progressFill').style.width = (state.index/state.total*100) + '%';
+
+    answersEl.innerHTML = '';
+    state.current.options.forEach(function(opt){
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'answer'; btn.textContent = opt;
+      btn.addEventListener('click', function(){ onAnswer(opt, btn); });
+      answersEl.appendChild(btn);
+    });
+  }
+
+  function onAnswer(value, btn){
+    if (state.locked) return;
+    state.locked = true;
+    var isCorrect = value === state.current.correct;
+
+    Array.prototype.forEach.call(answersEl.children, function(b){
+      b.disabled = true;
+      if (Number(b.textContent) === state.current.correct) b.setAttribute('data-state','correct');
+    });
+    if (!isCorrect) btn.setAttribute('data-state','wrong');
+
+    if (isCorrect){
+      state.correctCount++;
+      state.streak++;
+      if (state.streak >= 3){
+        streakCount.textContent = state.streak;
+        streakEl.classList.add('show');
+      }
+    } else {
+      state.streak = 0;
+      streakEl.classList.remove('show');
+      var t = state.current.a;
+      state.wrongByTable[t] = (state.wrongByTable[t] || 0) + 1;
+    }
+
+    state.index++;
+    setTimeout(nextQuestion, 650);
+  }
+
+  function finishQuiz(){
+    stopTimer();
+    var elapsedS = Math.floor((Date.now() - state.startTime)/1000);
+    var mm = String(Math.floor(elapsedS/60)).padStart(2,'0');
+    var ss = String(elapsedS%60).padStart(2,'0');
+    var accuracy = Math.round((state.correctCount / state.total) * 100);
+
+    document.getElementById('resultScore').textContent = state.correctCount + '/' + state.total;
+    document.getElementById('statAccuracy').textContent = accuracy + '%';
+    document.getElementById('statTime').textContent = mm + ':' + ss;
+
+    var cap = accuracy >= 90 ? 'Harika gidiyorsun!' : accuracy >= 70 ? 'İyi iş çıkardın!' : 'Pratik yaptıkça hızlanacaksın.';
+    document.getElementById('resultCaption').textContent = cap;
+
+    var worstTable = null, worstCount = 0;
+    Object.keys(state.wrongByTable).forEach(function(k){
+      if (state.wrongByTable[k] > worstCount){ worstCount = state.wrongByTable[k]; worstTable = k; }
+    });
+    var insight = worstTable
+      ? ('En çok ' + worstTable + '\'li tabloda zorlandın. Birkaç dakika ona ayırman işe yarayacaktır.')
+      : 'Hiçbir tabloda zorlanmadın, tebrikler!';
+    document.getElementById('insightBox').textContent = insight;
+
+    showScreen('result');
+  }
+
+  document.getElementById('retryBtn').addEventListener('click', function(){
+    document.getElementById('startBtn').click();
+  });
+  document.getElementById('changeBtn').addEventListener('click', function(){
+    showScreen('start');
+  });
+})();
+</script>
+
+</body></html>
