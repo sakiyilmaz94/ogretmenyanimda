@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export interface ResourceRow { id: string; grade: string; title: string; url: string }
+export interface ResourceRow { id: string; grade: string | null; title: string; url: string }
 
 const GRADES = [
   { key: "ILKOKUL_1", label: "1. Sınıf" },
   { key: "ILKOKUL_2", label: "2. Sınıf" },
   { key: "ILKOKUL_3", label: "3. Sınıf" },
   { key: "ILKOKUL_4", label: "4. Sınıf" },
+  { key: "ALL", label: "Tüm Sınıflar" },
 ];
 
 export default function ResourceManager({ resources }: { resources: ResourceRow[] }) {
@@ -72,7 +73,7 @@ export default function ResourceManager({ resources }: { resources: ResourceRow[
       </form>
 
       {GRADES.map((g) => {
-        const list = resources.filter((r) => r.grade === g.key);
+        const list = resources.filter((r) => (r.grade ?? "ALL") === g.key);
         return (
           <div key={g.key} className="bg-surface-container-lowest rounded-md soft-card-static border border-outline-variant/20 overflow-hidden">
             <div className="px-5 py-3 border-b border-outline-variant/20 flex items-center justify-between">

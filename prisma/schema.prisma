@@ -443,7 +443,7 @@ model PricingPlan {
 // Sitedeki herkese açık "Kaynaklar" sayfası: sınıfa göre ücretsiz fasikül/etkinlik linkleri (Google Drive)
 model FreeResource {
   id        String     @id @default(cuid())
-  grade     GradeLevel
+  grade     GradeLevel? // boş (null) = "Tüm Sınıflar" bölümü
   title     String
   url       String
   createdAt DateTime   @default(now())

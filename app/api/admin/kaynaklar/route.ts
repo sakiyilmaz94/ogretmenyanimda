@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-const GRADES = ["ILKOKUL_1", "ILKOKUL_2", "ILKOKUL_3", "ILKOKUL_4"];
+const GRADES = ["ILKOKUL_1", "ILKOKUL_2", "ILKOKUL_3", "ILKOKUL_4", "ALL"];
 
 async function requireAdmin() {
   const session = await auth();
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   }
   if (link.protocol !== "https:") return NextResponse.json({ error: "Link https ile başlamalı." }, { status: 400 });
 
-  const created = await db.freeResource.create({ data: { grade, title: t, url: link.toString() } });
+  const created = await db.freeResource.create({ data: { grade: grade === "ALL" ? null : grade, title: t, url: link.toString() } });
   revalidatePath("/kaynaklar");
   return NextResponse.json(created);
 }

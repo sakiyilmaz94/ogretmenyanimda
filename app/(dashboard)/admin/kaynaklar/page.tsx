@@ -13,7 +13,7 @@ export default async function AdminResourcesPage() {
           Sitedeki herkese açık <strong>Kaynaklar</strong> sayfasında görünen ücretsiz fasikül ve etkinlikler. Dosyalar Google Drive&apos;da durur, burada sadece adı ve linki tutulur.
         </p>
       </div>
-      <ResourceManager resources={resources.map((r) => ({ id: r.id, grade: r.grade, title: r.title, url: r.url }))} />
+      <ResourceManager resources={resources.map((r) => ({ id: r.id, grade: r.grade ?? null, title: r.title, url: r.url }))} />
     </div>
   );
 }
