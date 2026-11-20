@@ -4,6 +4,8 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
+import SalesAnnouncementBar from "@/components/layout/SalesAnnouncementBar";
+import { isSalesOpen } from "@/lib/site-status";
 import FaqAccordion from "@/components/ui/FaqAccordion";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +23,8 @@ export default async function HomePage() {
   const session = await auth();
   const role = session?.user?.role ?? null;
 
-  const educators = await db.educator.findMany({
+  const salesOpen = await isSalesOpen();
+  const educators = !salesOpen ? [] : await db.educator.findMany({
     where: { status: "APPROVED" },
     include: { user: true },
     take: 4,
@@ -30,6 +33,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <SalesAnnouncementBar />
       <PublicNavbar role={role} />
 
       <main>
@@ -327,6 +331,18 @@ export default async function HomePage() {
         </section>
 
         {/* ── EĞİTMENLER ───────────────────────────────────── */}
+        {!salesOpen && (
+          <section className="bg-surface-container-low py-20">
+            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+              <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-3">Öğretmenlerimiz</p>
+              <h2 className="font-display text-headline-lg text-on-background">Öğretmen kadromuzu özenle oluşturuyoruz</h2>
+              <p className="text-on-surface-variant text-body-md leading-relaxed">
+                Her öğretmenimiz diploma, deneyim ve alan yetkinliği açısından tek tek incelenerek platforma kabul edilir.
+                Değerlendirmeler tamamlandığında öğretmenlerimizi burada yayınlayacağız. Ders satışı açıldığında kayıtlı e-posta adresinize haber vereceğiz.
+              </p>
+            </div>
+          </section>
+        )}
         {educators.length > 0 && (
           <section className="bg-surface-container-low py-20">
             <div className="max-w-container-max mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,16 +1,30 @@
 import { getCommissionRate } from "@/lib/finance";
+import { isSalesOpen } from "@/lib/site-status";
+import SalesToggle from "@/components/dashboard/SalesToggle";
 import CommissionSettingForm from "@/components/dashboard/CommissionSettingForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage() {
-  const commissionRate = await getCommissionRate();
+  const [commissionRate, salesOpen] = await Promise.all([getCommissionRate(), isSalesOpen()]);
 
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
         <h1 className="font-display text-headline-md text-on-background">Ayarlar</h1>
         <p className="text-label-md text-on-surface-variant mt-0.5">Platform ayarlarını yönetin</p>
+      </div>
+
+      {/* Ders satışı */}
+      <div className="bg-surface-container-lowest rounded-md soft-card-static border border-primary/20 p-6 space-y-4">
+        <div>
+          <h2 className="font-display text-headline-md text-on-background">Ders Satışı</h2>
+          <p className="text-caption text-on-surface-variant mt-0.5">
+            Kapalıyken ana sayfada &quot;Dersler çok yakında&quot; bandı çıkar, öğretmen listesi ve profilleri ziyaretçilere gösterilmez.
+            Hazır olduğunuzda buradan açın.
+          </p>
+        </div>
+        <SalesToggle initialOpen={salesOpen} />
       </div>
 
       {/* Komisyon */}

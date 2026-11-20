@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { isSalesOpen } from "@/lib/site-status";
 import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function EducatorPublicProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  if (!(await isSalesOpen())) redirect("/egitmenlerimiz");
   const session = await auth();
   const role = session?.user?.role ?? null;
 

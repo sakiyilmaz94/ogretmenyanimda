@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { setCommissionRate } from "@/lib/finance";
+import { setSalesOpen } from "@/lib/site-status";
 import { revalidatePath } from "next/cache";
 
 export async function PATCH(req: Request) {
@@ -15,6 +16,11 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: "Komisyon oranı 0–100 arası olmalı" }, { status: 400 });
     }
     await setCommissionRate(rate);
+  }
+  if (body.salesOpen !== undefined) {
+    await setSalesOpen(body.salesOpen === true);
+    revalidatePath("/");
+    revalidatePath("/egitmenlerimiz");
   }
   revalidatePath("/admin/settings");
   revalidatePath("/admin/payments");

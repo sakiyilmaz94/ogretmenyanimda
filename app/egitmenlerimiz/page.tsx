@@ -2,6 +2,8 @@ import PublicNavbar from "@/components/layout/PublicNavbar";
 import PublicFooter from "@/components/layout/PublicFooter";
 import { db } from "@/lib/db";
 import { auth } from "@/auth";
+import SalesAnnouncementBar from "@/components/layout/SalesAnnouncementBar";
+import { isSalesOpen } from "@/lib/site-status";
 
 export const dynamic = "force-dynamic";
 import { SUBJECT_LABELS, GRADE_LABELS, formatCurrency } from "@/lib/utils";
@@ -39,7 +41,8 @@ export default async function EgitmenlerimizPage({
     ? ORTAOKUL_GRADES
     : undefined;
 
-  const educators = await db.educator.findMany({
+  const salesOpen = await isSalesOpen();
+  const educators = !salesOpen ? [] : await db.educator.findMany({
     where: {
       status: "APPROVED",
       ...(resolvedSubject ? { subjects: { has: resolvedSubject as never } } : {}),
@@ -54,8 +57,44 @@ export default async function EgitmenlerimizPage({
 
   const allEducators = educators.filter((e) => e.isProfilePublic);
 
+  if (!salesOpen) {
+    return (
+      <>
+        <SalesAnnouncementBar />
+        <PublicNavbar role={role} />
+        <main className="pt-16 bg-background">
+          <section className="bg-inverse-surface py-20 text-center relative overflow-hidden">
+            <div className="blob-bg bg-primary-fixed w-96 h-96 rounded-full absolute -top-20 -right-20 opacity-30" />
+            <div className="max-w-3xl mx-auto px-4 relative">
+              <p className="text-primary font-semibold text-label-md uppercase tracking-widest mb-3">Öğretmenlerimiz</p>
+              <h1 className="font-display text-headline-xl text-on-background mb-4">Çok Yakında</h1>
+              <p className="text-on-surface-variant text-body-lg">
+                Alanında uzman öğretmenlerimizi çok yakında burada tanıyabileceksiniz.
+              </p>
+            </div>
+          </section>
+          <section className="bg-surface-container-low py-16">
+            <div className="max-w-2xl mx-auto px-4 text-center space-y-4">
+              <p className="text-body-lg text-on-background font-semibold">Öğretmen kadromuzu özenle oluşturuyoruz.</p>
+              <p className="text-body-md text-on-surface-variant leading-relaxed">
+                Her öğretmenimiz diploma, deneyim ve alan yetkinliği açısından tek tek incelenerek platforma kabul edilir.
+                Değerlendirmeler tamamlandığında öğretmenlerimizi ve ders programlarını burada yayınlayacağız.
+                Ders satışı açıldığında kayıtlı e-posta adresinize haber vereceğiz.
+              </p>
+              <Link href="/register" className="inline-flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full text-label-md font-bold squishy-btn">
+                Ücretsiz Kayıt Olun
+              </Link>
+            </div>
+          </section>
+        </main>
+        <PublicFooter />
+      </>
+    );
+  }
+
   return (
     <>
+      <SalesAnnouncementBar />
       <PublicNavbar role={role} />
       <main className="pt-16 bg-background">
 
