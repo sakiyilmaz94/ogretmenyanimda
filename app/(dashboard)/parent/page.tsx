@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import Link from "next/link";
 import NavIcon, { type NavIconName } from "@/components/layout/NavIcon";
+import { isSalesOpen } from "@/lib/site-status";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export default async function ParentDashboard() {
 
   if (!parent) return null;
 
+  const salesOpen = await isSalesOpen();
   const now = new Date();
   const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -60,6 +62,16 @@ export default async function ParentDashboard() {
     .sort((a, b) => +a.date - +b.date)
     .slice(0, 3);
 
+  const hasChild = parent.students.length > 0;
+  const hasLesson = all.length > 0;
+  const hasPaid = all.some((b) => b.paid);
+  const showGuide = !hasChild || !hasLesson;
+  const guideSteps = [
+    { n: 1, title: "Çocuğunuzu ekleyin", desc: "Adı ve sınıfı yeterli.", href: "/parent/students", done: hasChild, cta: "Çocuk Ekle" },
+    { n: 2, title: "Öğretmen ve saati seçin", desc: "Uygun öğretmeni bulun, size uyan saati rezerve edin.", href: "/parent/book", done: hasLesson, cta: "Ders Al" },
+    { n: 3, title: "Ödemeyi yapın", desc: "Öğretmen onayından sonra havale ile ödeyin; ödeme onaylanınca ders kesinleşir.", href: "/parent/bookings", done: hasPaid, cta: "Derslerim" },
+  ];
+
   const metrics: { label: string; value: string | number; icon: NavIconName; ring: string; iconBg: string }[] = [
     { label: "Ödeme bekleyen ders", value: pendingCount, icon: "payments", ring: "border-error/30", iconBg: "bg-error-container text-on-error-container" },
     { label: "Bu ay tamamlanan", value: completedThisMonth, icon: "approvals", ring: "border-outline-variant/20", iconBg: "bg-secondary-container text-on-secondary-container" },
@@ -91,12 +103,49 @@ export default async function ParentDashboard() {
         </div>
       )}
 
+      {!salesOpen && (
+        <div className="bg-primary-fixed border border-primary/20 rounded-2xl px-5 py-4 flex items-start gap-3">
+          <span className="text-2xl">📚</span>
+          <div>
+            <p className="font-display font-semibold text-on-primary-fixed">Dersler çok yakında başlıyor!</p>
+            <p className="text-body-md text-on-primary-fixed/80">
+              Ders satışı açıldığında kayıtlı e-posta adresinize haber vereceğiz. Bu arada çocuğunuzu ekleyebilir,
+              ücretsiz kaynaklarımızı ve eğitim oyunlarımızı kullanabilirsiniz.
+            </p>
+          </div>
+        </div>
+      )}
+
       <div>
         <h1 className="font-display text-headline-lg text-on-background">
           Hoş geldiniz, {session?.user?.name?.split(" ")[0]}!
         </h1>
-        <p className="text-body-md text-on-surface-variant">Veli panelinize genel bakış</p>
+        <p className="text-body-md text-on-surface-variant">Çocuğunuzun dersleri, ödemeleri ve ücretsiz çalışma materyalleri tek yerde</p>
       </div>
+
+      {/* Başlangıç rehberi (çocuk veya ders yoksa) */}
+      {showGuide && (
+        <div className="bg-surface-container-lowest rounded-2xl border border-primary/20 p-5 soft-card-static">
+          <h2 className="font-display font-semibold text-on-background text-headline-md mb-1">Nasıl başlarım?</h2>
+          <p className="text-body-md text-on-surface-variant mb-4">Üç adımda ilk dersinize hazırlanın.</p>
+          <ol className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {guideSteps.map((g) => (
+              <li key={g.n} className={`rounded-xl border p-4 flex flex-col gap-2 ${g.done ? "border-secondary-container bg-secondary-container/30" : "border-outline-variant/30"}`}>
+                <div className="flex items-center gap-2">
+                  <span className={`w-7 h-7 rounded-full flex items-center justify-center text-label-md font-bold shrink-0 ${g.done ? "bg-secondary-container text-on-secondary-container" : "bg-primary text-on-primary"}`}>
+                    {g.done ? "✓" : g.n}
+                  </span>
+                  <span className="font-display font-semibold text-on-background">{g.title}</span>
+                </div>
+                <p className="text-caption text-on-surface-variant leading-relaxed">{g.desc}</p>
+                {!g.done && (
+                  <Link href={g.href} className="mt-auto self-start text-label-md text-primary font-semibold hover:underline">{g.cta} →</Link>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
 
       {/* b) Metrik kartlar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -123,6 +172,29 @@ export default async function ParentDashboard() {
             <span className="ml-auto text-primary">→</span>
           </Link>
         ))}
+      </div>
+
+      {/* c2) Ücretsiz içerikler */}
+      <div>
+        <h2 className="font-display font-semibold text-on-background text-headline-md mb-3">Ücretsiz içerikler</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[
+            { label: "Ücretsiz Kaynaklar", desc: "Sınıfa göre çalışma kağıtları ve fasiküller", href: "/kaynaklar", icon: "resources" as NavIconName },
+            { label: "Eğitim Oyunları", desc: "Çarpım tablosu, okuma ve hız okuma oyunları", href: "/oyunlar", icon: "lessons" as NavIconName },
+          ].map((a) => (
+            <Link key={a.href} href={a.href}
+              className="bg-surface-container-lowest border border-outline-variant/20 rounded-2xl p-5 soft-card flex items-center gap-3 hover:border-primary/40 transition">
+              <span className="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+                <NavIcon name={a.icon} className="w-5 h-5" />
+              </span>
+              <span>
+                <span className="block font-display font-semibold text-on-background">{a.label}</span>
+                <span className="block text-caption text-on-surface-variant">{a.desc}</span>
+              </span>
+              <span className="ml-auto text-primary">→</span>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* d) 2 sütun: Çocuklarım + Yaklaşan Dersler */}

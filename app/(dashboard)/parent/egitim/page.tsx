@@ -50,8 +50,8 @@ export default async function ParentEgitimPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-headline-xl text-on-background">Eğitim</h1>
-        <p className="text-body-md text-on-surface-variant mt-0.5">Çocuklarınızın seviye testleri, ders geçmişi ve randevuları</p>
+        <h1 className="font-display text-headline-xl text-on-background">Gelişim Takibi</h1>
+        <p className="text-body-md text-on-surface-variant mt-0.5">Çocuğunuzun seviye testleri, ders geçmişi ve sıradaki dersi</p>
       </div>
       <StudentEducationHub
         students={students}

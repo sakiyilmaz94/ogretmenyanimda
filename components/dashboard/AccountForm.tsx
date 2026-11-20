@@ -9,6 +9,8 @@ interface AccountData {
   phone: string;
   lessonReminder: boolean;
   paymentNotification: boolean;
+  ibanMasked: string | null; // kayıtlıysa maskeli gösterim (tam IBAN tarayıcıya gönderilmez)
+  ibanHolderName: string;
 }
 
 function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
@@ -33,6 +35,37 @@ export default function AccountForm({ initial }: { initial: AccountData }) {
   const [paymentNotification, setPaymentNotification] = useState(initial.paymentNotification);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  // İade bilgileri (IBAN)
+  const [editingIban, setEditingIban] = useState(!initial.ibanMasked);
+  const [iban, setIban] = useState("");
+  const [holder, setHolder] = useState(initial.ibanHolderName);
+  const [ibanError, setIbanError] = useState("");
+  const [ibanSaving, setIbanSaving] = useState(false);
+  const [ibanSaved, setIbanSaved] = useState(false);
+
+  async function saveIban(remove = false) {
+    setIbanError("");
+    if (remove && !confirm("Kayıtlı IBAN silinsin mi?")) return;
+    setIbanSaving(true);
+    const res = await fetch("/api/parent/account", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(remove ? { iban: "", ibanHolderName: "" } : { iban, ibanHolderName: holder }),
+    });
+    setIbanSaving(false);
+    if (res.ok) {
+      setIbanSaved(true);
+      setIban("");
+      if (remove) setHolder("");
+      setEditingIban(remove);
+      router.refresh();
+      setTimeout(() => setIbanSaved(false), 2500);
+    } else {
+      const d = await res.json().catch(() => ({}));
+      setIbanError(d.error ?? "Kaydedilemedi.");
+    }
+  }
 
   async function save(patch: Partial<AccountData>) {
     setSaving(true);
@@ -101,6 +134,57 @@ export default function AccountForm({ initial }: { initial: AccountData }) {
             <Toggle on={paymentNotification} onClick={() => { const v = !paymentNotification; setPaymentNotification(v); save({ paymentNotification: v }); }} />
           </div>
         </div>
+      </div>
+
+      {/* c) İade bilgileri */}
+      <div className="lg:col-span-2 bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-6 soft-card-static">
+        <h2 className="font-display font-semibold text-on-background text-headline-md mb-1">İade Bilgileri</h2>
+        <p className="text-body-md text-on-surface-variant mb-4">
+          Olası bir ders iptalinde ücretin size geri gönderilebilmesi için IBAN bilginizi ekleyebilirsiniz. Şimdi eklemeniz zorunlu değil, daha sonra da ekleyebilirsiniz.
+        </p>
+
+        {!editingIban && initial.ibanMasked ? (
+          <div className="flex flex-wrap items-center justify-between gap-3 border border-outline-variant/20 rounded-xl p-4">
+            <div>
+              <p className="font-display font-semibold text-on-background tracking-wide">{initial.ibanMasked}</p>
+              <p className="text-caption text-on-surface-variant">Hesap sahibi: {initial.ibanHolderName}</p>
+            </div>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setEditingIban(true)}
+                className="rounded-full bg-surface-container text-on-background px-4 py-2 text-label-md font-semibold hover:bg-surface-container-high transition">Değiştir</button>
+              <button type="button" onClick={() => saveIban(true)} disabled={ibanSaving}
+                className="rounded-full bg-error-container text-on-error-container px-4 py-2 text-label-md font-semibold hover:opacity-90 disabled:opacity-50 transition">Sil</button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4 max-w-xl">
+            <div>
+              <label className="block text-label-md font-semibold text-on-background mb-1.5">Hesap sahibinin adı soyadı</label>
+              <input type="text" value={holder} onChange={(e) => setHolder(e.target.value)} placeholder="Bankadaki hesap adıyla aynı"
+                className="w-full bg-surface-container rounded-full px-5 py-3 text-on-background placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition" />
+            </div>
+            <div>
+              <label className="block text-label-md font-semibold text-on-background mb-1.5">IBAN</label>
+              <input type="text" inputMode="text" autoComplete="off" value={iban} onChange={(e) => setIban(e.target.value)} placeholder="TR00 0000 0000 0000 0000 0000 00"
+                className="w-full bg-surface-container rounded-full px-5 py-3 text-on-background tracking-wide placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-surface-container-lowest transition" />
+              <p className="text-caption text-on-surface-variant mt-2 leading-relaxed">
+                Olası ders iptali için gereklidir. IBAN bilginiz yalnızca ücret iadesi için kullanılır, üçüncü kişilerle paylaşılmaz.
+              </p>
+            </div>
+            {ibanError && <div className="bg-error text-on-error rounded-xl px-4 py-2.5 text-label-md font-semibold">{ibanError}</div>}
+            <div className="flex items-center gap-3">
+              <button type="button" onClick={() => saveIban(false)} disabled={ibanSaving || !iban.trim() || !holder.trim()}
+                className="rounded-full squishy-btn bg-primary text-on-primary px-6 py-2.5 text-label-md font-semibold disabled:opacity-50 transition">
+                {ibanSaving ? "Kaydediliyor…" : "IBAN'ı Kaydet"}
+              </button>
+              {initial.ibanMasked && (
+                <button type="button" onClick={() => { setEditingIban(false); setIban(""); setIbanError(""); }}
+                  className="text-label-md text-on-surface-variant hover:underline">Vazgeç</button>
+              )}
+              {ibanSaved && <span className="text-caption text-on-secondary-container font-semibold">✓ Kaydedildi</span>}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

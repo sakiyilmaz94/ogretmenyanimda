@@ -2,6 +2,8 @@ import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency, formatDateTime, GRADE_LABELS } from "@/lib/utils";
+import { formatIban } from "@/lib/iban";
+import ParentTestToggle from "@/components/dashboard/ParentTestToggle";
 import AdminBookingsView, { type AdminBookingItem } from "@/components/dashboard/AdminBookingsView";
 
 export const dynamic = "force-dynamic";
@@ -74,6 +76,26 @@ export default async function AdminParentDetailPage({ params }: { params: Promis
             <p className="font-display text-headline-md text-on-background">{s.value}</p>
           </div>
         ))}
+      </div>
+
+      {/* İade bilgileri + test hesabı */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">
+          <h2 className="font-display text-headline-md text-on-background mb-3">İade Bilgileri</h2>
+          {parent.iban ? (
+            <div className="space-y-1">
+              <p className="font-display font-semibold text-on-background tracking-wide select-all">{formatIban(parent.iban)}</p>
+              <p className="text-label-md text-on-surface-variant">Hesap sahibi: {parent.ibanHolderName ?? "—"}</p>
+              <p className="text-caption text-on-surface-variant">İptal edilen ve ödenmiş bir dersin iadesi bu hesaba havale ile yapılır.</p>
+            </div>
+          ) : (
+            <p className="text-body-md text-on-surface-variant">Veli henüz IBAN eklememiş. İade gerekirse velinden isteyin{parent.phone ? ` (${parent.phone})` : ""}.</p>
+          )}
+        </div>
+        <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">
+          <h2 className="font-display text-headline-md text-on-background mb-3">Ayarlar</h2>
+          <ParentTestToggle parentId={parent.id} initial={parent.canBookEarly} />
+        </div>
       </div>
 
       {/* Çocuklar */}

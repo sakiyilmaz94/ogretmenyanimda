@@ -37,7 +37,7 @@ export default async function ParentPaymentsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-headline-lg text-on-background">Ödemelerim</h1>
-          <p className="text-body-md text-on-surface-variant">Tüm ödeme geçmişiniz</p>
+          <p className="text-body-md text-on-surface-variant">Havale ile yaptığınız ödemeler ve durumları</p>
         </div>
         <div className="bg-secondary-container text-on-secondary-container px-5 py-2.5 rounded-full text-label-md font-semibold">
           Toplam: {formatCurrency(totalPaid)}

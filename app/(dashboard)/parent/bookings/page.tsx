@@ -93,19 +93,19 @@ export default async function ParentBookingsPage({
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-headline-lg text-on-background">Rezervasyonlarım</h1>
-          <p className="text-body-md text-on-surface-variant">Tüm ders rezervasyonlarınız</p>
+          <h1 className="font-display text-headline-lg text-on-background">Derslerim</h1>
+          <p className="text-body-md text-on-surface-variant">Aldığınız dersler: onay, ödeme, görüşme linki ve ders raporları</p>
         </div>
         <Link href="/parent/book" className="rounded-full squishy-btn bg-primary text-on-primary px-6 py-3 text-label-md font-semibold">
-          + Yeni Rezervasyon
+          + Yeni Ders Al
         </Link>
       </div>
 
       {items.length === 0 ? (
         <div className="bg-surface-container rounded-md p-10 text-center soft-card-static">
           <p className="text-3xl mb-3">📋</p>
-          <h3 className="font-display font-semibold text-on-background mb-2">Henüz rezervasyon yok</h3>
-          <p className="text-body-md text-on-surface-variant mb-4">İlk dersi hemen rezerve edin!</p>
+          <h3 className="font-display font-semibold text-on-background mb-2">Henüz ders almadınız</h3>
+          <p className="text-body-md text-on-surface-variant mb-4">İlk dersinizi seçerek başlayın.</p>
           <Link href="/parent/book" className="inline-block rounded-full squishy-btn bg-primary text-on-primary px-6 py-3 text-label-md font-semibold">
             Ders Al
           </Link>

@@ -27,7 +27,7 @@ export default async function ParentStudentsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-headline-lg text-on-background">Çocuklarım</h1>
-        <p className="text-body-md text-on-surface-variant">Çocuklarınızın bilgilerini yönetin</p>
+        <p className="text-body-md text-on-surface-variant">Ders alacak çocuklarınızı ekleyin; sınıf seviyesi öğretmen seçimini kolaylaştırır</p>
       </div>
       <StudentManager
         parentId={parent.id}

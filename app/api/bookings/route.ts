@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
 import { sendEmail, emailBookingRequest } from "@/lib/email";
 import { SUBJECT_LABELS } from "@/lib/utils";
+import { isSalesOpen } from "@/lib/site-status";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -33,6 +34,11 @@ export async function POST(req: Request) {
 
   const parent = await db.parent.findUnique({ where: { userId: session.user.id } });
   if (!parent) return NextResponse.json({ error: "Veli bulunamadı." }, { status: 404 });
+
+  // Ders satışı kapalıyken yalnızca test hesapları rezervasyon yapabilir
+  if (!parent.canBookEarly && !(await isSalesOpen())) {
+    return NextResponse.json({ error: "Ders rezervasyonu çok yakında açılacak." }, { status: 403 });
+  }
 
   const student = await db.student.findUnique({ where: { id: studentId } });
   if (!student || student.parentId !== parent.id) {

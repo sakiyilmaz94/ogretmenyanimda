@@ -172,6 +172,9 @@ model Parent {
   id        String   @id @default(cuid())
   userId    String   @unique
   phone     String?
+  iban                String? // iade için (ders iptali); veli sonradan ekleyebilir
+  ibanHolderName      String? // IBAN hesap sahibinin adı soyadı
+  canBookEarly        Boolean @default(false) // test hesabı: satış kapalıyken de rezervasyon yapabilir
   lessonReminder      Boolean @default(true) // ders hatırlatıcısı bildirimi
   paymentNotification Boolean @default(true) // ödeme bildirimi
   createdAt DateTime @default(now())
