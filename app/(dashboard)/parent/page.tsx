@@ -53,12 +53,13 @@ export default async function ParentDashboard() {
   const isPendingPay = (b: (typeof all)[number]) => b.status === "CONFIRMED" && !b.paid;
   const pendingCount = all.filter(isPendingPay).length;
   const completedThisMonth = all.filter((b) => b.status === "COMPLETED" && b.date >= startOfMonth).length;
-  const upcomingThisWeek = all.filter((b) => b.status === "CONFIRMED" && b.date >= startOfToday && b.date <= weekEnd).length;
+  const isUpcomingLesson = (b: (typeof all)[number]) => (b.status === "PENDING" || b.status === "CONFIRMED") && b.date >= startOfToday;
+  const upcomingThisWeek = all.filter((b) => isUpcomingLesson(b) && b.date <= weekEnd).length;
   const totalSpent = all.reduce((sum, b) => sum + b.paymentAmount, 0);
 
   // Yaklaşan dersler (onaylı, gelecekte), en yakın 3
   const upcoming = all
-    .filter((b) => b.status === "CONFIRMED" && b.date >= startOfToday)
+    .filter(isUpcomingLesson)
     .sort((a, b) => +a.date - +b.date)
     .slice(0, 3);
 
@@ -72,11 +73,11 @@ export default async function ParentDashboard() {
     { n: 3, title: "Ödemeyi yapın", desc: "Öğretmen onayından sonra havale ile ödeyin; ödeme onaylanınca ders kesinleşir.", href: "/parent/bookings", done: hasPaid, cta: "Derslerim" },
   ];
 
-  const metrics: { label: string; value: string | number; icon: NavIconName; ring: string; iconBg: string }[] = [
-    { label: "Ödeme bekleyen ders", value: pendingCount, icon: "payments", ring: "border-error/30", iconBg: "bg-error-container text-on-error-container" },
-    { label: "Bu ay tamamlanan", value: completedThisMonth, icon: "approvals", ring: "border-outline-variant/20", iconBg: "bg-secondary-container text-on-secondary-container" },
-    { label: "Bu hafta yaklaşan", value: upcomingThisWeek, icon: "schedule", ring: "border-outline-variant/20", iconBg: "bg-primary-fixed text-primary" },
-    { label: "Toplam harcama", value: formatCurrency(totalSpent), icon: "list", ring: "border-outline-variant/20", iconBg: "bg-surface-container-high text-on-surface-variant" },
+  const metrics: { label: string; value: string | number; icon: NavIconName; ring: string; iconBg: string; href: string }[] = [
+    { label: "Ödeme bekleyen ders", value: pendingCount, icon: "payments", ring: "border-error/30", iconBg: "bg-error-container text-on-error-container", href: "/parent/bookings?filtre=odeme" },
+    { label: "Bu ay tamamlanan", value: completedThisMonth, icon: "approvals", ring: "border-outline-variant/20", iconBg: "bg-secondary-container text-on-secondary-container", href: "/parent/bookings?filtre=ay-tamamlanan" },
+    { label: "Bu hafta yaklaşan", value: upcomingThisWeek, icon: "schedule", ring: "border-outline-variant/20", iconBg: "bg-primary-fixed text-primary", href: "/parent/bookings?filtre=hafta" },
+    { label: "Toplam harcama", value: formatCurrency(totalSpent), icon: "list", ring: "border-outline-variant/20", iconBg: "bg-surface-container-high text-on-surface-variant", href: "/parent/payments" },
   ];
 
   const quickActions: { label: string; href: string; icon: NavIconName }[] = [
@@ -96,7 +97,7 @@ export default async function ParentDashboard() {
               {pendingCount} dersin ödemesi bekliyor
             </p>
           </div>
-          <Link href="/parent/bookings"
+          <Link href="/parent/bookings?filtre=odeme"
             className="rounded-full squishy-btn bg-primary text-on-primary px-5 py-2.5 text-label-md font-semibold shrink-0 text-center">
             Ödemelere git →
           </Link>
@@ -150,13 +151,17 @@ export default async function ParentDashboard() {
       {/* b) Metrik kartlar */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {metrics.map((m) => (
-          <div key={m.label} className={`bg-surface-container-lowest rounded-2xl p-5 soft-card-static border ${m.ring}`}>
-            <div className={`w-11 h-11 rounded-full flex items-center justify-center mb-3 ${m.iconBg}`}>
-              <NavIcon name={m.icon} className="w-6 h-6" />
+          <Link key={m.label} href={m.href}
+            className={`group block bg-surface-container-lowest rounded-2xl p-5 soft-card border ${m.ring} hover:border-primary/40 hover:shadow-md transition cursor-pointer`}>
+            <div className="flex items-start justify-between">
+              <div className={`w-11 h-11 rounded-full flex items-center justify-center mb-3 ${m.iconBg}`}>
+                <NavIcon name={m.icon} className="w-6 h-6" />
+              </div>
+              <span className="text-primary opacity-60 group-hover:opacity-100 transition" aria-hidden>→</span>
             </div>
             <div className="font-display text-headline-md text-on-background">{m.value}</div>
             <div className="text-caption text-on-surface-variant">{m.label}</div>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -218,17 +223,22 @@ export default async function ParentDashboard() {
                 const lastLesson = sb.filter((b) => b.status === "COMPLETED" || b.date <= now)
                   .sort((a, b) => +b.date - +a.date)[0];
                 return (
-                  <div key={s.id} className="flex items-center gap-3 border border-outline-variant/20 rounded-xl p-3">
-                    <div className="bg-primary rounded-full w-10 h-10 flex items-center justify-center shrink-0">
-                      <span className="text-on-primary font-display font-bold">{s.name[0].toUpperCase()}</span>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="font-display font-semibold text-on-background truncate">{s.name}</p>
-                      <p className="text-caption text-on-surface-variant">{GRADE_LABELS[s.gradeLevel] ?? s.gradeLevel}</p>
-                    </div>
+                  <div key={s.id} className="flex items-center gap-3 border border-outline-variant/20 rounded-xl p-3 hover:border-primary/40 transition">
+                    <Link href={`/parent/egitim/${s.id}`} className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className="bg-primary rounded-full w-10 h-10 flex items-center justify-center shrink-0">
+                        <span className="text-on-primary font-display font-bold">{s.name[0].toUpperCase()}</span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-display font-semibold text-on-background truncate">{s.name}</p>
+                        <p className="text-caption text-on-surface-variant">{GRADE_LABELS[s.gradeLevel] ?? s.gradeLevel}</p>
+                      </div>
+                    </Link>
                     <div className="flex flex-col items-end gap-1 shrink-0">
                       {pend > 0 && (
-                        <span className="text-[11px] bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-semibold">{pend} ödeme bekliyor</span>
+                        <Link href={`/parent/bookings?filtre=odeme&ogrenci=${encodeURIComponent(s.name)}`}
+                          className="text-[11px] bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-semibold hover:opacity-80 transition">
+                          {pend} ödeme bekliyor →
+                        </Link>
                       )}
                       <span className="text-[11px] bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full">
                         Son ders: {lastLesson ? formatDate(lastLesson.date) : "—"}
@@ -243,13 +253,16 @@ export default async function ParentDashboard() {
 
         {/* Yaklaşan Dersler */}
         <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/20 p-5 soft-card-static flex flex-col">
-          <h2 className="font-display font-semibold text-on-background text-headline-md mb-4">Yaklaşan Dersler</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-display font-semibold text-on-background text-headline-md">Yaklaşan Dersler</h2>
+            <Link href="/parent/bookings?filtre=yaklasan" className="text-caption text-primary font-semibold hover:underline">Tümü →</Link>
+          </div>
           {upcoming.length === 0 ? (
             <p className="text-body-md text-on-surface-variant py-6 text-center flex-1">Yaklaşan ders yok.</p>
           ) : (
             <div className="space-y-3 flex-1">
               {upcoming.map((b) => (
-                <div key={b.id} className="flex items-center gap-3 border border-outline-variant/20 rounded-xl p-3">
+                <Link key={b.id} href="/parent/bookings?filtre=yaklasan" className="flex items-center gap-3 border border-outline-variant/20 rounded-xl p-3 hover:border-primary/40 transition">
                   <div className="bg-primary-fixed rounded-full w-10 h-10 flex items-center justify-center shrink-0">
                     <span className="text-primary font-display font-bold">{b.educatorName[0]?.toUpperCase()}</span>
                   </div>
@@ -263,13 +276,13 @@ export default async function ParentDashboard() {
                     <p className="text-caption font-semibold text-on-background">{formatDate(b.date)}</p>
                     <p className="text-[11px] text-on-surface-variant">{b.startTime}</p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
           <Link href="/parent/book"
             className="mt-4 rounded-full squishy-btn bg-primary text-on-primary px-5 py-2.5 text-label-md font-semibold text-center">
-            + Yeni ders rezervasyonu
+            + Yeni ders al
           </Link>
         </div>
       </div>

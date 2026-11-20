@@ -1,17 +1,30 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import Link from "next/link";
-import ParentBookingsView, { type ParentBookingItem } from "@/components/dashboard/ParentBookingsView";
+import ParentBookingsView, { type ParentBookingItem, type InitialBookingFilter } from "@/components/dashboard/ParentBookingsView";
 
 export const dynamic = "force-dynamic";
 
 export default async function ParentBookingsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ payment?: string; bookingId?: string }>;
+  searchParams: Promise<{ payment?: string; bookingId?: string; filtre?: string; ogrenci?: string }>;
 }) {
   const session = await auth();
-  const { payment } = await searchParams;
+  const { payment, filtre, ogrenci } = await searchParams;
+
+  // Ana sayfa kısayollarından gelen başlangıç filtresi
+  const FILTERS: Record<string, InitialBookingFilter> = {
+    odeme: { chip: "pendingPay" },
+    yaklasan: { chip: "upcoming" },
+    hafta: { chip: "upcoming", scope: "week" },
+    tamamlanan: { chip: "completed" },
+    "ay-tamamlanan": { chip: "completed", scope: "month" },
+    tumu: { chip: "all" },
+  };
+  const initial: InitialBookingFilter | undefined = filtre || ogrenci
+    ? { ...(filtre ? FILTERS[filtre] : {}), ...(ogrenci ? { student: ogrenci } : {}) }
+    : undefined;
 
   const parent = await db.parent.findUnique({
     where: { userId: session!.user.id },
@@ -111,7 +124,7 @@ export default async function ParentBookingsPage({
           </Link>
         </div>
       ) : (
-        <ParentBookingsView bookings={items} />
+        <ParentBookingsView key={`${filtre ?? ""}|${ogrenci ?? ""}`} bookings={items} initial={initial} />
       )}
     </div>
   );

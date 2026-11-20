@@ -41,7 +41,13 @@ const isPendingPay = (b: ParentBookingItem) => b.status === "CONFIRMED" && b.pay
 const isUpcoming = (b: ParentBookingItem, todayStart: number) =>
   (b.status === "PENDING" || b.status === "CONFIRMED") && +new Date(b.date) >= todayStart;
 
-export default function ParentBookingsView({ bookings }: { bookings: ParentBookingItem[] }) {
+export interface InitialBookingFilter {
+  chip?: StatusChip;
+  scope?: "week" | "month"; // yaklaşan → bu hafta, tamamlanan → bu ay
+  student?: string;
+}
+
+export default function ParentBookingsView({ bookings, initial }: { bookings: ParentBookingItem[]; initial?: InitialBookingFilter }) {
   const todayStart = useMemo(() => {
     const d = new Date();
     return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
@@ -49,13 +55,18 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
 
   // Açılışta yalnızca yaklaşan dersler görünür (kalabalık olmasın); yaklaşan yoksa tümü
   const hasUpcoming = useMemo(() => bookings.some((b) => isUpcoming(b, todayStart)), [bookings, todayStart]);
-  const [chip, setChip] = useState<StatusChip>(hasUpcoming ? "upcoming" : "all");
+  const startChip: StatusChip = initial?.chip ?? (hasUpcoming ? "upcoming" : "all");
+  const [chip, setChip] = useState<StatusChip>(startChip);
+  const [scope, setScope] = useState<"week" | "month" | null>(initial?.scope ?? null);
   const [range, setRange] = useState<Range>("all");
-  const [student, setStudent] = useState("all");
-  const [sort, setSort] = useState<SortKey>(hasUpcoming ? "dateAsc" : "dateDesc");
+  const [student, setStudent] = useState(
+    initial?.student && bookings.some((b) => b.studentName === initial.student) ? initial.student : "all"
+  );
+  const [sort, setSort] = useState<SortKey>(startChip === "upcoming" ? "dateAsc" : "dateDesc");
 
   function pickChip(c: StatusChip) {
     setChip(c);
+    setScope(null);
     // Yaklaşanlar en yakın tarih önce; diğerleri en yeni önce
     setSort(c === "upcoming" ? "dateAsc" : "dateDesc");
   }
@@ -73,6 +84,11 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
     completed: bookings.filter((b) => b.status === "COMPLETED").length,
   }), [bookings, pendingPayList, todayStart]);
 
+  const monthStart = useMemo(() => {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), 1).getTime();
+  }, []);
+
   const visible = useMemo(() => {
     const now = Date.now();
     const cutoff = range === "week" ? now - 7 * 864e5 : range === "month" ? now - 30 * 864e5 : null;
@@ -81,6 +97,9 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
       if (chip === "pendingPay" && !isPendingPay(b)) return false;
       if (chip === "upcoming" && !isUpcoming(b, todayStart)) return false;
       if (chip === "completed" && b.status !== "COMPLETED") return false;
+      // Kısayoldan gelen kapsam: bu hafta yaklaşan / bu ay tamamlanan
+      if (scope === "week" && chip === "upcoming" && +new Date(b.date) > todayStart + 7 * 864e5) return false;
+      if (scope === "month" && chip === "completed" && +new Date(b.date) < monthStart) return false;
       // Dönem + öğrenci
       if (cutoff !== null && +new Date(b.date) < cutoff) return false;
       if (student !== "all" && b.studentName !== student) return false;
@@ -93,7 +112,7 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
       return sort === "dateAsc" ? (da < db ? -1 : da > db ? 1 : 0) : (da > db ? -1 : da < db ? 1 : 0);
     });
     return list;
-  }, [bookings, chip, range, student, sort, todayStart]);
+  }, [bookings, chip, scope, range, student, sort, todayStart, monthStart]);
 
   const CHIPS: { key: StatusChip; label: string; badge?: number }[] = [
     { key: "upcoming", label: "Yaklaşan Dersler" },
@@ -140,6 +159,24 @@ export default function ParentBookingsView({ bookings }: { bookings: ParentBooki
       {/* Dönem / öğrenci / sıralama: yalnızca "Tümü" görünümünde (ilk ekran sade kalsın) */}
       {chip === "all" && (
         <FilterBar range={range} setRange={setRange} student={student} setStudent={setStudent} students={students} sort={sort} setSort={setSort} />
+      )}
+
+      {/* Aktif süzgeçler (kısayoldan geldiyse görünür, tek tıkla kaldırılır) */}
+      {((scope && chip !== "all") || (student !== "all" && chip !== "all")) && (
+        <div className="flex flex-wrap items-center gap-2">
+          {scope && (
+            <button onClick={() => setScope(null)}
+              className="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed px-3 py-1.5 rounded-full text-caption font-semibold">
+              {scope === "week" ? "Bu hafta" : "Bu ay"} <span aria-hidden>×</span>
+            </button>
+          )}
+          {student !== "all" && (
+            <button onClick={() => setStudent("all")}
+              className="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed px-3 py-1.5 rounded-full text-caption font-semibold">
+              Öğrenci: {student} <span aria-hidden>×</span>
+            </button>
+          )}
+        </div>
       )}
 
       <p className="text-caption text-on-surface-variant">
