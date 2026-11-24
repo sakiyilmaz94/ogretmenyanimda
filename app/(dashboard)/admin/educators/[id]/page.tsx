@@ -4,6 +4,7 @@ import Link from "next/link";
 import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import EducatorDetailActions from "@/components/dashboard/EducatorDetailActions";
 import { missingEducatorFields, BRANCHES } from "@/lib/educator-requirements";
+import { formatIban } from "@/lib/iban";
 import AdminEducatorEditForm from "@/components/dashboard/AdminEducatorEditForm";
 
 export const dynamic = "force-dynamic";
@@ -132,6 +133,20 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
         }}
       />
 
+      {/* Ödeme bilgileri (haftalık ödeme için) */}
+      <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">
+        <h2 className="font-display text-headline-md text-on-background mb-3">Ödeme Bilgileri</h2>
+        {educator.iban ? (
+          <div className="space-y-1">
+            <p className="font-display font-semibold text-on-background tracking-wide select-all">{formatIban(educator.iban)}</p>
+            <p className="text-label-md text-on-surface-variant">Hesap sahibi: {educator.ibanHolderName ?? "—"}</p>
+            <p className="text-caption text-on-surface-variant">Haftalık ders ödemeleri bu hesaba yapılır.</p>
+          </div>
+        ) : (
+          <p className="text-body-md text-on-surface-variant">Öğretmen henüz IBAN eklememiş. Onaylamadan önce eklemesi gerekir.</p>
+        )}
+      </div>
+
       {/* Documents */}
       <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">
         <h2 className="font-display text-headline-md text-on-background mb-4">Kimlik Doğrulama Belgeleri</h2>
@@ -214,6 +229,7 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
             hourlyRate: educator.hourlyRate.toNumber(),
             experience: educator.experience,
             coachingCertUrl: educator.coachingCertUrl,
+            iban: educator.iban,
           })}
         />
       )}

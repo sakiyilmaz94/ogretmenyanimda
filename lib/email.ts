@@ -118,6 +118,30 @@ export function emailEducatorApproved({ name }: { name: string }) {
   });
 }
 
+// Öğretmen başvurusu REDDEDİLDİĞİNDE gönderilir
+export function emailEducatorRejected({ name, note }: { name: string; note?: string | null }) {
+  const firstName = (name ?? "").trim().split(" ")[0] || name;
+  const safeNote = (note ?? "").replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c] as string));
+  return welcomeShell({
+    heading: `Merhaba ${firstName},`,
+    subtitle: "Başvurunla ilgili bilgilendirme",
+    body: `
+      <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
+        Öğretmen başvurunu inceledik. Bu aşamada başvurunu <strong>onaylayamadık</strong>. Bize zaman ayırdığın için teşekkür ederiz.
+      </p>
+      ${safeNote ? `<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:16px 20px;margin:0 0 18px">
+        <p style="color:#9a3412;font-weight:700;margin:0 0 6px;font-size:14px">Değerlendirme notumuz</p>
+        <p style="color:#7c2d12;line-height:1.7;margin:0;font-size:14px">${safeNote}</p>
+      </div>` : ""}
+      <p style="color:#334155;line-height:1.7;margin:0 0 18px;font-size:15px">
+        Eksik ya da hatalı bir bilgi varsa hesabına giriş yapıp belgelerini yeniden yükleyerek başvurunu tekrar gönderebilirsin.
+      </p>
+      <div style="text-align:center;margin:0 0 4px">
+        <a href="https://ogretmenyanimda.com.tr/educator" style="display:inline-block;background:#4648D4;color:#ffffff;padding:14px 32px;border-radius:50px;text-decoration:none;font-weight:700;font-size:15px">Başvurumu Güncelle →</a>
+      </div>`,
+  });
+}
+
 export function emailLessonReportRequest({
   educatorName,
   studentName,

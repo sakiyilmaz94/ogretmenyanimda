@@ -4,10 +4,19 @@ import { db } from "@/lib/db";
 import { Role, Subject, GradeLevel } from "@prisma/client";
 import { sendEmail, emailWelcome } from "@/lib/email";
 import { toPrivatePath } from "@/lib/private-docs";
-import { APPLICABLE_SUBJECTS, ALL_GRADE_LEVELS, BRANCHES, branchMismatch, gradeMismatch, MIN_EXPERIENCE_YEARS, missingEducatorFields } from "@/lib/educator-requirements";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { isValidTrIban, normalizeIban } from "@/lib/iban";
+import { notifyAdmins } from "@/lib/notify";
+import { APPLICABLE_SUBJECTS, ALL_GRADE_LEVELS, BRANCHES, branchMismatch, gradeMismatch, MIN_EXPERIENCE_YEARS, MIN_HOURLY_RATE, MIN_RATE_MESSAGE, missingEducatorFields } from "@/lib/educator-requirements";
 
 export async function POST(req: Request) {
-  const { name, email, password, role, diplomaUrl, idCardUrl, coachingCertUrl, phone, subjects, gradeLevels, hourlyRate, experience, branch } = await req.json();
+  // Sahte hesap / toplu kayıt koruması: IP başına saatte 5 kayıt
+  const rl = await rateLimit(`register:${clientIp(req)}`, 5, 3600);
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Çok fazla kayıt denemesi yapıldı. Lütfen bir süre sonra tekrar deneyin." }, { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } });
+  }
+
+  const { name, email, password, role, diplomaUrl, idCardUrl, coachingCertUrl, phone, subjects, gradeLevels, hourlyRate, experience, branch, iban, ibanHolderName } = await req.json();
 
   if (!name || !email || !password) {
     return NextResponse.json({ error: "Tüm alanları doldurun." }, { status: 400 });
@@ -17,13 +26,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Şifre en az 8 karakter olmalıdır." }, { status: 400 });
   }
 
-  let educatorData: { branch: string; phone: string; subjects: Subject[]; gradeLevels: GradeLevel[]; hourlyRate: number; experience: number } | null = null;
+  let educatorData: { branch: string; phone: string; subjects: Subject[]; gradeLevels: GradeLevel[]; hourlyRate: number; experience: number; iban: string; ibanHolderName: string } | null = null;
   if (role === "EDUCATOR") {
     const subj = (Array.isArray(subjects) ? subjects : []).filter((x: string) => (APPLICABLE_SUBJECTS as string[]).includes(x)) as Subject[];
     const grades = (Array.isArray(gradeLevels) ? gradeLevels : []).filter((x: string) => (ALL_GRADE_LEVELS as string[]).includes(x)) as GradeLevel[];
     const rate = Number(hourlyRate);
     const exp = Number(experience);
+    if (Number.isFinite(rate) && rate > 0 && rate < MIN_HOURLY_RATE) {
+      return NextResponse.json({ error: MIN_RATE_MESSAGE }, { status: 400 });
+    }
+    const holder = typeof ibanHolderName === "string" ? ibanHolderName.trim() : "";
+    if (typeof iban !== "string" || !isValidTrIban(iban)) {
+      return NextResponse.json({ error: "Geçerli bir IBAN girin (TR ile başlayan 26 karakter). Haftalık ödemeniz bu hesaba yapılacaktır." }, { status: 400 });
+    }
+    if (holder.length < 3 || holder.length > 80) {
+      return NextResponse.json({ error: "IBAN hesap sahibinin adını soyadını yazın." }, { status: 400 });
+    }
     const missing = missingEducatorFields({
+      iban: normalizeIban(iban),
       phone: typeof phone === "string" ? phone : null,
       subjects: subj,
       gradeLevels: grades,
@@ -47,7 +67,7 @@ export async function POST(req: Request) {
     if (gradeMismatch(branch, grades).length > 0) {
       return NextResponse.json({ error: `${BRANCHES[branch].label} için yalnızca ortaokul (5-8. sınıf) seviyeleri seçilebilir.` }, { status: 400 });
     }
-    educatorData = { branch, phone: phone.trim(), subjects: subj, gradeLevels: grades, hourlyRate: rate, experience: Math.round(exp) };
+    educatorData = { branch, phone: phone.trim(), subjects: subj, gradeLevels: grades, hourlyRate: rate, experience: Math.round(exp), iban: normalizeIban(iban), ibanHolderName: holder };
   }
 
   // Belgeler yalnızca gizli klasördeki yollar olarak kabul edilir (başka adres yerleştirilemez)
@@ -84,6 +104,8 @@ export async function POST(req: Request) {
         hourlyRate: educatorData?.hourlyRate ?? 0,
         phone: educatorData?.phone ?? null,
         branch: educatorData?.branch ?? null,
+        iban: educatorData?.iban ?? null,
+        ibanHolderName: educatorData?.ibanHolderName ?? null,
         coachingCertUrl: subjects?.includes?.("OGRENCI_KOCLUGU") ? coachingPath : null,
         subjects: educatorData?.subjects ?? [],
         gradeLevels: educatorData?.gradeLevels ?? [],
@@ -93,6 +115,15 @@ export async function POST(req: Request) {
         idCardUrl: idCardPath,
       },
     });
+  }
+
+  // Yeni öğretmen başvurusu → yöneticiye panel bildirimi + e-posta
+  if (userRole === Role.EDUCATOR) {
+    notifyAdmins({
+      title: "Yeni öğretmen başvurusu",
+      message: `${name} öğretmen olarak başvurdu${educatorData ? ` (${BRANCHES[educatorData.branch]?.label ?? educatorData.branch}, ${educatorData.experience} yıl deneyim)` : ""}. Belgeleri inceleyip onaylayın veya reddedin.`,
+      link: "/admin/educators?durum=PENDING",
+    }).catch(console.error);
   }
 
   sendEmail({

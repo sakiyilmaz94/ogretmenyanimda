@@ -57,6 +57,16 @@ export default async function EducatorDashboard() {
         </div>
       )}
 
+      {!isPending && !isRejected && !educator.iban && (
+        <Link href="/educator/profile" className="flex items-center gap-3 bg-tertiary-fixed border border-outline-variant/20 rounded-2xl p-4 hover:opacity-90 transition">
+          <span className="text-2xl">🏦</span>
+          <div>
+            <p className="font-semibold text-on-tertiary-fixed text-body-md">Ödeme alabilmek için IBAN&apos;ınızı ekleyin</p>
+            <p className="text-on-tertiary-fixed/80 text-body-md mt-0.5">Ders ücretleriniz haftalık olarak IBAN&apos;ınıza yatırılır. Profilim → Ödeme Bilgileri →</p>
+          </div>
+        </Link>
+      )}
+
       {isPending && (
         <div className="bg-tertiary-fixed border border-outline-variant/20 rounded-2xl p-4">
           <p className="text-on-tertiary-fixed font-semibold text-body-md">Hesabınız onay bekliyor</p>

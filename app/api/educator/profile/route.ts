@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { MIN_HOURLY_RATE, MIN_RATE_MESSAGE } from "@/lib/educator-requirements";
 
 export async function GET() {
   const session = await auth();
@@ -22,6 +23,10 @@ export async function PATCH(req: Request) {
     bio, subjects, gradeLevels, hourlyRate, phone,
     photoUrl, titleName, experience, skills, certificates, linkedinUrl, isProfilePublic,
   } = await req.json();
+
+  if (hourlyRate !== undefined && !(Number(hourlyRate) >= MIN_HOURLY_RATE)) {
+    return NextResponse.json({ error: MIN_RATE_MESSAGE }, { status: 400 });
+  }
 
   const educator = await db.educator.findUnique({ where: { userId: session.user.id } });
   if (!educator) return NextResponse.json({ error: "Öğretmen bulunamadı." }, { status: 404 });

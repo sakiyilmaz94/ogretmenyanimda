@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
-import { BRANCHES, branchMismatch, gradeMismatch, MIN_EXPERIENCE_YEARS } from "@/lib/educator-requirements";
+import { BRANCHES, branchMismatch, gradeMismatch, MIN_EXPERIENCE_YEARS, MIN_HOURLY_RATE, MIN_RATE_MESSAGE } from "@/lib/educator-requirements";
+import { isValidTrIban } from "@/lib/iban";
 
 const APPLY_SUBJECTS = Object.keys(SUBJECT_LABELS).filter((k) => k !== "DIGER");
 const APPLY_GRADES = Object.keys(GRADE_LABELS);
@@ -13,7 +14,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [form, setForm] = useState({ name: "", email: "", password: "", role: "" });
-  const [ed, setEd] = useState({ branch: "", phone: "", hourlyRate: "", experience: "", subjects: [] as string[], gradeLevels: [] as string[] });
+  const [ed, setEd] = useState({ branch: "", phone: "", hourlyRate: "", experience: "", iban: "", ibanHolder: "", subjects: [] as string[], gradeLevels: [] as string[] });
   const toggle = (key: "subjects" | "gradeLevels", v: string) =>
     setEd((p) => ({ ...p, [key]: p[key].includes(v) ? p[key].filter((x) => x !== v) : [...p[key], v] }));
   const [diploma, setDiploma] = useState<File | null>(null);
@@ -58,12 +59,20 @@ export default function RegisterPage() {
       if (ed.gradeLevels.length === 0) { missing.push("Sınıf seviyeleri"); keys.push("grades"); }
       if (ed.experience === "" || Number(ed.experience) < 0) { missing.push("Deneyim (yıl)"); keys.push("experience"); }
       if (!ed.hourlyRate || Number(ed.hourlyRate) <= 0) { missing.push("Saatlik ücret"); keys.push("rate"); }
+      if (!isValidTrIban(ed.iban)) { missing.push("Geçerli IBAN"); keys.push("iban"); }
+      if (ed.ibanHolder.trim().length < 3) { missing.push("IBAN hesap sahibi adı"); keys.push("ibanHolder"); }
       if (!diploma) { missing.push("Diploma belgesi"); keys.push("diploma"); }
       if (!idCard) { missing.push("Kimlik fotoğrafı"); keys.push("idcard"); }
       if (ed.subjects.includes("OGRENCI_KOCLUGU") && !coachCert) { missing.push("Koçluk sertifikası"); keys.push("coach"); }
       if (missing.length > 0) {
         setBadFields(keys);
         setError(`Başvurunuz gönderilmedi. Lütfen zorunlu alanları doldurun: ${missing.join(", ")}.`);
+        setTimeout(() => document.getElementById("register-error")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+        return;
+      }
+      if (Number(ed.hourlyRate) < MIN_HOURLY_RATE) {
+        setBadFields(["rate"]);
+        setError(MIN_RATE_MESSAGE);
         setTimeout(() => document.getElementById("register-error")?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
         return;
       }
@@ -123,7 +132,7 @@ export default function RegisterPage() {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, diplomaUrl, idCardUrl, coachingCertUrl, ...(form.role === "EDUCATOR" ? { phone: ed.phone, hourlyRate: Number(ed.hourlyRate), experience: Number(ed.experience), subjects: ed.subjects, gradeLevels: ed.gradeLevels, branch: ed.branch } : {}) }),
+      body: JSON.stringify({ ...form, diplomaUrl, idCardUrl, coachingCertUrl, ...(form.role === "EDUCATOR" ? { phone: ed.phone, hourlyRate: Number(ed.hourlyRate), experience: Number(ed.experience), iban: ed.iban, ibanHolderName: ed.ibanHolder, subjects: ed.subjects, gradeLevels: ed.gradeLevels, branch: ed.branch } : {}) }),
     });
 
     const data = await res.json();
@@ -395,13 +404,30 @@ export default function RegisterPage() {
                       </div>
                       <div>
                         <label className="block text-label-md text-on-surface-variant mb-1.5">Saatlik Ücret (₺) <span className="text-on-error-container">*</span></label>
-                        <input type="number" min={1} step={1} value={ed.hourlyRate} onChange={(e) => setEd({ ...ed, hourlyRate: e.target.value })}
+                        <input type="number" min={MIN_HOURLY_RATE} step={1} placeholder={`en az ${MIN_HOURLY_RATE}`} value={ed.hourlyRate} onChange={(e) => setEd({ ...ed, hourlyRate: e.target.value })}
                           className={`${inputBase} ${bd("rate")}`} />
                       </div>
                     </div>
+                    {ed.hourlyRate !== "" && Number(ed.hourlyRate) > 0 && Number(ed.hourlyRate) < MIN_HOURLY_RATE && (
+                      <p className="text-caption font-semibold text-on-error-container -mt-2">{MIN_RATE_MESSAGE}</p>
+                    )}
                     <p className="text-caption text-on-surface-variant -mt-2 leading-relaxed">
                       💛 Verdiğiniz ders emek, birikim ve yılların karşılığı. Ücretinizi belirlerken kendi değerinizi ve tecrübenizi yansıtın.
                     </p>
+
+                    <div>
+                      <label className="block text-label-md text-on-surface-variant mb-1.5">IBAN Hesap Sahibi (Ad Soyad) <span className="text-on-error-container">*</span></label>
+                      <input type="text" value={ed.ibanHolder} onChange={(e) => setEd({ ...ed, ibanHolder: e.target.value })} placeholder="Bankadaki hesap adıyla aynı"
+                        className={`${inputBase} ${bd("ibanHolder")}`} />
+                    </div>
+                    <div>
+                      <label className="block text-label-md text-on-surface-variant mb-1.5">IBAN <span className="text-on-error-container">*</span></label>
+                      <input type="text" autoComplete="off" value={ed.iban} onChange={(e) => setEd({ ...ed, iban: e.target.value })} placeholder="TR00 0000 0000 0000 0000 0000 00"
+                        className={`${inputBase} ${bd("iban")} tracking-wide`} />
+                      <p className="text-caption text-on-surface-variant mt-1.5 leading-relaxed">
+                        Ders ücretiniz haftalık olarak bu hesaba yatırılır. IBAN&apos;ınız yalnızca ödeme için kullanılır, üçüncü kişilerle paylaşılmaz. Değişirse panelinizden güncelleyebilirsiniz.
+                      </p>
+                    </div>
 
                     <div>
                       <label className="block text-label-md text-on-surface-variant mb-1.5">

@@ -7,6 +7,10 @@ export const ALL_GRADE_LEVELS = Object.values(GradeLevel);
 /** Başvuruda kabul edilen en düşük deneyim (yıl). Admin onayında esnek bırakılır, kayıtta zorunludur. */
 export const MIN_EXPERIENCE_YEARS = 5;
 
+/** Saatlik ders ücreti alt sınırı (₺). Altında ders yazılamaz. */
+export const MIN_HOURLY_RATE = 800;
+export const MIN_RATE_MESSAGE = `Saatlik ders ücreti en az ${MIN_HOURLY_RATE} ₺ olmalıdır. Lütfen ücretinizi yükseltin.`;
+
 export interface EducatorRequirementInput {
   phone?: string | null;
   subjects?: string[] | null;
@@ -14,6 +18,7 @@ export interface EducatorRequirementInput {
   hourlyRate?: number | null;
   experience?: number | null;
   coachingCertUrl?: string | null;
+  iban?: string | null;
 }
 
 /** Eksik zorunlu alanların okunaklı listesini döndürür (boşsa başvuru tamamdır). */
@@ -22,7 +27,8 @@ export function missingEducatorFields(e: EducatorRequirementInput): string[] {
   if (!e.phone || e.phone.replace(/\D/g, "").length < 10) missing.push("Telefon numarası");
   if (!e.subjects || e.subjects.length === 0) missing.push("Verilecek ders(ler)");
   if (!e.gradeLevels || e.gradeLevels.length === 0) missing.push("Sınıf seviyeleri");
-  if (!e.hourlyRate || e.hourlyRate <= 0) missing.push("Saatlik ders ücreti");
+  if (!e.hourlyRate || e.hourlyRate < MIN_HOURLY_RATE) missing.push(`Saatlik ders ücreti (en az ${MIN_HOURLY_RATE} ₺)`);
+  if (!e.iban) missing.push("IBAN (haftalık ödeme için)");
   if (e.experience == null || e.experience < 0) missing.push("Deneyim (yıl)");
   if (e.subjects?.includes("OGRENCI_KOCLUGU") && !e.coachingCertUrl) missing.push("Koçluk sertifikası");
   return missing;

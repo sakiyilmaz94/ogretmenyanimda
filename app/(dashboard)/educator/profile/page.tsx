@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import EducatorProfileForm from "@/components/dashboard/EducatorProfileForm";
+import EducatorPayoutForm from "@/components/dashboard/EducatorPayoutForm";
+import { maskIban } from "@/lib/iban";
 
 export default async function EducatorProfilePage() {
   const session = await auth();
@@ -16,6 +18,7 @@ export default async function EducatorProfilePage() {
         <h1 className="font-display text-headline-xl text-on-background">Profilim</h1>
         <p className="text-body-md text-on-surface-variant">Bilgilerinizi güncelleyin ve profilinizi yayına alın</p>
       </div>
+      <EducatorPayoutForm ibanMasked={educator.iban ? maskIban(educator.iban) : null} holderName={educator.ibanHolderName ?? ""} />
       <EducatorProfileForm
         educator={{
           id: educator.id,

@@ -1,5 +1,6 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { NextResponse } from "next/server";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 const BUCKET = "private-docs"; // gizli klasör: yalnızca sunucu/admin erişir
 const MAX_SIZE = 5 * 1024 * 1024;
@@ -7,6 +8,12 @@ const ALLOWED_DIPLOMA = ["application/pdf"];
 const ALLOWED_IDCARD = ["image/jpeg", "image/png", "image/webp"];
 
 export async function POST(req: Request) {
+  // Depoyu doldurma koruması: IP başına saatte 15 yükleme
+  const rl = await rateLimit(`upload:${clientIp(req)}`, 15, 3600);
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Çok fazla dosya yüklendi. Lütfen bir süre sonra tekrar deneyin." }, { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } });
+  }
+
   const formData = await req.formData();
   const file = formData.get("file") as File | null;
   const type = formData.get("type") as string | null;

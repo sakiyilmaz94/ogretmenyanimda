@@ -151,6 +151,8 @@ model Educator {
   titleName       String?
   branch          String? // mezuniyet branşı (BRANCHES anahtarı)
   coachingCertUrl String? // öğrenci koçluğu sertifikası (gizli, yalnızca admin görür)
+  iban            String? // haftalık ders ödemesinin yapılacağı IBAN (gizli: yalnızca öğretmen ve admin)
+  ibanHolderName  String? // IBAN hesap sahibinin adı soyadı
   experience      Int?
   skills          String[]
   certificates    String[]
@@ -452,4 +454,11 @@ model FreeResource {
   createdAt DateTime   @default(now())
 
   @@index([grade])
+}
+
+// Basit, kalıcı hız sınırı (Vercel çok örnekli çalıştığı için bellek yerine veritabanı)
+model RateLimit {
+  key         String   @id
+  count       Int      @default(0)
+  windowStart DateTime @default(now())
 }
