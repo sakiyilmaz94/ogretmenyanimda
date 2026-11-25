@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { getCommissionRate } from "@/lib/finance";
+import { getCommissionRate, summarizePayments } from "@/lib/finance";
 import { SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
 import AutoPrint from "@/components/dashboard/AutoPrint";
 
@@ -46,17 +46,15 @@ export default async function AdminPrintPage({
 
   // ---- FİNANS ----
   if (type === "finans") {
-    const payments = await db.payment.findMany({ where: { status: "PAID" }, select: { amount: true, createdAt: true } });
+    const payments = await db.payment.findMany({ where: { status: "PAID" }, select: { amount: true, commissionRate: true, createdAt: true } });
     const inRange = payments.filter((p) => cut === null || +p.createdAt >= cut);
-    const gross = inRange.reduce((s, p) => s + p.amount.toNumber(), 0);
-    const commission = Math.round(gross * (rate / 100) * 100) / 100;
-    const payout = Math.round((gross - commission) * 100) / 100;
+    const { gross, commission, payout } = summarizePayments(inRange, rate);
     content = (
       <table className="kv">
         <tbody>
           <tr><td>Ödeme adedi</td><td>{inRange.length}</td></tr>
           <tr><td>Toplam tahsilat (brüt)</td><td>{tl(gross)}</td></tr>
-          <tr className="hi"><td>Platform geliri (komisyon %{rate})</td><td>{tl(commission)}</td></tr>
+          <tr className="hi"><td>Platform geliri (komisyon)</td><td>{tl(commission)}</td></tr>
           <tr><td>Öğretmene ödenecek toplam</td><td>{tl(payout)}</td></tr>
         </tbody>
       </table>

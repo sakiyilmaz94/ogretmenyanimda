@@ -151,6 +151,8 @@ model Educator {
   titleName       String?
   branch          String? // mezuniyet branşı (BRANCHES anahtarı)
   coachingCertUrl String? // öğrenci koçluğu sertifikası (gizli, yalnızca admin görür)
+  contractAcceptedAt DateTime? // eğitmen sözleşmesinin elektronik kabul zamanı
+  contractVersion    String?   // kabul edilen sözleşme sürümü (ör. 2026-11)
   iban            String? // haftalık ders ödemesinin yapılacağı IBAN (gizli: yalnızca öğretmen ve admin)
   ibanHolderName  String? // IBAN hesap sahibinin adı soyadı
   experience      Int?
@@ -259,6 +261,7 @@ model Payment {
   status          PaymentStatus @default(PENDING)
   installment     Int           @default(1)
   receiptUrl      String?
+  commissionRate  Decimal?      @db.Decimal(5, 2) // ödeme onaylandığı andaki komisyon oranı (%); oran sonradan değişse de geçmiş kayıt değişmez
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 

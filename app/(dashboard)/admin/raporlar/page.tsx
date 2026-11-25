@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { formatCurrency, SUBJECT_LABELS } from "@/lib/utils";
-import { getCommissionRate } from "@/lib/finance";
+import { getPaidSummary } from "@/lib/finance";
 import PrintButton from "@/components/dashboard/PrintButton";
 
 export const dynamic = "force-dynamic";
@@ -44,10 +44,8 @@ export default async function RaporlarPage() {
   });
   const educatorMap = Object.fromEntries(educatorDetails.map((e) => [e.id, e]));
 
-  const commissionRate = await getCommissionRate();
-  const grossPaid = totalPayments._sum.amount?.toNumber() ?? 0;
-  const ourIncome = Math.round(grossPaid * (commissionRate / 100) * 100) / 100;
-  const teacherPayout = Math.round((grossPaid - ourIncome) * 100) / 100;
+  // Her ödeme kendi kayıtlı komisyon oranıyla hesaplanır (oran sonradan değişse de geçmiş değişmez)
+  const { gross: grossPaid, commission: ourIncome, payout: teacherPayout } = await getPaidSummary();
 
   const operational = [
     { label: "Toplam Rezervasyon", value: totalBookings.toString(), sub: `${confirmedBookings} onaylı` },
@@ -76,7 +74,7 @@ export default async function RaporlarPage() {
             <p className="text-caption text-on-surface-variant mt-1">Velilerden tahsil edilen toplam</p>
           </div>
           <div className="bg-primary-fixed/50 rounded-2xl border border-primary/30 p-5 soft-card-static">
-            <p className="text-caption text-on-surface-variant mb-1">Bizim Gelirimiz (komisyon %{commissionRate})</p>
+            <p className="text-caption text-on-surface-variant mb-1">Bizim Gelirimiz (komisyon)</p>
             <p className="font-display text-headline-lg font-bold text-primary">{formatCurrency(ourIncome)}</p>
             <p className="text-caption text-on-surface-variant mt-1">Platformun net kazancı</p>
           </div>

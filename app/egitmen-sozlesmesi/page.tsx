@@ -13,7 +13,7 @@ export default function EgitmenSozlesmesiPage() {
           <div className="mb-8">
             <p className="inline-block text-label-md bg-primary-fixed text-on-primary-fixed rounded-full px-4 py-1.5 mb-3">Yasal</p>
             <h1 className="font-display text-headline-lg text-on-background mb-2">Eğitmen Hizmet Sözleşmesi</h1>
-            <p className="text-outline text-body-md">Son güncelleme: Haziran 2026</p>
+            <p className="text-outline text-body-md">Son güncelleme: Kasım 2026 (sürüm 2026-11)</p>
           </div>
 
           <div className="bg-surface-container-lowest rounded-md p-10 soft-card-static">
@@ -55,9 +55,14 @@ export default function EgitmenSozlesmesiPage() {
               <div>
                 <h2 className="font-display text-headline-md text-on-background mb-3">Madde 5 — Komisyon ve Ödeme</h2>
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>Eğitmen, Platform üzerinden gerçekleştirdiği tüm derslerden Platform&apos;un yürürlükteki Komisyon oranını/tarifesini ödemeyi kabul eder. Güncel oran Eğitmen panelinde ve/veya ekte belirtilir.</li>
+                  <li>Eğitmen, Platform üzerinden gerçekleştirdiği tüm derslerden Platform&apos;un yürürlükteki Komisyon oranını ödemeyi kabul eder. Komisyon oranı Platform tarafından belirlenir; yürürlükteki oran Eğitmen&apos;in giriş yaptığı panelde belirtilir.</li>
+                  <li>Eğitmen, kendisine bildirilen Komisyon oranını Platform&apos;un ticari sırrı olarak gizli tutmayı, üçüncü kişilerle paylaşmamayı kabul eder.</li>
+                  <li>Platform; vergi ve mali mevzuattaki değişiklikler, işletme maliyetleri ve hizmet kapsamındaki değişiklikler dahil haklı sebeplerle <strong className="text-on-background">Komisyon oranını değiştirme hakkını saklı tutar.</strong></li>
+                  <li>Komisyon oranındaki her değişiklik, yürürlük tarihinden <strong className="text-on-background">en az 7 (yedi) gün önce</strong> Eğitmen&apos;in kayıtlı e-posta adresine yazılı olarak bildirilir; bildirimde mevcut oran, yeni oran ve yürürlük tarihi yer alır. Bildirim, kayıtlı e-posta adresine gönderilmekle yapılmış sayılır; Eğitmen e-posta adresini güncel tutmakla yükümlüdür.</li>
+                  <li>Yeni oran, yalnızca yürürlük tarihinden sonra ödemesi onaylanan derslere uygulanır; yürürlük tarihinden önce ödemesi onaylanmış dersler değişiklikten etkilenmez.</li>
+                  <li>Eğitmen değişikliği kabul etmezse, yürürlük tarihinden önce yazılı bildirimle sözleşmeyi (Madde 8) tazminat veya cezai şart doğmaksızın feshedebilir; yürürlük tarihine kadar tahsil edilen derslerin ödemesi mevcut oranla yapılır. Yürürlük tarihinden sonra Platform&apos;u kullanmaya devam etmesi yeni oranın kabulü anlamına gelir.</li>
                   <li>Platform üzerinden tanışılan Kullanıcılarla yapılan derslere ilişkin <strong className="text-on-background">tüm ödemeler münhasıran Platform üzerinden</strong> gerçekleştirilir.</li>
-                  <li>Eğitmen&apos;e ödeme, Platform&apos;un belirlediği dönem ve yöntemle, Komisyon mahsup edilerek yapılır.</li>
+                  <li>Eğitmen&apos;e ödeme, esas olarak haftalık dönemlerle, Komisyon mahsup edilerek, Eğitmen&apos;in panelde beyan ettiği IBAN&apos;a yapılır. IBAN bilgisinin doğru ve güncel olması Eğitmen&apos;in sorumluluğundadır; hatalı veya eski IBAN nedeniyle doğacak gecikmelerden Platform sorumlu tutulamaz.</li>
                 </ul>
               </div>
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";
 import ReapplyForm from "@/components/dashboard/ReapplyForm";
 import NavIcon from "@/components/layout/NavIcon";
+import { getCommissionRate, getScheduledChange } from "@/lib/finance";
 
 export default async function EducatorDashboard() {
   const session = await auth();
@@ -29,6 +30,7 @@ export default async function EducatorDashboard() {
     db.availabilitySlot.count({ where: { educatorId: educator.id, isBooked: false } }),
   ]);
 
+  const [commissionRate, scheduledCommission] = await Promise.all([getCommissionRate(), getScheduledChange()]);
   const isPending = educator.status === "PENDING";
   const isRejected = educator.status === "REJECTED";
 
@@ -48,10 +50,15 @@ export default async function EducatorDashboard() {
             <span className="text-on-primary font-bold text-sm">%</span>
           </div>
           <div>
-            <p className="text-on-primary-fixed font-semibold text-body-md">Platform Komisyonu: %20</p>
+            <p className="text-on-primary-fixed font-semibold text-body-md">Platform Komisyonu: %{commissionRate}</p>
             <p className="text-on-primary-fixed/80 text-body-md mt-0.5">
-              Her ders ücretinin %20&apos;si platform komisyonu olarak kesilir; kalan %80&apos;i size ödenir.
-              Örnek: 500 ₺ ders → 400 ₺ net kazanç.
+              Her ders ücretinin %{commissionRate}&apos;i platform komisyonu olarak kesilir; kalan %{100 - commissionRate}&apos;i size ödenir.
+              Örnek: 1.000 ₺ ders → {(1000 - 10 * commissionRate).toLocaleString("tr-TR")} ₺ net kazanç.
+              {scheduledCommission && (
+                <span className="block mt-1 font-semibold">
+                  Bildirim: {new Date(scheduledCommission.effectiveAt).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Istanbul" })} tarihinden itibaren komisyon %{scheduledCommission.rate} olacak.
+                </span>
+              )}
             </p>
           </div>
         </div>

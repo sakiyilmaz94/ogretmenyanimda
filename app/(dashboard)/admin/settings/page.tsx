@@ -1,4 +1,4 @@
-import { getCommissionRate } from "@/lib/finance";
+import { getCommissionRate, getScheduledChange, COMMISSION_NOTICE_DAYS } from "@/lib/finance";
 import { isSalesOpen } from "@/lib/site-status";
 import SalesToggle from "@/components/dashboard/SalesToggle";
 import CommissionSettingForm from "@/components/dashboard/CommissionSettingForm";
@@ -6,7 +6,9 @@ import CommissionSettingForm from "@/components/dashboard/CommissionSettingForm"
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage() {
-  const [commissionRate, salesOpen] = await Promise.all([getCommissionRate(), isSalesOpen()]);
+  const [commissionRate, scheduled, salesOpen] = await Promise.all([getCommissionRate(), getScheduledChange(), isSalesOpen()]);
+  // Yürürlük tarihi en erken bildirim süresi kadar sonra (Türkiye saatiyle)
+  const minDate = new Date(Date.now() + COMMISSION_NOTICE_DAYS * 864e5).toLocaleDateString("sv-SE", { timeZone: "Europe/Istanbul" });
 
   return (
     <div className="space-y-6 max-w-2xl">
@@ -32,10 +34,10 @@ export default async function AdminSettingsPage() {
         <div>
           <h2 className="font-display text-headline-md text-on-background">Komisyon / Gelir Oranı</h2>
           <p className="text-caption text-on-surface-variant mt-0.5">
-            Her ödenen dersten platformun aldığı yüzde. Finans ve raporlardaki &quot;bizim gelirimiz&quot; bu orana göre hesaplanır.
+            Her ödenen dersten platformun aldığı yüzde. Oran, ödeme onaylandığı anda o ödemenin kaydına işlenir; sonradan değişse de geçmiş raporlar değişmez.
           </p>
         </div>
-        <CommissionSettingForm initialRate={commissionRate} />
+        <CommissionSettingForm currentRate={commissionRate} scheduled={scheduled} minDate={minDate} noticeDays={COMMISSION_NOTICE_DAYS} />
       </div>
 
       {/* iyzico */}

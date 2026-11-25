@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { notify } from "@/lib/notify";
+import { getCommissionRate } from "@/lib/finance";
 import { sendEmail, emailPaymentReceived, emailPaymentSuccessParent } from "@/lib/email";
 import { formatCurrency } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
@@ -37,7 +38,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     return NextResponse.json({ error: "Bu ödeme zaten onaylanmış." }, { status: 400 });
   }
 
-  await db.payment.update({ where: { id }, data: { status: "PAID" } });
+  await db.payment.update({ where: { id }, data: { status: "PAID", commissionRate: await getCommissionRate() } });
   await db.booking.update({ where: { id: payment.bookingId }, data: { status: "COMPLETED" } });
 
   const parentUserId = payment.booking.student.parent.user.id;

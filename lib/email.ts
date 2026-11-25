@@ -142,6 +142,43 @@ export function emailEducatorRejected({ name, note }: { name: string; note?: str
   });
 }
 
+// Komisyon oranı değişikliği (sözleşme Madde 5 gereği öğretmenlere yazılı bildirim) veya planın iptali
+export function emailCommissionChange({ name, oldRate, newRate, effectiveDate, cancelled }: {
+  name: string; oldRate: number; newRate: number; effectiveDate?: string; cancelled?: boolean;
+}) {
+  const firstName = (name ?? "").trim().split(" ")[0] || name;
+  if (cancelled) {
+    return welcomeShell({
+      heading: `Merhaba ${firstName},`,
+      subtitle: "Komisyon oranı bilgilendirmesi",
+      body: `<p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
+        Daha önce bildirdiğimiz komisyon oranı değişikliğinden <strong>vazgeçildi</strong>. Geçerli oran <strong>%${oldRate}</strong> olarak devam ediyor; yapman gereken bir şey yok.
+      </p>`,
+    });
+  }
+  return welcomeShell({
+    heading: `Merhaba ${firstName},`,
+    subtitle: "Komisyon oranı değişikliği bildirimi",
+    body: `
+      <p style="color:#334155;line-height:1.7;margin:0 0 16px;font-size:15px">
+        Eğitmen Hizmet Sözleşmesi'nin 5. maddesi uyarınca, platform komisyon oranındaki değişikliği sana yazılı olarak bildiriyoruz.
+      </p>
+      <div style="background:#f4f5ff;border:1px solid #e0e2ff;border-radius:12px;padding:18px 20px;margin:0 0 18px">
+        <p style="color:#475569;line-height:1.8;margin:0;font-size:15px">
+          Mevcut oran: <strong>%${oldRate}</strong><br/>
+          Yeni oran: <strong>%${newRate}</strong><br/>
+          Yürürlük tarihi: <strong>${effectiveDate}</strong>
+        </p>
+      </div>
+      <p style="color:#334155;line-height:1.7;margin:0 0 12px;font-size:15px">
+        Yeni oran, yürürlük tarihinden <strong>sonra ödemesi onaylanan</strong> derslere uygulanır. Bu tarihten önce ödemesi onaylanmış dersler mevcut oranla hesaplanmaya devam eder.
+      </p>
+      <p style="color:#334155;line-height:1.7;margin:0 0 4px;font-size:15px">
+        Değişikliği kabul etmiyorsan, yürürlük tarihinden önce <a href="mailto:destek@ogretmenyanimda.com.tr" style="color:#4648D4;font-weight:600">destek@ogretmenyanimda.com.tr</a> adresine yazarak sözleşmeyi sonlandırabilirsin; yürürlük tarihine kadar tahsil edilen derslerin ödemesi mevcut oranla yapılır.
+      </p>`,
+  });
+}
+
 export function emailLessonReportRequest({
   educatorName,
   studentName,

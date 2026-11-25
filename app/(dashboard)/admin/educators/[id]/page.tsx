@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS } from "@/lib/utils";
+import { formatCurrency, formatDate, SUBJECT_LABELS, GRADE_LABELS, formatDateTime } from "@/lib/utils";
 import EducatorDetailActions from "@/components/dashboard/EducatorDetailActions";
 import { missingEducatorFields, BRANCHES } from "@/lib/educator-requirements";
 import { formatIban } from "@/lib/iban";
@@ -132,6 +132,18 @@ export default async function AdminEducatorDetailPage({ params }: { params: Prom
           isProfilePublic: educator.isProfilePublic,
         }}
       />
+
+      {/* Sözleşme kabul kaydı */}
+      <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">
+        <h2 className="font-display text-headline-md text-on-background mb-3">Eğitmen Sözleşmesi</h2>
+        {educator.contractAcceptedAt ? (
+          <p className="text-body-md text-on-background">
+            Elektronik olarak kabul edildi: <strong>{formatDateTime(educator.contractAcceptedAt)}</strong> · sürüm <strong>{educator.contractVersion ?? "—"}</strong>
+          </p>
+        ) : (
+          <p className="text-body-md text-on-surface-variant">Kabul kaydı yok (bu başvuru, kabul kaydı tutulmaya başlamadan önce yapılmış).</p>
+        )}
+      </div>
 
       {/* Ödeme bilgileri (haftalık ödeme için) */}
       <div className="bg-surface-container-lowest rounded-md border border-outline-variant/20 p-6 soft-card-static">

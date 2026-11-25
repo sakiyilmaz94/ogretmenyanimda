@@ -13,6 +13,7 @@ export interface AdminPaymentItem {
   status: "PAID" | "PENDING" | "FAILED" | "REFUNDED";
   createdAt: string;
   referenceCode: string | null;
+  commissionRate: number | null; // ödeme onaylandığı andaki oran (bekleyenlerde null → güncel oran)
 }
 
 async function markPaid(id: string) {
@@ -61,14 +62,15 @@ export default function AdminPaymentsView({ payments, commissionRate }: { paymen
 
   // Özet: yalnızca ÖDENEN (PAID) kayıtlar kazanç sayılır
   const paid = visible.filter((p) => p.status === "PAID");
+  const rateOf = (p: AdminPaymentItem) => p.commissionRate ?? commissionRate;
   const grossPaid = paid.reduce((s, p) => s + p.amount, 0);
-  const ourIncome = Math.round(grossPaid * (commissionRate / 100) * 100) / 100;
+  const ourIncome = Math.round(paid.reduce((s, p) => s + Math.round(p.amount * (rateOf(p) / 100) * 100) / 100, 0) * 100) / 100;
   const teacherPayout = Math.round((grossPaid - ourIncome) * 100) / 100;
   const pendingGross = visible.filter((p) => p.status === "PENDING").reduce((s, p) => s + p.amount, 0);
 
   const cards = [
     { label: "Tahsil Edilen (brüt)", value: formatCurrency(grossPaid), cls: "text-on-background" },
-    { label: `Bizim Gelirimiz (%${commissionRate})`, value: formatCurrency(ourIncome), cls: "text-primary", hi: true },
+    { label: "Bizim Gelirimiz", value: formatCurrency(ourIncome), cls: "text-primary", hi: true },
     { label: "Öğretmene Ödenecek", value: formatCurrency(teacherPayout), cls: "text-on-secondary-container" },
     { label: "Bekleyen Tahsilat", value: formatCurrency(pendingGross), cls: "text-on-tertiary-fixed" },
   ];
@@ -79,7 +81,7 @@ export default function AdminPaymentsView({ payments, commissionRate }: { paymen
         <div>
           <h1 className="font-display text-headline-md text-on-background">Ödeme & Gelir Yönetimi</h1>
           <p className="text-label-md text-on-surface-variant mt-0.5">
-            Filtreleyin; her dersten bize kalan komisyon (%{commissionRate}) ve öğretmene ödenecek tutar aşağıda.
+            Filtreleyin; her dersten bize kalan komisyon ve öğretmene ödenecek tutar aşağıda.
           </p>
         </div>
         <div className="flex flex-col gap-2 shrink-0">
@@ -120,7 +122,7 @@ export default function AdminPaymentsView({ payments, commissionRate }: { paymen
               <th className="text-left px-5 py-3 text-label-md font-semibold">Öğretmen</th>
               <th className="text-left px-5 py-3 text-label-md font-semibold">Referans</th>
               <th className="text-right px-5 py-3 text-label-md font-semibold">Tutar (brüt)</th>
-              <th className="text-right px-5 py-3 text-label-md font-semibold">Bizim (%{commissionRate})</th>
+              <th className="text-right px-5 py-3 text-label-md font-semibold">Bizim</th>
               <th className="text-right px-5 py-3 text-label-md font-semibold">Öğretmene</th>
               <th className="text-left px-5 py-3 text-label-md font-semibold">Durum</th>
               <th className="text-right px-5 py-3 text-label-md font-semibold">İşlem</th>
@@ -130,7 +132,7 @@ export default function AdminPaymentsView({ payments, commissionRate }: { paymen
             {visible.length === 0 ? (
               <tr><td colSpan={9} className="text-center py-12 text-on-surface-variant text-label-md">Eşleşen ödeme yok.</td></tr>
             ) : visible.map((p) => {
-              const com = Math.round(p.amount * (commissionRate / 100) * 100) / 100;
+              const com = Math.round(p.amount * (rateOf(p) / 100) * 100) / 100;
               const dim = p.status !== "PAID";
               return (
                 <tr key={p.id} className="hover:bg-surface-container-low transition">
@@ -139,7 +141,7 @@ export default function AdminPaymentsView({ payments, commissionRate }: { paymen
                   <td className="px-5 py-3 text-on-surface-variant">{p.educatorName}</td>
                   <td className="px-5 py-3 font-mono text-caption text-on-background">{p.referenceCode ?? "—"}</td>
                   <td className="px-5 py-3 text-right font-semibold text-on-background">{formatCurrency(p.amount)}</td>
-                  <td className={`px-5 py-3 text-right font-bold ${dim ? "text-on-surface-variant/50" : "text-primary"}`}>{formatCurrency(com)}</td>
+                  <td className={`px-5 py-3 text-right font-bold ${dim ? "text-on-surface-variant/50" : "text-primary"}`}>{formatCurrency(com)} <span className="text-[10px] font-normal text-on-surface-variant">%{rateOf(p)}</span></td>
                   <td className={`px-5 py-3 text-right ${dim ? "text-on-surface-variant/50" : "text-on-secondary-container font-semibold"}`}>{formatCurrency(p.amount - com)}</td>
                   <td className="px-5 py-3">
                     <span className={`text-caption px-3 py-1 rounded-full font-semibold ${statusColor[p.status]}`}>{statusLabel[p.status] ?? p.status}</span>

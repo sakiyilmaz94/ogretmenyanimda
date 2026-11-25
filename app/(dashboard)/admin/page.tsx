@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
-import { getCommissionRate } from "@/lib/finance";
+import { getPaidSummary } from "@/lib/finance";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -13,8 +13,7 @@ export default async function AdminDashboard() {
     totalStudents,
     totalBookings,
     recentPayments,
-    totalRevenue,
-    rate,
+    paidSummary,
   ] = await Promise.all([
     db.educator.count(),
     db.educator.count({ where: { status: "PENDING" } }),
@@ -33,15 +32,11 @@ export default async function AdminDashboard() {
         },
       },
     }),
-    db.payment.aggregate({
-      where: { status: "PAID" },
-      _sum: { amount: true },
-    }),
-    getCommissionRate(),
+    getPaidSummary(),
   ]);
 
-  const gross = totalRevenue._sum.amount?.toNumber() ?? 0;
-  const commission = Math.round(gross * (rate / 100) * 100) / 100; // platform geliri
+  const gross = paidSummary.gross;
+  const commission = paidSummary.commission; // platform geliri (her ödeme kendi kayıtlı oranıyla)
 
   const stats = [
     {
@@ -106,7 +101,7 @@ export default async function AdminDashboard() {
       ),
     },
     {
-      label: `Platform Geliri (komisyon %${rate})`,
+      label: "Platform Geliri (komisyon)",
       href: "/admin/raporlar",
       value: formatCurrency(commission),
       icon: (

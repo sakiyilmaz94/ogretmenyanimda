@@ -40,3 +40,14 @@ B bilgi tamamlama formu · H profil tamlık kontrolü · I ücret sınırı (sı
 
 ## Doğrulama
 tsc + lint + build; IBAN geçerli/geçersiz; rate limit aşım ve sıfırlanma; reddetme/onay çift mail kontrolü; admin detayda IBAN görünümü.
+
+## Eklenenler (25 Kasım 2026)
+**Komisyon hakkının saklı tutulması (sözleşme Madde 5, sürüm 2026-11)**
+- Oranı Platform belirler; tek taraflı değiştirme hakkı saklı; değişiklik yürürlükten ≥7 gün önce kayıtlı e-postaya bildirilir; yeni oran yalnızca yürürlükten sonra ödemesi onaylanan derslere uygulanır; kabul etmeyen eğitmen cezai şartsız fesih hakkına sahiptir; oran ticari sır olarak gizli tutulur; ödeme haftalık, beyan edilen IBAN'a.
+- Mekanizma: Admin → Ayarlar'da oran *planlanır* (en az 7 gün sonrası, sunucuda zorunlu), tüm APPROVED+PENDING öğretmenlere panel bildirimi + e-posta gider; iptal edilirse iptal bildirimi gider.
+- `Payment.commissionRate`: oran ödeme onaylandığı anda kayda sabitlenir; tüm raporlar (admin ana sayfa, raporlar, ödemeler, yazdırma) her ödemeyi kendi oranıyla hesaplar. Geçmiş 23 ödeme %20 ile işaretlendi.
+- Öğretmen panelindeki sabit "%20/%80" yerine gerçek oran ve planlı değişiklik notu gösterilir.
+
+**C. Sözleşme kabul kaydı:** `Educator.contractAcceptedAt/contractVersion`; kayıtta sunucu tarafında zorunlu.
+
+**F (kısmen): Profil API'si** artık yalnızca gönderilen alanları günceller (önceden "Derslerim" kaydı fotoğraf, unvan, deneyim yılını siliyordu), ücret ≥800 ₺, ders/sınıf branşa uygun, deneyim ≥5, telefon geçerli; belge yolları ve IBAN GET yanıtında dönmez.

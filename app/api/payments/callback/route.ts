@@ -1,3 +1,4 @@
+import { getCommissionRate } from "@/lib/finance";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { retrieveCheckoutForm } from "@/lib/iyzico";
@@ -49,7 +50,7 @@ export async function POST(req: Request) {
     if (booking.payment) {
       await db.payment.update({
         where: { id: booking.payment.id },
-        data: { status: "PAID", iyzicoPaymentId: result.paymentId ?? null },
+        data: { status: "PAID", iyzicoPaymentId: result.paymentId ?? null, commissionRate: await getCommissionRate() },
       });
     }
 

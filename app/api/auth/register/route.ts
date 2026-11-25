@@ -7,6 +7,7 @@ import { toPrivatePath } from "@/lib/private-docs";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { isValidTrIban, normalizeIban } from "@/lib/iban";
 import { notifyAdmins } from "@/lib/notify";
+import { EDUCATOR_CONTRACT_VERSION } from "@/lib/contract";
 import { APPLICABLE_SUBJECTS, ALL_GRADE_LEVELS, BRANCHES, branchMismatch, gradeMismatch, MIN_EXPERIENCE_YEARS, MIN_HOURLY_RATE, MIN_RATE_MESSAGE, missingEducatorFields } from "@/lib/educator-requirements";
 
 export async function POST(req: Request) {
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Çok fazla kayıt denemesi yapıldı. Lütfen bir süre sonra tekrar deneyin." }, { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } });
   }
 
-  const { name, email, password, role, diplomaUrl, idCardUrl, coachingCertUrl, phone, subjects, gradeLevels, hourlyRate, experience, branch, iban, ibanHolderName } = await req.json();
+  const { name, email, password, role, diplomaUrl, idCardUrl, coachingCertUrl, phone, subjects, gradeLevels, hourlyRate, experience, branch, iban, ibanHolderName, contractAccepted } = await req.json();
 
   if (!name || !email || !password) {
     return NextResponse.json({ error: "Tüm alanları doldurun." }, { status: 400 });
@@ -34,6 +35,9 @@ export async function POST(req: Request) {
     const exp = Number(experience);
     if (Number.isFinite(rate) && rate > 0 && rate < MIN_HOURLY_RATE) {
       return NextResponse.json({ error: MIN_RATE_MESSAGE }, { status: 400 });
+    }
+    if (contractAccepted !== true) {
+      return NextResponse.json({ error: "Eğitmen Hizmet Sözleşmesi'ni kabul etmeniz gerekir." }, { status: 400 });
     }
     const holder = typeof ibanHolderName === "string" ? ibanHolderName.trim() : "";
     if (typeof iban !== "string" || !isValidTrIban(iban)) {
@@ -104,6 +108,8 @@ export async function POST(req: Request) {
         hourlyRate: educatorData?.hourlyRate ?? 0,
         phone: educatorData?.phone ?? null,
         branch: educatorData?.branch ?? null,
+        contractAcceptedAt: new Date(),
+        contractVersion: EDUCATOR_CONTRACT_VERSION,
         iban: educatorData?.iban ?? null,
         ibanHolderName: educatorData?.ibanHolderName ?? null,
         coachingCertUrl: subjects?.includes?.("OGRENCI_KOCLUGU") ? coachingPath : null,

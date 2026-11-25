@@ -132,7 +132,7 @@ export default function RegisterPage() {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, diplomaUrl, idCardUrl, coachingCertUrl, ...(form.role === "EDUCATOR" ? { phone: ed.phone, hourlyRate: Number(ed.hourlyRate), experience: Number(ed.experience), iban: ed.iban, ibanHolderName: ed.ibanHolder, subjects: ed.subjects, gradeLevels: ed.gradeLevels, branch: ed.branch } : {}) }),
+      body: JSON.stringify({ ...form, diplomaUrl, idCardUrl, coachingCertUrl, ...(form.role === "EDUCATOR" ? { phone: ed.phone, hourlyRate: Number(ed.hourlyRate), experience: Number(ed.experience), iban: ed.iban, ibanHolderName: ed.ibanHolder, contractAccepted: sozlesmeAccepted, subjects: ed.subjects, gradeLevels: ed.gradeLevels, branch: ed.branch } : {}) }),
     });
 
     const data = await res.json();
